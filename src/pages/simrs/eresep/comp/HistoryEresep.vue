@@ -142,7 +142,7 @@
                         v-else-if="store.statusCopied[`${index}-${rinc?.kdobat}`] === false && store.pemberianObatCek[`${index}-${rinc?.kdobat}`] !== null"
                         class="row col-6 items-center text-red">
                         <q-btn label="Konfirmasi pemberian obat" class="f-10 q-mr-sm" color="yellow" text-color="black"
-                          @click="store.openDialogDuplicateResep(store.pemberianObatCek[`${index}-${rinc?.kdobat}`], store.permintaanResepDuplicate[`${index}-${rinc?.kdobat}`], 'nonRacik', `${index}-${rinc?.kdobat}`)">
+                          @click="store.openDialogDuplicateResep(store.pemberianObatCek[`${index}-${rinc?.kdobat}`], rinc, 'nonRacik', `${index}-${rinc?.kdobat}`)">
                           <q-tooltip class="primary" :offset="[10, 10]" anchor="top right" self="top left">
                             Konfirmasi pemberian obat
                           </q-tooltip>
@@ -274,7 +274,7 @@
                         v-else-if="store.statusCopiedRacik[`${index}-${i}`] === false && store.pemberianObatCek[`${index}-${i}`] !== null"
                         class="row col-6 items-center text-red">
                         <q-btn label="Konfirmasi pemberian obat" class="f-10 q-mr-sm" color="yellow" text-color="black"
-                          @click="store.openDialogDuplicateResep(store.pemberianObatCek[`${index}-${i}`], store.permintaanResepDuplicate[`${index}-${i}`], 'racik', `${index}-${i}`)">
+                          @click="store.openDialogDuplicateResep(store.pemberianObatCek[`${index}-${i}`], items?.permintaanracikan[i], 'racik', `${index}-${i}`)">
                           <q-tooltip class="primary" :offset="[10, 10]" anchor="top right" self="top left">
                             Konfirmasi pemberian obat
                           </q-tooltip>
