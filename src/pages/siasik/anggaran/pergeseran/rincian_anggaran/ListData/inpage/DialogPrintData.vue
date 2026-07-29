@@ -269,7 +269,7 @@
                             <td class="text-center" colspan="2">REKENING</td>
                             <td class="text-center" colspan="4">SEBELUM PERUBAHAN</td>
                             <td class="text-center" colspan="4">SESUDAH PERUBAHAN</td>
-                            <td class="text-center" rowspan="2">SELISIH (RP.)</td>
+                            <td class="text-center" style="width: 100px" rowspan="2">SELISIH (RP.)</td>
                             <td class="text-center aksi-col" rowspan="2">ooo</td>
                           </tr>
                           <tr class="text-bold text-center" style="height:50px">

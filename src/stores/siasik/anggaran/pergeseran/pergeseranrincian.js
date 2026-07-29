@@ -26,7 +26,7 @@ export const usePergeseranAnggaranStore = defineStore('pergeseran-anggaran-store
       kodebidang: '',
       namabidang: '',
       bidang: '',
-
+      pagu: '',
       //rinci
       usulan: '',
       volume: 0,
