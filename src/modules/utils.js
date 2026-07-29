@@ -79,7 +79,7 @@ const notifErr = (resp) => {
         })
       }
       else {
-        if (msgkeys !== 'nomor') {
+        if (msgkeys !== 'nomor' && msgkeys !== 'custom_errors') {
           Notify.create({
             message: resp.data[msgkeys],
             icon: 'icon-eva-message-circle-outline',
