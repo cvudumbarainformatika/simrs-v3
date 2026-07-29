@@ -327,13 +327,18 @@
 
       <q-card-section class="q-pa-md" style="max-height: 60vh; overflow-y: auto;">
         <q-list separator bordered>
-          <q-item v-for="(item, idx) in editItems" :key="idx" class="q-py-md">
+          <q-item v-for="(item, idx) in editItems" :key="idx" class="q-py-md" :style="(item.error || (item.stokalokasi !== undefined && (item.jenisresep === 'nonRacikan' ? item.jumlah_diminta : item.jumlah) > item.stokalokasi)) ? 'background-color: #ffebee; border-left: 4px solid #f44336;' : ''">
             <q-item-section>
               <div class="row q-col-gutter-sm items-center">
                 <!-- Info Obat -->
                 <div class="col-12">
                   <div class="text-weight-bold text-indigo">{{ item.nama_obat }}</div>
-                  <div class="text-caption text-grey-7">{{ item.kodeobat }} ({{ item.satuan }})</div>
+                  <div class="text-caption text-grey-7">
+                    {{ item.kodeobat }} ({{ item.satuan }})
+                    <span class="q-ml-md text-weight-bold text-primary" v-if="item.stokalokasi !== undefined">
+                      [ Alokasi Depo: {{ item.stokalokasi }} ]
+                    </span>
+                  </div>
                 </div>
 
                 <!-- Input Jumlah -->
@@ -360,6 +365,9 @@
                 <!-- Tampilkan pesan error jika ada -->
                 <div v-if="item.error" class="col-12 text-negative text-caption q-mt-xs">
                   {{ item.error }}
+                </div>
+                <div v-else-if="item.stokalokasi !== undefined && (item.jenisresep === 'nonRacikan' ? item.jumlah_diminta : item.jumlah) > item.stokalokasi" class="col-12 text-negative text-caption q-mt-xs">
+                  Stok kurang! Tersedia: {{ item.stokalokasi }}
                 </div>
               </div>
             </q-item-section>
@@ -391,6 +399,7 @@ import { humanDate } from 'src/modules/formatter'
 // import { pathImg } from 'src/boot/axios'
 // import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { notifErrVue } from 'src/modules/utils'
+import { api } from 'src/boot/axios'
 
 // eslint-disable-next-line no-unused-vars
 const cekobats = ref([])
@@ -447,13 +456,14 @@ const editSourceRecipe = ref(null)
 const editIndexList = ref(-1)
 const editTipe = ref('')
 
-function openEditDuplicate (val, indexlist, tipe) {
+async function openEditDuplicate (val, indexlist, tipe) {
   editSourceRecipe.value = val
   editIndexList.value = indexlist
   editTipe.value = tipe
 
+  let rawItems = []
   if (tipe === 'nonRacik') {
-    editItems.value = val.permintaanresep.map(res => ({
+    rawItems = val.permintaanresep.map(res => ({
       kodeobat: res.kdobat,
       nama_obat: res.mobat?.nama_obat || '',
       satuan: res.mobat?.satuan_k || '',
@@ -468,7 +478,7 @@ function openEditDuplicate (val, indexlist, tipe) {
       kandungan: res.kandungan,
       kode50: res.kode50,
       kode108: res.kode108,
-      stokalokasi: res.stokalokasi,
+      stokalokasi: undefined,
       uraian50: res.uraian50,
       uraian108: res.uraian108,
       noreg: store.form.noreg,
@@ -482,9 +492,10 @@ function openEditDuplicate (val, indexlist, tipe) {
       tarifina: store.form.tarifina,
       uraianinacbg: store.form.uraianinacbg,
       kodeincbg: store.form.kodeincbg,
+      error: ''
     }))
   } else {
-    editItems.value = val.rincianracik.map((racikan, i) => {
+    rawItems = val.rincianracik.map((racikan, i) => {
       const parent = val.permintaanracikan.find(o => o.kdobat === racikan.kdobat) || val.permintaanracikan[i] || {}
       return {
         kodeobat: racikan.kdobat,
@@ -508,7 +519,7 @@ function openEditDuplicate (val, indexlist, tipe) {
         kandungan: parent.kandungan,
         kode50: parent.kode50,
         kode108: parent.kode108,
-        stokalokasi: parent.stokalokasi,
+        stokalokasi: undefined,
         uraian50: parent.uraian50,
         uraian108: parent.uraian108,
         noreg: store.form.noreg,
@@ -522,11 +533,36 @@ function openEditDuplicate (val, indexlist, tipe) {
         tarifina: store.form.tarifina,
         uraianinacbg: store.form.uraianinacbg,
         kodeincbg: store.form.kodeincbg,
+        error: ''
       }
     })
   }
 
+  editItems.value = rawItems
   dialogEditVisible.value = true
+
+  // Fetch stock allocations asynchronously to populate stokalokasi!
+  try {
+    const kdobatArray = rawItems.map(item => item.kodeobat)
+    const depo = store.depos.find(pa => pa.value === val.depo)
+    const dpPar = depo ? depo.value : val.depo
+    const param = {
+      groups: store.pasien?.groups,
+      kdruang: dpPar,
+      q: kdobatArray,
+      tiperesep: store.form.tiperesep || 'normal'
+    }
+    const resp = await api.get('v1/simrs/pelayanan/lihatstokobateresepBydokter', { params: param })
+    const stocks = resp.data?.dataobat || []
+    editItems.value.forEach(item => {
+      const match = stocks.find(s => s.kdobat === item.kodeobat)
+      if (match) {
+        item.stokalokasi = match.alokasi ?? 0
+      }
+    })
+  } catch (e) {
+    console.error('Error fetching stock for edit duplicate:', e)
+  }
 }
 
 function removeEditItem (idx) {
