@@ -68,7 +68,7 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
       siklus: null,
       lamaMens: 0,
       kondisiMens: [],
-      hpht: 0,
+      hpht: null,
       tglPerkPersalinan: null,
       // rw perkawinan
       rwKawinStatus: null,
@@ -609,6 +609,20 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
       }
 
       return `${tahun}-${bulan}-${hari}`
+    },
+
+    dateToInt(val) {
+      if (val === null || val === undefined || val === '') return null
+
+      const str = String(val)
+      if (str.includes('-')) {
+        const [year, month, day] = str.split('-')
+        if (!year || !month || !day) return null
+        return parseInt(`${day.padStart(2, '0')}${month.padStart(2, '0')}${year}`, 10)
+      }
+
+      const digits = str.replace(/\D/g, '')
+      return digits ? parseInt(digits, 10) : null
     },
 
     initReset(data) {
@@ -1158,6 +1172,10 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
         formDefault.keluhannyeri = null
       }
       // eslint-disable-next-line no-unused-vars
+      const kebidananPayload = kasusKep === '4.2'
+        ? { ...this.formKebidanan, hpht: this.dateToInt(this.formKebidanan.hpht) }
+        : null
+
       const req = {
         noreg: pasien?.noreg ?? null,
         norm: pasien?.norm,
@@ -1165,7 +1183,7 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
         id: this.form.id,
         form: formDefault,
         awal: '1',
-        formKebidanan: kasusKep === '4.2' ? this.formKebidanan : null, // ini this.formKebidanan,
+        formKebidanan: kebidananPayload,
         formNeoNatal: kasusKep === '4.3' ? this.formNeoNatal : null,
         formPediatrik: kasusKep === '4.4' ? this.formPediatrik : null // ini this.formPediatrik
       }

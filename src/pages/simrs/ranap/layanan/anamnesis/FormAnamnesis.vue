@@ -449,7 +449,7 @@
               <!-- <app-input-simrs v-model="store.formKebidanan.hpht" label="HPHT (hr)" class="col-2"
                 :valid="{ number: true }" /> -->
 
-              <app-input-date v-model="store.formKebidanan.hpht" label="HPHT" outlined dense
+              <app-input-date :model="store.formKebidanan.hpht" label="HPHT" outlined dense
                 @set-model="(val) => { store.formKebidanan.hpht = val }" valid class="col-3" />
               <app-input-date v-model="store.formKebidanan.tglPerkPersalinan" label="Tgl Prk. Persalinan" outlined dense
                 @set-model="(val) => { store.formKebidanan.tglPerkPersalinan = val }" valid class="col-3" />
