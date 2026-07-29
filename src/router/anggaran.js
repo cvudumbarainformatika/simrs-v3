@@ -152,20 +152,20 @@ const anggaran = {
         {
           path: '/anggaran/perubahan/belanja',
           name: 'anggaran.perubahan.belanja',
-          component: () => import('pages/siasik/anggaran/penyusunan/pengusulan/IndexPage.vue'),
+          component: () => import('pages/siasik/anggaran/perubahan/anggaranbelanja/IndexPage.vue'),
           children: [
             { path: '', name: 'perubahan', redirect: '/anggaran/perubahan/belanja/form' },
             {
               path: '/anggaran/perubahan/belanja/form',
               name: 'anggaran.perubahan.belanja.form',
               component: () =>
-                import('src/pages/siasik/anggaran/penyusunan/pengusulan/FormData/IndexPage.vue')
+                import('src/pages/siasik/anggaran/perubahan/anggaranbelanja/FormData/IndexPage.vue')
             },
             {
               path: '/anggaran/perubahan/belanja/listdata',
               name: 'anggaran.perubahan.belanja.listdata',
               component: () =>
-                import('src/pages/siasik/anggaran/penyusunan/pengusulan/ListData/IndexPage.vue')
+                import('src/pages/siasik/anggaran/perubahan/anggaranbelanja/ListData/IndexPage.vue')
             },
 
           ]
