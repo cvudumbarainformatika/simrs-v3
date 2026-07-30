@@ -4,13 +4,13 @@
 
       <div class="col-6 q-pl-sm">
         <div class="q-pb-sm" style="width: 280px; display: grid; grid-template-columns: auto 10px 1fr; row-gap: 4px;">
-          <div class="text-bold">Total Anggaran</div>
+          <div class="text-bold">Total Pagu Awal</div>
           <div class="text-bold text-center">:</div>
           <div class="text-bold text-right">
             {{ formattanpaRp(store.form.pagu || 0) }}
           </div>
 
-          <div class="text-bold">Total Pengusulan</div>
+          <div class="text-bold">Total Pagu Pergeseran</div>
           <div class="text-bold text-center">:</div>
           <div class="text-bold text-right">
             {{ formattanpaRp(subtotal()) }}

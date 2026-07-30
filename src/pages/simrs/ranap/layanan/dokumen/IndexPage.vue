@@ -143,6 +143,24 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('./nursenote/IndexPage.vue')))
   },
   {
+    name: 'pemberianobat-page',
+    label: 'CATATAN PEMBERIAN OBAT',
+    title: 'CATATAN PEMBERIAN OBAT ORAL/INJEKSI',
+    desc: 'Pemberianobat',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./catatanObat/IndexPage.vue')))
+  },
+  {
+    name: 'pemberianinfus-page',
+    label: 'CATATAN PEMBERIAN INFUS',
+    title: 'CATATAN PEMBERIAN INFUS',
+    desc: 'Pemberianinfus',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./catatanInfus/IndexPage.vue')))
+  },
+  {
     name: 'surat-kematian',
     label: 'SURAT KEMATIAN',
     title: 'SURAT KETERANGAN KEMATIAN',

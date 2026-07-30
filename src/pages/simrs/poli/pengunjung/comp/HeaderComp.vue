@@ -1,88 +1,24 @@
 <template>
-  <div
-    class="row items-center justify-between q-pa-sm"
-    :class="`${color} text-${textColor}`"
-  >
-    <div
-      v-if="!custom"
-      class="row"
-    >
-      <q-input
-        v-model="q"
-        outlined
-        dark
-        color="white"
-        dense
-        placeholder="Cari Kunjungan ..."
-        debounce="500"
-        style="min-width: 200px;"
-      >
-        <template
-          v-if="q"
-          #append
-        >
-          <q-icon
-            name="icon-mat-close"
-            size="xs"
-            class="cursor-pointer"
-            @click.stop.prevent="q = ''"
-          />
+  <div class="row items-center justify-between q-pa-sm" :class="`${color} text-${textColor}`">
+    <div v-if="!custom" class="row">
+      <q-input v-model="q" outlined dark color="white" dense placeholder="Cari Kunjungan ..." debounce="500"
+        style="min-width: 200px;">
+        <template v-if="q" #append>
+          <q-icon name="icon-mat-close" size="xs" class="cursor-pointer" @click.stop.prevent="q = ''" />
         </template>
         <template #prepend>
-          <q-icon
-            size="sm"
-            name="icon-mat-search"
-          />
+          <q-icon size="sm" name="icon-mat-search" />
         </template>
       </q-input>
-      <q-select
-        v-model="periode"
-        dense
-        outlined
-        dark
-        color="white"
-        :options="periods"
-        label="Periode"
-        class="q-ml-sm"
-        emit-value
-        map-options
-        style="min-width: 150px;"
-        @update:model-value="gantiPeriode"
-      />
-      <q-select
-        v-model="txt"
-        dense
-        outlined
-        dark
-        color="white"
-        :options="txts"
-        label="status pasien"
-        class="q-ml-sm"
-        emit-value
-        map-options
-        style="min-width: 150px;"
-        @update:model-value="gantiTxt"
-      />
-      <q-btn-dropdown
-        class="glossy q-ml-sm"
-        color="orange"
-        :label="poli?.polirs"
-      >
+      <q-select v-model="periode" dense outlined dark color="white" :options="periods" label="Periode" class="q-ml-sm"
+        emit-value map-options style="min-width: 150px;" @update:model-value="gantiPeriode" />
+      <q-select v-model="txt" dense outlined dark color="white" :options="txts" label="status pasien" class="q-ml-sm"
+        emit-value map-options style="min-width: 150px;" @update:model-value="gantiTxt" />
+      <q-btn-dropdown class="glossy q-ml-sm" color="orange" :label="poli?.polirs">
         <q-list>
-          <q-item
-            v-for="row in polis"
-            :key="row"
-            v-close-popup
-            clickable
-            @click="gantiPoli(row)"
-          >
+          <q-item v-for="row in polis" :key="row" v-close-popup clickable @click="gantiPoli(row)">
             <q-item-section avatar>
-              <q-avatar
-                icon="icon-mat-medical_information"
-                color="primary"
-                text-color="white"
-                size="sm"
-              />
+              <q-avatar icon="icon-mat-medical_information" color="primary" text-color="white" size="sm" />
             </q-item-section>
             <q-item-section>
               <q-item-label>{{ row?.polirs }}</q-item-label>
@@ -92,62 +28,26 @@
       </q-btn-dropdown>
     </div>
     <div v-else>
-      <q-btn
-        label="Kembali Ke Normal Filter"
-        icon="icon-mat-keyboard_arrow_left"
-        color="white"
-        flat
-        @click="kembaliNormal"
-      />
+      <q-btn label="Kembali Ke Normal Filter" icon="icon-mat-keyboard_arrow_left" color="white" flat
+        @click="kembaliNormal" />
     </div>
     <div>
-      <q-btn
-        class="q-ml-sm animated-button"
-        unelevated
-        color="orange"
-        flat
-        size="sm"
-        padding="xs"
-        icon="icon-mat-refresh"
-        @click="emits('refresh')"
-      >
-        <q-tooltip
-          class="primary"
-          :offset="[10, 10]"
-        >
+      <q-btn class="q-ml-sm animated-button" unelevated color="orange" flat size="sm" padding="xs"
+        icon="icon-mat-refresh" @click="emits('refresh')">
+        <q-tooltip class="primary" :offset="[10, 10]">
           Refresh Data
         </q-tooltip>
       </q-btn>
-      <q-btn
-        flat
-        dense
-        :color="textColor"
-        icon="icon-mat-dashboard"
-        size="sm"
-        class="q-mx-sm"
-        @click="emits('filter')"
-      >
-        <q-tooltip
-          class="primary"
-          :offset="[10, 10]"
-        >
+      <q-btn flat dense :color="textColor" icon="icon-mat-dashboard" size="sm" class="q-mx-sm" @click="emits('filter')">
+        <q-tooltip class="primary" :offset="[10, 10]">
           Filter Data
         </q-tooltip>
       </q-btn>
 
       <!-- fullscreen -->
-      <q-btn
-        flat
-        :color="textColor"
-        :icon="!full?'icon-mat-open_in_full':'icon-mat-close_fullscreen'"
-        size="xs"
-        padding="xs"
-        @click="emits('fullscreen')"
-      >
-        <q-tooltip
-          class="primary"
-          :offset="[10, 10]"
-        >
+      <q-btn flat :color="textColor" :icon="!full ? 'icon-mat-open_in_full' : 'icon-mat-close_fullscreen'" size="xs"
+        padding="xs" @click="emits('fullscreen')">
+        <q-tooltip class="primary" :offset="[10, 10]">
           Fullscreen
         </q-tooltip>
       </q-btn>
@@ -225,10 +125,10 @@ const props = defineProps({
   custom: { type: Boolean, default: false }
 })
 const q = computed({
-  get () {
+  get() {
     return props.search
   },
-  set (newVal) {
+  set(newVal) {
     emits('setSearch', newVal)
   }
 })
@@ -263,19 +163,19 @@ const polis = computed(() => {
 const to = ref(dateDbFormat(new Date()))
 const from = ref(dateDbFormat(new Date()))
 
-function hariIni () {
+function hariIni() {
   const cDate = new Date()
   to.value = dateDbFormat(cDate)
   from.value = dateDbFormat(cDate)
 }
-function mingguIni () {
+function mingguIni() {
   const curr = new Date()
   const firstday = new Date(curr.setDate(curr.getDate() - curr.getDay()))
   const lastday = new Date(curr.setDate(curr.getDate() - curr.getDay() + 6))
   to.value = dateDbFormat(firstday)
   from.value = dateDbFormat(lastday)
 }
-function bulanIni () {
+function bulanIni() {
   const curr = new Date()
   const firstday = date.formatDate(curr, 'YYYY') + '-' + date.formatDate(curr, 'MM') + '-01'
   const lastday = date.formatDate(curr, 'YYYY') + '-' + date.formatDate(curr, 'MM') + '-31'
@@ -283,7 +183,7 @@ function bulanIni () {
   from.value = dateDbFormat(lastday)
 }
 
-function tahunIni () {
+function tahunIni() {
   const curr = new Date()
   const firstday = date.formatDate(curr, 'YYYY') + '-01' + '-01'
   const lastday = date.formatDate(curr, 'YYYY') + '-12' + '-31'
@@ -291,7 +191,7 @@ function tahunIni () {
   from.value = dateDbFormat(lastday)
 }
 
-function gantiStatus (val) {
+function gantiStatus(val) {
   if (val === 'BELUM TERLAYANI') {
     return ''
   }
@@ -306,11 +206,11 @@ function gantiStatus (val) {
   }
 }
 
-function gantiTxt () {
+function gantiTxt() {
   gantiPeriode(periode.value)
 }
 
-function gantiPeriode (val) {
+function gantiPeriode(val) {
   if (val === 1) {
     hariIni()
   }
@@ -334,14 +234,14 @@ function gantiPeriode (val) {
   emits('setPeriode', per)
 }
 
-function gantiPoli (val) {
+function gantiPoli(val) {
   poli.value = val
   const sendt = poli.value?.kodepoli === 'SEMUA POLI' ? polis.value?.map(x => x?.kodepoli) : [poli.value?.kodepoli ?? '']
   // console.log(sendt)
   emits('setPoli', sendt)
 }
 
-function kembaliNormal () {
+function kembaliNormal() {
   periode.value = 1
   txt.value = 'BELUM TERLAYANI'
   gantiPeriode(periode.value)
@@ -358,9 +258,11 @@ onMounted(() => {
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.1);
   }
+
   100% {
     transform: scale(1);
   }
