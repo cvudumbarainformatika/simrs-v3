@@ -15,9 +15,12 @@
             @delete-ids="table.deletesData"
             -->
             <template #header-left-after-search>
-              <div class="row q-ml-xs">
+              <div class="row q-ml-xs items-center">
                 <q-checkbox v-model="table.params.status_prb" label="Obat PRB Saja"
                   @update:model-value="table.refreshTable" />
+                <q-btn unelevated color="green" size="sm" icon="icon-mat-download" label="Download Excel" class="q-ml-md" @click="downloadMasterObat">
+                  <q-tooltip>Download Master Obat (Excel)</q-tooltip>
+                </q-btn>
               </div>
             </template>
             <template #col-obat>
@@ -327,13 +330,54 @@ import { useMasterObatForm } from 'src/stores/simrs/master/farmasi/obat/form'
 import { useMasterObatTable } from 'src/stores/simrs/master/farmasi/obat/table'
 import formDialog from './FormDialog.vue'
 import { defineAsyncComponent } from 'vue'
+import { api } from 'src/boot/axios'
+import { useQuasar } from 'quasar'
 
 const FormMapingBpjs = defineAsyncComponent(() => import('./FormMapingBpjs.vue'))
 
 const table = useMasterObatTable()
 const store = useMasterObatForm()
+const $q = useQuasar()
 table.getDataTable()
 store.getInitialData()
+
+function downloadMasterObat () {
+  $q.loading.show({
+    message: 'Harap tunggu... sedang menyiapkan data ekspor master obat'
+  })
+
+  api.get('v1/simrs/farmasi/master/export-excel', {
+    params: {
+      q: table.params.q,
+      status_prb: table.params.status_prb
+    },
+    responseType: 'blob'
+  }).then(response => {
+    $q.loading.hide()
+    
+    const dateToday = new Date()
+    const d = String(dateToday.getDate()).padStart(2, '0')
+    const m = String(dateToday.getMonth() + 1).padStart(2, '0')
+    const y = dateToday.getFullYear()
+    const filename = `master-obat-${d}-${m}-${y}.xlsx`
+    
+    const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }))
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', filename)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }).catch(err => {
+    $q.loading.hide()
+    console.error(err)
+    $q.notify({
+      message: 'Gagal mengunduh data master obat...',
+      color: 'negative',
+      icon: 'warning'
+    })
+  })
+}
 function sisBay (val) {
   switch (val) {
     case 'UMUM':

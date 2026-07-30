@@ -92,6 +92,9 @@
                       {{ item?.datapasien?.rs2 }} | <span class="text-primary">{{ item.norm }}</span> | <span
                         class="text-teal">{{ item.noresep }}</span>
                     </q-item-label>
+                    <q-item-label v-if="item?.is_geriatri === 1 || item?.is_geriatri === '1'" class="q-mt-xs">
+                      <q-badge color="red" class="text-weight-bold text-white">GERIATRI</q-badge>
+                    </q-item-label>
                     <q-item-label>
                       NOREG : <span class="text-weight-bold">{{ item.noreg }} </span> | Penjamin : <span
                         class="text-weight-bold"> {{ item.sistembayar?.rs2 }}</span>

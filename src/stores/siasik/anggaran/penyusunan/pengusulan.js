@@ -179,7 +179,7 @@ export const usePengusulanAnggaranStore = defineStore('pengusulan-anggaran-store
         organisasi_nama: '',
         paguanggaran: '',
         kode50: '1,.02.01.2.10.01',
-        uraian: 'P,elayanan dan Penunjang Pelayanan BLUD',
+        uraian: 'Pelayanan dan Penunjang Pelayanan BLUD',
         kunci: '',
         tglTransaksi: date.formatDate(Date.now(), 'YYYY-MM-DD'),
         tahun: date.formatDate(Date.now(), 'YYYY'),

@@ -82,6 +82,9 @@
               <div class="row ">
                 <span v-html="highlightText(item?.noresep)" /> ({{ item?.sistembayar?.rs2 ?? '-' }})
               </div>
+              <div v-if="item?.is_geriatri === 1 || item?.is_geriatri === '1'" class="row q-mt-xs">
+                <q-badge color="red" class="text-weight-bold text-white">GERIATRI</q-badge>
+              </div>
               <div class="row text-grey f-10">
                 <div v-if="parseFloat(item?.flag) > 0 && item?.tiperesep !== 'iter'">
                   {{ dateFull(item?.tgl_kirim) }}

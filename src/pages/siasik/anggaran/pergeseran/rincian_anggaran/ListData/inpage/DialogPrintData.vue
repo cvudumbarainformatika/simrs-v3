@@ -1,8 +1,9 @@
 <template>
   <q-dialog :model-value="modelValue" @update:model-value="emit('update:modelValue', $event)" persistent
     backdrop-filter="blur(4px)">
-    <q-card style="width: 100%; max-width: 1700px; height: 95vh;">
-      <q-layout view="lHh Lpr lFf" container class="shadow-2 rounded-borders">
+    <q-card
+      style="width: min(calc(100vw - 24px), 1700px); max-width: min(calc(100vw - 24px), 1700px); height: 95vh; overflow: hidden;">
+      <q-layout view="lHh Lpr lFf" container class="shadow-2 rounded-borders dialog-layout">
         <q-header elevated>
           <q-bar class="bg-black text-white">
             <div>Cetak RKA</div>
@@ -268,26 +269,27 @@
                             <td class="text-center" colspan="2">REKENING</td>
                             <td class="text-center" colspan="4">SEBELUM PERUBAHAN</td>
                             <td class="text-center" colspan="4">SESUDAH PERUBAHAN</td>
-                            <td class="text-center" rowspan="2">SELISIH (RP.)</td>
+                            <td class="text-center" style="width: 100px" rowspan="2">SELISIH (RP.)</td>
+                            <td class="text-center aksi-col" rowspan="2">ooo</td>
                           </tr>
                           <tr class="text-bold text-center" style="height:50px">
                             <td class="text-center">KODE</td>
-                            <td class="text-center">URAIAN</td>
-                            <td class="text-center">VOLUME</td>
-                            <td class="text-center">SATUAN</td>
-                            <td class="text-center">HARGA (Rp.)</td>
-                            <td class="text-center">PAGU (Rp.)</td>
-                            <td class="text-center">VOLUME</td>
-                            <td class="text-center">SATUAN</td>
-                            <td class="text-center">HARGA (Rp.)</td>
-                            <td class="text-center">PAGU (Rp.)</td>
+                            <td class="text-center" style="width: 30%">URAIAN</td>
+                            <td class="text-center" style="width: 70px">VOLUME</td>
+                            <td class="text-center" style="width: 70px">SATUAN</td>
+                            <td class="text-center" style="width: 100px">HARGA (Rp.)</td>
+                            <td class="text-center" style="width: 120px">PAGU (Rp.)</td>
+                            <td class="text-center" style="width: 70px">VOLUME</td>
+                            <td class="text-center" style="width: 70px">SATUAN</td>
+                            <td class="text-center" style="width: 100px">HARGA (Rp.)</td>
+                            <td class="text-center" style="width: 120px">PAGU (Rp.)</td>
                           </tr>
                         </thead>
                         <tbody>
                           <template v-for="it in store.datarkapergeseran" :key="it">
-                            <tr @click="bukaRincian(it)" class="cursor-pointer">
-                              <td class="text-bold text-left q-py-md"> {{ it.kode }} </td>
-                              <td class="text-bold text-left q-py-md" colspan="4"> {{ it.uraian }} </td>
+                            <tr>
+                              <td class="text-bold text-left q-py-sm"> {{ it.kode }} </td>
+                              <td class="text-bold text-left q-py-sm" colspan="4"> {{ it.uraian }} </td>
                               <td class="text-right text-bold">
                                 <!-- <span class="row justify-between">
                                   <span class="col-auto flex-start">Rp. </span> -->
@@ -310,11 +312,17 @@
                                   {{ formattanpaRp(it.selisih) }}
                                 </span>
                               </td>
+                              <td class="text-center aksi-col">
+                                <q-btn v-if="!printed && it.kode.length > 12" dense round flat color="primary"
+                                  :loading="store.loading" icon="icon-mat-play_arrow" @click.stop="bukaRincian(it)">
+                                  <q-tooltip>Input Batasan</q-tooltip>
+                                </q-btn>
+                              </td>
                             </tr>
                             <template v-for="rinci in it?.rincian" :key="rinci">
                               <tr>
                                 <td>
-                                  <span class="q-pl-sm q-py-sm">
+                                  <span class="q-py-sm">
                                     {{ rinci.kode108 }}
                                   </span>
                                 </td>
@@ -323,7 +331,7 @@
                                     - {{ rinci.usulan }}
                                   </span>
                                 </td>
-                                <td>
+                                <td class="text-right">
                                   <span class="q-py-sm">
                                     {{ rinci.volume }}
                                   </span>
@@ -349,7 +357,7 @@
                                   </span>
                                   <!-- </span> -->
                                 </td>
-                                <td>
+                                <td class="text-right">
                                   <span class="q-py-sm">
                                     {{ rinci.volumebaru }}
                                   </span>
@@ -380,6 +388,7 @@
                                     {{ formattanpaRp(rinci.selisih) }}
                                   </span>
                                 </td>
+                                <td class="aksi-col"></td>
                               </tr>
                             </template>
                           </template>
@@ -492,14 +501,24 @@ const printObj = {
 
 const showRincian = ref(false)
 const selectedRincian = ref(null)
-const bukaRincian = (item) => {
-  console.log('rincian', item)
-  console.log('store', props?.datanpds)
-  if (item?.rincian?.length > 0) {
-    selectedRincian.value = item
-    showRincian.value = true
-  } else {
+const bukaRincian = async (item) => {
+  if (!item?.rincian?.length) {
     showRincian.value = false
+    return
+  }
+
+  selectedRincian.value = item
+
+  try {
+
+    await store.getDataBatasan(item)
+
+    store.form_batasan.flag = store.databatasan?.flag
+    store.form_batasan.batasan = store.databatasan?.batasan ?? 0
+
+    showRincian.value = true
+  } catch (err) {
+    console.error(err)
   }
 }
 
@@ -517,6 +536,12 @@ const bukaRincian = (item) => {
 // }
 </script>
 <style>
+.dialog-layout {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 11px;
+}
+
 .b {
   border-bottom-style: solid;
   border-width: 2px;
@@ -566,13 +591,19 @@ td {
   border-collapse: collapse;
   border-right-style: solid;
   border-left-style: solid;
+  font-size: 11px;
 }
 
 td {
   height: 35px;
   max-height: 50px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.aksi-col {
+  width: 50px;
+  min-width: 50px;
 }
 
 .print-container {
@@ -581,6 +612,8 @@ td {
   justify-content: center;
   padding: 12px;
   box-sizing: border-box;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .print-content {
@@ -588,6 +621,21 @@ td {
   max-width: 1123px;
   /* preview */
   box-sizing: border-box;
+}
+
+.print-contentx,
+#printMe {
+  max-width: 100%;
+  overflow-x: hidden;
+
+}
+
+.print-contentx *,
+#printMe * {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+
 }
 
 @page {
@@ -616,6 +664,7 @@ td {
 
   table {
     width: 100%;
+    max-width: 100%;
     table-layout: fixed;
     border-collapse: collapse;
   }
@@ -625,6 +674,12 @@ td {
     padding: 2px 4px;
     font-size: 10px;
     word-break: break-word;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+
+  .aksi-col {
+    display: none !important;
   }
 }
 </style>

@@ -13,10 +13,13 @@
     <div class="row items-center full-width">
       <div class="col-6 relative-position">
         <div class="row fit q-pa-none items-center q-col-gutter-md">
-          <div class="col-auto">
+          <div class="col-auto flex flex-center column">
             <q-avatar size="40px">
               <app-avatar-pasien :pasien="item" width="40px" />
             </q-avatar>
+            <div v-if="item?.is_geriatri === 1 || item?.is_geriatri === '1'" class="bg-red text-white text-center q-px-xs text-weight-bold" style="font-size: 8px; border-radius: 2px; width: 45px; line-height: 1.1; margin-top: 2px;">
+              GERIATRI
+            </div>
           </div>
           <div class="col full-width flex wrap ellipsis">
             <div class="full-width ellipsis">

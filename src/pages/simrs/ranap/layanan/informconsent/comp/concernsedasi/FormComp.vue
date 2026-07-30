@@ -304,7 +304,9 @@ const props = defineProps({
   }
 })
 onMounted(() => {
-  store.initReset(props?.pasien)
+  if (!store.form?.id) {
+    store.initReset(props?.pasien)
+  }
   cekHubunganPasien()
 })
 const myForm = ref(null)

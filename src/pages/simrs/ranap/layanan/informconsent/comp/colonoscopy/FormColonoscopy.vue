@@ -298,7 +298,9 @@ const TtdWacom = defineAsyncComponent(() => {
 
 // const wacomRef = ref(null)
 onMounted(() => {
-  store.initReset(props?.pasien, 'Colonoscopy')
+  if (!store.form?.id) {
+    store.initReset(props?.pasien, 'Colonoscopy')
+  }
   cekHubunganPasien()
 })
 

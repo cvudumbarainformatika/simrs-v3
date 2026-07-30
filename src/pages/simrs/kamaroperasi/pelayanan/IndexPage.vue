@@ -164,7 +164,7 @@ const menus = ref([
   },
   {
     name: 'dokumen',
-    label: 'Dokumnen',
+    label: 'Dokumen',
     icon: 'email',
     comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compDokumen/IndexPage.vue')))
   }

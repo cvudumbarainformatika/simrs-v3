@@ -28,7 +28,7 @@
       <div class="col-auto">
         <q-tabs v-model="store.menuTab" dense no-caps inline-label narrow-indicator indicator-color="transparent"
           align="left" class="bg-transparent text-grey-8" active-color="white" active-bg-color="dark"
-          @update:model-value="(val) => store.initReset(pasien)">
+          @update:model-value="onTabChange">
           <q-tab v-for="tb in menus" :key="tb.name" :ripple="true" :name="tb?.name" content-class="tab-classes">
             <template #default>
               <div class="row q-gutter-x-xs items-center q-px-sm" style="border-radius: 10px;">
@@ -208,6 +208,13 @@ const activeMenu = computed(() => {
 const previewComponent = computed(() => {
   return asyncComponentPreviews[store.item?.jenis ?? 'OperasiInvasif']
 })
+
+function onTabChange(val) {
+  if (store.form?.id && store.form?.jenis === val) {
+    return
+  }
+  store.initReset(props.pasien, val, true)
+}
 
 function hapusItem(id) {
   $q.dialog({

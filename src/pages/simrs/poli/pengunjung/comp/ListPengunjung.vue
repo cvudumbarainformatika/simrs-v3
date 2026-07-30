@@ -5,8 +5,11 @@
       <empty-data v-else-if="!items?.length && !loading" />
       <q-list v-else separator>
         <q-item v-for="(item, i) in items" :key="i">
-          <q-item-section avatar top>
+          <q-item-section avatar top class="items-center">
             <app-avatar-pasien :pasien="item" width="80px" />
+            <div v-if="item?.is_geriatri === 1 || item?.is_geriatri === '1'" class="bg-red text-white text-center q-mt-xs q-px-xs text-weight-bold" style="font-size: 10px; border-radius: 3px; width: 80px; line-height: 1.2;">
+              GERIATRI
+            </div>
           </q-item-section>
           <q-item-section>
             <q-item-label>

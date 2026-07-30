@@ -84,6 +84,7 @@ import { date, exportFile, useQuasar } from 'quasar'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useKartuStokFarmasiStore } from 'src/stores/simrs/farmasi/katustok'
 import { onMounted, ref } from 'vue'
+import { api } from 'src/boot/axios'
 
 const store = useKartuStokFarmasiStore()
 const $q = useQuasar()
@@ -92,6 +93,12 @@ const bulans = ref(['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Jul
 const tahuns = ref([])
 const app = useAplikasiStore()
 const keteranganStok = ref('Stok Sekarang')
+
+function formatDecimal (val) {
+  if (val === null || val === undefined || isNaN(val)) return '0.00'
+  return parseFloat(val).toFixed(2)
+}
+
 const columnsx = [
   {
     name: 'nama_obat',
@@ -102,15 +109,16 @@ const columnsx = [
     key: 'nama_obat',
     field: 'nama_obat'
   },
-  { name: 'saldo_awal', label: 'Saldo Awal', align: 'right', field: (row) => hitungSaldoAwal(row?.saldoawal), key: 'saldo_awal' },
+  { name: 'saldo_awal', label: 'Saldo Awal', align: 'right', field: (row) => hitungSaldoAwal(row?.saldoawal), key: 'saldo_awal', format: (val) => formatDecimal(val) },
   {
     name: 'masuk',
     label: 'Stok Masuk',
     align: 'right',
     field: (row) => (
-      hitungPenerimaan(row?.penerimaanrinci) + hitungMutasiMasuk(row?.mutasimasuk) + newReturResep(row?.returpenjualan) +
+      hitungPenerimaan(row?.penerimaanrinci) + hitungMutasiMasuk(row?.mutasimusuk) + newReturResep(row?.returpenjualan) +
       hitungPenyesuaianMasuk(row?.penyesuaian) + hitungReturDistribusi(row?.persiapanretur) + hitungReturGudang(row?.returgudang)
-    )
+    ),
+    format: (val) => formatDecimal(val)
   },
   {
     name: 'keluar',
@@ -119,25 +127,29 @@ const columnsx = [
     field: (row) => (hitungMutasiKeluar(row?.mutasikeluar) + hitungResepKeluar(row?.resepkeluar, row?.distribusipersiapan) +
       hitungResepRacikanKeluar(row?.resepkeluarracikan) + hitungPenyesuaianKeluar(row?.penyesuaian) + hitungDistribusi(row?.distribusipersiapan) +
       hitungBarangRusak(row?.barangrusak) + hitungReturDepo(row?.returdepo) + returPbf(row?.returpbf) + pengembalian(row?.pengembalianrincififo)
-    )
+    ),
+    format: (val) => formatDecimal(val)
   },
   {
     name: 'stok_akhir',
     label: 'Stok Akhir',
     field: (row) => hitungTotal(row),
-    align: 'right'
+    align: 'right',
+    format: (val) => formatDecimal(val)
   },
   {
     name: 'stok_sekarang',
     label: keteranganStok.value,
     field: (row) => stokSekarang(row),
-    align: 'right'
+    align: 'right',
+    format: (val) => formatDecimal(val)
   },
   {
     name: 'stok_fisik',
     label: 'Stok Fisik',
     field: (row) => stokFisik(row),
-    align: 'right'
+    align: 'right',
+    format: (val) => formatDecimal(val)
   }
 ]
 
@@ -357,38 +369,35 @@ function hitungTotal (row) {
 }
 
 function exportTable () {
-  // naive encoding to csv format
-  const content = [columns.value.map(col => wrapCsvValue(col.label))].concat(
-    store.items?.map(row => columns.value.map(col => wrapCsvValue(
-      typeof col.field === 'function'
-        ? col.field(row)
-        // eslint-disable-next-line no-void
-        : row[col.field === void 0 ? col.name : col.field],
-      col.format,
-      row
-    )).join(','))
-  ).join('\r\n')
+  $q.loading.show({
+    message: 'Harap tunggu... sedang menyiapkan data ekspor seluruh obat'
+  })
 
-  // console.log('content', content)
-
-  const status = exportFile(
-    `kartu-stok-${store.params.bulan}-${store.params.tahun}.csv`,
-    content,
-    // 'text/csv'
-    {
-      encoding: 'utf-8',
-      mimeType: 'text/csv',
-      byteOrderMark: '\uFEFF'
-    }
-  )
-
-  if (status !== true) {
+  api.get('v1/simrs/farmasinew/kartustok/export-excel', {
+    params: {
+      koderuangan: store.params.koderuangan,
+      bulan: store.params.bulan,
+      tahun: store.params.tahun
+    },
+    responseType: 'blob'
+  }).then(response => {
+    $q.loading.hide()
+    const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }))
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', `kartu-stok-${store.params.bulan}-${store.params.tahun}.xlsx`)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }).catch(err => {
+    $q.loading.hide()
+    console.error(err)
     $q.notify({
-      message: 'Browser denied file download...',
+      message: 'Gagal mengunduh kartu stok...',
       color: 'negative',
       icon: 'warning'
     })
-  }
+  })
 }
 
 function wrapCsvValue (val, formatFn, row) {

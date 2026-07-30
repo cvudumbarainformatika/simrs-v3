@@ -23,13 +23,17 @@
             <q-separator />
             <div class="col-12 col-md-10">
               <div class="row q-col-gutter-md">
-                <app-input-simrs label="Pagu Saat ini" :model-value="formattanpaRp(datas.pagu || 0)"
+                <app-input-simrs label="Pagu Saat ini" readonly :model-value="formattanpaRp(datas.pagu || 0)"
                   standout="bg-yellow-3" outlined dense style="width: 50%" />
+                <app-input-simrs label="Realisasi Sampai Saat ini" readonly
+                  :model-value="formattanpaRp(store.datarealisasi || 0)" standout="bg-yellow-3" outlined dense
+                  style="width: 50%" />
                 <app-input-simrs label="Batasan Realisasi" v-model="store.form_batasan.batasan" standout="bg-yellow-3"
                   outlined dense style="width: 50%" />
-                <q-select v-model="store.form_batasan.flag" outlined standout="bg-yellow-3" dense emit-value map-options
-                  option-value="value" label="Status" class="ellipsis-2-lines" :options="optionsAktif"
-                  option-label="label" :disable="store.loadingSave" :loading="store.loadingSave" />
+                <q-select v-model="store.form_batasan.flag" style="width: 50%" outlined standout="bg-yellow-3" dense
+                  emit-value map-options option-value="value" label="Status" class="ellipsis-2-lines"
+                  :options="optionsAktif" option-label="label" :disable="store.loadingSave"
+                  :loading="store.loadingSave" />
 
               </div>
               <div class="row flex justify-end q-pt-sm">
@@ -94,17 +98,22 @@ const formatRupiah = (value) => {
 }
 
 function simpanData(val) {
+  // console.log('kode', val);
 
   store.form_batasan.notrans = val.notrans
   store.form_batasan.pagu = val.pagubaru
-  store.form_batasan.koderek50 = val.kode
+  store.form_batasan.koderek50 = val.koderek50
   store.form_batasan.uraian50 = val.uraian
   store.form_batasan.kodekegiatanblud = val.kodekegiatanblud
   store.form_batasan.kodebidang = val.kodebidang
   store.form_batasan.tahun = val.tahun
   if (Number(store.form_batasan.batasan) > Number(store.form_batasan.pagu)) {
     return notifErrVue('Batasan Melebihi Pagu Saat ini')
-  } else {
+  }
+  if (Number(store.form_batasan.batasan) < Number(store.datarealisasi)) {
+    return notifErrVue('Batasan Kurang dari Realisasi Saat ini')
+  }
+  else {
     store.simpanBatasan()
   }
 

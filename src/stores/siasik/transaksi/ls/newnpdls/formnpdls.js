@@ -43,6 +43,9 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
       nonpdls: '',
       nopenerimaan: []
     },
+    formbatasan: {
+
+    },
     form: {
       nonpdls: null,
       tglnpdls: date.formatDate(Date.now(), 'YYYY-MM-DD'),
@@ -74,8 +77,14 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
 
       keterangan: null,
       biayatransfer: 0,
-      rincians: []
+      rincians: [],
       // rincimanual: []
+
+
+      // BUAT VALIDASI DI BACKEND
+      idpp: null,
+      notrans: null,
+      kodekegiatanblud: null
     },
     rinci: {
       nonpdls: null,
@@ -109,6 +118,9 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
       hargals: null,
       totalls: null,
       nominalpembayaran: null,
+
+
+
     },
     dariserahterima: [
       { nama: '-' },
@@ -310,6 +322,7 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
       const data = this.anggarans?.length
         ? this.anggarans?.map((x) => {
           return {
+            notrans: x.notrans,
             itembelanja: x.usulan,
             rincianbelanja: x.uraian50,
             rek50: x.koderek50,
@@ -327,6 +340,7 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
         return a
       }, [])
       this.rekening50 = rek
+      console.log('notrans', this.rekening50)
     },
     filterItemBelanja() {
       const data = this.anggarans?.length
@@ -355,7 +369,7 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
       // console.log('item belanja', data)
     },
     async simpanNpdls(add) {
-      // console.log('fooorm', this.form)
+      console.log('fooorm simpan NPDLS', this.form)
       this.loading = true
       return new Promise((resolve, reject) => {
         api.post('/v1/transaksi/belanja_ls/simpannpd', this.form)
