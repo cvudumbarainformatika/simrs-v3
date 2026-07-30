@@ -13,7 +13,7 @@
         :options="options" clearable :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''"
         :disable="store.loadingSave" :loading="store.loadingSave" @filter="filterFn"
         @clear="store.setForm('koderekeningblud', null)" @update:model-value="(val) => {
-          const arr = store.optionrekening || []
+          const arr = options || []
           const cari = arr.find(x => x.kodeall3 === val)
           store.form.uraian_rekening = cari ? cari.uraian : ''
         }">
@@ -102,7 +102,7 @@ async function filterFn(val, update) {
         per_page: 20 // kecil saja
       }
     })
-    console.log('rekening', resp)
+    // console.log('rekening', resp)
     const data = resp.data.data || []
 
     update(() => {
