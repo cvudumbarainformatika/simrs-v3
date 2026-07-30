@@ -48,7 +48,9 @@
                 <div class="text-subtitle1 text-bold">
                   {{ getTabTitle(activeTab) }}
                 </div>
-                <div class="text-grey-4 text-caption">Form entri data rekonsiliasi obat pasien</div>
+                <div class="text-grey-4 text-caption">
+                  {{ store.form.id ? 'Form Edit Data Obat' : 'Form entri data rekonsiliasi obat pasien' }}
+                </div>
               </div>
 
               <!-- SCROLLAREA FOR FORMS -->
@@ -372,12 +374,19 @@
                       </div>
                     </template>
 
-                    <div class="row justify-end q-mt-md">
+                    <div class="row justify-end q-mt-md q-gutter-x-sm">
+                      <q-btn
+                        v-if="store.form.id"
+                        flat
+                        color="grey-7"
+                        label="Batal"
+                        @click="store.initReset()"
+                      />
                       <q-btn
                         type="submit"
                         color="primary"
                         icon="save"
-                        label="Simpan Obat"
+                        :label="store.form.id ? 'Update Obat' : 'Simpan Obat'"
                         :loading="store.loadingOrder"
                         :disable="store.loadingOrder"
                         class="q-px-md"
@@ -488,6 +497,20 @@
                         <div>Petugas Saksi: <span class="text-bold">{{ pasien.rekonsiliasi_obat_persetujuan.user_petugas?.nama || 'Petugas' }}</span> (<span class="text-indigo-8">{{ pasien.rekonsiliasi_obat_persetujuan.nama_ruangan }}</span>)</div>
                         <div>{{ formatDateTime(pasien.rekonsiliasi_obat_persetujuan.created_at) }}</div>
                       </div>
+
+                      <q-separator class="q-my-sm" />
+                      <div class="row justify-end">
+                        <q-btn
+                          flat
+                          dense
+                          color="negative"
+                          icon="delete"
+                          label="Hapus Dokumen Persetujuan"
+                          size="sm"
+                          :loading="store.loadingPersetujuan"
+                          @click="confirmDeletePersetujuan(pasien.rekonsiliasi_obat_persetujuan)"
+                        />
+                      </div>
                     </q-card-section>
                   </q-card>
                 </template>
@@ -519,18 +542,31 @@
                               Dosis: <span class="text-weight-medium">{{ item.dosis }}</span>
                             </div>
                           </div>
-                          <q-btn
-                            flat
-                            dense
-                            round
-                            color="negative"
-                            icon="delete"
-                            size="sm"
-                            :loading="store.loadingHapus"
-                            @click.stop="confirmDelete(item)"
-                          >
-                            <q-tooltip class="bg-red text-white">Hapus Data</q-tooltip>
-                          </q-btn>
+                          <div class="row q-gutter-x-xs">
+                            <q-btn
+                              flat
+                              dense
+                              round
+                              color="primary"
+                              icon="edit"
+                              size="sm"
+                              @click.stop="editItem(item)"
+                            >
+                              <q-tooltip class="bg-primary text-white">Edit Data</q-tooltip>
+                            </q-btn>
+                            <q-btn
+                              flat
+                              dense
+                              round
+                              color="negative"
+                              icon="delete"
+                              size="sm"
+                              :loading="store.loadingHapus"
+                              @click.stop="confirmDelete(item)"
+                            >
+                              <q-tooltip class="bg-red text-white">Hapus Data</q-tooltip>
+                            </q-btn>
+                          </div>
                         </div>
 
                         <q-separator class="q-my-sm" />
@@ -580,6 +616,9 @@
         </q-splitter>
       </div>
     </div>
+    
+    <!-- Dialog Cetak -->
+    <CetakDialog v-model="printDialogOpen" :pasien="pasien" />
   </div>
 </template>
 
@@ -681,6 +720,25 @@ const onSavePersetujuan = () => {
   store.simpanpersetujuan(props?.pasien)
 }
 
+const editItem = (item) => {
+  store.form.id = item.id
+  store.form.nama_obat = item.nama_obat
+  store.form.dosis = item.dosis
+  store.form.tipe = item.tipe
+  store.form.lama_pakai = item.lama_pakai
+  store.form.dibawa_saat_mrs = item.dibawa_saat_mrs || 'Ya'
+  store.form.berlanjut_ke_ranap = item.berlanjut_ke_ranap || 'Ya'
+  store.form.berlanjut_saat_krs = item.berlanjut_saat_krs || 'Ya'
+  store.form.frekuensi = item.frekuensi
+  store.form.cara_pemberian = item.cara_pemberian
+  store.form.waktu_pemberian_terakhir = item.waktu_pemberian_terakhir
+  store.form.tindak_lanjut = item.tindak_lanjut || 'Lanjut aturan pakai sama'
+  store.form.perubahan_aturan_pakai = item.perubahan_aturan_pakai
+  store.form.aturan_pakai = item.aturan_pakai
+  store.form.rekonsiliasi = item.rekonsiliasi || 'Lanjut aturan pakai sama'
+  store.form.aturan_pakai_saat_pulang = item.aturan_pakai_saat_pulang
+}
+
 const confirmDelete = (item) => {
   $q.dialog({
     title: 'Konfirmasi Hapus',
@@ -689,6 +747,17 @@ const confirmDelete = (item) => {
     persistent: true
   }).onOk(() => {
     store.hapusdata(props?.pasien, item.id)
+  })
+}
+
+const confirmDeletePersetujuan = (persetujuan) => {
+  $q.dialog({
+    title: 'Konfirmasi Hapus',
+    message: 'Apakah Anda yakin ingin menghapus seluruh Lembar Persetujuan Sentralisasi beserta tanda tangan?',
+    cancel: true,
+    persistent: true
+  }).onOk(() => {
+    store.hapuspersetujuan(props?.pasien, persetujuan.id)
   })
 }
 </script>

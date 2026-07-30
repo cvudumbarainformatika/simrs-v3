@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { defineStore, acceptHMRUpdate } from 'pinia'
 import { api } from 'src/boot/axios'
 import { usePengunjungRanapStore } from './pengunjung'
 import { notifSuccess } from 'src/modules/utils'
@@ -6,6 +6,7 @@ import { notifSuccess } from 'src/modules/utils'
 export const useRekonsiliasiObatStore = defineStore('rekonsiliasi-obat-store', {
   state: () => ({
     form: {
+      id: null,
       noreg: null,
       norm: null,
       tipe: 'mrs',
@@ -60,6 +61,7 @@ export const useRekonsiliasiObatStore = defineStore('rekonsiliasi-obat-store', {
   }),
   actions: {
     initReset() {
+      this.form.id = null
       this.form.nama_obat = ''
       this.form.dosis = ''
       this.form.lama_pakai = ''
@@ -161,6 +163,27 @@ export const useRekonsiliasiObatStore = defineStore('rekonsiliasi-obat-store', {
       } catch (error) {
         this.loadingPersetujuan = false
       }
+    },
+
+    async hapuspersetujuan(pasien, id) {
+      this.loadingPersetujuan = true
+      const payload = { id }
+      try {
+        const resp = await api.post('v1/simrs/ranap/layanan/rekonsiliasiobat/hapuspersetujuan', payload)
+        if (resp.status === 200) {
+          const storeRanap = usePengunjungRanapStore()
+          storeRanap.injectDataPasien(pasien?.noreg, null, 'rekonsiliasi_obat_persetujuan')
+          notifSuccess(resp)
+          this.initFormPersetujuan(pasien)
+        }
+        this.loadingPersetujuan = false
+      } catch (error) {
+        this.loadingPersetujuan = false
+      }
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useRekonsiliasiObatStore, import.meta.hot))
+}

@@ -161,6 +161,15 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('./informconsent/IndexPage.vue')))
   },
   {
+    name: 'rekonsiliasi-obat-document',
+    label: 'REKONSILIASI OBAT',
+    title: 'DOKUMEN REKONSILIASI OBAT PASIEN (RM IRNA 41)',
+    desc: 'Lembar Rekonsiliasi Obat & Persetujuan Sentralisasi',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3', '4'],
+    comp: shallowRef(defineAsyncComponent(() => import('./rekonsiliasiobat/IndexPage.vue')))
+  },
+  {
     name: 'pulang-paksa',
     label: 'PULANG PAKSA',
     title: 'SURAT PERNYATAAN PULANG ATAS PERMINTAAN SENDIRI (PULANG PAKSA)',
