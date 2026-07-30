@@ -5,7 +5,8 @@
         <q-header elevated class="bg-primary">
           <HeaderLayout :pasien="pasien" :loading-save-dpjp="store.loadingSaveGantiDpjp"
             :loading-finish="store.loadingTerima" @toggle-left-drawer="drawer = !drawer"
-            @gantidpjp="(val) => store.gantiDpjp(val, pasien)" @layanan-selesai="store.setLayananSelesai(pasien)" />
+            @gantidpjp="(val) => store.gantiDpjp(val, pasien)" @layanan-selesai="store.setLayananSelesai(pasien)"
+            @toggle-prmrj="(val) => store.storeprmprj(val, pasien)" />
         </q-header>
         <!-- LEFT DRAWER ======================================================================================-->
         <q-drawer v-model="drawer" elevated bordered show-if-above :width="230" :breakpoint="400">
@@ -163,7 +164,7 @@ const menus = ref([
     name: 'penerbitan-surat-page',
     label: 'Dokumen',
     icon: 'icon-mat-email',
-    route: ['poli', 'mpp','rekammedik'],
+    route: ['poli', 'mpp', 'rekammedik'],
     comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PenerbitanSuratPage.vue')))
   },
   {
@@ -208,10 +209,10 @@ onUnmounted(() => {
   fisik.setFullCanvasFalse()
 })
 
-function historyPasien () {
+function historyPasien() {
   drawerRight.value = !drawerRight.value
 }
-function getIcare () {
+function getIcare() {
   store.getDataIcare(props.pasien).then(resp => {
     if (resp) {
       console.log('anu', resp?.response?.url)
@@ -220,12 +221,12 @@ function getIcare () {
   })
 }
 
-function lihatSebelumTertutup () {
+function lihatSebelumTertutup() {
   // console.log('ini sebelum halama di close')
   anamnesis.initReset()
 }
 
-function menuDiganti (val) {
+function menuDiganti(val) {
   if (menu.value.name === 'PemeriksaanPage') {
     if (fisik.edited) {
       // console.log('ada yg blm diupdate')
@@ -240,7 +241,7 @@ function menuDiganti (val) {
   }
 }
 
-function harapSimpanPerubahanPemeriksaanFisik (val) {
+function harapSimpanPerubahanPemeriksaanFisik(val) {
   $q.dialog({
     dark: true,
     title: 'Peringatan',

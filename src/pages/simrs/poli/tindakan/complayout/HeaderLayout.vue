@@ -88,27 +88,24 @@
       </div>
     </q-toolbar-title>
 
+    <q-toggle :model-value="storekunjungan.flagprmrj" color="orange-5" label="On PRMRJ" left-label
+      :disable="storekunjungan.loadingprmrj" @update:model-value="togglePrmrj" />
+
     <div v-if="pasien?.dokter !== ''">
       <!-- <q-btn
         dense
         outline
-        color="white"
-        label="Poli Konsulan"
-        class="q-mr-md q-px-lg glow-on-hover"
-      >
-        <q-menu
-          style="width: 460px;"
-          :offset="[0, 5]"
-        >
-          <div class="fit column">
-            <div class="col-auto bg-secondary text-white q-px-md q-py-sm">
-              Permintaan Konsul dari poli ...
-            </div>
-            <div class="col-auto q-pa-md">
-              Poli Konsulan
-            </div>
+        color=" white" label="Poli Konsulan" class="q-mr-md q-px-lg glow-on-hover">
+      <q-menu style="width: 460px;" :offset="[0, 5]">
+        <div class="fit column">
+          <div class="col-auto bg-secondary text-white q-px-md q-py-sm">
+            Permintaan Konsul dari poli ...
           </div>
-        </q-menu>
+          <div class="col-auto q-pa-md">
+            Poli Konsulan
+          </div>
+        </div>
+      </q-menu>
       </q-btn> -->
       <q-btn v-if="pasien?.status === '' || pasien?.status === '2'" label="selesaikan layanan" color="negative"
         class="q-mr-lg q-px-lg" dense :loading="loadingFinish" :disable="loadingFinish" @click="selesaikanLayanan" />
@@ -128,10 +125,11 @@
 import { api } from 'src/boot/axios'
 import { ref } from 'vue'
 import { usePermintaanEResepStore } from 'src/stores/simrs/farmasi/permintaanresep/eresep'
+import { usePengunjungPoliStore } from 'src/stores/simrs/pelayanan/poli/pengunjung'
 
 const store = usePermintaanEResepStore()
-
-const emits = defineEmits(['toggleLeftDrawer', 'gantidpjp', 'layananSelesai'])
+const storekunjungan = usePengunjungPoliStore()
+const emits = defineEmits(['toggleLeftDrawer', 'togglePrmrj', 'gantidpjp', 'layananSelesai'])
 
 const search = ref('')
 const kodedpjp = ref(null)
@@ -151,6 +149,11 @@ const props = defineProps({
     default: false
   }
 })
+
+function togglePrmrj(val) {
+  emits('togglePrmrj', val)
+}
+
 
 function updateKodeDpjp(val) {
   // console.log(props?.pasien?.groups)

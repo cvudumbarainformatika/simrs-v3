@@ -13,6 +13,7 @@
               <span class="text-weight-bold">{{ item.nama }}</span> | <span class="text-primary text-weight-bold">{{
                 item.norm }}</span> <span v-if="item?.noka"> | </span> <span class="text-cyan text-weight-bold">{{
                   item?.noka ?? '-' }}</span>
+              <q-badge v-if="hasPrmrjFlag(item)" color="green" text-color="white" label="PRMRJ" class="q-ml-sm" />
             </q-item-label>
             <q-item-label>
               <span class="text-weight-bold">{{ item.noreg }} </span> | Penjamin : <span class="text-weight-bold"> {{
@@ -31,7 +32,7 @@
             </q-item-label>
             <q-item-label caption>
               status : <span :class="item.status !== '' ? 'text-primary' : 'text-negative'">{{ getStatus(item.status)
-                }}</span>
+              }}</span>
             </q-item-label>
             <q-item-label v-if="item?.planning?.length" caption>
               rencana : <span class="text-primary">{{ item?.planning[0].rs4 }}</span>
@@ -155,6 +156,11 @@ function getStatus(val) {
   else {
     return 'Tidak Hadir'
   }
+}
+
+function hasPrmrjFlag(item) {
+  const flag = item?.prmrj ?? item?.prmrjflag?.flaging ?? item?.prmrjflag
+  return flag === '1' || flag === 1 || flag === true
 }
 
 function labelLayanan(val) {

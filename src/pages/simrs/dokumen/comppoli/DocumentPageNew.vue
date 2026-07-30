@@ -155,13 +155,13 @@ const documents = ref([
     label: 'Skrining Rajal',
     value: 'SkrRajal'
   },
-  // {
-  //   icon: 'icon-mat-email',
-  //   color: 'primary',
-  //   jenis: 'SrtKntrl',
-  //   label: 'Surat-Kontrol',
-  //   value: 'SuratKontrol'
-  // },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'PRMRJ',
+    label: 'Profil Ringkasan Medis Rawat Jalan',
+    value: 'PRMRJ'
+  },
   // {
   //   icon: 'icon-mat-email',
   //   color: 'primary',
@@ -178,7 +178,7 @@ const documents = ref([
   // }
 ])
 // eslint-disable-next-line no-unused-vars
-function getLabel (val) {
+function getLabel(val) {
   const anu = documents.value.filter(a => a.value === val)
   // console.log('anu ', anu)
   return anu?.length ? anu[0].label : '-'
@@ -216,6 +216,7 @@ const comp = [
   // { nama: 'SrtKnslAnPol', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/SuratKonsulAntarPoli/SuratKonsulAntarPoli.vue')) },
   // { nama: 'SrtKnslinternal', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/KonsulInternal/SuratKonsulInternalPage.vue')) },
   { nama: 'SkrRajal', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/SkriningRajalPage.vue')) },
+  { nama: 'PRMRJ', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/Prmrj/PrmrjPage.vue')) },
 ]
 // eslint-disable-next-line no-unused-vars
 const cekPanel = () => {
@@ -225,7 +226,7 @@ const cekPanel = () => {
 
   return arr >= 0 ? comp[arr].page : ''
 }
-function goTo (val) {
+function goTo(val) {
   // console.log('got', val)
   doc.value = val.value
   open.value = true
