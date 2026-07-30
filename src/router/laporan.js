@@ -51,6 +51,11 @@ const laporan = {
       component: () => import('pages/simrs/laporan/keuangan/kuitansitercetak/IndexPage.vue')
     },
     {
+      path: '/laporan/keuangan/rincianperunit',
+      // name: 'laporan.keuangan.kuitansitercetak',
+      component: () => import('pages/simrs/laporan/keuangan/rincianperunit/IndexPage.vue')
+    },
+    {
       path: '/laporan/sigarang/penerimaansimperda108',
       // name: 'laporan.sigarang.penerimaansimperda108',
       component: () => import('pages/simrs/laporan/sigarang/penerimaansimperda108/IndexPage.vue')
