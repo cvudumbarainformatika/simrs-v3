@@ -28,7 +28,8 @@
           <!-- </div> -->
         </div>
         <div class="b5 col-2 flex items-center justify-center text-center">
-          <div class="text-bold q-px-sm" style="font-size: 12px;">{{ props?.judul }} {{ props?.kelas }}
+          <div class="text-bold q-px-sm" style="font-size: 12px;"><q-badge :color="props.warnaBadge">{{
+            props?.judul }}</q-badge> {{ props?.kelas }}
             {{ props?.dasarpulang }}</div>
         </div>
       </div>
@@ -116,6 +117,10 @@ const props = defineProps({
   judul: {
     type: String,
     default: null
+  },
+  warnaBadge: {
+    type: String,
+    default: 'primary'
   },
   pasien: {
     type: Object,

@@ -157,7 +157,7 @@ const documents = ref([
   },
   {
     icon: 'icon-mat-email',
-    color: 'primary',
+    color: 'green',
     jenis: 'PRMRJ',
     label: 'Profil Ringkasan Medis Rawat Jalan',
     value: 'PRMRJ'

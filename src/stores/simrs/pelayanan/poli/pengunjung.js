@@ -623,11 +623,15 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
       try {
         const resp = await api.post('v1/simrs/pelayanan/prmrj', payload);
 
-        if (resp?.data?.message === 'succes') {
-          this.flagprmrj = resp?.data?.data?.flaging === '1'
+        if (['succes', 'success'].includes(resp?.data?.message)) {
+          const savedFlag = String(resp?.data?.data?.flaging ?? payload.flaging)
+          this.flagprmrj = savedFlag === '1'
+          this.updatePrmrjFlag(pasien, savedFlag)
+
           Notify.create({
             type: 'positive',
             message: 'PRMRJ Berhasil Disimpan',
+            position: 'top-right',
           });
         }
 
@@ -644,6 +648,30 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         // });
       } finally {
         this.loadingprmrj = false;
+      }
+    },
+    updatePrmrjFlag(pasien, flaging) {
+      const updatePasien = (item) => {
+        if (!item) return
+
+        if (item.prmrjflag && typeof item.prmrjflag === 'object') {
+          item.prmrjflag.flaging = flaging
+        }
+        else {
+          item.prmrjflag = flaging
+        }
+      }
+
+      updatePasien(pasien)
+
+      const pasienDiList = this.items.find(item =>
+        item === pasien
+        || item?.noreg === pasien?.noreg
+        || item?.rs1 === pasien?.noreg
+      )
+
+      if (pasienDiList !== pasien) {
+        updatePasien(pasienDiList)
       }
     },
     fungflagingprmrj(pasien) {

@@ -4,6 +4,7 @@
 
     <KopDokumen
       judul="PRMRJ"
+      warna-badge="green"
       :pasien="props.pasien"
       :jangantampil="false"
     />
