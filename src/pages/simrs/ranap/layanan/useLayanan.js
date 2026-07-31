@@ -110,6 +110,13 @@ export default function useLayanan(pasien, mpp) {
       comp: shallowRef(defineAsyncComponent(() => import('../../eresep/EresepPermintaanRetur.vue')))
     },
     {
+      name: 'rekonsiliasi-obat',
+      label: 'Rekonsiliasi Obat',
+      icon: 'medication',
+      nakes: ['4'],
+      comp: shallowRef(defineAsyncComponent(() => import('./rekonsiliasiobat/IndexPage.vue')))
+    },
+    {
       name: 'inform-consent-page',
       label: 'Informed Consent',
       icon: 'icon-mat-app_registration',

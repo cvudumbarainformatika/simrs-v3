@@ -12,11 +12,7 @@
         map-options option-value="kodeall3" input-debounce="300" label="Rekening Pendapatan" class="ellipsis-2-lines"
         :options="options" clearable :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''"
         :disable="store.loadingSave" :loading="store.loadingSave" @filter="filterFn"
-        @clear="store.setForm('koderekeningblud', null)" @update:model-value="(val) => {
-          const arr = store.optionrekening || []
-          const cari = arr.find(x => x.kodeall3 === val)
-          store.form.uraian_rekening = cari ? cari.uraian : ''
-        }">
+        @clear="store.setForm('koderekeningblud', null)" @update:model-value="onSelectRekening">
         <template #no-option>
           <q-item>
             <q-item-section class="text-grey">Tidak ditemukan</q-item-section>
@@ -120,6 +116,13 @@ async function filterFn(val, update) {
       options.value = []
     })
   }
+}
+
+async function onSelectRekening(val) {
+  const arr = options.value || []
+  const cari = arr.find(x => x.kodeall3 === val)
+  store.form.uraian_rekening = cari ? cari.uraian : ''
+  store.setForm('koderekeningblud', val)
 }
 // SUPAYA EDIT KELUAR DI FORM
 watch(

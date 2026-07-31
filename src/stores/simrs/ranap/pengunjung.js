@@ -186,6 +186,8 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
         datax.keterangantindakan = data?.keterangantindakan ?? []
         datax.planningdokter = data?.planningdokter ?? null
         datax.serah_terima = data?.serah_terima ?? []
+        datax.rekonsiliasiobats = data?.rekonsiliasiobats ?? []
+        datax.rekonsiliasi_obat_persetujuan = data?.rekonsiliasi_obat_persetujuan ?? null
 
         // data sementara
         datax.diagnosaKeperawatanUlangSementara = []
@@ -454,7 +456,8 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
         // data[kode] = val
         if (kode === 'kd_jeniskasus' ||
           kode === 'status' || kode === 'carakeluar' || kode === 'prognosis' ||
-          kode === 'tindaklanjut' || kode === 'diagakhir' || kode === 'sebabkematian') {
+          kode === 'tindaklanjut' || kode === 'diagakhir' || kode === 'sebabkematian' ||
+          kode === 'rekonsiliasi_obat_persetujuan') {
           data[kode] = val
         }
         else {
