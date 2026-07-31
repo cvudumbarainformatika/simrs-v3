@@ -88,7 +88,7 @@
       </div>
     </q-toolbar-title>
 
-    <q-toggle :model-value="storekunjungan.flagprmrj" color="orange-5" label="On PRMRJ" left-label
+    <q-toggle :model-value="storekunjungan.flagprmrj" color="green-5" label="On PRMRJ" left-label
       :disable="storekunjungan.loadingprmrj" @update:model-value="togglePrmrj" />
 
     <div v-if="pasien?.dokter !== ''">

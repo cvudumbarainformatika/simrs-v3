@@ -51,22 +51,14 @@
           </div>
 
           <div v-if="store.params.pelayanan !== 5" class="col-12 col-sm-6 col-md-3">
-            <q-select v-model="store.params.jenisLaporan" :options="jenisLaporanOptions" outlined dense emit-value map-options
-              clearable label="Jenis Laporan" option-label="label" option-value="value" />
+            <q-select v-model="store.params.jenisLaporan" :options="jenisLaporanOptions" outlined dense emit-value
+              map-options clearable label="Jenis Laporan" option-label="label" option-value="value" />
           </div>
 
           <div class="col-12 row justify-end q-gutter-sm">
             <q-btn outline no-caps color="grey-7" icon="icon-mat-restart_alt" label="Reset" @click="resetFilter" />
-            <q-btn
-              unelevated
-              no-caps
-              color="primary"
-              icon="icon-mat-search"
-              label="Cari Report"
-              type="submit"
-              :loading="store.loading"
-              :disable="store.loading"
-            />
+            <q-btn unelevated no-caps color="primary" icon="icon-mat-search" label="Cari Report" type="submit"
+              :loading="store.loading" :disable="store.loading" />
           </div>
         </q-form>
       </q-card-section>
@@ -84,19 +76,9 @@
         </div>
         <div class="row items-center q-gutter-sm">
           <q-badge color="primary" :label="`${store.report.Total || 0} baris`" />
-          <download-excel
-            :data="excelRows"
-            :fields="excelFields"
-            :name="excelFileName"
-            :worksheet="store.report.Title || 'Rincian Per Unit'"
-          >
-            <q-btn
-              unelevated
-              no-caps
-              color="green-7"
-              icon="icon-mat-download"
-              label="Download Excel"
-            />
+          <download-excel :data="excelRows" :fields="excelFields" :name="excelFileName"
+            :worksheet="store.report.Title || 'Rincian Per Unit'">
+            <q-btn unelevated no-caps color="green-7" icon="icon-mat-download" label="Download Excel" />
           </download-excel>
         </div>
       </q-card-section>
@@ -104,11 +86,7 @@
       <q-separator />
 
       <q-card-section class="row q-col-gutter-sm">
-        <div
-          v-for="total in totalCards"
-          :key="total.key"
-          class="col-12 col-sm-6 col-md"
-        >
+        <div v-for="total in totalCards" :key="total.key" class="col-12 col-sm-6 col-md">
           <q-card flat bordered class="bg-blue-grey-1 full-height">
             <q-card-section class="q-pa-sm">
               <div class="text-caption text-grey-7">
@@ -122,19 +100,9 @@
         </div>
       </q-card-section>
 
-      <q-table
-        flat
-        dense
-        separator="cell"
-        row-key="__index"
-        :rows="reportRows"
-        :columns="reportColumns"
-        :loading="store.loading"
-        :pagination="{ rowsPerPage: 0 }"
-        hide-pagination
-        no-data-label="Data laporan tidak ditemukan"
-        class="report-table"
-      />
+      <q-table flat dense separator="cell" row-key="__index" :rows="reportRows" :columns="reportColumns"
+        :loading="store.loading" :pagination="{ rowsPerPage: 0 }" hide-pagination
+        no-data-label="Data laporan tidak ditemukan" class="report-table" />
     </q-card>
 
   </div>
@@ -152,7 +120,7 @@ const pelayananOptions = [
   { value: 2, label: 'Instalasi Gawat Darurat' },
   { value: 3, label: 'Instalasi Rawat Inap' },
   { value: 4, label: 'Penunjang' },
-  { value: 5, label: 'Pendapatan Non Layanan' }
+  // { value: 5, label: 'Pendapatan Non Layanan' }
 ]
 const jenisLaporanByPelayanan = {
   1: [
@@ -189,14 +157,26 @@ const jenisLaporanByPelayanan = {
     { value: 14, label: 'Farmasi' },
     { value: 15, label: 'Jenazah' },
     { value: 16, label: 'Ambulan' },
-    { value: 17, label: 'Anastesi Diluar OK' }
+    // { value: 17, label: 'Anastesi Diluar OK' }
   ]
 }
 
 const jenisLaporanOptions = computed(() => {
   return jenisLaporanByPelayanan[store.params.pelayanan] || []
 })
-const numericColumns = ['jml', 'potjas', 'sarana', 'pelayanan', 'subtotal']
+const numericColumns = [
+  'jml',
+  'potjas',
+  'sarana',
+  'pelayanan',
+  'subtotal',
+  'embalage',
+  'total',
+  'medis',
+  'profesiLain',
+  'posRemun',
+  'manajemen'
+]
 const reportColumns = computed(() => {
   const columns = store.report?.Columns || {}
 
@@ -259,13 +239,30 @@ const reportTotals = computed(() => {
     return totals
   }, {})
 })
-const totalCards = computed(() => [
-  { key: 'jml', label: 'Total Jumlah', value: reportTotals.value.jml },
-  { key: 'potjas', label: 'Total Potongan Jasa', value: reportTotals.value.potjas },
-  { key: 'sarana', label: 'Total Sarana', value: reportTotals.value.sarana },
-  { key: 'pelayanan', label: 'Total Pelayanan', value: reportTotals.value.pelayanan },
-  { key: 'subtotal', label: 'Total Keseluruhan', value: reportTotals.value.subtotal }
-])
+const totalLabels = {
+  jml: 'Total Jumlah',
+  potjas: 'Total Potongan Jasa',
+  sarana: 'Total Sarana',
+  pelayanan: 'Total Pelayanan',
+  subtotal: 'Total Keseluruhan',
+  embalage: 'Total Embalage',
+  total: 'Total',
+  medis: 'Total Jasa Medis',
+  profesiLain: 'Total Profesi Lain',
+  posRemun: 'Total Pos Remunerasi',
+  manajemen: 'Total Manajemen'
+}
+const totalCards = computed(() => {
+  const availableColumns = store.report?.Columns || {}
+
+  return numericColumns
+    .filter(key => Object.hasOwn(availableColumns, key))
+    .map(key => ({
+      key,
+      label: totalLabels[key],
+      value: reportTotals.value[key]
+    }))
+})
 
 function normalizeValue(value) {
   return String(value ?? '-').replaceAll('&nbsp;', '')
@@ -314,16 +311,33 @@ function resetFilter() {
   max-height: calc(100vh - 310px);
 }
 
+.report-table :deep(.q-table__middle) {
+  overflow-x: hidden;
+}
+
+.report-table :deep(table) {
+  width: 100%;
+  table-layout: fixed;
+}
+
 .report-table :deep(thead tr th) {
   position: sticky;
   z-index: 1;
   top: 0;
+  padding: 5px 3px;
   color: #fff;
-  white-space: nowrap;
+  font-size: 9px;
+  line-height: 1.2;
+  white-space: normal;
+  overflow-wrap: anywhere;
   background: var(--q-primary);
 }
 
 .report-table :deep(tbody td) {
-  white-space: nowrap;
+  padding: 4px 3px;
+  font-size: 9px;
+  line-height: 1.25;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 </style>
