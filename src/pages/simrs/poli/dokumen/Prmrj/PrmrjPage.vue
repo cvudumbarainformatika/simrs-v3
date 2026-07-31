@@ -18,7 +18,7 @@
         </q-btn>
       </div>
     </div>
-
+    <!-- <pre>{{ props.pasien }}</pre> -->
     <div v-if="store.loadingprmrjdokumen" class="col flex flex-center bg-grey-2">
       <div class="column items-center q-gutter-md">
         <q-spinner-tail color="teal" size="48px" />
