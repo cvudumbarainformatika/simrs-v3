@@ -616,9 +616,6 @@
         </q-splitter>
       </div>
     </div>
-    
-    <!-- Dialog Cetak -->
-    <CetakDialog v-model="printDialogOpen" :pasien="pasien" />
   </div>
 </template>
 
