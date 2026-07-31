@@ -97,19 +97,12 @@
                 <!-- JUMLAH ACC -->
                 <div class="col-4">
                   <div class="row q-gutter-sm">
-                    <q-input dense outlined label="Realisasi" :model-value="item.total_realisasi" readonly />
-                    <q-input dense outlined label="Sisa Pagu" :model-value="item.sisapagu" readonly />
+                    <q-input dense outlined label="Realisasi" :model-value="formattanpaRp(item.total_realisasi)"
+                      readonly />
+                    <q-input dense outlined label="Sisa Pagu" :model-value="formattanpaRp(item.sisapagu)" readonly />
                     <!-- <q-input dense outlined type="number" label="Jumlah ACC" style="width:70%"
                       v-model.number="item.tmp_jumlahacc" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" /> -->
-                    <div class="justify-center q-pl-sm q-pt-md">
-                      <q-btn color="primary" type="button" size="sm" round dense icon="check"
-                        :disable="!validItem(item) || store.loadingSave || !item.tmp_jumlahacc"
-                        :loading="item.loadingSave" @click="tetapkan(item)">
-                        <q-tooltip>
-                          Simpan Rincian
-                        </q-tooltip>
-                      </q-btn>
-                    </div>
+
                   </div>
                 </div>
 
@@ -123,6 +116,15 @@
                       @update:model-value="val => updateHarga(item, val)" />
                     <app-input-simrs class="col-3" label="Total Baru" readonly
                       :model-value="formattanpaRp(item.tmp_totalbaru || 0)" :disable="store.disabled" outlined dense />
+                    <div class="justify-center q-pl-sm q-pt-md">
+                      <q-btn color="primary" type="button" size="sm" round dense icon="check"
+                        :disable="!validItem(item) || store.loadingSave || !item.tmp_totalbaru"
+                        :loading="item.loadingSave" @click="tetapkan(item)">
+                        <q-tooltip>
+                          Simpan Rincian
+                        </q-tooltip>
+                      </q-btn>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -189,9 +191,11 @@ const rincianByKegiatan = computed(() => {
   if (!store.form.kodeKegiatan) return []
   const all = Array.isArray(store.dataBarangslama) ? store.dataBarangslama : []
   const used = Array.isArray(store.rincians) ? store.rincians : []
+  console.log('all', all)
+  console.log('all used', used)
   const usedKode = new Set(
     used
-      .map(r => r.koders)
+      .map(r => r.kode)
       .filter(Boolean)
   )
 
@@ -204,13 +208,14 @@ const validItem = (item) => {
   return (
     item.tmp_kode50 ||
     (item.tmp_kode108 || item.koderek108 === ' ') ||
-    item.tmp_jumlahacc > 0
+    item.tmp_totalbaru > 0
   )
 }
 
 const $q = useQuasar()
 /* simpan */
 const tetapkan = async (item) => {
+  console.log('item xxx', item)
   item.loadingSave = true
   item.koderek50 = item.tmp_kode50 || item.koderek50
   item.uraian50 = item.tmp_uraian50 || item.uraian50
@@ -221,7 +226,7 @@ const tetapkan = async (item) => {
   item.hargabaru = item.tmp_hargabaru
   item.totalbaru = item.tmp_totalbaru
 
-  store.form.usulan = item.keterangan
+  store.form.keterangan = item.keterangan
   store.form.volume = item.volumebaru
   store.form.harga = item.hargabaru
   store.form.nilai = item.totalbaru
@@ -231,24 +236,36 @@ const tetapkan = async (item) => {
   store.form.uraian50 = item.uraian50
   store.form.koderek108 = item.koderek108
   store.form.uraian108 = item.uraian108
-  store.form.jumlahacc = item.jumlahacc
-  store.form.koders = item.kode
-  store.form.nousulan = item.notrans
+  store.form.jenis = item.jenis
+  // store.form.jumlahacc = item.jumlahacc
+  store.form.idpp = item.idpp
+  store.form.kode = item.kode
 
-  const nilaiLama = store.rincianSaved
+
+  store.form.realisasi = item.total_realisasi
+  store.form.sisaanggaran = item.sisapagu
+  store.form.paguterakhir = item.pagu
+  store.form.npdbelumcair = 0
+  store.form.pagualokasi = item.sisapagu
+
+  // store.form.nousulan = item.notrans
+
+  const nilaiLama = store.rincians
     ?.reduce((sum, r) => sum + Number(r.nilai || 0), 0)
 
-  const nilaiBaru = Number(item.jumlahacc || 0) * Number(item.harga || 0)
-  const pagu = Number(store.form?.pagu || 0)
-
-  if (nilaiLama + nilaiBaru > pagu) {
+  const nilaiBaru = Number(item.volumebaru || 0) * Number(item.hargabaru || 0)
+  const realisasi = Number(item.total_realisasi || 0)
+  // console.log('pagu', realisasi)
+  // console.log('baru', nilaiBaru)
+  if (nilaiLama + nilaiBaru < realisasi) {
     $q.notify({
       type: 'negative',
-      message: 'Jumlah yang diinput melebihi pagu anggaran'
+      message: 'Total Baru yang diinput kurang dari Realisasi'
     })
     item.loadingSave = false
     return
   }
+  console.log('foooormssss', store.form)
 
   await store.simpanData()
 
@@ -257,7 +274,9 @@ const tetapkan = async (item) => {
   delete item.tmp_uraian50
   delete item.tmp_kode108
   delete item.tmp_uraian108
-  delete item.tmp_jumlahacc
+  delete item.tmp_hargabaru
+  delete item.tmp_volumebaru
+  delete item.tmp_totalbaru
 
 
   store.disableSaved = true

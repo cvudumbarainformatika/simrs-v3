@@ -34,6 +34,8 @@ onUnmounted(() => {
 
 
 function resetFormData() {
+  store.disableSaved = false
+  store.dialogCetak = false
   store.params = {
     q: '',
     tgl: date.formatDate(Date.now(), 'YYYY-MM-DD'),
@@ -51,7 +53,13 @@ function resetFormData() {
     uraian: 'Pelayanan dan Penunjang Pelayanan BLUD',
     kunci: '',
     jenis: '',
-
+    capaianprogram: '',
+    masukan: 'Dana yang Dibutuhkan',
+    keluaran: '',
+    hasil: '',
+    targetcapaian: '',
+    targetkeluaran: '',
+    targethasil: '',
 
     keterangan: '',
     volume: 0,
@@ -60,6 +68,7 @@ function resetFormData() {
     satuan: '',
     tglTransaksi: date.formatDate(Date.now(), 'YYYY-MM-DD')
   }
+  store.rincians = []
 }
 
 </script>
