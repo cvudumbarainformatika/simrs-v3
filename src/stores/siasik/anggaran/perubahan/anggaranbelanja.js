@@ -41,7 +41,8 @@ export const usePerubahanAnggaranBelanja_PAK = defineStore('perubahan-anggaran-b
             harga: 0,
             nilai: 0,
             satuan: '',
-            jenis: ''
+            jenis: '',
+            kode: ''
         },
         params: {
             q: '',
@@ -169,6 +170,14 @@ export const usePerubahanAnggaranBelanja_PAK = defineStore('perubahan-anggaran-b
                     paguanggaran: result?.paguanggaran,
                     kode50: result?.kode50,
                     uraian: result?.uraian,
+                    masukan: result?.masukan,
+                    capaianprogram: result?.capaianprogram,
+                    targetcapaian: result?.targetcapaian,
+                    targetmasukan: result?.targetmasukan,
+                    targetkeluaran: result?.targetkeluaran,
+                    keluaran: result?.keluaran,
+                    targethasil: result?.targethasil,
+                    hasil: result?.hasil,
                     kunci: '',
                     tglTransaksi: resp?.data?.data?.tglTransaksi,
                     tahun: date.formatDate(Date.now(), 'YYYY'),

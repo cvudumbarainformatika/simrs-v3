@@ -30,17 +30,99 @@
         </div>
 
       </div>
+
+
+      <div class="row q-pa-sm q-col-gutter-md">
+        <div class="col-12">
+          <q-card flat bordered class="q-pa-md">
+            <!-- HEADER -->
+            <div class="row q-col-gutter-sm text-grey-7 q-mb-xs">
+              <div class="col-2 text-weight-bold">Indikator</div>
+              <div class="col-7 text-weight-bold">Tolak Ukur Kerja</div>
+              <div class="col-3 text-weight-bold">Target Kinerja</div>
+            </div>
+
+            <!-- CAPAIAN KEGIATAN -->
+            <div class="row q-col-gutter-sm q-mb-sm">
+              <div class="col-2 text-weight-bold self-center">
+                Capaian Kegiatan
+              </div>
+              <div class="col-7">
+                <q-input v-model="store.form.capaianprogram" :disable="store.loadingSave || store.disableSaved" outlined
+                  dense />
+              </div>
+              <div class="col-3">
+                <q-input v-model="store.form.targetcapaian" :disable="store.loadingSave || store.disableSaved" outlined
+                  dense />
+              </div>
+            </div>
+
+            <!-- MASUKAN -->
+            <div class="row q-col-gutter-sm q-mb-sm" autogrow>
+              <div class="col-2 text-weight-bold self-center">
+                Masukan
+              </div>
+              <div class="col-7">
+                <q-input v-model="store.form.masukan" :disable="store.loadingSave || store.disableSaved" readonly
+                  outlined dense />
+              </div>
+              <div class="col-3">
+                <q-input v-model="paguDisplay" :disable="store.loadingSave || store.disableSaved" outlined dense />
+              </div>
+            </div>
+
+            <!-- KELUARAN -->
+            <div class="row q-col-gutter-sm q-mb-sm">
+              <div class="col-2 text-weight-bold self-center">
+                Keluaran
+              </div>
+              <div class="col-7">
+                <q-input v-model="store.form.keluaran" type="textarea" autogrow
+                  :disable="store.loadingSave || store.disableSaved" outlined />
+              </div>
+              <div class="col-3">
+                <q-input v-model="store.form.targetkeluaran" type="textarea" autogrow
+                  :disable="store.loadingSave || store.disableSaved" outlined />
+              </div>
+            </div>
+
+            <!-- HASIL -->
+            <div class="row q-col-gutter-sm">
+              <div class="col-2 text-weight-bold self-center">
+                Hasil
+              </div>
+              <div class="col-7">
+                <q-input v-model="store.form.hasil" :disable="store.loadingSave || store.disableSaved" outlined
+                  type="textarea" autogrow />
+              </div>
+              <div class="col-3">
+                <q-input v-model="store.form.targethasil" :disable="store.loadingSave || store.disableSaved" outlined
+                  type="textarea" autogrow />
+              </div>
+            </div>
+
+          </q-card>
+        </div>
+      </div>
       <div class="q-px-sm">
         <q-card class="full-width bg-grey-4 q-my-sm q-px-sm">
           <div class="row text-primary q-pa-sm q-my-sm q-px-sm">
             <div class="f-14 text-weight-bold">
-              Rincian Pengusulan Anggaran
+              <span class="q-pr-sm">Rincian Perubahan Anggaran</span>
+
             </div>
           </div>
         </q-card>
       </div>
+      <div class="row q-px-sm q-py-sm q-gutter-sm">
+        <q-btn :loading="store.loading" dense color="primary" label="Tambah Rincian Sebelumnya" class="q-px-sm"
+          @click="openDialogRincian" />
+        <q-btn :loading="store.loading" dense color="primary" label="Rincian Baru" class="q-px-sm"
+          @click="RincianBaru" />
+      </div>
+
     </q-form>
-    <FormRincian />
+    <FormRincian v-if="openDialogRincianBaru === true" />
     <DialogDataItemlama v-model="dialogBaranglama" />
   </q-card>
 </template>
@@ -52,6 +134,9 @@ import { usePenetapanPaguStore } from 'src/stores/siasik/anggaran/penyusunan/pen
 import { api } from 'src/boot/axios';
 import { usePerubahanAnggaranBelanja_PAK } from 'src/stores/siasik/anggaran/perubahan/anggaranbelanja.js';
 import DialogDataItemlama from './DialogDataItemlama.vue';
+import { computed } from 'vue';
+import { formattanpaRp } from 'src/modules/formatter.js';
+import { useQuasar } from 'quasar';
 
 const form = ref([])
 const store = usePerubahanAnggaranBelanja_PAK()
@@ -60,10 +145,13 @@ const options_kegiatan = ref([])
 const tahuns = ref([])
 const master_kegiatan = ref([])
 const dialogBaranglama = ref(false)
+const openDialogRincianBaru = ref(false)
 onMounted(async () => {
   init()
   await ubahTahun(store.form.tahun)
+  store.disableSaved = false
 })
+
 
 const PilihKegiatan = async (val) => {
   // console.log('val', val)
@@ -77,12 +165,82 @@ const PilihKegiatan = async (val) => {
   store.form.kodeRuangan = cari ? cari.kode : ''
   store.form.kodebagian = cari ? cari.kode : ''
   store.form.organisasi_nama = cari ? cari.namaorganisasi : ''
+  store.form.kodepptk = cari ? cari.kodepptk : ''
+  store.form.pptk = cari ? cari.namapptk : ''
   store.form.paguanggaran = cari ? Number(cari.total) : 0
+  store.form.masukan = 'Dana yang Dibutuhkan'
+  store.form.capaianprogram = cari ? cari.capaianprogram : ''
+  store.form.targetcapaian = cari ? cari.targetcapaian : ''
+  store.form.targetmasukan = cari ? cari.targetmasukan : ''
+  store.form.keluaran = cari ? cari.keluaran : ''
+  store.form.targetkeluaran = cari ? cari.targetkeluaran : ''
+  store.form.hasil = cari ? cari.hasil : ''
+  store.form.targethasil = cari ? cari.targethasil : ''
+
   await store.getBarangslama()
-  dialogBaranglama.value = true
 
 }
 
+const paguDisplay = computed({
+  get() {
+    return formattanpaRp(store.form.paguanggaran || 0)
+  },
+  set(val) {
+    // buang semua selain angka
+    const raw = String(val).replace(/[^\d]/g, '')
+    store.form.paguanggaran = raw ? parseInt(raw) : 0
+  }
+})
+const $q = useQuasar()
+const Indikator = computed(() => {
+  return [
+    store.form.capaianprogram,
+    store.form.targetcapaian,
+    store.form.keluaran,
+    store.form.targetkeluaran,
+    store.form.hasil,
+    store.form.targethasil
+  ].every(val => val !== null && val !== undefined && String(val).trim() !== '')
+})
+const RincianBaru = () => {
+  if (!Indikator.value) {
+    $q.notify({
+      type: 'negative',
+      message: 'Indikator Harap di isi Semua'
+    })
+    // store.loadingSave = false
+    openDialogRincianBaru.value = false
+    return
+  }
+  openDialogRincianBaru.value = !openDialogRincianBaru.value
+}
+const openDialogRincian = async () => {
+  // const itemdialog = store.dataBarangslama
+  // const itemsimpan = store.rincians
+
+  await store.getBarangslama()
+  const itemsimpan = new Set(
+    (store.rincians || [])
+      .map(r => r.kode)
+      .filter(Boolean)
+  )
+  console.log('tersimpan ', itemsimpan)
+  store.dataBarangslama.filter(r => !itemsimpan.has(r.kode))
+    .map(r => ({ ...r }))
+  console.log('barang lama ', store.dataBarangslama)
+
+  if (!Indikator.value) {
+    $q.notify({
+      type: 'negative',
+      message: 'Indikator Harap di isi Semua'
+    })
+    // store.loadingSave = false
+    dialogBaranglama.value = false
+    return
+  }
+
+  dialogBaranglama.value = true
+}
 function tglTransaksi(val) {
   // console.log('val Parameter', val)
   store.form.tglTransaksi = val
