@@ -186,12 +186,20 @@ function getLabel(val) {
 
 const filterDokumen = computed(() => {
   const kodepoli = props.pasien?.kodepoli
-  if (kodepoli !== 'POL022' && kodepoli !== 'POL010') {
-    return documents.value.filter(a => a.jenis !== 'SKD')
-  } else {
-    return documents.value
+  const flagPrmrj = typeof props.pasien?.prmrjflag === 'object'
+    ? props.pasien?.prmrjflag?.flaging
+    : props.pasien?.prmrjflag
+  let filteredDocuments = documents.value
+
+  if (flagPrmrj == null || String(flagPrmrj) === '0') {
+    filteredDocuments = filteredDocuments.filter(item => item.value !== 'PRMRJ')
   }
-  // return documents.value
+
+  if (kodepoli !== 'POL022' && kodepoli !== 'POL010') {
+    return filteredDocuments.filter(item => item.jenis !== 'SKD')
+  }
+
+  return filteredDocuments
 })
 
 const comp = [
