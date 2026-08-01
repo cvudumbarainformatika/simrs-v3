@@ -147,9 +147,11 @@ const master_kegiatan = ref([])
 const dialogBaranglama = ref(false)
 const openDialogRincianBaru = ref(false)
 onMounted(async () => {
-  init()
+  if (!store.form.id) {
+    init()
+    store.disableSaved = false
+  }
   await ubahTahun(store.form.tahun)
-  store.disableSaved = false
 })
 
 
@@ -224,10 +226,10 @@ const openDialogRincian = async () => {
       .map(r => r.kode)
       .filter(Boolean)
   )
-  console.log('tersimpan ', itemsimpan)
+  // console.log('tersimpan ', itemsimpan)
   store.dataBarangslama.filter(r => !itemsimpan.has(r.kode))
     .map(r => ({ ...r }))
-  console.log('barang lama ', store.dataBarangslama)
+  // console.log('barang lama ', store.dataBarangslama)
 
   if (!Indikator.value) {
     $q.notify({
@@ -277,13 +279,13 @@ async function ubahTahun(val) {
   await store.getKegiatan()
 
   const used = store.items.map(x => Number(x.kodeKegiatan))
-
-  let hasil = store.kegiatans.filter(k => !used.includes(Number(k.no)))
+  // console.log('used kegiatan', used)
+  let hasil = store.kegiatans.filter(k => !used.includes(Number(k.kodekegiatan)))
 
   // pastikan kegiatan yg sudah dipilih tetap ada
   if (currentKode) {
-    const exist = store.kegiatans.find(k => Number(k.no) === Number(currentKode))
-    if (exist && !hasil.some(x => Number(x.no) === Number(exist.no))) {
+    const exist = store.kegiatans.find(k => Number(k.kodekegiatan) === Number(currentKode))
+    if (exist && !hasil.some(x => Number(x.kodekegiatan) === Number(exist.kodekegiatan))) {
       hasil.push(exist)
     }
   }
@@ -292,14 +294,15 @@ async function ubahTahun(val) {
 
   master_kegiatan.value = hasil.map(a => ({
     ...a,
-    label: `${a.kode} - ${a.nomenklatur}`,
-    value: a.no
+    label: `${a.kodekegiatan} - ${a.nomenklatur}`,
+    value: a.kodekegiatan
   }))
-
+  // console.log('master_kegiatan', master_kegiatan.value)
   options_kegiatan.value = master_kegiatan.value
 }
 
 async function filterFnKegiatan(val, update) {
+  // console.log('val filter awaaal', val)
   if (!val || val.length < 2) {
     update(() => {
       options_kegiatan.value = master_kegiatan.value
@@ -307,21 +310,24 @@ async function filterFnKegiatan(val, update) {
     return
   }
 
+  // console.log('val filter', val)
   try {
-    const resp = await api.get('v1/anggaran/penyusunan/pengusulan/select', {
+    const resp = await api.get('v1/anggaran/perubahan/belanja/select', {
       params: {
         q: val,
-        per_page: 20,
-        page: 1
+        per_page: 30,
+        page: 1,
+        tahun: store.params.tahun || store.form.tahun
       }
     })
+    // console.log('resp filter', resp)
     const data = resp.data.data || []
 
     update(() => {
       options_kegiatan.value = data.map(a => ({
         ...a,
-        label: `${a.kode} - ${a.nomenklatur}`,
-        value: a.no
+        label: `${a.kodekegiatan} - ${a.nomenklatur}`,
+        value: a.kodekegiatan
       }))
     })
 

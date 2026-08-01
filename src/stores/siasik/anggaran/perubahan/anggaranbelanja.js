@@ -44,13 +44,26 @@ export const usePerubahanAnggaranBelanja_PAK = defineStore('perubahan-anggaran-b
             jenis: '',
             kode: ''
         },
+        form_batasan: {
+            notrans: '',
+            pagu: '',
+            batasan: 0,
+            koderek50: '',
+            uraian50: '',
+            kodekegiatanblud: '',
+            tahun: '',
+            kodebidang: '',
+            flag: ''
+        },
+        databatasan: {},
         params: {
             q: '',
             tahun: date.formatDate(Date.now(), 'YYYY'),
             tgl: date.formatDate(Date.now(), 'YYYY-MM-DD'),
             jenis: '',
             page: 1,
-            per_page: 10,
+            per_page: 30,
+            kodeKegiatan: ''
         },
         dataBarangslama: [],
         dataBarangsbaru: [],
@@ -169,6 +182,8 @@ export const usePerubahanAnggaranBelanja_PAK = defineStore('perubahan-anggaran-b
                     organisasi_nama: result?.organisasi_nama,
                     paguanggaran: result?.paguanggaran,
                     kode50: result?.kode50,
+                    kodepptk: result?.kodepptk,
+                    pptk: result?.pptk,
                     uraian: result?.uraian,
                     masukan: result?.masukan,
                     capaianprogram: result?.capaianprogram,
@@ -324,6 +339,224 @@ export const usePerubahanAnggaranBelanja_PAK = defineStore('perubahan-anggaran-b
         goToPage(val) {
             this.params.page = val
             this.getData()
+        },
+
+        dataCetak() {
+            waitLoad('show')
+            const params = { params: this.params }
+            return new Promise((resolve, reject) => {
+                api
+                    .get('v1/anggaran/perubahan/belanja/cetak', params)
+                    .then((resp) => {
+                        waitLoad('done')
+                        console.log('resp Cetak', resp)
+                        this.rincianpergeseran = []
+                        if (resp.status === 200) {
+                            this.pergeseran = resp.data.data
+                            this.rincianpergeseran = resp.data.data?.hasilperubahan
+                            console.log('rincianpergeseran', this.rincianpergeseran)
+                            // this.setColumns(resp.data.data)
+                            // console.log(resp.data.data)
+                            this.mapingDatapergeseran()
+                            resolve(resp)
+                        }
+                    })
+                    .catch((err) => {
+                        waitLoad('done')
+                        reject(err)
+                    })
+            })
+        },
+
+        mapingDatapergeseran() {
+            const rka = []
+            // const totalrka = []
+            const unik1 = this.rincianpergeseran.map((x) => x.kode1)
+            const ar1 = unik1.length ? [...new Set(unik1)] : []
+            for (let i = 0; i < ar1.length; i++) {
+                const el = ar1[i];
+                const obj = {
+                    notrans: this.rincianpergeseran.filter((x) => x.kode1 === el)[0].notrans,
+                    koderek50: this.rincianpergeseran.filter((x) => x.kode1 === el)[0].koderek50,
+                    tahun: this.rincianpergeseran.filter((x) => x.kode1 === el)[0].tahun,
+                    kodekegiatanblud: this.rincianpergeseran.filter((x) => x.kode1 === el)[0].kodekegiatanblud,
+                    kodebidang: this.rincianpergeseran.filter((x) => x.kode1 === el)[0].kodebidang,
+                    kode: this.rincianpergeseran.filter((x) => x.kode1 === el)[0].kode1,
+                    uraian: this.rincianpergeseran.filter((x) => x.kode1 === el)[0].uraian1,
+                    pagu: this.rincianpergeseran.filter((x) => x.kode1 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+                    pagubaru: this.rincianpergeseran.filter((x) => x.kode1 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+                    selisih: this.rincianpergeseran.filter((x) => x.kode1 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0) - this.rincianpergeseran.filter((x) => x.kode1 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+                    rincian: []
+                }
+                rka.push(obj)
+            }
+
+            const unik2 = this.rincianpergeseran.map((x) => x.kode2)
+            const ar2 = unik2.length ? [...new Set(unik2)] : []
+            for (let i = 0; i < ar2.length; i++) {
+                const el = ar2[i];
+                const obj = {
+                    notrans: this.rincianpergeseran.filter((x) => x.kode2 === el)[0].notrans,
+                    koderek50: this.rincianpergeseran.filter((x) => x.kode2 === el)[0].koderek50,
+                    tahun: this.rincianpergeseran.filter((x) => x.kode2 === el)[0].tahun,
+                    kodekegiatanblud: this.rincianpergeseran.filter((x) => x.kode2 === el)[0].kodekegiatanblud,
+                    kodebidang: this.rincianpergeseran.filter((x) => x.kode2 === el)[0].kodebidang,
+                    kode: this.rincianpergeseran.filter((x) => x.kode2 === el)[0].kode2,
+                    uraian: this.rincianpergeseran.filter((x) => x.kode2 === el)[0].uraian2,
+                    pagu: this.rincianpergeseran.filter((x) => x.kode2 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+                    pagubaru: this.rincianpergeseran.filter((x) => x.kode2 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+                    selisih: this.rincianpergeseran.filter((x) => x.kode2 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0) - this.rincianpergeseran.filter((x) => x.kode2 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+                    rincian: []
+                }
+                rka.push(obj)
+            }
+
+            const unik3 = this.rincianpergeseran.map((x) => x.kode3)
+            const ar3 = unik3.length ? [...new Set(unik3)] : []
+            for (let i = 0; i < ar3.length; i++) {
+                const el = ar3[i];
+                const obj = {
+                    notrans: this.rincianpergeseran.filter((x) => x.kode3 === el)[0].notrans,
+                    koderek50: this.rincianpergeseran.filter((x) => x.kode3 === el)[0].koderek50,
+                    tahun: this.rincianpergeseran.filter((x) => x.kode3 === el)[0].tahun,
+                    kodekegiatanblud: this.rincianpergeseran.filter((x) => x.kode3 === el)[0].kodekegiatanblud,
+                    kodebidang: this.rincianpergeseran.filter((x) => x.kode3 === el)[0].kodebidang,
+                    kode: this.rincianpergeseran.filter((x) => x.kode3 === el)[0].kode3,
+                    uraian: this.rincianpergeseran.filter((x) => x.kode3 === el)[0].uraian3,
+                    pagu: this.rincianpergeseran.filter((x) => x.kode3 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+                    pagubaru: this.rincianpergeseran.filter((x) => x.kode3 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+                    selisih: this.rincianpergeseran.filter((x) => x.kode3 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0) - this.rincianpergeseran.filter((x) => x.kode3 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+                    rincian: []
+                }
+                rka.push(obj)
+            }
+
+            const unik4 = this.rincianpergeseran.map((x) => x.kode4)
+            const ar4 = unik4.length ? [...new Set(unik4)] : []
+            for (let i = 0; i < ar4.length; i++) {
+                const el = ar4[i];
+                const obj = {
+                    notrans: this.rincianpergeseran.filter((x) => x.kode4 === el)[0].notrans,
+                    koderek50: this.rincianpergeseran.filter((x) => x.kode4 === el)[0].koderek50,
+                    tahun: this.rincianpergeseran.filter((x) => x.kode4 === el)[0].tahun,
+                    kodekegiatanblud: this.rincianpergeseran.filter((x) => x.kode4 === el)[0].kodekegiatanblud,
+                    kodebidang: this.rincianpergeseran.filter((x) => x.kode4 === el)[0].kodebidang,
+                    kode: this.rincianpergeseran.filter((x) => x.kode4 === el)[0].kode4,
+                    uraian: this.rincianpergeseran.filter((x) => x.kode4 === el)[0].uraian4,
+                    pagu: this.rincianpergeseran.filter((x) => x.kode4 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+                    pagubaru: this.rincianpergeseran.filter((x) => x.kode4 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+                    selisih: this.rincianpergeseran.filter((x) => x.kode4 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0) - this.rincianpergeseran.filter((x) => x.kode4 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+                    rincian: []
+                }
+                rka.push(obj)
+            }
+            const unik5 = this.rincianpergeseran.map((x) => x.kode5)
+            const ar5 = unik5.length ? [...new Set(unik5)] : []
+            for (let i = 0; i < ar5.length; i++) {
+                const el = ar5[i];
+                const obj = {
+                    notrans: this.rincianpergeseran.filter((x) => x.kode5 === el)[0].notrans,
+                    tahun: this.rincianpergeseran.filter((x) => x.kode5 === el)[0].tahun,
+                    koderek50: this.rincianpergeseran.filter((x) => x.kode5 === el)[0].koderek50,
+                    kodekegiatanblud: this.rincianpergeseran.filter((x) => x.kode5 === el)[0].kodekegiatanblud,
+                    kodebidang: this.rincianpergeseran.filter((x) => x.kode5 === el)[0].kodebidang,
+                    kode: this.rincianpergeseran.filter((x) => x.kode5 === el)[0].kode5,
+                    uraian: this.rincianpergeseran.filter((x) => x.kode5 === el)[0].uraian5,
+                    pagu: this.rincianpergeseran.filter((x) => x.kode5 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+                    pagubaru: this.rincianpergeseran.filter((x) => x.kode5 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+                    selisih: this.rincianpergeseran.filter((x) => x.kode5 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0) - this.rincianpergeseran.filter((x) => x.kode5 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+                    rincian: []
+                }
+                rka.push(obj)
+            }
+
+            const unik6 = this.rincianpergeseran.map((x) => x.kode6)
+            const ar6 = unik6.length ? [...new Set(unik6)] : []
+            for (let i = 0; i < ar6.length; i++) {
+                const el = ar6[i];
+                const obj = {
+                    notrans: this.rincianpergeseran.filter((x) => x.kode6 === el)[0].notrans,
+                    koderek50: this.rincianpergeseran.filter((x) => x.kode6 === el)[0].koderek50,
+                    tahun: this.rincianpergeseran.filter((x) => x.kode6 === el)[0].tahun,
+                    kodekegiatanblud: this.rincianpergeseran.filter((x) => x.kode6 === el)[0].kodekegiatanblud,
+                    kodebidang: this.rincianpergeseran.filter((x) => x.kode6 === el)[0].kodebidang,
+                    kode: this.rincianpergeseran.filter((x) => x.kode6 === el)[0].kode6,
+                    uraian: this.rincianpergeseran.filter((x) => x.kode6 === el)[0].uraian6,
+                    pagu: this.rincianpergeseran.filter((x) => x.kode6 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+                    pagubaru: this.rincianpergeseran.filter((x) => x.kode6 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+                    selisih: this.rincianpergeseran.filter((x) => x.kode6 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0) - this.rincianpergeseran.filter((x) => x.kode6 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+                    rincian: this.rincianpergeseran.filter((x) => x.kode6 === el).map((x) => {
+                        return {
+                            kode108: x.koderek108,
+                            usulan: x.usulan,
+                            satuan: x.satuan,
+                            volume: x.volume,
+                            harga: x.harga,
+                            pagu: x.total,
+
+                            volumebaru: x.volumebaru,
+                            hargabaru: x.hargabaru,
+                            pagubaru: x.totalbaru,
+                            selisih: parseFloat(x.totalbaru) - parseFloat(x.total)
+                        }
+                    })
+                }
+                rka.push(obj)
+            }
+
+            const sortAnggaran = (rka) =>
+                rka.sort(({ kode: a }, { kode: b }) =>
+                    a < b ? -1 : a > b ? 1 : 0
+                )
+            const dataRKApergeseran = sortAnggaran(rka)
+            this.datarkapergeseran = dataRKApergeseran
+            console.log('rka', this.datarkapergeseran)
+        },
+        async getDataBatasan(item) {
+            this.loading = true
+            try {
+                const resp = await api.get(
+                    '/v1/anggaran/pergeseran/rincian/getbatasan',
+                    {
+                        params: {
+                            notrans: item.notrans,
+                            kodekegiatanblud: item.kodekegiatanblud,
+                            koderek50: item.koderek50
+                        }
+                    }
+                )
+
+                this.databatasan = resp.data?.databatasan
+                this.datarealisasi = resp.data?.datarealisasi
+                // console.log('data batasan', resp.data)
+            } finally {
+                this.loading = false
+            }
+        },
+        async simpanBatasan() {
+            this.loadingSave = true
+            try {
+                const resp = await api.post('v1/anggaran/pergeseran/rincian/simpanbatasan', this.form_batasan)
+                console.log('simpan batasan', resp)
+                const result = resp?.data?.data
+                if (resp.success === true) {
+
+                    console.log('SUKSES SIMPAN', result)
+                    this.initModeEdit(result)
+                }
+                // const allrinci = result?.penetapan || []
+                // const existingIds = new Set(this.rincians.map(r => r.id))
+                // const newRincians = allrinci.filter(r => !existingIds.has(r.id))
+                // this.rincians.unshift(...newRincians)
+
+                notifSuccessVue(resp?.data?.message)
+
+                // this.getData()
+                this.loadingSave = false
+            } catch (error) {
+                console.log(error)
+                this.loadingSave = false
+            }
         },
 
     }

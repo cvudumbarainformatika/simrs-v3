@@ -94,10 +94,10 @@
                         <q-item v-if="props?.row?.kunci !== '1'" clickable @click="editDataPangusulan(props?.row)">
                           <q-item-section>Edit Data</q-item-section>
                         </q-item>
-                        <!-- <q-item clickable v-close-popup @click="viewCetakDataNpdls(props?.row)">
+                        <q-item clickable v-close-popup @click="viewCetakData(props?.row)">
                           <q-item-section>Cetak Data</q-item-section>
                         </q-item>
-                        <q-item clickable v-close-popup @click="PrintPencairan(props?.row)">
+                        <!-- <q-item clickable v-close-popup @click="PrintPencairan(props?.row)">
                           <q-item-section>Cetak Pencairan</q-item-section>
                         </q-item> -->
                       </q-list>
@@ -113,9 +113,9 @@
 
       </q-table>
       <app-dialog-rincian v-model="store.openDialogRinci" :dataRinci="dataRinci" />
-      <printdi-npdls v-model="store.dialogCetak" :datanpds="datanpds" />
+      <print-data v-model="store.dialogCetak" :datanpds="datanpds" />
       <!-- <editdata-npdls v-model="store.dialogEditNpd" :editData="editData" /> -->
-      <cetak-pencairan v-model="store.dialogPrintPencairan" :printcair="printcair" />
+      <!-- <cetak-pencairan v-model="store.dialogPrintPencairan" :printcair="printcair" /> -->
     </div>
   </template>
 </template>
@@ -134,7 +134,7 @@ import { useRouter } from 'vue-router'
 
 
 const AppDialogRincian = defineAsyncComponent(() => import('./DialogViewRincian.vue'))
-const PrintdiNpdls = defineAsyncComponent(() => import('./DialogPrintData.vue'))
+const PrintData = defineAsyncComponent(() => import('./DialogPrintData.vue'))
 const CetakPencairan = defineAsyncComponent(() => import('./DialogPrintPencairan.vue'))
 const store = usePerubahanAnggaranBelanja_PAK()
 const form = formInputNpdlsStore()
@@ -202,20 +202,28 @@ function viewRincian(row) {
   dataRinci.value = row.rincian
   store.rincians = dataRinci.value
   store.dataSaved = row
-  console.log('npd save', store.dataSaved, 'rinci', store.rincians)
+  // console.log('npd save', store.dataSaved, 'rinci', store.rincians)
   store.openDialogRinci = true
 }
 const onRowClick = (row) =>
   alert([row?.nopencairan, row?.total])
 
 const datanpds = ref(null)
-function viewCetakDataNpdls(row) {
-  store.dialogCetak = true
+async function viewCetakData(row) {
+  console.log('row', row)
   datanpds.value = row
-  store.dataSaved = datanpds.value
+  store.params.notrans = row.notrans
+  store.params.kodeKegiatan = row.kodeKegiatan
+  store.kegiatanblud = row.kegiatan
+  store.namapptk = row.pptk
+  store.kodepptk = row.kodepptk
+  await store.dataCetak()   // tunggu data siap
+  store.dialogCetak = true  // buka dialog terakhir
+
 }
 
 function editDataPangusulan(row) {
+  console.log('rooow', row)
   // if (auth.user?.pegawai?.kdpegsimrs !== 'sa') {
   //   $q.notify({
   //     type: 'negative',
@@ -234,6 +242,14 @@ function editDataPangusulan(row) {
   store.form = {
     ...store.form,
     ...row
+  }
+
+  if (row?.tglTransaksi) {
+    const tahun = Number(String(row?.tglTransaksi).slice(0, 4))
+    if (!Number.isNaN(tahun)) {
+      store.form.tahun = tahun
+      store.params.tahun = tahun
+    }
   }
   store.rincians = row.rincian ? [...row.rincian] : []
 

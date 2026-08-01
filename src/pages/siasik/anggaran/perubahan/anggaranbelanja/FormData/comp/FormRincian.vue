@@ -22,7 +22,56 @@
             </template>
           </q-select>
         </div>
+        <div class="col-6 q-pa-sm q-gutter-y-md">
+          <template v-if="store.form.koderek50">
+            <q-input dense outlined label="Kode Rekening" :model-value="store.form.uraian50" readonly />
+          </template>
+          <template v-else>
+            <q-select v-model="store.form.tmp_kode50" use-input outlined standout="bg-yellow-3" dense emit-value
+              map-options option-value="kodeall2" input-debounce="800" label="Pilih Kode Rekening" :options="options"
+              :option-label="opt => opt?.kodeall2 ? `${opt.kodeall2} - ${opt.uraian}` : ''" clearable
+              :disable="store.loading" :loading="store.loading" @filter="filterFn" @update:model-value="(val) => {
+                const arr = options || []
+                const cari = arr.find(x => x.kodeall2 === val)
+                store.form.uraian50 = cari ? cari.uraian : ''
+                store.form.koderek50 = cari ? cari.kodeall2 : ''
+
+                options108 = cari?.rekening108 || []
+                if (!options108.length) {
+                  // tidak ada rekening 108
+                  store.form.koderek108 = ' '
+                  store.form.uraian108 = ' '
+                } else {
+                  // reset kalau sebelumnya sudah terisi
+                  store.form.koderek108 = null
+                  store.form.uraian108 = null
+                }
+              }">
+              <template #no-option>
+                <q-item>
+                  <q-item-section class="text-grey">Tidak ditemukan</q-item-section>
+                </q-item>
+              </template>
+            </q-select>
+          </template>
+
+        </div>
+        <div class="col-6 q-pa-sm q-gutter-y-md">
+          <template v-if="store.form.koderek108 !== null">
+            <q-input dense outlined label="Kode Rekening 108" :model-value="store.form.uraian108" readonly />
+          </template>
+          <template v-else>
+            <q-select v-model="store.form.tmp_kode108" :options="options108 || []" dense outlined emit-value map-options
+              option-value="kode108" :option-label="opt => `${opt.kode108} - ${opt.uraian108}`"
+              label="Pilih Kode Rekening 108" @update:model-value="(val) => {
+                const cari = (options108 || []).find(x => x.kode108 === val)
+                store.form.uraian108 = cari?.uraian108 || ''
+                store.form.koderek108 = cari?.kode108 || ''
+              }" />
+          </template>
+        </div>
       </div>
+
       <div class="row">
         <div class="col-3 q-pa-sm q-gutter-y-md">
           <app-input-simrs label="Volume" v-model="store.form.volume" :disable="store.disabled" outlined dense
@@ -78,6 +127,8 @@ import { usePerubahanAnggaranBelanja_PAK } from 'src/stores/siasik/anggaran/peru
 const store = usePerubahanAnggaranBelanja_PAK()
 const carisrt = dataBastFarmasiStore()
 const satuan = ref(null)
+const options = ref([])
+const options108 = ref([])
 onMounted(() => {
 })
 
@@ -95,32 +146,42 @@ function updateJenis(val) {
     jenis: val
   }
   store.getBarangs(params)
+  store.form.idpp = ''
   store.form.kode = ''
   store.form.satuan = ''
   store.form.keterangan = ''
   store.form.volume = 0
   store.form.harga = 0
   store.form.nilai = 0
-  store.form.koderek50 = null
-  store.form.koderek108 = null
-  store.form.uraian50 = null
-  store.form.uraian108 = null
+  store.form.koderek50 = ''
+  store.form.koderek108 = ''
+  store.form.uraian50 = ''
+  store.form.uraian108 = ''
+  store.form.tmp_kode50 = ''
+  store.form.tmp_kode108 = ''
 
   // optionsBarangs.value = []
 }
 
 function updateBarang(val) {
+  store.form.idpp = ''
   store.form.satuan = ''
   store.form.volume = 0
   store.form.harga = 0
   store.form.nilai = 0
+  store.form.koderek50 = ''
+  store.form.koderek108 = ''
+  store.form.uraian50 = ''
+  store.form.uraian108 = ''
+  store.form.tmp_kode50 = ''
+  store.form.tmp_kode108 = ''
   const data = optionsBarangs.value.find(x => x.value === val)
   // console.log('data items', data)
   if (!data) return
   store.form.keterangan = data?.nama ? data?.nama : data?.uraian108
   store.form.kode = data?.kode ? data?.kode : data?.kode108
-  store.form.koderek50 = data?.koderek50 ? data?.koderek50 : data?.kode50
-  store.form.koderek108 = data?.koderek108 ? data?.koderek108 : data?.kode108
+  store.form.koderek50 = data?.kode_50 ? data?.kode_50 : data?.kode50
+  store.form.koderek108 = data?.kode_108 ? data?.kode_108 : data?.kode108
   store.form.uraian50 = data?.uraian_50 ? data?.uraian_50 : data?.uraian50
   store.form.uraian108 = data?.uraian_108 ? data?.uraian_108 : data?.uraian108
   // Catatan di Master Aset Belum ada Satuan jadinya dipakai unit
@@ -164,7 +225,6 @@ async function filterFnBarang(val, update) {
       }
     })
     const data = resp.data.data || []
-
     update(() => {
       optionsBarangs.value = data.map(a => ({
         ...a,
@@ -218,11 +278,46 @@ async function filterFnSatuan(val, update) {
   }
 }
 
+
+async function filterFn(val, update) {
+  if (!val || val.length < 2) {
+    update(() => {
+      options.value = []
+    })
+    return
+  }
+
+  try {
+    const resp = await api.get('v1/anggaran/penyusunan/prioritas/getrekening', {
+      params: {
+        q: val,
+        per_page: 20 // kecil saja
+      }
+    })
+    // console.log('rekening', resp)
+    const data = resp.data.data || []
+
+    update(() => {
+      options.value = data.map(a => ({
+        ...a,
+        label: `${a.kodeall2} - ${a.uraian}`,
+        value: a.kodeall2
+      }))
+    })
+
+  } catch (e) {
+    console.error(e)
+    update(() => {
+      options.value = []
+    })
+  }
+}
+
 function saveData() {
 
 
   store.simpanData()
   store.disableSaved = true
-  console.log('saved setlah simpan', store.form)
+  // console.log('saved setlah simpan', store.form)
 }
 </script>

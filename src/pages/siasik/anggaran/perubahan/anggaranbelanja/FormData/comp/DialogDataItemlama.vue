@@ -191,8 +191,8 @@ const rincianByKegiatan = computed(() => {
   if (!store.form.kodeKegiatan) return []
   const all = Array.isArray(store.dataBarangslama) ? store.dataBarangslama : []
   const used = Array.isArray(store.rincians) ? store.rincians : []
-  console.log('all', all)
-  console.log('all used', used)
+  // console.log('all', all)
+  // console.log('all used', used)
   const usedKode = new Set(
     used
       .map(r => r.kode)
@@ -215,7 +215,7 @@ const validItem = (item) => {
 const $q = useQuasar()
 /* simpan */
 const tetapkan = async (item) => {
-  console.log('item xxx', item)
+  // console.log('item xxx', item)
   item.loadingSave = true
   item.koderek50 = item.tmp_kode50 || item.koderek50
   item.uraian50 = item.tmp_uraian50 || item.uraian50
@@ -265,7 +265,7 @@ const tetapkan = async (item) => {
     item.loadingSave = false
     return
   }
-  console.log('foooormssss', store.form)
+  // console.log('foooormssss', store.form)
 
   await store.simpanData()
 
@@ -298,7 +298,7 @@ async function filterFn(val, update) {
         per_page: 20 // kecil saja
       }
     })
-    console.log('rekening', resp)
+    // console.log('rekening', resp)
     const data = resp.data.data || []
 
     update(() => {
@@ -318,7 +318,7 @@ async function filterFn(val, update) {
 }
 
 watch(
-  () => store.getRincian,
+  () => store.dataBarangslama,
   (val) => {
     // debugging
     console.log('Rincian dialog update:', val?.length)
