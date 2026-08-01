@@ -186,6 +186,20 @@
             />
           </div>
         </div>
+        <q-separator class="q-my-md" />
+        <div class="row text-left q-my-sm items-end">
+          <span class="f-14 text-weight-bold">Telaah 5 Tepat</span>
+        </div>
+        <div class="row q-ml-sm q-mb-md">
+          <q-option-group
+            v-model="selectedTepat"
+            :options="tepatOptions"
+            type="checkbox"
+            color="green"
+            dense
+            inline
+          />
+        </div>
         <div class="row justify-end">
           <div class="col-6">
             <app-autocomplete
@@ -265,17 +279,37 @@ const farmasiKlinises = ref([
   { id: '5', value: false, type_value: 'valueBoolean', str_code: 'identitas_pasien_obat_dosis_frekuensi_aturan pakai_waktu pemberian', kode: '3.5', question: 'Apakah identitas pasien, obat, dosis, frekuensi, aturan pakai dan waktu pemberian sudah sesuai?', label: 'Identitas pasien, obat, dosis, frekuensi, aturan pakai, waktu pemberian' },
   { id: '6', value: false, type_value: 'valueBoolean', str_code: 'variasi_kriteria_penggunaan', kode: '3.6', question: 'Apakah ada variasi kriteria penggunaan (bandingkan dengan Panduan Praktik Klinis atau Formularium Nasional)?', label: 'Variasi kriteria penggunaan' }
 ])
+
+const selectedTepat = ref(['tepat_pasien', 'tepat_obat', 'tepat_dosis', 'tepat_rute', 'tepat_waktu'])
+const tepatOptions = [
+  { label: 'Tepat Pasien', value: 'tepat_pasien' },
+  { label: 'Tepat Obat', value: 'tepat_obat' },
+  { label: 'Tepat Dosis', value: 'tepat_dosis' },
+  { label: 'Tepat Rute Pemberian', value: 'tepat_rute' },
+  { label: 'Tepat Waktu', value: 'tepat_waktu' }
+]
+
 const apoteker = ref(null)
 function simpan () {
   console.log('apoteker', apoteker.value)
   if (!apoteker.value) return notifErrVue('Apoteker Belum dipilih')
+  
+  const klinisSaved = [
+    ...farmasiKlinises.value,
+    { id: '7', value: selectedTepat.value.includes('tepat_pasien'), type_value: 'valueBoolean', str_code: 'tepat_pasien', kode: '3.7', question: 'Apakah sudah tepat pasien?', label: 'Tepat Pasien' },
+    { id: '8', value: selectedTepat.value.includes('tepat_obat'), type_value: 'valueBoolean', str_code: 'tepat_obat', kode: '3.8', question: 'Apakah sudah tepat obat?', label: 'Tepat Obat' },
+    { id: '9', value: selectedTepat.value.includes('tepat_dosis'), type_value: 'valueBoolean', str_code: 'tepat_dosis', kode: '3.9', question: 'Apakah sudah tepat dosis?', label: 'Tepat Dosis' },
+    { id: '10', value: selectedTepat.value.includes('tepat_rute'), type_value: 'valueBoolean', str_code: 'tepat_rute', kode: '3.10', question: 'Apakah sudah tepat rute pemberian?', label: 'Tepat Rute Pemberian' },
+    { id: '11', value: selectedTepat.value.includes('tepat_waktu'), type_value: 'valueBoolean', str_code: 'tepat_waktu', kode: '3.11', question: 'Apakah sudah tepat waktu pemberian?', label: 'Tepat Waktu' }
+  ]
+
   const form = {
     norm: props.item.norm,
     noreg: props.item.noreg,
     noresep: props.item.noresep,
     apoteker: apoteker.value,
     administrasi: administrasi.value,
-    farmasi_klinis: farmasiKlinises.value,
+    farmasi_klinis: klinisSaved,
     komponen_resep: komponenReseps.value
   }
   emits('simpan', { item: props.item, form })
@@ -288,7 +322,25 @@ function onShow () {
   if (props.item?.telaah) {
     administrasi.value = props.item?.telaah?.administrasi
     komponenReseps.value = props.item?.telaah?.komponen_resep
-    farmasiKlinises.value = props.item?.telaah?.farmasi_klinis
+    
+    const loadedKlinis = props.item?.telaah?.farmasi_klinis || []
+    farmasiKlinises.value = loadedKlinis.filter(x => !x.str_code.startsWith('tepat_'))
+
+    const tempTepat = []
+    const tepatKeys = ['tepat_pasien', 'tepat_obat', 'tepat_dosis', 'tepat_rute', 'tepat_waktu']
+    const hasTepat = loadedKlinis.some(x => x.str_code === 'tepat_pasien')
+    if (hasTepat) {
+      tepatKeys.forEach(k => {
+        const target = loadedKlinis.find(x => x.str_code === k)
+        if (target && target.value === true) {
+          tempTepat.push(k)
+        }
+      })
+    } else {
+      tempTepat.push(...tepatKeys)
+    }
+    selectedTepat.value = tempTepat
+
     apoteker.value = props.item?.telaah?.apoteker?.toString()
   }
   else {
@@ -309,5 +361,6 @@ function onHide () {
   farmasiKlinises.value.forEach(f => {
     f.value = false
   })
+  selectedTepat.value = ['tepat_pasien', 'tepat_obat', 'tepat_dosis', 'tepat_rute', 'tepat_waktu']
 }
 </script>

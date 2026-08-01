@@ -17,3 +17,9 @@
    * `DaftarTilikOkDialog.vue` (Kamar Operasi) -> ✅ SUDAH DITERAPKAN
    * `daftartilik/IndexPage.vue` & `CetakDaftarTilikDialog.vue` (Daftar Tilik Ranap) -> ✅ SUDAH DITERAPKAN
    * `FormPenandaan.vue` & `PreviewPenandaan.vue` (IC Penandaan Ranap) -> ✅ SUDAH DITERAPKAN (Menggunakan `body-marker-irna37.webp`)
+
+## 📝 Aturan Commit Git
+* Setiap kali diperintahkan melakukan commit, gunakan format pesan commit berikut:
+  * **`feat : (deskripsi)`** -> Untuk penambahan fitur baru (new feature).
+  * **`wip : (deskripsi)`** -> Untuk pekerjaan yang belum selesai (work-in-progress).
+  * **`rev : (deskripsi)`** -> Untuk perubahan/perbaikan/modifikasi kode (modification/bug fixes).

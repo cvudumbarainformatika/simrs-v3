@@ -579,7 +579,7 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
           //   this.items = data
           // }
           if (!data?.length) this.items = []
-          this.meta = resp?.data?.data ? resp?.data : {}
+          this.meta = resp?.data?.meta ?? (resp?.data?.data ? resp?.data : {})
           this.metanirinci()
         })
         .catch(() => {
