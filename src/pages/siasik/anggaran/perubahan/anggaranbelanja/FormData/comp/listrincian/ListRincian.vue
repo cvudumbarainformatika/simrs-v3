@@ -245,7 +245,7 @@ function deleteData(row) {
         // carisrt.refreshTable()
         if (store.rincians?.length === 0) {
           store.initForm()
-
+          store.disableSaved = false
         }
         // console.log('data hapus', store.transall)
       })

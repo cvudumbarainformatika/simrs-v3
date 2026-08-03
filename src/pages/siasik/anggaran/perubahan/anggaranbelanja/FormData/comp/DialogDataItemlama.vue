@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="model" persistent>
-    <q-card class="col">
+    <q-card style="width: 1200px; max-width: 95vw; height: 90vh;" class="column">
 
       <!-- HEADER -->
       <q-card-section class="row items-center bg-grey-2">
@@ -14,7 +14,7 @@
       <q-separator />
 
       <!-- BODY -->
-      <q-card-section class="q-pa-none">
+      <q-card-section class="q-pa-none col overflow-auto">
         <q-list bordered separator>
 
           <q-item v-for="item in rincianByKegiatan" :key="item.id" class="q-px-md q-my-sm">
@@ -109,17 +109,17 @@
                 <div class="col-12">
                   <div class="row q-col-gutter-sm">
                     <app-input-simrs class="col-3" label="Volume Baru" v-model="item.tmp_volumebaru"
-                      :disable="store.disabled" outlined dense :valid="{ number: true }"
+                      :disable="store.disabled" outlined dense :valid="item.tmp_touched ? { number: true } : false"
                       @update:model-value="val => updateVolume(item, val)" />
                     <app-input-simrs class="col-3" label="Harga Baru" v-model="item.tmp_hargabaru"
-                      :disable="store.disabled" outlined dense :valid="{ number: true }"
+                      :disable="store.disabled" outlined dense :valid="item.tmp_touched ? { number: true } : false"
                       @update:model-value="val => updateHarga(item, val)" />
                     <app-input-simrs class="col-3" label="Total Baru" readonly
                       :model-value="formattanpaRp(item.tmp_totalbaru || 0)" :disable="store.disabled" outlined dense />
                     <div class="justify-center q-pl-sm q-pt-md">
                       <q-btn color="primary" type="button" size="sm" round dense icon="check"
-                        :disable="!validItem(item) || store.loadingSave || !item.tmp_totalbaru"
-                        :loading="item.loadingSave" @click="tetapkan(item)">
+                        :disable="!validItem(item) || store.loadingSave" :loading="item.loadingSave"
+                        @click="tetapkan(item)">
                         <q-tooltip>
                           Simpan Rincian
                         </q-tooltip>
@@ -139,6 +139,32 @@
           </q-item>
 
         </q-list>
+
+
+      </q-card-section>
+
+      <q-separator />
+
+
+      <!-- PAGINATION FIX -->
+      <q-card-section class="q-pa-md">
+
+        <div class="row items-center justify-between">
+
+          <q-btn outline icon="chevron_left" label="Sebelumnya" @click="store.prevBarangLama()"
+            :disable="!store.metaBarangLama.prev_page_url" />
+
+
+          <div class="text-caption">
+            Halaman {{ store.metaBarangLama.current_page }}
+          </div>
+
+
+          <q-btn outline icon-right="chevron_right" label="Berikutnya" @click="store.nextBarangLama()"
+            :disable="!store.metaBarangLama.next_page_url" />
+
+        </div>
+
       </q-card-section>
     </q-card>
   </q-dialog>
@@ -171,6 +197,8 @@ const model = computed({
 
 
 function updateVolume(item, val) {
+  item.tmp_touched = true
+
   const volume = Number(String(val || '0').replace(/^0+/, '')) || 0
 
   item.tmp_volumebaru = volume
@@ -179,6 +207,7 @@ function updateVolume(item, val) {
 }
 
 function updateHarga(item, val) {
+  item.tmp_touched = true
   const harga = Number(String(val || '0').replace(/^0+/, '')) || 0
 
   item.tmp_hargabaru = harga
@@ -207,12 +236,15 @@ const rincianByKegiatan = computed(() => {
 const validItem = (item) => {
   return (
     item.tmp_kode50 ||
-    (item.tmp_kode108 || item.koderek108 === ' ') ||
-    item.tmp_totalbaru > 0
+    (item.tmp_kode108 || item.koderek108 === ' ')
+    || item.tmp_totalbaru >= 0 || (item.tmp_volumebaru === 0 && item.tmp_hargabaru === 0)
   )
 }
 
 const $q = useQuasar()
+
+
+
 /* simpan */
 const tetapkan = async (item) => {
   // console.log('item xxx', item)
@@ -247,22 +279,38 @@ const tetapkan = async (item) => {
   store.form.paguterakhir = item.pagu
   store.form.npdbelumcair = 0
   store.form.pagualokasi = item.sisapagu
-
-  // store.form.nousulan = item.notrans
-
+  console.log('VERSI VALIDASI BARU')
   const nilaiLama = store.rincians
     ?.reduce((sum, r) => sum + Number(r.nilai || 0), 0)
 
-  const nilaiBaru = Number(item.volumebaru || 0) * Number(item.hargabaru || 0)
+  const nilaiBaru = Number(item.tmp_totalbaru || 0)
+  if (nilaiBaru <= 0) {
+
+    $q.notify({
+      type: 'negative',
+      message: 'Volume dan Harga Baru harus diisi terlebih dahulu'
+    })
+
+    item.loadingSave = false
+    return
+  }
   const realisasi = Number(item.total_realisasi || 0)
-  // console.log('pagu', realisasi)
-  // console.log('baru', nilaiBaru)
-  if (nilaiLama + nilaiBaru < realisasi) {
+  const totalBaru = nilaiLama + nilaiBaru
+  console.log({
+    nilaiLama,
+    nilaiBaru,
+    totalBaru,
+    realisasi
+  })
+  if (totalBaru < realisasi) {
     $q.notify({
       type: 'negative',
       message: 'Total Baru yang diinput kurang dari Realisasi'
     })
     item.loadingSave = false
+    item.tmp_hargabaru = null
+    item.tmp_volumebaru = null
+    item.tmp_totalbaru = 0
     return
   }
   // console.log('foooormssss', store.form)

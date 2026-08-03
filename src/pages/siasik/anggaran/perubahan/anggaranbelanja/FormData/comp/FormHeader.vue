@@ -180,7 +180,8 @@ const PilihKegiatan = async (val) => {
   store.form.targethasil = cari ? cari.targethasil : ''
 
   await store.getBarangslama()
-
+  // console.log('bforms lama', store.form)
+  // console.log('cari lama', cari)
 }
 
 const paguDisplay = computed({
