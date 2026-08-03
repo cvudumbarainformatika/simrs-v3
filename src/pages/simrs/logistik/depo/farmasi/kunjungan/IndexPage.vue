@@ -30,9 +30,22 @@
             color="white"
             dense
             placeholder="Cari Pasien ..."
-            debounce="500"
-            @update:model-value="store.getData()"
-          />
+            @keyup.enter="store.getData()"
+          >
+            <template v-slot:append>
+              <q-icon
+                v-if="store.params.q"
+                name="clear"
+                class="cursor-pointer"
+                @click="store.params.q = ''; store.getData()"
+              />
+              <q-icon
+                name="search"
+                class="cursor-pointer"
+                @click="store.getData()"
+              />
+            </template>
+          </q-input>
         </div>
 
         <!-- Custom Period Filter -->

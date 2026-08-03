@@ -63,7 +63,6 @@ export const useKunjunganPasienDepoStore = defineStore('kunjungan_pasien_depo', 
         this.params.to = date.formatDate(lastday, 'YYYY-MM-DD')
       }
       this.params.page = 1
-      this.getData()
     },
     async getData () {
       this.loading = true

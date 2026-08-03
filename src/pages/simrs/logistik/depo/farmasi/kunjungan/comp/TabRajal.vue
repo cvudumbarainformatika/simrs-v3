@@ -69,34 +69,19 @@
           </q-item-label>
         </q-item-section>
 
-        <!-- Actions Section -->
-        <q-item-section side class="justify-center">
-          <q-btn
-            color="primary"
-            label="E-Resep"
-            icon="receipt"
-            size="sm"
-            no-caps
-            class="q-px-md"
-            style="min-width: 120px;"
-            @click="bukaEresep(item)"
-          />
-        </q-item-section>
+
       </q-item>
     </q-list>
   </div>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
 import { dateFullFormat, formatJam } from 'src/modules/formatter'
 
 const props = defineProps({
   items: { type: Array, default: () => [] },
   loading: { type: Boolean, default: false }
 })
-
-const router = useRouter()
 
 function getStatus (val) {
   if (val === '') {
@@ -108,16 +93,6 @@ function getStatus (val) {
   } else {
     return 'TIDAK HADIR'
   }
-}
-
-function bukaEresep (item) {
-  router.push({
-    path: '/depo/farmasi/eresep',
-    query: {
-      noreg: item.noreg,
-      norm: item.norm
-    }
-  })
 }
 </script>
 
