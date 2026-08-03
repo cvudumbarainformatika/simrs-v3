@@ -43,6 +43,7 @@ export const listDataNpdlsStore = defineStore('list_data_npdls', {
     },
     listdatanpd() {
       this.loading = true
+      this.datanpd = []
       const params = { params: this.params }
       return new Promise((resolve, reject) => {
         api.get('/v1/transaksi/belanja_ls/listnpdls', params)
