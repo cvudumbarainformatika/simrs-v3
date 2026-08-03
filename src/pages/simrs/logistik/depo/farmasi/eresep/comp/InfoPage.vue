@@ -102,7 +102,7 @@
           </div>
           <div class="print-hide">
             <q-option-group v-model="store.formInfo.status_penanya" class="print-hide" :options="store.statuses"
-              inline />
+              inline @update:model-value="onStatusPenanyaChanged" />
           </div>
         </div>
       </div>
@@ -139,7 +139,7 @@
         </div>
       </div>
       <!-- kehamilan -->
-      <div class="row q-px-xs items-center">
+      <div v-if="store.formInfo.jenis_kelamin !== 'Laki-Laki'" class="row q-px-xs items-center">
         <div class="col-auto" style="width:18%;">
           Kehamilan
         </div>
@@ -186,12 +186,12 @@
           </div>
           <div class="print-hide">
             <q-option-group v-model="store.formInfo.jenis_kelamin" class="print-hide" :options="store.kelamins"
-              inline />
+              inline @update:model-value="onGenderChanged" />
           </div>
         </div>
       </div>
       <!-- menyusui -->
-      <div class="row q-px-xs">
+      <div v-if="store.formInfo.jenis_kelamin !== 'Laki-Laki'" class="row q-px-xs">
         <div class="col-auto" style="width:18%;">
           Menyusui
         </div>
@@ -310,7 +310,7 @@
   </div>
 </template>
 <script setup>
-// import { onMounted } from 'vue'
+import { onMounted } from 'vue'
 import { useEResepDepoFarmasiStore } from 'src/stores/simrs/farmasi/eresep/eresep'
 import { date } from 'quasar'
 
@@ -354,9 +354,29 @@ function simpan () {
   console.log('form', store.formInfo)
   store.simpanPelayananInfoObat()
 }
-// onMounted(() => {
-//   store.getApoteker()
-// })
+
+function onGenderChanged (val) {
+  if (val === 'Laki-Laki') {
+    store.setFormInfo('kehamilan', '2')
+    store.setFormInfo('menyusui', '2')
+  }
+}
+
+function onStatusPenanyaChanged (val) {
+  if (val === '1') {
+    const patientName = store.selectedPasien?.nama ?? store.selectedPasien?.datapasien?.nama ?? ''
+    const patientPhone = store.selectedPasien?.nohp ?? store.selectedPasien?.datapasien?.nohp ?? ''
+    store.setFormInfo('nama_penanya', patientName)
+    store.setFormInfo('tlp_penanya', patientPhone)
+  } else {
+    store.setFormInfo('nama_penanya', '')
+    store.setFormInfo('tlp_penanya', '')
+  }
+}
+
+onMounted(() => {
+  store.getApoteker()
+})
 </script>
 <style lang="scss" scoped>
 .garis-luar {

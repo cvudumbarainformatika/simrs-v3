@@ -296,21 +296,32 @@
         </div>
       </div>
     </q-card>
+
+    <!-- InfoPage PIO Dialog -->
+    <app-fullscreen-blue v-model="eresepStore.isInfo" @close="eresepStore.closeInfo">
+      <template #default>
+        <InfoPage />
+      </template>
+    </app-fullscreen-blue>
   </q-page>
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, defineAsyncComponent } from 'vue'
 import { useKunjunganPasienDepoStore } from 'src/stores/simrs/farmasi/kunjungan/kunjunganPasien'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useStyledStore } from 'src/stores/app/styled'
+import { useEResepDepoFarmasiStore } from 'src/stores/simrs/farmasi/eresep/eresep'
 import TabRajal from './comp/TabRajal.vue'
 import TabRanap from './comp/TabRanap.vue'
 import TabIgd from './comp/TabIgd.vue'
 
+const InfoPage = defineAsyncComponent(() => import('../eresep/comp/InfoPage.vue'))
+
 const store = useKunjunganPasienDepoStore()
 const appStore = useAplikasiStore()
 const style = useStyledStore()
+const eresepStore = useEResepDepoFarmasiStore()
 
 const showMenuPeriode = ref(false)
 const periods = ['Hari ini', 'Minggu ini', 'Bulan ini', 'Custom']

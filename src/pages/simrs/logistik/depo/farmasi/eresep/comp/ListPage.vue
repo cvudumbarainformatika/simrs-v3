@@ -300,12 +300,7 @@
                     Buka Resep Pasien
                   </q-tooltip>
                 </q-btn>
-                <!-- info -->
-                <q-btn square class="f-10" color="yellow" text-color="green" label="Info" no-caps @click="info(item)">
-                  <q-tooltip class="primary" :offset="[10, 10]">
-                    Pelayanan Informasi Obat
-                  </q-tooltip>
-                </q-btn>
+
                 <!-- tolak -->
 
                 <q-btn v-if="(parseInt(item?.flag) <= 2 && (!item?.doneresep && !item?.doneracik)) || item?.flag === ''"
@@ -552,10 +547,7 @@ function buka (val) {
   // if (val?.expand === undefined) val.expand = true
   // else val.expand = !val.expand
 }
-function info (val) {
-  store.openInfo()
-  store.setInfo(val)
-}
+
 function alasan (val) {
   store.isAlasan = true
   if (val.flag === '5') store.isTolak = true

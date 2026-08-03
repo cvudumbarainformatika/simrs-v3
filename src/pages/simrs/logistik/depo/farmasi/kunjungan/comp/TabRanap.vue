@@ -70,7 +70,24 @@
           </q-item-label>
         </q-item-section>
 
-
+        <!-- Actions Section -->
+        <q-item-section side class="justify-center">
+          <q-btn
+            color="warning"
+            text-color="dark"
+            label="Info PIO"
+            icon="info"
+            size="sm"
+            no-caps
+            class="q-px-md"
+            style="min-width: 100px;"
+            @click="info(item)"
+          >
+            <q-tooltip class="bg-warning text-dark" :offset="[10, 10]">
+              Pelayanan Informasi Obat (PIO)
+            </q-tooltip>
+          </q-btn>
+        </q-item-section>
       </q-item>
     </q-list>
   </div>
@@ -78,11 +95,19 @@
 
 <script setup>
 import { dateFullFormat } from 'src/modules/formatter'
+import { useEResepDepoFarmasiStore } from 'src/stores/simrs/farmasi/eresep/eresep'
 
 const props = defineProps({
   items: { type: Array, default: () => [] },
   loading: { type: Boolean, default: false }
 })
+
+const eresepStore = useEResepDepoFarmasiStore()
+
+function info (item) {
+  eresepStore.openInfo()
+  eresepStore.setInfo(item)
+}
 </script>
 
 <style scoped>
