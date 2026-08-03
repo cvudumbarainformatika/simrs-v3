@@ -44,6 +44,7 @@
 <script setup>
 import { useStyledStore } from 'src/stores/app/styled'
 import { defineAsyncComponent, watch, onMounted, computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import { useEResepDepoFarmasiStore } from 'src/stores/simrs/farmasi/eresep/eresep'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { laravelEcho } from 'src/modules/newsockets'
@@ -61,6 +62,7 @@ const ListPengunjung = defineAsyncComponent(() => import('./comp/listPengunjung/
 const style = useStyledStore()
 const store = useEResepDepoFarmasiStore()
 const apps = useAplikasiStore()
+const route = useRoute()
 function alasanClose () {
   store.isAlasan = false
   store.isTolak = false
@@ -179,6 +181,13 @@ function bukaList () {
 onMounted(() => {
   setting.getPenunjang()
   store.getApoteker()
+  
+  if (route.query.norm) {
+    store.setParams('q', route.query.norm)
+  } else if (route.query.noreg) {
+    store.setParams('q', route.query.noreg)
+  }
+
   const depo = store.depos.filter(a => a.value === apps?.user?.kdruangansim)
   if (depo?.length) {
     store.setParams('kddepo', apps?.user?.kdruangansim)
