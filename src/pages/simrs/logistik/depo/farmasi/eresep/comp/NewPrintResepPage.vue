@@ -157,6 +157,60 @@
           <div class="ttd-pasien">
             <div>Penerima Resep</div>
           </div>
+
+          <!-- Checkboxes (Telaah 5 Tepat) & Double Check - Clear, readable size for ribbon printer -->
+          <div class="column text-left text-weight-bold q-pa-xs self-end" style="border: 1.5px solid black; gap: 3px; font-size: 13px; line-height: 1.3; min-width: 150px;">
+            <div class="text-center" style="font-size: 11px; border-bottom: 1.5px solid black; padding-bottom: 2px; margin-bottom: 2px;">TELAAH OBAT</div>
+            
+            <div class="row items-center no-wrap">
+              <div style="border: 1.5px solid black; width: 13px; height: 13px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; margin-right: 6px; line-height: 1;">
+                {{ getTepat('tepat_pasien') ? '✓' : '' }}
+              </div>
+              <span>Tepat Pasien</span>
+            </div>
+            <div class="row items-center no-wrap">
+              <div style="border: 1.5px solid black; width: 13px; height: 13px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; margin-right: 6px; line-height: 1;">
+                {{ getTepat('tepat_obat') ? '✓' : '' }}
+              </div>
+              <span>Tepat Obat</span>
+            </div>
+            <div class="row items-center no-wrap">
+              <div style="border: 1.5px solid black; width: 13px; height: 13px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; margin-right: 6px; line-height: 1;">
+                {{ getTepat('tepat_dosis') ? '✓' : '' }}
+              </div>
+              <span>Tepat Dosis</span>
+            </div>
+            <div class="row items-center no-wrap">
+              <div style="border: 1.5px solid black; width: 13px; height: 13px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; margin-right: 6px; line-height: 1;">
+                {{ getTepat('tepat_rute') ? '✓' : '' }}
+              </div>
+              <span>Tepat Rute</span>
+            </div>
+            <div class="row items-center no-wrap">
+              <div style="border: 1.5px solid black; width: 13px; height: 13px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; margin-right: 6px; line-height: 1;">
+                {{ getTepat('tepat_waktu') ? '✓' : '' }}
+              </div>
+              <span>Tepat Waktu</span>
+            </div>
+
+            <!-- Double Check -->
+            <div style="border-top: 1.5px solid black; width: 100%; padding-top: 4px; margin-top: 2px;">
+              <div style="font-size: 11px;">Double Check :</div>
+              <div class="row no-wrap justify-between text-center q-mt-xs" style="font-size: 9px; line-height: 1.1;">
+                <div class="column items-center q-mr-sm">
+                  <span>Petugas 1</span>
+                  <div style="height: 18px;"></div>
+                  <span>( .................. )</span>
+                </div>
+                <div class="column items-center">
+                  <span>Petugas 2</span>
+                  <div style="height: 18px;"></div>
+                  <span style="text-decoration: underline;">{{ apotekerName || '( apt. ............ )' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="ttd-petugas">
             <div>{{ dateFullFormat(new Date()) }} : {{ formatJam(new Date()) }}</div>
             <div>
@@ -182,11 +236,29 @@
 import { api } from 'src/boot/axios'
 import { dateFull, dateFullFormat, formatDouble, formatJam } from 'src/modules/formatter'
 import { computed, ref } from 'vue'
+import { useEResepDepoFarmasiStore } from 'src/stores/simrs/farmasi/eresep/eresep'
 
+const store = useEResepDepoFarmasiStore()
 const emits = defineEmits(['close'])
 const props = defineProps({
   item: { type: Object, default: () => { } }
 })
+
+const apotekerName = computed(() => {
+  const kd = props.item?.telaah?.apoteker
+  if (!kd) return ''
+  const found = store.apotekers?.find(x => x.kdpegsimrs === kd)
+  return found ? found.nama : ''
+})
+
+function getTepat (key) {
+  const loadedKlinis = props.item?.telaah?.farmasi_klinis || []
+  const target = loadedKlinis.find(x => x.str_code === key)
+  if (target) {
+    return target.value === true || target.value === 1 || target.value === '1' || target.value === 'true'
+  }
+  return false
+}
 
 
 function onShow () {

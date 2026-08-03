@@ -4,6 +4,7 @@ import { api } from 'src/boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
 import { notifErrVue, notifSuccess, notifSuccessVue } from 'src/modules/utils'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
+import { useKunjunganPasienDepoStore } from 'src/stores/simrs/farmasi/kunjungan/kunjunganPasien'
 // import { usePrintEresepStore } from './printesep'
 
 export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
@@ -54,6 +55,7 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
     adaCopys: {},
     historys: {},
     formInfo: {},
+    selectedPasien: null,
     metodes: [
       { label: 'Lisan', value: '1' },
       { label: 'Telepon', value: '2' },
@@ -112,9 +114,11 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
     closeInfo () {
       this.isInfo = false
       this.formInfo = {}
+      this.selectedPasien = null
     },
     setInfo (val) {
       // // console.log('set info', val)
+      this.selectedPasien = val
       const apps = useAplikasiStore()
       // const info = Object.keys(val?.info)?.length <= 0 || !val?.info
       // // console.log('set info', info)
@@ -124,10 +128,22 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
         this.setFormInfo('tanggal', date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss'))
         this.setFormInfo('tgl', date.formatDate(Date.now(), 'DD MMMM YYYY'))
         this.setFormInfo('metode', '1')
-        this.setFormInfo('nama_penanya', '')
-        this.setFormInfo('status_penanya', '3')
-        this.setFormInfo('umur_pasien', val?.datapasien?.usia)
+
+        const patientName = val?.nama ?? val?.datapasien?.nama ?? ''
+        const patientPhone = val?.nohp ?? val?.datapasien?.nohp ?? ''
+        this.setFormInfo('status_penanya', '1')
+        this.setFormInfo('nama_penanya', patientName)
+        this.setFormInfo('tlp_penanya', patientPhone)
+
+        this.setFormInfo('umur_pasien', val?.datapasien?.usia ?? val?.usia)
+
+        const gender = val?.kelamin ?? val?.datapasien?.kelamin
+        const jk = gender === 'L' ? 'Laki-Laki' : (gender === 'P' ? 'Perempuan' : '')
+        this.setFormInfo('jenis_kelamin', jk)
+
         this.setFormInfo('kehamilan', '2')
+        this.setFormInfo('menyusui', '2')
+
         this.setFormInfo('noreg', val?.noreg)
         this.setFormInfo('norm', val?.norm)
         this.setFormInfo('jenisPertanyaan', [])
@@ -967,6 +983,14 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
 
             this.closeInfo()
             notifSuccess(resp)
+
+            try {
+              const kunjunganStore = useKunjunganPasienDepoStore()
+              kunjunganStore.getData()
+            } catch (err) {
+              console.log('kunjunganStore refresh error', err)
+            }
+
             resolve(resp)
           })
           .catch(() => {

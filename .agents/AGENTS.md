@@ -19,6 +19,7 @@
    * `FormPenandaan.vue` & `PreviewPenandaan.vue` (IC Penandaan Ranap) -> ✅ SUDAH DITERAPKAN (Menggunakan `body-marker-irna37.webp`)
 
 ## 📝 Aturan Commit Git
+* **JANGAN PERNAH berinisiatif melakukan commit secara mandiri/otomatis**. Commit hanya boleh dilakukan jika dan hanya jika diinstruksikan secara eksplisit oleh USER.
 * Setiap kali diperintahkan melakukan commit, gunakan format pesan commit berikut:
   * **`feat : (deskripsi)`** -> Untuk penambahan fitur baru (new feature).
   * **`wip : (deskripsi)`** -> Untuk pekerjaan yang belum selesai (work-in-progress).
