@@ -21,15 +21,21 @@ export const useRbaStore = defineStore('store_rba_siasik', {
     jenis: [{ jenis: 'Rinci Kegiatan', value: '1' }, { jenis: 'Rinci Item', value: '2' }]
   }),
   actions: {
-    getData () {
+    getData() {
       this.loading = true
       const params = { params: this.reqs }
       return new Promise((resolve) => {
         api.get('v1/siasik/rba/getdatarba', params).then((resp) => {
           console.log('Data RBA', resp)
           if (resp.status === 200) {
-            this.datarba = resp.data?.anggaran
-            this.datarbaawal = resp.data?.anggaranawal
+
+            // untuk PAK sementara
+            this.datarba = resp.data?.usulan_pak
+            this.datarbaawal = resp.data?.usulan_awal
+
+            // jika sudah di tetapkan
+            // this.datarba = resp.data?.anggaran
+            // this.datarbaawal = resp.data?.anggaranawal
 
             this.mapingData()
             this.loading = false
@@ -38,7 +44,7 @@ export const useRbaStore = defineStore('store_rba_siasik', {
         }).catch(() => { this.loading = false })
       })
     },
-    mapingData () {
+    mapingData() {
       const rba = []
       const unik1 = this.datarba.concat(this.datarbaawal).map((x) => x.kode1)
       const elunik1 = unik1?.length ? [...new Set(unik1)] : []
