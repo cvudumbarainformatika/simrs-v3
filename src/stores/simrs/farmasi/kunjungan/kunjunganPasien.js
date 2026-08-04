@@ -10,6 +10,9 @@ export const useKunjunganPasienDepoStore = defineStore('kunjungan_pasien_depo', 
     items: [],
     meta: null,
     periode: 'Hari ini',
+    isOpenWorkspace: false,
+    selectedPasien: null,
+    activeMenu: 'edukasi',
     params: {
       q: '',
       from: date.formatDate(Date.now(), 'YYYY-MM-DD'),
@@ -24,6 +27,15 @@ export const useKunjunganPasienDepoStore = defineStore('kunjungan_pasien_depo', 
     }
   }),
   actions: {
+    openWorkspace (pasien) {
+      this.selectedPasien = pasien
+      this.isOpenWorkspace = true
+      this.activeMenu = 'edukasi'
+    },
+    closeWorkspace () {
+      this.isOpenWorkspace = false
+      this.selectedPasien = null
+    },
     setTab (val) {
       this.tab = val
       this.resetParams()

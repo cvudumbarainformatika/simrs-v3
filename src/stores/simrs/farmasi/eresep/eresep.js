@@ -981,14 +981,22 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
           .then(resp => {
             this.loadingPelayananInfoObat = false
 
-            this.closeInfo()
-            notifSuccess(resp)
-
             try {
               const kunjunganStore = useKunjunganPasienDepoStore()
-              kunjunganStore.getData()
+              if (kunjunganStore.isOpenWorkspace) {
+                notifSuccess(resp)
+                if (resp.data?.data) {
+                  this.formInfo = { ...this.formInfo, ...resp.data.data }
+                }
+                kunjunganStore.getData()
+              } else {
+                this.closeInfo()
+                notifSuccess(resp)
+              }
             } catch (err) {
               console.log('kunjunganStore refresh error', err)
+              this.closeInfo()
+              notifSuccess(resp)
             }
 
             resolve(resp)

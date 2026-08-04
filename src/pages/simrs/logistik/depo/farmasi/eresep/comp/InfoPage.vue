@@ -1,357 +1,206 @@
 <template>
-  <div class="full-height full-width">
-    <div class="row justify-end print-hide">
-      <q-btn round class="f-10 q-mr-sm" color="dark" text-color="white" icon="icon-mat-print" @click="toPrint()">
-        <q-tooltip class="primary" :offset="[10, 10]">
-          Print
-        </q-tooltip>
-      </q-btn>
+  <div class="full-width q-pa-sm">
+    <!-- Title and Actions Header -->
+    <div class="row justify-between items-center q-mb-md print-hide sticky-header">
+      <div class="text-h6 text-teal text-weight-bold">Pelayanan Informasi Obat (PIO)</div>
+      <div class="row q-gutter-sm">
+        <q-btn color="dark" icon="print" label="Cetak PIO" no-caps @click="toPrint()" />
+        <q-btn
+          color="teal"
+          icon="save"
+          label="Simpan PIO"
+          no-caps
+          :loading="store.loadingPelayananInfoObat"
+          :disable="store.loadingPelayananInfoObat"
+          @click="simpan()"
+        />
+      </div>
     </div>
-    <div class="q-ma-sm garis-luar">
-      <div class="row garis-bawah q-pa-xs text-weight-bold justify-center f-16">
-        PELAYANAN INFORMASI OBAT
-      </div>
-      <!-- hari -->
-      <div class="row q-px-xs">
-        <div class="col-auto" style="width:18%;">
-          Hari
-        </div>
-        <div class="col-auto" style="width:2%;">
-          :
-        </div>
-        <div class="col-auto" style="width:80%;">
-          {{ store.formInfo?.hari }}
-        </div>
-      </div>
-      <!-- tanggal -->
-      <div class="row q-px-xs items-center">
-        <div class="col-auto" style="width:18%;">
-          Tanggal
-        </div>
-        <div class="col-auto" style="width:2%;">
-          :
-        </div>
-        <div class="col-auto print-hide" style="width:80%;">
-          <app-input-date-human :model="store.formInfo.tgl" label="Tanggal" outlined @set-display="dispTanggal"
-            @db-model="setTanggal" />
-        </div>
-        <div class="col-auto print-only" style="width:80%;">
-          {{ store.formInfo.tgl }}
-        </div>
-      </div>
-      <!-- waktu -->
-      <div class="row q-px-xs">
-        <div class="col-auto" style="width:18%;">
-          Waktu
-        </div>
-        <div class="col-auto" style="width:2%;">
-          :
-        </div>
-        <div class="col-auto" style="width:80%;">
-          {{ store.formInfo?.waktu }}
-        </div>
-      </div>
-      <!-- Metode -->
-      <div class="row q-px-xs items-center">
-        <div class="col-auto" style="width:18%;">
-          Metode
-        </div>
-        <div class="col-auto" style="width:2%;">
-          :
-        </div>
-        <div class="col-auto" style="width:80%;">
-          <div class="print-only">
-            {{ cariStatus(store.formInfo.metode) }}
-          </div>
-          <div class="print-hide">
-            <q-option-group v-model="store.formInfo.metode" class="print-hide" :options="store.metodes" inline />
-          </div>
-        </div>
-      </div>
-      <div class="row text-weight-bold q-mt-md">
-        Identitas Penanya :
-      </div>
-      <!-- nama penanya -->
-      <div class="row q-px-xs items-center">
-        <div class="col-auto" style="width:18%;">
-          Nama
-        </div>
-        <div class="col-auto" style="width:2%;">
-          :
-        </div>
-        <div class="col-auto" style="width:80%;">
-          <div class="print-only">
-            {{ store.formInfo.nama_penanya }}
-          </div>
-          <div class="print-hide">
-            <app-input ref="refNamaPenanya" v-model="store.formInfo.nama_penanya" label="Nama" outlined />
-          </div>
-        </div>
-      </div>
-      <!-- status penanya -->
-      <div class="row q-px-xs items-center">
-        <div class="col-auto" style="width:18%;">
-          Status
-        </div>
-        <div class="col-auto" style="width:2%;">
-          :
-        </div>
-        <div class="col-auto" style="width:80%;">
-          <div class="print-only">
-            {{ cariStatus(store.formInfo.status_penanya) }}
-          </div>
-          <div class="print-hide">
-            <q-option-group v-model="store.formInfo.status_penanya" class="print-hide" :options="store.statuses"
-              inline @update:model-value="onStatusPenanyaChanged" />
-          </div>
-        </div>
-      </div>
-      <!-- tlp penanya -->
-      <div class="row q-px-xs items-center">
-        <div class="col-auto" style="width:18%;">
-          Nomor Telepon
-        </div>
-        <div class="col-auto" style="width:2%;">
-          :
-        </div>
-        <div class="col-auto" style="width:80%;">
-          <div class="print-only">
-            {{ store.formInfo.tlp_penanya }}
-          </div>
-          <div class="print-hide">
-            <app-input ref="refNamaPenanya" v-model="store.formInfo.tlp_penanya" label="Telepon" outlined />
-          </div>
-        </div>
-      </div>
-      <div class="row text-weight-bold q-mt-md">
-        Data Pasien :
-      </div>
-      <!-- umur pasien -->
-      <div class="row q-px-xs">
-        <div class="col-auto" style="width:18%;">
-          Umur
-        </div>
-        <div class="col-auto" style="width:2%;">
-          :
-        </div>
-        <div class="col-auto" style="width:80%;">
-          {{ store.formInfo?.umur_pasien }}
-        </div>
-      </div>
-      <!-- kehamilan -->
-      <div v-if="store.formInfo.jenis_kelamin !== 'Laki-Laki'" class="row q-px-xs items-center">
-        <div class="col-auto" style="width:18%;">
-          Kehamilan
-        </div>
-        <div class="col-auto" style="width:2%;">
-          :
-        </div>
-        <div class="col-auto" style="width:80%;">
-          <div class="print-only">
-            {{ cariYN(store.formInfo.kehamilan) }}
-          </div>
-          <div class="print-hide">
-            <q-option-group v-model="store.formInfo.kehamilan" class="print-hide" :options="store.yns" inline />
-          </div>
-        </div>
-      </div>
-      <!-- kasus khusus -->
-      <div class="row q-px-xs">
-        <div class="col-auto" style="width:18%;">
-          Kasus Khusus
-        </div>
-        <div class="col-auto" style="width:2%;">
-          :
-        </div>
-        <div class="col-auto" style="width:80%;">
-          <div class="print-only">
-            {{ store.formInfo.kasus_khusus }}
-          </div>
-          <div class="print-hide">
-            <app-input ref="refKasusKhusus" v-model="store.formInfo.kasus_khusus" label="Kasus Khusus" outlined />
-          </div>
-        </div>
-      </div>
-      <!-- jenis kelamin -->
-      <div class="row q-px-xs">
-        <div class="col-auto" style="width:18%;">
-          Jenis Kelamin
-        </div>
-        <div class="col-auto" style="width:2%;">
-          :
-        </div>
-        <div class="col-auto" style="width:80%;">
-          <div class="print-only">
-            {{ cariKelamin(store.formInfo.jenis_kelamin) }}
-          </div>
-          <div class="print-hide">
-            <q-option-group v-model="store.formInfo.jenis_kelamin" class="print-hide" :options="store.kelamins"
-              inline @update:model-value="onGenderChanged" />
-          </div>
-        </div>
-      </div>
-      <!-- menyusui -->
-      <div v-if="store.formInfo.jenis_kelamin !== 'Laki-Laki'" class="row q-px-xs">
-        <div class="col-auto" style="width:18%;">
-          Menyusui
-        </div>
-        <div class="col-auto" style="width:2%;">
-          :
-        </div>
-        <div class="col-auto" style="width:80%;">
-          <div class="print-only">
-            {{ cariYN(store.formInfo.menyusui) }}
-          </div>
-          <div class="print-hide">
-            <q-option-group v-model="store.formInfo.menyusui" class="print-hide" :options="store.yns" inline />
-          </div>
-        </div>
-      </div>
-      <div class="row text-weight-bold q-mt-md">
-        Obat Non Eresep :
-      </div>
-      <div class="row q-ml-sm">
-        <div class="col-12">
-          <div class="">
-            <q-input ref="refNamaPenanya" v-model="store.formInfo.obat_non_eresep"
-              label="Obat yang diberikan di luar e-resep :" autogrow />
-          </div>
-        </div>
-      </div>
-      <div class="row text-weight-bold q-mt-md">
-        Pertanyaan :
-      </div>
-      <div class="row q-ml-sm">
-        <div class="col-12">
-          <div class="">
-            <q-input ref="refNamaPenanya" v-model="store.formInfo.uraian_pertanyaan" label="Uraian Pertanyaan :"
-              autogrow />
-          </div>
-        </div>
-      </div>
-      <div class="row text-weight-bold q-mt-md">
-        Jenis Pertanyaan :
-      </div>
-      <div class="row q-col-gutter-sm q-ml-xs">
-        <q-option-group v-model="store.formInfo.jenisPertanyaan" type="checkbox" :options="store.jenisPertanyaans"
-          inline @update:model-value="(val) => {
-            store.formInfo.kode = []
-            if (val?.length > 0) {
-              val?.forEach(anu => {
-                const ada = store.jenisPertanyaans?.find(x => x.value === anu)
-                if (ada) {
-                  store.formInfo.kode.push(ada)
-                }
-              })
-            }
-            console.log('val', val, store.formInfo.kode);
 
-          }" />
+    <!-- Form Container -->
+    <div class="bg-white q-pa-lg shadow-1 border-radius-4 col column q-gutter-y-md print-hide">
+      
+      <!-- Section 1: Informasi Pelayanan -->
+      <div class="row q-col-gutter-md">
+        <div class="col-12 text-subtitle2 text-weight-bold text-teal text-uppercase">1. Informasi Pelayanan</div>
+        <div class="col-12 col-sm-3">
+          <q-input v-model="store.formInfo.hari" label="Hari" outlined readonly dense />
+        </div>
+        <div class="col-12 col-sm-3">
+          <app-input-date-human
+            :model="store.formInfo.tgl"
+            label="Tanggal"
+            outlined
+            dense
+            @set-display="dispTanggal"
+            @db-model="setTanggal"
+          />
+        </div>
+        <div class="col-12 col-sm-3">
+          <q-input v-model="store.formInfo.waktu" label="Waktu" outlined readonly dense />
+        </div>
+        <div class="col-12 col-sm-3 column justify-center">
+          <div class="text-weight-bold f-10 text-grey-7 q-mb-xs">Metode Hubungan:</div>
+          <q-option-group v-model="store.formInfo.metode" :options="store.metodes" inline color="teal" dense />
+        </div>
       </div>
-      <div class="row text-weight-bold q-mt-md">
-        Jawaban :
+
+      <q-separator />
+
+      <!-- Section 2: Identitas Penanya -->
+      <div class="row q-col-gutter-md">
+        <div class="col-12 text-subtitle2 text-weight-bold text-teal text-uppercase">2. Identitas Penanya</div>
+        <div class="col-12 col-sm-4">
+          <app-input v-model="store.formInfo.nama_penanya" label="Nama Penanya" outlined dense />
+        </div>
+        <div class="col-12 col-sm-4">
+          <app-input v-model="store.formInfo.tlp_penanya" label="Nomor Telepon" outlined dense />
+        </div>
+        <div class="col-12 col-sm-4 column justify-center">
+          <div class="text-weight-bold f-10 text-grey-7 q-mb-xs">Status Penanya:</div>
+          <q-option-group
+            v-model="store.formInfo.status_penanya"
+            :options="store.statuses"
+            inline
+            color="teal"
+            dense
+            @update:model-value="onStatusPenanyaChanged"
+          />
+        </div>
       </div>
-      <div class="row q-ml-sm">
+
+      <q-separator />
+
+      <!-- Section 3: Kondisi Klinis Pasien -->
+      <div class="row q-col-gutter-md">
+        <div class="col-12 text-subtitle2 text-weight-bold text-teal text-uppercase">3. Kondisi Klinis Pasien</div>
+        <div class="col-12 col-sm-3">
+          <q-input v-model="store.formInfo.umur_pasien" label="Umur Pasien" outlined readonly dense />
+        </div>
+        <div class="col-12 col-sm-3 column justify-center">
+          <div class="text-weight-bold f-10 text-grey-7 q-mb-xs">Jenis Kelamin:</div>
+          <q-option-group
+            v-model="store.formInfo.jenis_kelamin"
+            :options="store.kelamins"
+            inline
+            color="teal"
+            dense
+            @update:model-value="onGenderChanged"
+          />
+        </div>
+        <div class="col-12 col-sm-3 column justify-center" v-if="store.formInfo.jenis_kelamin !== 'Laki-Laki'">
+          <div class="text-weight-bold f-10 text-grey-7 q-mb-xs">Kehamilan:</div>
+          <q-option-group v-model="store.formInfo.kehamilan" :options="store.yns" inline color="teal" dense />
+        </div>
+        <div class="col-12 col-sm-3 column justify-center" v-if="store.formInfo.jenis_kelamin !== 'Laki-Laki'">
+          <div class="text-weight-bold f-10 text-grey-7 q-mb-xs">Menyusui:</div>
+          <q-option-group v-model="store.formInfo.menyusui" :options="store.yns" inline color="teal" dense />
+        </div>
         <div class="col-12">
-          <!-- <div class="print-only">
-            {{ store.formInfo.jawaban }}
-          </div> -->
-          <!-- <div class="print-hide"> -->
-          <div class="">
-            <q-input ref="refNamaPenanya" v-model="store.formInfo.jawaban" label="" autogrow />
-          </div>
+          <app-input v-model="store.formInfo.kasus_khusus" label="Kasus Khusus / Keterangan Penyakit Penyerta" outlined dense />
         </div>
       </div>
-      <div class="row text-weight-bold q-mt-md">
-        Referensi :
-      </div>
-      <div class="row q-ml-sm">
+
+      <q-separator />
+
+      <!-- Section 4: Detail Pertanyaan & Jawaban -->
+      <div class="row q-col-gutter-md">
+        <div class="col-12 text-subtitle2 text-weight-bold text-teal text-uppercase">4. Detail Pertanyaan & Jawaban</div>
         <div class="col-12">
-          <!-- <div class="print-only">
-            {{ store.formInfo.refernsi }}
-          </div> -->
-          <!-- <div class="print-hide"> -->
-          <div class="">
-            <q-input ref="refNamaPenanya" v-model="store.formInfo.referensi" label="" autogrow />
-          </div>
+          <q-input v-model="store.formInfo.obat_non_eresep" label="Obat yang diberikan di luar E-Resep (jika ada):" outlined type="textarea" rows="2" />
+        </div>
+        <div class="col-12">
+          <q-input v-model="store.formInfo.uraian_pertanyaan" label="Uraian Pertanyaan:" outlined type="textarea" rows="3" />
+        </div>
+        <div class="col-12 column">
+          <div class="text-weight-bold f-10 text-grey-7 q-mb-xs">Kategori/Jenis Pertanyaan:</div>
+          <q-option-group
+            v-model="store.formInfo.jenisPertanyaan"
+            type="checkbox"
+            :options="store.jenisPertanyaans"
+            inline
+            color="teal"
+            dense
+            @update:model-value="(val) => {
+              store.formInfo.kode = []
+              if (val?.length > 0) {
+                val?.forEach(anu => {
+                  const ada = store.jenisPertanyaans?.find(x => x.value === anu)
+                  if (ada) {
+                    store.formInfo.kode.push(ada)
+                  }
+                })
+              }
+            }"
+          />
+        </div>
+        <div class="col-12">
+          <q-input v-model="store.formInfo.jawaban" label="Uraian Jawaban Apoteker:" outlined type="textarea" rows="3" />
+        </div>
+        <div class="col-12">
+          <q-input v-model="store.formInfo.referensi" label="Referensi Pustaka:" outlined type="textarea" rows="2" />
         </div>
       </div>
-      <div class="row q-my-md">
-        <div class="col-7" />
-        <div class="col-4 text-center text-weight-bold">
-          Apoteker
+
+      <q-separator />
+
+      <!-- Section 5: Penanggung Jawab -->
+      <div class="row q-col-gutter-md">
+        <div class="col-12 text-subtitle2 text-weight-bold text-teal text-uppercase">5. Apoteker Penanggung Jawab</div>
+        <div class="col-12 col-sm-6">
+          <app-autocomplete
+            v-model="store.formInfo.apoteker"
+            label="Pilih Apoteker"
+            autocomplete="nama"
+            option-label="nama"
+            option-value="kdpegsimrs"
+            outlined
+            dense
+            :source="store.apotekers"
+          />
         </div>
-        <div class="col-1" />
       </div>
-      <div class="row q-my-lg" />
-      <div class="row q-my-md">
-        <div class="col-7" />
-        <div class="col-4 text-center">
-          <div class="print-only">
-            {{ cariApoteker(store.formInfo.apoteker) }}
-          </div>
-          <div class="print-hide">
-            <app-autocomplete v-model="store.formInfo.apoteker" label="Apoteker" autocomplete="nama" option-label="nama"
-              option-value="kdpegsimrs" outlined :source="store.apotekers" />
-          </div>
-        </div>
-        <div class="col-1" />
-      </div>
+
     </div>
-    <div class="row justify-end print-hide">
-      <q-btn label="Simpan Pelayanan Informasi Obat" class="q-mr-lg q-mb-lg" color="primary" text-color="white"
-        icon="icon-mat-save" :loading="store.loadingPelayananInfoObat" :disable="store.loadingPelayananInfoObat"
-        @click="simpan()">
-        <q-tooltip class="primary" :offset="[10, 10]">
-          Simpan
-        </q-tooltip>
-      </q-btn>
-    </div>
+
+    <!-- Dialog Cetak/Dokumen PIO -->
+    <CetakPioDialog
+      v-model="isOpenCetakPio"
+      :pasien="store.selectedPasien"
+      :form="store.formInfo"
+      :apotekers="store.apotekers"
+      :jenis-pertanyaans="store.jenisPertanyaans"
+    />
   </div>
 </template>
+
 <script setup>
-import { onMounted } from 'vue'
+import { ref, onMounted, defineAsyncComponent } from 'vue'
 import { useEResepDepoFarmasiStore } from 'src/stores/simrs/farmasi/eresep/eresep'
 import { date } from 'quasar'
 
 const store = useEResepDepoFarmasiStore()
+const isOpenCetakPio = ref(false)
+
+const CetakPioDialog = defineAsyncComponent(() => import('./CetakPioDialog.vue'))
 
 function setTanggal (val) {
   store.setFormInfo('hari', date.formatDate(val, 'dddd'))
   store.setFormInfo('waktu', date.formatDate(Date.now(), 'HH:mm:ss'))
-  store.setFormInfo('tanggal', date.formatDate(val, 'YYYY-MM-DD') + ' ' + store.formInfo.waktu)
   store.setFormInfo('tanggal', val + ' ' + store.formInfo?.waktu)
 }
+
 function dispTanggal (val) {
   store.setFormInfo('tgl', val)
 }
-function cariStatus (val) {
-  const stat = store.statuses.find(st => st.value === val)
-  if (stat) return stat.label
-  else return '-'
-}
-function cariYN (val) {
-  const stat = store.yns.find(st => st.value === val)
-  if (stat) return stat.label
-  else return '-'
-}
-function cariKelamin (val) {
-  const stat = store.kelamins.find(st => st.value === val)
-  if (stat) return stat.label
-  else return '-'
-}
-function cariApoteker (val) {
-  const stat = store.apotekers.find(st => st.kdpegsimrs === val)
-  if (stat) return stat.nama
-  else return '-'
-}
+
 function toPrint () {
-  window.print()
+  isOpenCetakPio.value = true
 }
+
 function simpan () {
   const jenper = store.formInfo.jenisPertanyaan.join('|')
   store.setFormInfo('jenis_pertanyaan', jenper)
-  console.log('form', store.formInfo)
   store.simpanPelayananInfoObat()
 }
 
@@ -378,29 +227,18 @@ onMounted(() => {
   store.getApoteker()
 })
 </script>
+
 <style lang="scss" scoped>
-.garis-luar {
-  border: 1px solid black;
-
+.border-radius-4 {
+  border-radius: 4px;
 }
-
-.garis-atas {
-  border-top: 1px solid black;
-  width: 100%;
-}
-
-.garis-bawah {
-  border-bottom: 1px solid black;
-  width: 100%;
-}
-
-.garis {
-  width: 90%;
-  border-top: 1px dashed black;
-  margin-bottom: 2px;
-}
-
-.garis2 {
-  width: 90%;
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #f5f5f5; /* matches bg-grey-1 parent */
+  margin-top: -24px;
+  padding-top: 24px;
+  padding-bottom: 16px;
 }
 </style>
