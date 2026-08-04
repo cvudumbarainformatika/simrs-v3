@@ -169,6 +169,7 @@
       :pasien="store.selectedPasien"
       :form="store.formInfo"
       :apotekers="store.apotekers"
+      :jenis-pertanyaans="store.jenisPertanyaans"
     />
   </div>
 </template>

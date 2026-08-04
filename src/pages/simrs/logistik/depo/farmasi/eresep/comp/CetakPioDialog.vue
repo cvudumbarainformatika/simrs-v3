@@ -6,7 +6,8 @@ const props = defineProps({
   modelValue: { type: Boolean, default: false },
   pasien: { type: Object, default: null },
   form: { type: Object, default: null },
-  apotekers: { type: Array, default: () => [] }
+  apotekers: { type: Array, default: () => [] },
+  jenisPertanyaans: { type: Array, default: () => [] }
 })
 
 const emit = defineEmits(['update:modelValue'])
@@ -41,6 +42,15 @@ const qrUrl = computed(() => {
   const enc = btoa(`${noreg}|${dok}|${asal}|${kdpeg}`)
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
 })
+
+const getJenisPertanyaanLabels = (keys) => {
+  if (!keys || !Array.isArray(keys)) return '-'
+  return keys.map(k => {
+    if (typeof k === 'object') return k.label || k.nama
+    const found = props.jenisPertanyaans?.find(item => item.value === k || item.label === k)
+    return found ? found.label : k
+  }).join(', ')
+}
 </script>
 
 <template>
@@ -93,7 +103,7 @@ const qrUrl = computed(() => {
                 <td class="bg-grey-2 text-weight-bold">Tgl. Lahir / Usia</td>
                 <td>: {{ pasien?.tgllahir || '-' }} ({{ pasien?.usia || '-' }})</td>
                 <td class="bg-grey-2 text-weight-bold">Jenis Kelamin / SB</td>
-                <td>: {{ pasien?.lp || pasien?.kelamin || '-' }} / {{ pasien?.sistembayar || '-' }}</td>
+                <td>: {{ form?.jenis_kelamin || pasien?.lp || pasien?.kelamin || '-' }} / {{ pasien?.sistembayar || '-' }}</td>
               </tr>
             </tbody>
           </table>
@@ -111,23 +121,33 @@ const qrUrl = computed(() => {
               </tr>
               <tr>
                 <td class="bg-grey-2 text-weight-bold">Metode Pertanyaan</td>
-                <td>{{ form?.metode === '1' ? 'Lisan' : form?.metode === '2' ? 'Tertulis' : form?.metode === '3' ? 'Telepon' : form?.metode || '-' }}</td>
+                <td>{{ form?.metode === '1' ? 'Lisan' : form?.metode === '2' ? 'Telepon' : form?.metode === '3' ? 'Tertulis' : form?.metode || '-' }}</td>
               </tr>
               <tr>
                 <td class="bg-grey-2 text-weight-bold text-teal">Identitas Penanya</td>
                 <td>
                   Nama: <strong>{{ form?.nama_penanya || '-' }}</strong><br>
-                  Status: {{ form?.status_penanya === '1' ? 'Pasien' : form?.status_penanya === '2' ? 'Keluarga Pasien' : form?.status_penanya === '3' ? 'Dokter' : form?.status_penanya === '4' ? 'Perawat' : form?.status_penanya === '5' ? 'Apoteker' : form?.status_penanya || '-' }}<br>
+                  Status: {{ form?.status_penanya === '1' ? 'Pasien' : form?.status_penanya === '2' ? 'Keluarga Pasien' : form?.status_penanya === '3' ? 'Tenaga Kesehatan' : form?.status_penanya || '-' }}<br>
                   No. Telepon: {{ form?.tlp_penanya || '-' }}
                 </td>
               </tr>
               <tr>
                 <td class="bg-grey-2 text-weight-bold text-teal">Kondisi Klinis Pasien</td>
                 <td>
+                  Jenis Kelamin: {{ form?.jenis_kelamin || '-' }}<br>
                   Umur: {{ form?.umur_pasien || '-' }}<br>
                   Kehamilan: {{ form?.kehamilan === '1' ? 'Ya' : 'Tidak' }}<br>
                   Menyusui: {{ form?.menyusui === '1' ? 'Ya' : 'Tidak' }}<br>
                   Kasus Khusus: {{ form?.kasus_khusus || '-' }}
+                </td>
+              </tr>
+              <tr>
+                <td class="bg-grey-2 text-weight-bold">Jenis / Kategori Pertanyaan</td>
+                <td>
+                  <span v-if="form?.jenisPertanyaan?.length">
+                    {{ getJenisPertanyaanLabels(form.jenisPertanyaan) }}
+                  </span>
+                  <span v-else>-</span>
                 </td>
               </tr>
               <tr>
