@@ -132,7 +132,7 @@
             <div class="row items-center q-mb-md print-hide">
               <div class="col-12 col-sm-3 text-weight-bold">Tanggal Edukasi :</div>
               <div class="col-12 col-sm-4">
-                <q-input dense outlined v-model="formEdukasi.tanggal" type="date" />
+                <app-input-date :model="formEdukasi.tanggal" outlined label="Tanggal Edukasi" @set-model="formEdukasi.tanggal = $event" />
               </div>
             </div>
 
@@ -254,36 +254,16 @@
             </div>
           </div>
 
-          <div id="print-area-meso" class="bg-white q-pa-lg shadow-1 border-radius-4">
-            <!-- Kop Cetak (Only visible during printing) -->
-            <div class="print-only text-center q-mb-md">
-              <div class="text-h6 text-weight-bold text-uppercase">FORM MONITORING EFEK SAMPING OBAT (MESO)</div>
-              <div class="text-subtitle2 text-weight-medium">RSUD DOKTER MOHAMAD SALEH - KOTA PROBOLINGGO</div>
-              <q-separator class="q-my-sm" color="black" />
-              <!-- Patient Print Summary Info -->
-              <div class="row q-col-gutter-sm text-left f-11 q-mb-md">
-                <div class="col-6">
-                  Nama Pasien: <b>{{ store.selectedPasien?.nama }}</b><br>
-                  No RM: <b>{{ store.selectedPasien?.norm }}</b><br>
-                  No Reg: <b>{{ store.selectedPasien?.noreg }}</b>
-                </div>
-                <div class="col-6">
-                  Usia / Kelamin: <b>{{ store.selectedPasien?.usia }} / {{ store.selectedPasien?.kelamin }}</b><br>
-                  Poli/Ruangan: <b>{{ store.selectedPasien?.poli ?? store.selectedPasien?.ruangan }}</b><br>
-                  Sistem Bayar: <b>{{ store.selectedPasien?.sistembayar }}</b>
-                </div>
-              </div>
-            </div>
-
+          <div class="bg-white q-pa-lg shadow-1 border-radius-4 column q-gutter-y-md">
+            
+            <!-- Section 1: Informasi Pelayanan -->
             <div class="row q-col-gutter-md">
-              <!-- Tanggal Monitoring -->
+              <div class="col-12 text-subtitle2 text-weight-bold text-teal text-uppercase">1. Informasi Pelayanan & Pelapor</div>
               <div class="col-12 col-sm-6">
                 <div class="text-weight-bold text-teal q-mb-xs">Tanggal Monitoring :</div>
-                <q-input dense outlined v-model="formMeso.tanggal" type="date" />
+                <app-input-date :model="formMeso.tanggal" outlined label="Tanggal Monitoring" @set-model="formMeso.tanggal = $event" />
               </div>
-
-              <!-- Petugas -->
-              <div class="col-12 col-sm-6 print-hide">
+              <div class="col-12 col-sm-6">
                 <div class="text-weight-bold text-teal q-mb-xs">Nama Petugas Farmasi :</div>
                 <app-autocomplete
                   v-model="formMeso.petugas"
@@ -296,60 +276,238 @@
                   :source="eresepStore.apotekers"
                 />
               </div>
+            </div>
 
-              <!-- Keluhan -->
-              <div class="col-12">
-                <div class="text-weight-bold text-teal q-mb-xs">Keluhan Efek Samping yang Terjadi :</div>
-                <q-input
-                  v-model="formMeso.keluhan"
-                  outlined
-                  type="textarea"
-                  rows="3"
-                  placeholder="Deskripsikan dengan detail keluhan efek samping obat yang dialami pasien..."
-                />
+            <q-separator />
+
+            <!-- Section 2: Demografi & Kondisi Pasien -->
+            <div class="row q-col-gutter-md">
+              <div class="col-12 text-subtitle2 text-weight-bold text-teal text-uppercase">2. Demografi & Kondisi Pasien</div>
+              <div class="col-12 col-sm-3">
+                <q-input dense outlined v-model="formMeso.detail.bb" label="Berat Badan (kg)" type="number" />
               </div>
-
-              <!-- Obat yang Dicurigai -->
-              <div class="col-12">
-                <div class="text-weight-bold text-teal q-mb-xs">Obat yang Dicurigai Menimbulkan Efek Samping :</div>
-                <q-input
-                  v-model="formMeso.obat_dicurigai"
-                  outlined
-                  placeholder="Masukkan nama obat, dosis, dan aturan pakai obat yang dicurigai..."
-                />
+              <div class="col-12 col-sm-3">
+                <q-input dense outlined v-model="formMeso.detail.suku" label="Suku Bangsa" />
               </div>
-
-              <!-- Tindakan yang Diambil -->
-              <div class="col-12">
-                <div class="text-weight-bold text-teal q-mb-xs">Tindakan / Penanganan yang Diambil :</div>
-                <q-input
-                  v-model="formMeso.tindakan_diambil"
-                  outlined
-                  type="textarea"
-                  rows="3"
-                  placeholder="Masukkan tindakan medis / farmakologis yang telah diberikan..."
-                />
+              <div class="col-12 col-sm-3">
+                <q-input dense outlined v-model="formMeso.detail.pekerjaan" label="Pekerjaan" />
               </div>
-
-              <!-- Kondisi Akhir / Outcome -->
-              <div class="col-12">
-                <div class="text-weight-bold text-teal q-mb-xs">Kondisi Akhir Pasien / Outcome :</div>
-                <q-input
-                  v-model="formMeso.outcome"
-                  outlined
-                  placeholder="Contoh: Sembuh tanpa gejala sisa, membaik, keluhan berlanjut, obat dihentikan, dll..."
+              <div class="col-12 col-sm-3 column justify-center" v-if="store.selectedPasien?.kelamin !== 'L'">
+                <div class="text-weight-bold f-10 text-grey-7 q-mb-xs">Kehamilan:</div>
+                <q-option-group
+                  v-model="formMeso.detail.kehamilan"
+                  :options="[
+                    { label: 'Hamil', value: 'hamil' },
+                    { label: 'Tidak Hamil', value: 'tidak_hamil' },
+                    { label: 'Tidak Tahu', value: 'tidak_tahu' }
+                  ]"
+                  inline
+                  color="teal"
+                  dense
                 />
               </div>
             </div>
 
-            <!-- Print Signatures Names -->
-            <div class="print-only row justify-end q-mt-xl" style="font-size: 11px;">
-              <div class="text-center" style="width: 250px;">
-                Probolinggo, {{ formMeso.tanggal ? dateFullFormat(formMeso.tanggal) : '.....................' }}<br>
-                Petugas Farmasi yang Melaporkan,<br><br><br><br>
-                <u><b>( {{ formMeso.petugas || '..................................' }} )</b></u>
+            <q-separator />
+
+            <!-- Section 3: Diagnosis & Penyakit Utama -->
+            <div class="row q-col-gutter-md">
+              <div class="col-12 text-subtitle2 text-weight-bold text-teal text-uppercase">3. Diagnosis & Penyakit Utama</div>
+              <div class="col-12">
+                <q-input outlined v-model="formMeso.detail.penyakit_utama" label="Penyakit Utama (Diagnosis Utama):" type="textarea" rows="2" />
+              </div>
+              <div class="col-12 col-sm-6 column justify-center">
+                <div class="text-weight-bold f-10 text-grey-7 q-mb-xs">Kondisi Penyakit Utama :</div>
+                <q-option-group
+                  v-model="formMeso.detail.kondisi_penyakit_utama"
+                  :options="[
+                    { label: 'Sembuh', value: 'sembuh' },
+                    { label: 'Sembuh dg Gejala Sisa', value: 'sembuh_gejala_sisa' },
+                    { label: 'Belum Sembuh', value: 'belum_sembuh' },
+                    { label: 'Meninggal', value: 'meninggal' },
+                    { label: 'Tidak Tahu', value: 'tidak_tahu' }
+                  ]"
+                  inline
+                  color="teal"
+                  dense
+                />
+              </div>
+              <div class="col-12 col-sm-6">
+                <div class="text-weight-bold f-10 text-grey-7 q-mb-xs">Penyakit / Kondisi yang Menyertai :</div>
+                <div class="row q-gutter-md items-center">
+                  <q-checkbox v-model="formMeso.detail.penyakit_penyerta_chk.gangguan_ginjal" label="Gangguan Ginjal" color="teal" />
+                  <q-checkbox v-model="formMeso.detail.penyakit_penyerta_chk.gangguan_hati" label="Gangguan Hati" color="teal" />
+                  <q-checkbox v-model="formMeso.detail.penyakit_penyerta_chk.alergi" label="Alergi" color="teal" />
+                </div>
+                <q-input dense outlined v-model="formMeso.detail.kondisi_lain" label="Kondisi Lain-lain (jika ada):" class="q-mt-sm" />
               </div>
             </div>
+
+            <q-separator />
+
+            <!-- Section 4: Efek Samping Obat (ESO) -->
+            <div class="row q-col-gutter-md">
+              <div class="col-12 text-subtitle2 text-weight-bold text-teal text-uppercase">4. Manifestasi Efek Samping Obat (ESO)</div>
+              <div class="col-12">
+                <q-input outlined v-model="formMeso.keluhan" label="Bentuk / Manifestasi ESO / Keluhan Lain:" type="textarea" rows="3" placeholder="Deskripsikan dengan detail keluhan efek samping obat yang dialami pasien..." />
+              </div>
+              <div class="col-12 col-sm-6">
+                <q-input outlined v-model="formMeso.detail.mutu_obat" label="Keterangan Mutu / Kualitas Produk Obat (jika ada):" type="textarea" rows="2" />
+              </div>
+              <div class="col-12 col-sm-6 column justify-center">
+                <div class="text-weight-bold f-10 text-grey-7 q-mb-xs">Kesudahan ESO (Outcome):</div>
+                <q-option-group
+                  v-model="formMeso.detail.kesudahan_eso"
+                  :options="[
+                    { label: 'Sembuh', value: 'sembuh' },
+                    { label: 'Sembuh dg Gejala Sisa', value: 'sembuh_gejala_sisa' },
+                    { label: 'Belum Sembuh', value: 'belum_sembuh' },
+                    { label: 'Meninggal', value: 'meninggal' },
+                    { label: 'Tidak Tahu', value: 'tidak_tahu' }
+                  ]"
+                  inline
+                  color="teal"
+                  dense
+                  @update:model-value="(val) => formMeso.outcome = val"
+                />
+              </div>
+              <div class="col-12">
+                <q-input outlined v-model="formMeso.detail.riwayat_eso" label="Riwayat ESO yang Pernah Dialami Sebelumnya:" type="textarea" rows="2" />
+              </div>
+            </div>
+
+            <q-separator />
+
+            <!-- Section 5: Tindakan & Data Laboratorium -->
+            <div class="row q-col-gutter-md">
+              <div class="col-12 text-subtitle2 text-weight-bold text-teal text-uppercase">5. Tindakan Medis & Pemeriksaan Lab</div>
+              <div class="col-12">
+                <q-input outlined v-model="formMeso.tindakan_diambil" label="Tindakan / Penanganan yang Diambil untuk Mengatasi ESO:" type="textarea" rows="2" />
+              </div>
+              <div class="col-12 col-sm-8">
+                <q-input outlined v-model="formMeso.detail.data_lab" label="Data Laboratorium Pendukung (jika ada):" type="textarea" rows="2" />
+              </div>
+              <div class="col-12 col-sm-4">
+                <div class="text-weight-bold text-teal q-mb-xs">Tanggal Pemeriksaan Lab:</div>
+                <app-input-date :model="formMeso.detail.tgl_pemeriksaan_lab" outlined label="Tgl Periksa" @set-model="formMeso.detail.tgl_pemeriksaan_lab = $event" />
+              </div>
+            </div>
+
+            <q-separator />
+
+            <!-- Section 6: Dynamic Medication Table -->
+            <div class="row q-col-gutter-md">
+              <div class="col-12 text-subtitle2 text-weight-bold text-teal text-uppercase">6. Daftar Penggunaan Obat Selama Monitoring</div>
+              <div class="col-12">
+                <div class="row justify-between items-center q-mb-sm">
+                  <div class="text-caption text-grey-7">Daftar obat yang dikonsumsi pasien, beri tanda ceklis pada kolom **Dicurigai** jika obat tersebut dicurigai pemicu ESO.</div>
+                  <q-btn color="teal" icon="add" label="Tambah Baris Obat" no-caps dense class="q-px-sm" @click="tambahObat()" />
+                </div>
+                <q-markup-table dense flat bordered class="bg-white">
+                  <thead>
+                    <tr class="bg-teal-1 text-teal text-weight-bold">
+                      <th width="3%">No</th>
+                      <th width="20%">Nama Obat</th>
+                      <th width="10%">Bentuk Sediaan</th>
+                      <th width="8%">No. Bets</th>
+                      <th width="6%">Dicurigai?</th>
+                      <th width="10%">Cara Pemberian</th>
+                      <th width="8%">Waktu</th>
+                      <th width="8%">Dosis</th>
+                      <th width="10%">Tgl Mulai</th>
+                      <th width="10%">Tgl Akhir</th>
+                      <th width="12%">Indikasi</th>
+                      <th width="5%">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(obat, index) in formMeso.detail.penggunaan_obat" :key="index">
+                      <td class="text-center">{{ index + 1 }}</td>
+                      <td><q-input v-model="obat.nama" dense outlined /></td>
+                      <td><q-input v-model="obat.sediaan" dense outlined /></td>
+                      <td><q-input v-model="obat.bets" dense outlined /></td>
+                      <td class="text-center"><q-checkbox v-model="obat.dicurigai" color="teal" @update:model-value="(val) => { if (val) formMeso.obat_dicurigai = obat.nama }" /></td>
+                      <td><q-input v-model="obat.cara" dense outlined /></td>
+                      <td><q-input v-model="obat.waktu" dense outlined /></td>
+                      <td><q-input v-model="obat.dosis" dense outlined /></td>
+                      <td><app-input-date :model="obat.tgl_mulai" outlined label="Mulai" @set-model="obat.tgl_mulai = $event" /></td>
+                      <td><app-input-date :model="obat.tgl_akhir" outlined label="Akhir" @set-model="obat.tgl_akhir = $event" /></td>
+                      <td><q-input v-model="obat.indikasi" dense outlined /></td>
+                      <td class="text-center">
+                        <q-btn flat round color="red" icon="delete" size="sm" dense @click="hapusObat(index)" />
+                      </td>
+                    </tr>
+                    <tr v-if="!formMeso.detail.penggunaan_obat?.length">
+                      <td colspan="12" class="text-center text-grey-5 q-py-md">Belum ada data obat. Silakan klik tombol **Tambah Baris Obat**.</td>
+                    </tr>
+                  </tbody>
+                </q-markup-table>
+              </div>
+            </div>
+
+            <q-separator />
+
+            <!-- Section 7: Lain-lain -->
+            <div class="row q-col-gutter-md">
+              <div class="col-12 text-subtitle2 text-weight-bold text-teal text-uppercase">7. Keterangan Tambahan Lain-lain</div>
+              <div class="col-12 col-sm-4">
+                <q-input dense outlined v-model="formMeso.detail.kecepatan_eso" label="Kecepatan timbulnya efek samping obat:" />
+              </div>
+              <div class="col-12 col-sm-4">
+                <q-input dense outlined v-model="formMeso.detail.reaksi_dihentikan" label="Reaksi efek samping setelah obat dihentikan:" />
+              </div>
+              <div class="col-12 col-sm-4">
+                <q-input dense outlined v-model="formMeso.detail.pengobatan_eso" label="Tindakan/Pengobatan untuk mengatasi efek samping:" />
+              </div>
+            </div>
+
+            <q-separator />
+
+            <!-- Section 8: Algoritma Naranjo -->
+            <div class="row q-col-gutter-md">
+              <div class="col-12 text-subtitle2 text-weight-bold text-teal text-uppercase">8. Algoritma Naranjo (Evaluasi Kausalitas)</div>
+              <div class="col-12">
+                <q-markup-table dense flat bordered class="bg-white">
+                  <thead>
+                    <tr class="bg-teal-1 text-teal text-weight-bold">
+                      <th width="3%">No</th>
+                      <th class="text-left">Pertanyaan Evaluasi</th>
+                      <th width="12%">Ya</th>
+                      <th width="12%">Tidak</th>
+                      <th width="12%">Tidak Tahu</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(q, idx) in NaranjoQuestions" :key="q.key">
+                      <td class="text-center">{{ idx + 1 }}</td>
+                      <td class="text-left text-wrap">{{ q.label }}</td>
+                      <td class="text-center">
+                        <q-radio v-model="formMeso.detail.naranjo[q.key]" val="Ya" color="teal" />
+                      </td>
+                      <td class="text-center">
+                        <q-radio v-model="formMeso.detail.naranjo[q.key]" val="Tidak" color="teal" />
+                      </td>
+                      <td class="text-center">
+                        <q-radio v-model="formMeso.detail.naranjo[q.key]" val="Tidak Tahu" color="teal" />
+                      </td>
+                    </tr>
+                    <tr class="bg-grey-2">
+                      <td colspan="2" class="text-right text-weight-bold">TOTAL SKOR NARANJO :</td>
+                      <td colspan="3" class="text-center text-h6 text-teal text-weight-bold">{{ naranjoScore }}</td>
+                    </tr>
+                    <tr class="bg-grey-3">
+                      <td colspan="2" class="text-right text-weight-bold">HASIL EVALUASI (KAUSALITAS):</td>
+                      <td colspan="3" class="text-center text-weight-bold text-uppercase">
+                        <q-badge :color="naranjoScore >= 9 ? 'red' : naranjoScore >= 5 ? 'amber-9' : naranjoScore >= 1 ? 'teal' : 'grey-7'" class="q-px-md q-py-xs text-subtitle2">
+                          {{ hasilEvaluasi }} (Skor: {{ naranjoScore }})
+                        </q-badge>
+                      </td>
+                    </tr>
+                  </tbody>
+                </q-markup-table>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -364,7 +522,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, defineAsyncComponent, nextTick } from 'vue'
+import { ref, reactive, onMounted, defineAsyncComponent, nextTick, computed, watch } from 'vue'
 import { api } from 'src/boot/axios'
 import { useKunjunganPasienDepoStore } from 'src/stores/simrs/farmasi/kunjungan/kunjunganPasien'
 import { useEResepDepoFarmasiStore } from 'src/stores/simrs/farmasi/eresep/eresep'
@@ -411,8 +569,153 @@ const formMeso = reactive({
   obat_dicurigai: '',
   tindakan_diambil: '',
   outcome: '',
-  petugas: ''
+  petugas: '',
+  detail: {
+    bb: '',
+    suku: '',
+    pekerjaan: '',
+    kehamilan: 'tidak_hamil',
+    penyakit_utama: '',
+    penyakit_penyerta_chk: {
+      gangguan_ginjal: false,
+      gangguan_hati: false,
+      alergi: false
+    },
+    kondisi_lain: '',
+    kondisi_penyakit_utama: 'sembuh',
+    mutu_obat: '',
+    kesudahan_eso: 'sembuh',
+    riwayat_eso: '',
+    data_lab: '',
+    tgl_pemeriksaan_lab: '',
+    penggunaan_obat: [],
+    kecepatan_eso: '',
+    reaksi_dihentikan: '',
+    pengobatan_eso: '',
+    naranjo: {
+      q1: 'Tidak Tahu',
+      q2: 'Tidak Tahu',
+      q3: 'Tidak Tahu',
+      q4: 'Tidak Tahu',
+      q5: 'Tidak Tahu',
+      q6: 'Tidak Tahu',
+      q7: 'Tidak Tahu',
+      q8: 'Tidak Tahu',
+      q9: 'Tidak Tahu',
+      q10: 'Tidak Tahu'
+    },
+    hasil_evaluasi: 'Meragukan'
+  }
 })
+
+const NaranjoQuestions = [
+  { key: 'q1', label: 'Apakah terdapat laporan lengkap tentang reaksi tersebut sebelumnya?' },
+  { key: 'q2', label: 'Apakah kejadian yang tidak dikehendaki muncul setelah obat yang dicurigai digunakan?' },
+  { key: 'q3', label: 'Apakah ROTD membaik ketika obat dihentikan atau setelah pemberian suatu antagonis yang spesifik?' },
+  { key: 'q4', label: 'Apakah ROTD muncul kembali setelah obatnya digunakan kembali?' },
+  { key: 'q5', label: 'Adakah penyebab lain yang dapat menyebabkan reaksi dengan sendirinya?' },
+  { key: 'q6', label: 'Apakah reaksi muncul kembali setelah pemberian plasebo?' },
+  { key: 'q7', label: 'Apakah kadar obat dalam darah berada dalam rentang yang dianggap toksik?' },
+  { key: 'q8', label: 'Apakah reaksi menjadi lebih parah ketika dosis ditingkatkan atau menjadi kurang parah ketika dosis diturunkan?' },
+  { key: 'q9', label: 'Apakah pasien memiliki reaksi serupa terhadap obat-obatan yang sama atau serupa pada paparan sebelumnya?' },
+  { key: 'q10', label: 'Apakah ROTD telah dipastikan dengan suatu bukti yang objektif? (misal: hasil uji laboratorium, dsb)?' }
+]
+
+const naranjoScore = computed(() => {
+  const n = formMeso.detail?.naranjo
+  if (!n) return 0
+  let score = 0
+
+  if (n.q1 === 'Ya') score += 1
+  if (n.q2 === 'Ya') score += 2; else if (n.q2 === 'Tidak') score -= 1
+  if (n.q3 === 'Ya') score += 1; else if (n.q3 === 'Tidak') score -= 1
+  if (n.q4 === 'Ya') score += 2; else if (n.q4 === 'Tidak') score -= 1
+  if (n.q5 === 'Ya') score -= 1; else if (n.q5 === 'Tidak') score += 2
+  if (n.q6 === 'Ya') score -= 1
+  if (n.q7 === 'Ya') score += 1
+  if (n.q8 === 'Ya') score += 1
+  if (n.q9 === 'Ya') score += 1
+  if (n.q10 === 'Ya') score += 1
+
+  return score
+})
+
+const hasilEvaluasi = computed(() => {
+  const s = naranjoScore.value
+  if (s >= 9) return 'Pasti'
+  if (s >= 5 && s <= 8) return 'Lebih Mungkin'
+  if (s >= 1 && s <= 4) return 'Mungkin'
+  return 'Meragukan'
+})
+
+watch(hasilEvaluasi, (newVal) => {
+  if (formMeso.detail) {
+    formMeso.detail.hasil_evaluasi = newVal
+  }
+}, { immediate: true })
+
+const tambahObat = () => {
+  if (!formMeso.detail.penggunaan_obat) {
+    formMeso.detail.penggunaan_obat = []
+  }
+  formMeso.detail.penggunaan_obat.push({
+    nama: '',
+    sediaan: '',
+    bets: '',
+    dicurigai: false,
+    cara: '',
+    waktu: '',
+    dosis: '',
+    tgl_mulai: '',
+    tgl_akhir: '',
+    indikasi: ''
+  })
+}
+
+const hapusObat = (index) => {
+  if (formMeso.detail.penggunaan_obat) {
+    formMeso.detail.penggunaan_obat.splice(index, 1)
+  }
+}
+
+const resetMesoDetail = () => {
+  formMeso.detail = {
+    bb: '',
+    suku: '',
+    pekerjaan: '',
+    kehamilan: 'tidak_hamil',
+    penyakit_utama: '',
+    penyakit_penyerta_chk: {
+      gangguan_ginjal: false,
+      gangguan_hati: false,
+      alergi: false
+    },
+    kondisi_lain: '',
+    kondisi_penyakit_utama: 'sembuh',
+    mutu_obat: '',
+    kesudahan_eso: 'sembuh',
+    riwayat_eso: '',
+    data_lab: '',
+    tgl_pemeriksaan_lab: '',
+    penggunaan_obat: [],
+    kecepatan_eso: '',
+    reaksi_dihentikan: '',
+    pengobatan_eso: '',
+    naranjo: {
+      q1: 'Tidak Tahu',
+      q2: 'Tidak Tahu',
+      q3: 'Tidak Tahu',
+      q4: 'Tidak Tahu',
+      q5: 'Tidak Tahu',
+      q6: 'Tidak Tahu',
+      q7: 'Tidak Tahu',
+      q8: 'Tidak Tahu',
+      q9: 'Tidak Tahu',
+      q10: 'Tidak Tahu'
+    },
+    hasil_evaluasi: 'Meragukan'
+  }
+}
 
 const edukasiItems = [
   { key: 'indikasi', label: 'Indikasi / Kegunaan Obat' },
@@ -496,6 +799,15 @@ async function loadMeso() {
       if (resp.data.tanggal) {
         formMeso.tanggal = resp.data.tanggal.substring(0, 10)
       }
+      if (resp.data.detail) {
+        if (typeof resp.data.detail === 'string') {
+          formMeso.detail = JSON.parse(resp.data.detail)
+        } else {
+          formMeso.detail = { ...formMeso.detail, ...resp.data.detail }
+        }
+      } else {
+        resetMesoDetail()
+      }
     } else {
       resetMesoForm()
     }
@@ -510,6 +822,7 @@ function resetMesoForm() {
   formMeso.tindakan_diambil = ''
   formMeso.outcome = ''
   formMeso.petugas = localStorage.getItem('nama_petugas') ?? ''
+  resetMesoDetail()
 }
 
 // Saving Data to Backend

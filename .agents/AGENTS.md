@@ -24,3 +24,7 @@
   * **`feat : (deskripsi)`** -> Untuk penambahan fitur baru (new feature).
   * **`wip : (deskripsi)`** -> Untuk pekerjaan yang belum selesai (work-in-progress).
   * **`rev : (deskripsi)`** -> Untuk perubahan/perbaikan/modifikasi kode (modification/bug fixes).
+
+## 💅 Aturan Desain & Layout UI (Quasar)
+* **JANGAN PERNAH menggunakan prop `dense` pada input bertipe `textarea` (atau autogrow)**. Penggunaan `dense` pada `textarea` membuat baris input sangat sempit dan tidak estetis. Sebagai gantinya, hilangkan prop `dense` dan batasi baris input menggunakan atribut `rows="..."` (misal: `rows="2"` atau `rows="3"`).
+* **JANGAN PERNAH menggunakan raw `<q-input type="date">`**. Selalu gunakan komponen kustom global **`<app-input-date>`** untuk seluruh input tanggal (dengan format `:model="..."` dan `@set-model="... = $event"`).
