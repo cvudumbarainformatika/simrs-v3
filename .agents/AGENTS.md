@@ -18,6 +18,9 @@
    * `daftartilik/IndexPage.vue` & `CetakDaftarTilikDialog.vue` (Daftar Tilik Ranap) -> ✅ SUDAH DITERAPKAN
    * `FormPenandaan.vue` & `PreviewPenandaan.vue` (IC Penandaan Ranap) -> ✅ SUDAH DITERAPKAN (Menggunakan `body-marker-irna37.webp`)
 
+4. **Aturan Database / Migrasi (Kompatibilitas MySQL 5)**:
+   * **JANGAN PERNAH menggunakan tipe data `JSON` pada migrasi database di project ini**. Karena server menggunakan MySQL versi 5 yang belum mendukung tipe JSON, gunakan tipe data **`TEXT`** atau **`LONGTEXT`** untuk seluruh kolom yang menyimpan data objek/JSON.
+
 ## 📝 Aturan Commit Git
 * **JANGAN PERNAH berinisiatif melakukan commit secara mandiri/otomatis**. Commit hanya boleh dilakukan jika dan hanya jika diinstruksikan secara eksplisit oleh USER.
 * Setiap kali diperintahkan melakukan commit, gunakan format pesan commit berikut:
