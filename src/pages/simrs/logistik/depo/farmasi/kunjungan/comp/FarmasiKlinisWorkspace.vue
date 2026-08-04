@@ -193,33 +193,19 @@
                 </div>
               </div>
 
-              <!-- Signature Canvas -->
+              <!-- Signature Component -->
               <div class="col-12 col-md-6 column items-center">
                 <div class="text-weight-bold text-teal q-mb-sm align-self-start">Tanda Tangan Penerima / Pengambil Obat :</div>
-                <div class="relative-position print-hide" style="border: 2px dashed #008080; border-radius: 4px; width: 100%; max-width: 350px; background-color: #f9f9f9;">
-                  <canvas
-                    ref="canvasRef"
-                    width="346"
-                    height="180"
-                    style="cursor: crosshair; display: block;"
-                    @mousedown="startDrawing"
-                    @mousemove="draw"
-                    @mouseup="stopDrawing"
-                    @mouseleave="stopDrawing"
-                    @touchstart="startDrawingTouch"
-                    @touchmove="drawTouch"
-                    @touchend="stopDrawing"
-                  ></canvas>
-                  <q-btn
-                    round
-                    color="negative"
-                    icon="clear"
-                    size="sm"
-                    class="absolute-top-right q-ma-xs"
-                    @click="clearCanvas"
-                  >
-                    <q-tooltip>Bersihkan Tanda Tangan</q-tooltip>
-                  </q-btn>
+                <div class="print-hide full-width" style="max-width: 350px;">
+                  <app-signature
+                    :ttd="formEdukasi.tanda_tangan"
+                    @save-ttd="(val) => formEdukasi.tanda_tangan = val"
+                    :pasien="store.selectedPasien"
+                    uuid="edukasifarmasi"
+                    label-ttd="Tanda Tangan Penerima / Pengambil Obat"
+                    :width="350"
+                    :height="180"
+                  />
                 </div>
                 <!-- Display Signature on Print -->
                 <div class="print-only border q-pa-sm text-center" style="width: 250px; height: 120px;">
@@ -366,10 +352,6 @@ const store = useKunjunganPasienDepoStore()
 const eresepStore = useEResepDepoFarmasiStore()
 const $q = useQuasar()
 
-// Signature Drawing Properties
-const canvasRef = ref(null)
-const isDrawing = ref(false)
-
 // Form States
 const formEdukasi = reactive({
   tanggal: new Date().toISOString().substring(0, 10),
@@ -425,9 +407,6 @@ function setMenu(val) {
     eresepStore.setInfo(store.selectedPasien)
   } else if (val === 'edukasi') {
     loadEdukasi()
-    nextTick(() => {
-      initCanvas()
-    })
   } else if (val === 'meso') {
     loadMeso()
   }
@@ -447,10 +426,6 @@ async function loadEdukasi() {
       })
       if (resp.data.tanggal) {
         formEdukasi.tanggal = resp.data.tanggal.substring(0, 10)
-      }
-      // Draw signature to canvas if exists
-      if (formEdukasi.tanda_tangan) {
-        drawSignatureToCanvas(formEdukasi.tanda_tangan)
       }
     } else {
       resetEdukasiForm()
@@ -479,7 +454,6 @@ function resetEdukasiForm() {
   formEdukasi.penerima = ''
   formEdukasi.tanda_tangan = ''
   formEdukasi.petugas = localStorage.getItem('nama_petugas') ?? ''
-  clearCanvas()
 }
 
 async function loadMeso() {
@@ -510,13 +484,6 @@ function resetMesoForm() {
 
 // Saving Data to Backend
 async function simpanEdukasi() {
-  // Compress signature canvas to data url
-  if (canvasRef.value) {
-    if (!isCanvasBlank()) {
-      formEdukasi.tanda_tangan = canvasRef.value.toDataURL('image/webp', 0.5)
-    }
-  }
-
   const payload = {
     ...formEdukasi,
     norm: store.selectedPasien?.norm,
@@ -569,99 +536,6 @@ async function simpanMeso() {
   } finally {
     $q.loading.hide()
   }
-}
-
-// Drawing Canvas Signatures Functionalities
-function initCanvas() {
-  const canvas = canvasRef.value
-  if (!canvas) return
-  const ctx = canvas.getContext('2d')
-  ctx.strokeStyle = '#000000'
-  ctx.lineWidth = 3
-  ctx.lineCap = 'round'
-}
-
-function startDrawing(e) {
-  isDrawing.value = true
-  draw(e)
-}
-
-function draw(e) {
-  if (!isDrawing.value) return
-  const canvas = canvasRef.value
-  const ctx = canvas.getContext('2d')
-  const rect = canvas.getBoundingClientRect()
-  const x = e.clientX - rect.left
-  const y = e.clientY - rect.top
-
-  if (e.type === 'mousedown') {
-    ctx.beginPath()
-    ctx.moveTo(x, y)
-  } else {
-    ctx.lineTo(x, y)
-    ctx.stroke()
-  }
-}
-
-function startDrawingTouch(e) {
-  isDrawing.value = true
-  const canvas = canvasRef.value
-  const ctx = canvas.getContext('2d')
-  const rect = canvas.getBoundingClientRect()
-  const touch = e.touches[0]
-  const x = touch.clientX - rect.left
-  const y = touch.clientY - rect.top
-  ctx.beginPath()
-  ctx.moveTo(x, y)
-  e.preventDefault()
-}
-
-function drawTouch(e) {
-  if (!isDrawing.value) return
-  const canvas = canvasRef.value
-  const ctx = canvas.getContext('2d')
-  const rect = canvas.getBoundingClientRect()
-  const touch = e.touches[0]
-  const x = touch.clientX - rect.left
-  const y = touch.clientY - rect.top
-  ctx.lineTo(x, y)
-  ctx.stroke()
-  e.preventDefault()
-}
-
-function stopDrawing() {
-  isDrawing.value = false
-}
-
-function clearCanvas() {
-  const canvas = canvasRef.value
-  if (!canvas) return
-  const ctx = canvas.getContext('2d')
-  ctx.clearRect(0, 0, canvas.width, canvas.height)
-  formEdukasi.tanda_tangan = ''
-}
-
-function isCanvasBlank() {
-  const canvas = canvasRef.value
-  if (!canvas) return true
-  const blank = document.createElement('canvas')
-  blank.width = canvas.width
-  blank.height = canvas.height
-  return canvas.toDataURL() === blank.toDataURL()
-}
-
-function drawSignatureToCanvas(base64Image) {
-  nextTick(() => {
-    const canvas = canvasRef.value
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    const img = new Image()
-    img.src = base64Image
-    img.onload = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-      ctx.drawImage(img, 0, 0)
-    }
-  })
 }
 
 // Print Handler Functionalities
