@@ -303,6 +303,13 @@
         <InfoPage />
       </template>
     </app-fullscreen-blue>
+
+    <!-- Farmasi Klinis Workspace Dialog -->
+    <q-dialog v-model="store.isOpenWorkspace" persistent maximized transition-show="slide-left" transition-hide="fade">
+      <q-card class="column full-height bg-grey-2" style="overflow: hidden;">
+        <FarmasiKlinisWorkspace />
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -317,6 +324,7 @@ import TabRanap from './comp/TabRanap.vue'
 import TabIgd from './comp/TabIgd.vue'
 
 const InfoPage = defineAsyncComponent(() => import('../eresep/comp/InfoPage.vue'))
+const FarmasiKlinisWorkspace = defineAsyncComponent(() => import('./comp/FarmasiKlinisWorkspace.vue'))
 
 const store = useKunjunganPasienDepoStore()
 const appStore = useAplikasiStore()

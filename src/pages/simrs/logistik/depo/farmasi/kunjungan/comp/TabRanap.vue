@@ -73,18 +73,17 @@
         <!-- Actions Section -->
         <q-item-section side class="justify-center">
           <q-btn
-            color="warning"
-            text-color="dark"
-            label="Info PIO"
-            icon="info"
+            color="primary"
+            label="Pelayanan Farmasi"
+            icon="medical_services"
             size="sm"
             no-caps
             class="q-px-md"
-            style="min-width: 100px;"
-            @click="info(item)"
+            style="min-width: 140px;"
+            @click="store.openWorkspace(item)"
           >
-            <q-tooltip class="bg-warning text-dark" :offset="[10, 10]">
-              Pelayanan Informasi Obat (PIO)
+            <q-tooltip class="bg-primary text-white" :offset="[10, 10]">
+              Input Edukasi, PIO, & MESO Pasien
             </q-tooltip>
           </q-btn>
         </q-item-section>
@@ -94,20 +93,15 @@
 </template>
 
 <script setup>
+import { useKunjunganPasienDepoStore } from 'src/stores/simrs/farmasi/kunjungan/kunjunganPasien'
 import { dateFullFormat } from 'src/modules/formatter'
-import { useEResepDepoFarmasiStore } from 'src/stores/simrs/farmasi/eresep/eresep'
 
 const props = defineProps({
   items: { type: Array, default: () => [] },
   loading: { type: Boolean, default: false }
 })
 
-const eresepStore = useEResepDepoFarmasiStore()
-
-function info (item) {
-  eresepStore.openInfo()
-  eresepStore.setInfo(item)
-}
+const store = useKunjunganPasienDepoStore()
 </script>
 
 <style scoped>
