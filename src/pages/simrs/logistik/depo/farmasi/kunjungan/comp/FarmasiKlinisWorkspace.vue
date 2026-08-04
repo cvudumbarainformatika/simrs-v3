@@ -21,23 +21,36 @@
         </div>
       </div>
 
-      <div class="row q-gutter-md text-right text-caption">
-        <div>
-          <div>DPJP: <span class="text-yellow text-weight-bold">{{ store.selectedPasien?.dokter ?? '-' }}</span></div>
-          <div>Unit/Poli: <span class="text-teal-4 text-weight-bold">{{ store.selectedPasien?.poli ?? store.selectedPasien?.ruangan ?? '-' }}</span></div>
+      <div class="row items-center q-gutter-md">
+        <div class="row q-gutter-md text-right text-caption">
+          <div>
+            <div>DPJP: <span class="text-yellow text-weight-bold">{{ store.selectedPasien?.dokter ?? '-' }}</span></div>
+            <div>Unit/Poli: <span class="text-teal-4 text-weight-bold">{{ store.selectedPasien?.poli ?? store.selectedPasien?.ruangan ?? '-' }}</span></div>
+          </div>
+          <q-separator dark vertical />
+          <div>
+            <div>Sistem Bayar: <span class="text-orange text-weight-bold">{{ store.selectedPasien?.sistembayar ?? '-' }}</span></div>
+            <div>Status Pasien: <span class="text-grey-4">{{ getStatus(store.selectedPasien?.status) }}</span></div>
+          </div>
         </div>
         <q-separator dark vertical />
-        <div>
-          <div>Sistem Bayar: <span class="text-orange text-weight-bold">{{ store.selectedPasien?.sistembayar ?? '-' }}</span></div>
-          <div>Status Pasien: <span class="text-grey-4">{{ getStatus(store.selectedPasien?.status) }}</span></div>
-        </div>
+        <q-btn
+          flat
+          round
+          color="white"
+          icon="close"
+          size="md"
+          @click="store.closeWorkspace()"
+        >
+          <q-tooltip class="bg-red text-white text-weight-bold">Tutup Workspace</q-tooltip>
+        </q-btn>
       </div>
     </div>
 
     <!-- Main Workspace Layout -->
     <div class="row no-wrap col" style="overflow: hidden; min-height: 0;">
       <!-- Sidebar Navigation -->
-      <div class="col-auto bg-white border-right shadow-1 column justify-between" style="width: 260px;">
+      <div class="col-auto bg-white border-right shadow-1 column" style="width: 260px;">
         <q-list padding class="text-grey-8">
           <q-item-label header class="text-weight-bold text-uppercase text-grey-6 f-10">Menu Farmasi Klinis</q-item-label>
 
@@ -80,25 +93,13 @@
             <q-item-section>Monitoring ESO (MESO)</q-item-section>
           </q-item>
         </q-list>
-
-        <!-- Footer Exit -->
-        <div class="q-pa-md">
-          <q-btn
-            outline
-            color="negative"
-            label="Tutup Workspace"
-            icon="close"
-            class="full-width"
-            @click="store.closeWorkspace()"
-          />
-        </div>
       </div>
 
       <!-- Content Area -->
       <div class="col column bg-grey-1" style="overflow: auto; min-height: 0;">
         <!-- PANEL EDUKASI FARMASI -->
         <div v-if="store.activeMenu === 'edukasi'" class="q-pa-lg">
-          <div class="row justify-between items-center q-mb-md print-hide">
+          <div class="row justify-between items-center q-mb-md print-hide sticky-header">
             <div class="text-h6 text-teal text-weight-bold">Formulir Edukasi Farmasi</div>
             <div class="row q-gutter-sm">
               <q-btn color="dark" icon="print" label="Cetak Edukasi" no-caps @click="cetakEdukasi()" />
@@ -244,8 +245,8 @@
         </div>
 
         <!-- PANEL MONITORING ESO (MESO) -->
-        <div v-else-if="store.activeMenu === 'meso'" class="q-pa-lg">
-          <div class="row justify-between items-center q-mb-md print-hide">
+        <div v-if="store.activeMenu === 'meso'" class="q-pa-lg">
+          <div class="row justify-between items-center q-mb-md print-hide sticky-header">
             <div class="text-h6 text-teal text-weight-bold">Monitoring Efek Samping Obat (MESO)</div>
             <div class="row q-gutter-sm">
               <q-btn color="dark" icon="print" label="Cetak MESO" no-caps @click="cetakMeso()" />
@@ -588,6 +589,15 @@ onMounted(() => {
 }
 .border-radius-4 {
   border-radius: 4px;
+}
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #f5f5f5; /* matches bg-grey-1 */
+  margin-top: -24px;
+  padding-top: 24px;
+  padding-bottom: 16px;
 }
 
 @media print {

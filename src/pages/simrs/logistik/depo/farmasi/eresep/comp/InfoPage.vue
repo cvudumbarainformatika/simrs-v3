@@ -1,7 +1,7 @@
 <template>
-  <div class="full-height full-width q-pa-sm">
+  <div class="full-width q-pa-sm">
     <!-- Title and Actions Header -->
-    <div class="row justify-between items-center q-mb-md print-hide">
+    <div class="row justify-between items-center q-mb-md print-hide sticky-header">
       <div class="text-h6 text-teal text-weight-bold">Pelayanan Informasi Obat (PIO)</div>
       <div class="row q-gutter-sm">
         <q-btn color="dark" icon="print" label="Cetak PIO" no-caps @click="toPrint()" />
@@ -230,5 +230,14 @@ onMounted(() => {
 <style lang="scss" scoped>
 .border-radius-4 {
   border-radius: 4px;
+}
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #f5f5f5; /* matches bg-grey-1 parent */
+  margin-top: -24px;
+  padding-top: 24px;
+  padding-bottom: 16px;
 }
 </style>
