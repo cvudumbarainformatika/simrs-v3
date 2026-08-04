@@ -189,7 +189,16 @@
 
                 <div class="q-mt-md print-hide">
                   <div class="text-weight-bold text-teal q-mb-sm">Nama Petugas Farmasi :</div>
-                  <q-input v-model="formEdukasi.petugas" outlined dense placeholder="Masukkan nama petugas farmasi..." />
+                  <app-autocomplete
+                    v-model="formEdukasi.petugas"
+                    label="Apoteker / Petugas"
+                    autocomplete="nama"
+                    option-label="nama"
+                    option-value="kdpegsimrs"
+                    outlined
+                    dense
+                    :source="eresepStore.apotekers"
+                  />
                 </div>
               </div>
 
@@ -275,7 +284,16 @@
               <!-- Petugas -->
               <div class="col-12 col-sm-6 print-hide">
                 <div class="text-weight-bold text-teal q-mb-xs">Nama Petugas Farmasi :</div>
-                <q-input dense outlined v-model="formMeso.petugas" placeholder="Masukkan nama petugas..." />
+                <app-autocomplete
+                  v-model="formMeso.petugas"
+                  label="Apoteker / Petugas"
+                  autocomplete="nama"
+                  option-label="nama"
+                  option-value="kdpegsimrs"
+                  outlined
+                  dense
+                  :source="eresepStore.apotekers"
+                />
               </div>
 
               <!-- Keluhan -->
@@ -335,6 +353,12 @@
         </div>
       </div>
     </div>
+
+    <!-- Dialog Cetak/Dokumen Edukasi -->
+    <CetakEdukasiDialog v-model="isOpenCetakEdukasi" :pasien="store.selectedPasien" :form="formEdukasi" :apotekers="eresepStore.apotekers" />
+
+    <!-- Dialog Cetak/Dokumen MESO -->
+    <CetakMesoDialog v-model="isOpenCetakMeso" :pasien="store.selectedPasien" :form="formMeso" :apotekers="eresepStore.apotekers" />
   </div>
 </template>
 
@@ -347,10 +371,15 @@ import { dateFullFormat } from 'src/modules/formatter'
 import { useQuasar } from 'quasar'
 
 const InfoPage = defineAsyncComponent(() => import('../../eresep/comp/InfoPage.vue'))
+const CetakEdukasiDialog = defineAsyncComponent(() => import('./CetakEdukasiDialog.vue'))
+const CetakMesoDialog = defineAsyncComponent(() => import('./CetakMesoDialog.vue'))
 
 const store = useKunjunganPasienDepoStore()
 const eresepStore = useEResepDepoFarmasiStore()
 const $q = useQuasar()
+
+const isOpenCetakEdukasi = ref(false)
+const isOpenCetakMeso = ref(false)
 
 // Form States
 const formEdukasi = reactive({
@@ -540,14 +569,15 @@ async function simpanMeso() {
 
 // Print Handler Functionalities
 function cetakEdukasi() {
-  window.print()
+  isOpenCetakEdukasi.value = true
 }
 
 function cetakMeso() {
-  window.print()
+  isOpenCetakMeso.value = true
 }
 
 onMounted(() => {
+  eresepStore.getApoteker()
   setMenu('edukasi')
 })
 </script>
