@@ -177,7 +177,7 @@ export const useListPenerimaanStore = defineStore('list_penerimaan_store', {
         api.post('v1/simrs/farmasinew/penerimaan/buka-kunci-penerimaan', form)
           .then(resp => {
             delete row.loading
-            row.kunci = resp?.data?.data?.head?.kunci ?? '1'
+            row.kunci = null
             console.log('buka kunci', resp?.data?.data?.head)
             notifSuccess(resp)
             resolve(resp)

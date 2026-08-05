@@ -322,7 +322,7 @@ function kunci (val) {
   toloadBeli.value = val.nopenerimaan
   penerimaan.kunci(val.nopenerimaan).then(() => {
     toloadBeli.value = ''
-    if (!val.flag) val.flag = 1
+    val.kunci = '1'
   })
 }
 store.getInitialData()
