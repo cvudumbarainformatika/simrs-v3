@@ -75,6 +75,11 @@
             </template>
           </q-input>
 
+          <!-- Dashboard Link -->
+          <q-btn flat round dense color="white" icon="icon-mat-space_dashboard" to="/radiologi/dashboard">
+            <q-tooltip>Dasbor Visual Radiologi</q-tooltip>
+          </q-btn>
+
           <!-- Refresh -->
           <q-btn flat round dense color="white" icon="icon-mat-refresh" @click="store.getDataAll()">
             <q-tooltip>Refresh Data</q-tooltip>

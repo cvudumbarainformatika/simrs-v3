@@ -11,16 +11,16 @@ export const useLaporanRadiologiStore = defineStore('laporan_radiologi', {
     loadingDokter: false,
 
     header: {
-      periode: 'Hari ini'
+      periode: 'Bulan ini'
     },
     periods: ['Hari ini', 'Minggu ini', 'Bulan ini', 'Tahun ini', 'Custom'],
 
     // Parameter Filter
     params: {
-      from: date.formatDate(Date.now(), 'YYYY-MM-DD'),
-      to: date.formatDate(Date.now(), 'YYYY-MM-DD'),
+      from: date.formatDate(new Date(new Date().getFullYear(), new Date().getMonth(), 1), 'YYYY-MM-DD'),
+      to: date.formatDate(new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0), 'YYYY-MM-DD'),
       dokter: 'ALL',
-      jenis_pasien: 'ALL', // ALL, Rajal, Ranap, IGD
+      jenis_pasien: 'ALL', // ALL, Rajal, Ranap, IGD, Luar
       q: ''
     },
 
