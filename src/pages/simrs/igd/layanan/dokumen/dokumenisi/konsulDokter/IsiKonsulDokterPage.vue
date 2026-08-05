@@ -24,6 +24,7 @@
             <div class="text-weight-bold">
               Jawaban :
             </div>
+            <div class="q-pb-xs">( {{ item.tgl_jawaban }} )</div>
             <span v-html="getNewLine(item?.jawaban) || 'Belum Ada Jawaban'" />
           </div>
         </div>
