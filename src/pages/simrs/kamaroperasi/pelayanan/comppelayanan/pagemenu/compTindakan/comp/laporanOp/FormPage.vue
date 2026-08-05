@@ -22,7 +22,7 @@
           <app-autocomplete v-model="store.form.nota" :source="availableTindakans" option-value="rs2"
             option-label="nama" outlined label="" @update:model-value="(val) => {
               store.resetForm()
-              const tindakanNya = availableTindakans.value?.find(t => t.rs2 == val)
+              const tindakanNya = availableTindakans?.find(t => t.rs2 == val)
               //  console.log('val tindakan', val, tindakanNya);
               store.setForm('tindakan', tindakanNya?.id)
               store.setForm('nota', val)
