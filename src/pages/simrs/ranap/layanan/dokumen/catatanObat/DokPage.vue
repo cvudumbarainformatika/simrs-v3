@@ -89,16 +89,31 @@
           <thead>
             <tr>
               <th style="width:20%">
-                <div class="column flex-center">HARI / TANGGAL</div>
+                <div class="column flex-center text-center">HARI / TANGGAL</div>
               </th>
-              <th style="width: 60%;">
-                <div class="column flex-center">
-                  INFORMASI OBAT
+              <th style="width: 30%;">
+                <div class="column flex-center text-center">
+                  NAMA OBAT
+                </div>
+              </th>
+              <th style="width: 10%;">
+                <div class="column flex-center text-center">
+                  JUMLAH MASUK
+                </div>
+              </th>
+              <th style="width: 10%;">
+                <div class="column flex-center text-center">
+                  DOSIS
+                </div>
+              </th>
+              <th style="width: 10%;">
+                <div class="column flex-center text-center">
+                  SISA
                 </div>
               </th>
 
               <th style="width: 20%;">
-                <div class="column flex-center">
+                <div class="column flex-center text-center">
                   <div>NAMA PETUGAS</div>
                 </div>
               </th>
@@ -107,55 +122,70 @@
           </thead>
           <tbody v-for="item in store.items" :key="item.id">
             <template v-if="item?.flag.includes('1')">
-              <tr>
-                <td valign="top">
-                  <div class="column flex-center">
-                    <div>{{ dateFullFormat(item?.created_at) }}</div>
-                    <div class="text-grey-8">Jam : {{ jamTnpDetik(item?.created_at) }}</div>
-                  </div>
-                </td>
+              <template v-if="item?.reseps?.length">
+                <tr v-for="(resep, r) in item.reseps" :key="r">
+                  <td valign="top" v-if="r === 0" :rowspan="item.reseps.length">
+                    <div class="column flex-center">
+                      <div>{{ dateFullFormat(item?.created_at) }}</div>
+                      <div class="text-grey-8">Jam : {{ jamTnpDetik(item?.created_at) }}</div>
+                    </div>
+                  </td>
 
-                <td valign="top">
-                  <div class="full-width column">
-                    <template v-if="item?.reseps?.length">
-                      <div v-for="(resep, r) in item.reseps" :key="r" class="q-mb-sm">
-                        <div class="q-ml-sm">
-                          <div>
-                            &#9673;
-                            <strong>{{ resep?.nama_obat }}</strong>
-                          </div>
-
-                          <div class="text-grey-8 q-ml-md">
-                            Jumlah :
-                            <b>{{ resep?.jumlah }} {{ resep?.satuan_ambil }}</b>
-                            <span class="q-mx-sm">|</span>
-
-                            Dosis :
-                            <b>{{ resep?.dosis || '-' }}</b>
-                            <span class="q-mx-sm">|</span>
-
-                            Sisa :
-                            <b>{{ resep?.sisa || '...' }} {{ resep?.satuan_ambil }}</b>
-                          </div>
-                        </div>
+                  <td valign="top">
+                    <div class="q-ml-sm">
+                      <div>
+                        &#9673;
+                        <strong>{{ resep?.nama_obat }}</strong>
                       </div>
-                    </template>
+                    </div>
+                  </td>
 
-                    <template v-else>
-                      <div class="q-ml-sm">
-                        &#9673; Tidak ada obat yang diberikan
-                      </div>
-                    </template>
-                  </div>
-                </td>
-                <td valign="top">
-                  <div class="text-center">
-                    <div>{{ item?.petugas?.nama }}</div>
-                  </div>
-                </td>
-              </tr>
+                  <td valign="top">
+                    <div class="q-ml-sm">
+                      <div>{{ resep?.jumlah }} {{ resep?.satuan_ambil }}</div>
+                    </div>
+                  </td>
+
+                  <td valign="top">
+                    <div class="q-ml-sm">
+                      <div>{{ resep?.dosis || '-' }}</div>
+                    </div>
+                  </td>
+
+                  <td valign="top">
+                    <div class="q-ml-sm">
+                      <div>{{ resep?.sisa || '-' }} <span v-if="resep?.sisa">{{ resep?.satuan_ambil }}</span></div>
+                    </div>
+                  </td>
+
+                  <td valign="top" v-if="r === 0" :rowspan="item.reseps.length">
+                    <div class="text-center">
+                      <div>{{ item?.petugas?.nama }}</div>
+                    </div>
+                  </td>
+                </tr>
+              </template>
+              <template v-else>
+                <tr>
+                  <td valign="top">
+                    <div class="column flex-center">
+                      <div>{{ dateFullFormat(item?.created_at) }}</div>
+                      <div class="text-grey-8">Jam : {{ jamTnpDetik(item?.created_at) }}</div>
+                    </div>
+                  </td>
+                  <td valign="top" colspan="4">
+                    <div class="q-ml-sm">
+                      &#9673; Tidak ada obat yang diberikan
+                    </div>
+                  </td>
+                  <td valign="top">
+                    <div class="text-center">
+                      <div>{{ item?.petugas?.nama }}</div>
+                    </div>
+                  </td>
+                </tr>
+              </template>
             </template>
-
 
           </tbody>
         </table>
