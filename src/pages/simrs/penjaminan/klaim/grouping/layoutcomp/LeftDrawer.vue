@@ -22,7 +22,7 @@
     </div>
     <div class="absolute-bottom">
       <div class="q-pa-md">
-        <app-avatar-pasien :key="pasien" :pasien="pasien" width="45px" />
+        <app-avatar-pasien :key="pasien?.noreg" :pasien="pasien" width="45px" />
         <div class="text-weight-bold f-12 q-mt-sm">
           {{ pasien?.pasien }}
         </div>
@@ -65,7 +65,7 @@ const tinggiDetailPas = ref(180)
 const printRekap = ref(false)
 // const tinggiBot = ref(180)
 const emits = defineEmits(['clickMenu', 'historyPasien', 'printRekap', 'icare'])
-const props = defineProps({
+defineProps({
   pasien: {
     type: Object,
     default: null

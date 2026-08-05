@@ -114,6 +114,12 @@ import { Notify } from 'quasar'
 import { useLaporanRincianPerunit } from 'src/stores/simrs/laporan/keuangan/rincianperunit/rincianperunit'
 
 const store = useLaporanRincianPerunit()
+const props = defineProps({
+  jenisPeminta: {
+    type: String,
+    default: 'keuangan'
+  }
+})
 
 const pelayananOptions = [
   { value: 1, label: 'Instalasi Rawat Jalan' },
@@ -177,20 +183,32 @@ const numericColumns = [
   'posRemun',
   'manajemen'
 ]
+
+const hiddenColumns = computed(() => {
+  if (store.params.jenisPeminta === 'rekammedik') {
+    return ['sarana', 'pelayanan', 'subtotal']
+  }
+
+  return []
+})
+
 const reportColumns = computed(() => {
   const columns = store.report?.Columns || {}
 
-  return Object.entries(columns).map(([name, label]) => ({
-    name,
-    label,
-    field: name,
-    align: numericColumns.includes(name) ? 'right' : 'left',
-    sortable: true,
-    format: value => numericColumns.includes(name)
-      ? formatNumber(value)
-      : normalizeValue(value)
-  }))
+  return Object.entries(columns)
+    .filter(([name]) => !hiddenColumns.value.includes(name))
+    .map(([name, label]) => ({
+      name,
+      label,
+      field: name,
+      align: numericColumns.includes(name) ? 'right' : 'left',
+      sortable: true,
+      format: value => numericColumns.includes(name)
+        ? formatNumber(value)
+        : normalizeValue(value)
+    }))
 })
+
 const reportRows = computed(() => {
   return store.items.map((item, index) => ({
     ...item,
@@ -199,29 +217,42 @@ const reportRows = computed(() => {
 })
 const excelFields = computed(() => {
   return Object.fromEntries(
-    Object.entries(store.report?.Columns || {}).map(([key, label]) => {
-      return [label, key]
-    })
+    Object.entries(store.report?.Columns || {})
+      .filter(([key]) => !hiddenColumns.value.includes(key))
+      .map(([key, label]) => [label, key])
   )
 })
+const visibleColumnKeys = computed(() => {
+  return Object.keys(store.report?.Columns || {})
+    .filter(key => !hiddenColumns.value.includes(key))
+})
+
 const excelRows = computed(() => {
   const rows = store.items.map(item => {
     return Object.fromEntries(
-      Object.keys(store.report?.Columns || {}).map(key => {
+      visibleColumnKeys.value.map(key => {
         const value = item[key]
-        return [key, numericColumns.includes(key)
-          ? Number(value || 0)
-          : normalizeValue(value)]
+
+        return [
+          key,
+          numericColumns.includes(key)
+            ? Number(value || 0)
+            : normalizeValue(value)
+        ]
       })
     )
   })
 
   const totalRow = Object.fromEntries(
-    Object.keys(store.report?.Columns || {}).map(key => {
-      if (key === 'namaTrans') return [key, 'TOTAL']
+    visibleColumnKeys.value.map(key => {
+      if (key === 'namaTrans') {
+        return [key, 'TOTAL']
+      }
+
       if (numericColumns.includes(key)) {
         return [key, reportTotals.value[key] || 0]
       }
+
       return [key, '']
     })
   )
@@ -252,11 +283,15 @@ const totalLabels = {
   posRemun: 'Total Pos Remunerasi',
   manajemen: 'Total Manajemen'
 }
+
 const totalCards = computed(() => {
   const availableColumns = store.report?.Columns || {}
 
   return numericColumns
-    .filter(key => Object.hasOwn(availableColumns, key))
+    .filter(key =>
+      Object.hasOwn(availableColumns, key)
+      && !hiddenColumns.value.includes(key)
+    )
     .map(key => ({
       key,
       label: totalLabels[key],
@@ -276,7 +311,8 @@ function cariReport() {
   const wajibDiisi = [
     { value: store.params.from, label: 'Tanggal Dari' },
     { value: store.params.to, label: 'Tanggal Sampai' },
-    { value: store.params.pelayanan, label: 'Pelayanan' }
+    { value: store.params.pelayanan, label: 'Pelayanan' },
+
   ]
 
   if (store.params.pelayanan !== 5) {
@@ -297,6 +333,7 @@ function cariReport() {
     })
     return
   }
+  store.params.jenisPeminta = props.jenisPeminta
 
   store.carireport()
 }

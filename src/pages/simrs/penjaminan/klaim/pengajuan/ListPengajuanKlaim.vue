@@ -4,7 +4,7 @@
       <ListLoading v-if="loading" />
       <empty-data v-else-if="!items?.length && !loading" />
       <q-list v-else separator>
-        <q-item v-for="(item, i) in items" :key="i">
+        <q-item v-for="item in items" :key="item.noreg">
           <q-item-section avatar>
             <app-avatar-pasien :pasien="item" />
           </q-item-section>
@@ -62,11 +62,8 @@
 </template>
 
 <script setup>
-// eslint-disable-next-line no-unused-vars
 import ListLoading from './ListLoading.vue'
 import EmptyData from './EmptyData.vue'
-// import { defineAsyncComponent, ref } from 'vue'
-import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung'
 import { dateFullFormat, formatJam } from 'src/modules/formatter'
 import { useKlaimPenjaminanStore } from 'src/stores/simrs/penjaminan/klaim'
 
@@ -93,40 +90,6 @@ defineProps({
   loadingTerima: {
     type: Boolean,
     default: false
-  },
-  loadingCall: {
-    type: Boolean,
-    default: false
-  },
-  loadingTidakhadir: {
-    type: Boolean,
-    default: false
-  },
-  loadingcesmix: {
-    type: Boolean,
-    default: false
-  },
-  // itemsigd: {
-  //   type: Array,
-  //   default: () => []
-  // }
+  }
 })
-
-function colortriage(val) {
-  if (val === 'Resusitasi') {
-    return 'red'
-  }
-  else if (val === 'P1') {
-    return 'deep-orange'
-  }
-  else if (val === 'P2') {
-    return 'yellow-7'
-  }
-  else if (val === 'P3') {
-    return 'green'
-  }
-  else {
-    return 'black'
-  }
-}
 </script>

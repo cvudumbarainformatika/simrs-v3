@@ -4,8 +4,8 @@
     separator
   >
     <q-item
-      v-for="(item, i) in menus"
-      :key="i"
+      v-for="item in menus"
+      :key="item.name"
       v-ripple
       clickable
       :active="menu===item"

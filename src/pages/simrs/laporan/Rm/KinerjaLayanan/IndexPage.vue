@@ -2,7 +2,7 @@
   <q-page>
     <Suspense>
       <!-- main content -->
-      <AsyncComp jenisPeminta="keuangan" />
+      <AsyncComp jenisPeminta="rekammedik" />
       <!-- loading state -->
       <template #fallback>
         <app-loading />
@@ -14,6 +14,6 @@
 import { defineAsyncComponent } from 'vue'
 
 const AsyncComp = defineAsyncComponent(() =>
-  import('./RincianPerunitPage.vue')
+  import('../../keuangan/rincianperunit/RincianPerunitPage.vue')
 )
 </script>
