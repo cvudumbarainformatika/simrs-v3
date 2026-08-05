@@ -15,7 +15,8 @@ export const useLaporanRincianPerunit = defineStore(
         from: date.formatDate(Date.now(), 'YYYY-MM-DD'),
         to: date.formatDate(Date.now(), 'YYYY-MM-DD'),
         pelayanan: null,
-        jenisLaporan: null
+        jenisLaporan: null,
+        jenisPeminta: null,
       }
     }),
 

@@ -28,13 +28,10 @@
   </div>
 </template>
 <script setup>
-import { date } from 'quasar'
-import { dateDbFormat } from 'src/modules/formatter'
 import { onMounted, ref } from 'vue'
 import { useKlaimPenjaminanStore } from 'src/stores/simrs/penjaminan/klaim'
 const store = useKlaimPenjaminanStore()
 const tahun = ref([])
-const emits = defineEmits(['fullscreen', 'setTanggal', 'setSearch', 'setRow', 'setPeriode', 'refresh', 'filter'])
 
 const periods = ref([
   { value: 1, label: 'Januari' },

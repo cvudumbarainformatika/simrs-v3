@@ -116,7 +116,6 @@ const isMobile = ref($q.platform.is.mobile)
 // })
 
 onMounted(() => {
-  console.log('main ', main.value.offsetHeight)
   h.value = main.value.offsetHeight
   // console.log('kumpulan apps', filterApps.value)
   // console.log('kumpulan akses', props.akses)

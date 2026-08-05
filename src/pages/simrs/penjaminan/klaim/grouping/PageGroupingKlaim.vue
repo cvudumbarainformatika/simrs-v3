@@ -3,7 +3,7 @@
     <q-card square flat class="container-no-header">
       <q-layout view="lHr Lpr lFf" container class="shadow-2 rounded-borders z-top">
         <q-header elevated class="bg-primary">
-          <HeaderLayout :pasien="pasien" />
+          <HeaderLayout :pasien="pasien" @toggle-left-drawer="drawer = !drawer" />
         </q-header>
 
         <!-- LEFT DRAWER ======================================================================================-->
@@ -38,20 +38,18 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent, onMounted, ref, shallowRef, watchEffect } from 'vue'
-// import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung'
+import { defineAsyncComponent, ref, shallowRef } from 'vue'
 import { useKlaimPenjaminanStore } from 'src/stores/simrs/penjaminan/klaim'
 const store = useKlaimPenjaminanStore()
 
 const HeaderLayout = defineAsyncComponent(() => import('./layoutcomp/HeaderLayout.vue'))
 const LeftDrawer = defineAsyncComponent(() => import('./layoutcomp/LeftDrawer.vue'))
-// const RightDrawer = defineAsyncComponent(() => import('./layoutcomp/RightDrawer.vue'))
-const RightDrawer = defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/complayout/RightDrawer.vue'))
+const RightDrawer = defineAsyncComponent(() => import('./layoutcomp/RightDrawer.vue'))
 
 const drawer = ref(false)
 const drawerRight = ref(false)
 
-const props = defineProps({
+defineProps({
   pasien: {
     type: Object,
     default: null
@@ -63,6 +61,12 @@ const props = defineProps({
 })
 
 const menus = ref([
+  {
+    name: 'KlaimPage',
+    label: 'Klaim',
+    icon: 'icon-fa-file-invoice-solid',
+    comp: shallowRef(defineAsyncComponent(() => import('./klaim/KlaimPage.vue')))
+  },
   {
     name: 'BerkasPage',
     label: 'Berkas/Dokumen',
@@ -140,8 +144,6 @@ const menus = ref([
 ])
 const menu = ref(menus.value[0])
 
-// const inacbg = useInacbgIgd()
-
 function menuDiganti(val) {
   menu.value = val
 }
@@ -150,32 +152,8 @@ function historyPasien() {
   drawerRight.value = !drawerRight.value
 }
 
-// function getIcare() {
-//   store.getDataIcare(props.pasien).then(resp => {
-//     if (resp) {
-//       window.open(resp?.response?.url, '_blank')
-//     }
-//   })
-// }
-
-// onMounted(() => {
-//   store.getruangranap()
-//   store.getsistembayar()
-//   store.getsistembayarrinci()
-//   storepemakaianobat.carisatuan()
-// })
-
-// watchEffect(() => {
-//   // console.log('watch effect', store.loadingTerima)
-//   if (store.loadingTerima === false) {
-//     inacbg.getDataIna(props.pasien)
-//     inacbg.setTotalTindakan(props.pasien)
-//     inacbg.setTotalLaborat(props.pasien)
-//   }
-// })
-
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .contain {
   display: flex;
   flex-direction: column;

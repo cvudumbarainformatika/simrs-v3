@@ -26,6 +26,11 @@ const laporan = {
       component: () => import('pages/simrs/laporan/Rm/JumlahPasien/IndexPage.vue')
     },
     {
+      path: '/laporan/kinerjalayanan',
+      // name: 'laporan.rekap.datapasien',
+      component: () => import('pages/simrs/laporan/Rm/KinerjaLayanan/IndexPage.vue')
+    },
+    {
       path: '/laporan/keuangan/billrajal',
       // name: 'laporan.keuangan.billrajal',
       component: () => import('pages/simrs/laporan/keuangan/bill/IndexPage.vue')

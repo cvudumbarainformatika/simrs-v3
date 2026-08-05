@@ -7,9 +7,71 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
     loading: false,
     loadingbuka: false,
     loadingTerima: false,
+    loadingCaraMasuk: false,
+    loadingKunjunganKlaim: false,
+    loadingTarifKlaim: false,
+    loadingDiagnosaIdrg: false,
+    loadingnewclaim: false,
     items: [],
+    caraMasukOptions: [],
+    kunjunganKlaim: null,
+    covid19Klaim: null,
+    sudahPernahKlaim: 0,
+    totalTarifKlaim: 0,
+    tarifKlaim: null,
+    noregTarifAktif: null,
+    diagnosaIdrgOptions: [],
+    newClaimResponse: null,
     meta: {},
     pageLayanan: false,
+    formpasien: {
+      jaminan: '3;JKN',
+      noPeserta: '',
+      noSep: '',
+      cob: '',
+      jenisRawat: '2',
+      kelasEksekutif: false,
+      naikTurunKelas: false,
+      adaRawatIntensif: false,
+      kelasRawat: '3',
+      caraMasuk: '',
+      beratLahir: 0,
+      adlSubAcute: '',
+      adlChronic: '',
+      caraPulang: '1',
+      dpjp: '',
+      jenisTarif: 'kelas_c_pemerintah',
+      pasienTb: false,
+      nomorRegisterSitb: '',
+      pernyataan: true,
+      sistole: 0,
+      diastole: 0,
+      pencarianDiagnosa: null,
+      pencarianProsedur: '',
+      diagnosaIdrg: [],
+      prosedurIdrg: [],
+      hasilIdrg: null,
+      tarif: {
+        prosedurNonBedah: 0,
+        prosedurBedah: 0,
+        konsultasi: 0,
+        tenagaAhli: 0,
+        keperawatan: 0,
+        penunjang: 0,
+        radiologi: 0,
+        laboratorium: 0,
+        pelayananDarah: 0,
+        rehabilitasi: 0,
+        kamar: 0,
+        rawatIntensif: 0,
+        obat: 0,
+        obatKronis: 0,
+        obatKemoterapi: 0,
+        alkes: 0,
+        bmhp: 0,
+        sewaAlat: 0
+      }
+    },
     params: {
       q: '',
       page: 1,
@@ -20,6 +82,189 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
     }
   }),
   actions: {
+    async cariDiagnosaIdrg(term) {
+      const pencarian = String(term ?? '').trim()
+      if (pencarian.length < 2) {
+        this.diagnosaIdrgOptions = []
+        return []
+      }
+
+      this.loadingDiagnosaIdrg = true
+      try {
+        const resp = await api.get('v1/simrs/penjaminan/klaim/diagnosa-idrg', {
+          params: { term: pencarian }
+        })
+        this.diagnosaIdrgOptions = resp?.data ?? []
+        return this.diagnosaIdrgOptions
+      }
+      catch (error) {
+        this.diagnosaIdrgOptions = []
+        notifErrVue('Gagal mencari diagnosa iDRG')
+        return []
+      }
+      finally {
+        this.loadingDiagnosaIdrg = false
+      }
+    },
+    async getTarifKlaim(noreg, layanan = '') {
+      if (!noreg) return null
+
+      this.noregTarifAktif = noreg
+      this.loadingTarifKlaim = true
+      try {
+        const resp = await api.get('v1/simrs/penjaminan/klaim/tarif', {
+          params: {
+            noreg_utama: noreg,
+            layanan
+          }
+        })
+        const result = resp?.data ?? {}
+        if (this.noregTarifAktif !== noreg) return null
+        this.tarifKlaim = result
+        this.totalTarifKlaim = Number(result?.total_tarif ?? 0)
+        this.formpasien.tarif = {
+          prosedurNonBedah: Number(result?.prosedur_non_bedah ?? 0),
+          prosedurBedah: Number(result?.prosedur_bedah ?? 0),
+          konsultasi: Number(result?.konsultasi ?? 0),
+          tenagaAhli: Number(result?.tenaga_ahli ?? 0),
+          keperawatan: Number(result?.keperawatan ?? 0),
+          penunjang: Number(result?.penunjang ?? 0),
+          radiologi: Number(result?.radiologi ?? 0),
+          laboratorium: Number(result?.laboratorium ?? 0),
+          pelayananDarah: Number(result?.pelayanan_darah ?? 0),
+          rehabilitasi: Number(result?.rehabilitasi ?? 0),
+          kamar: Number(result?.kamar ?? 0),
+          rawatIntensif: Number(result?.rawat_intensif ?? 0),
+          obat: Number(result?.obat ?? 0),
+          obatKronis: Number(result?.obat_kronis ?? 0),
+          obatKemoterapi: Number(result?.obat_kemoterapi ?? 0),
+          alkes: Number(result?.alkes ?? 0),
+          bmhp: Number(result?.bmhp ?? 0),
+          sewaAlat: Number(result?.sewa_alat ?? 0)
+        }
+
+        return result
+      }
+      catch (error) {
+        if (this.noregTarifAktif !== noreg) return null
+        this.tarifKlaim = null
+        this.totalTarifKlaim = 0
+        notifErrVue('Gagal mengambil tarif klaim')
+        return null
+      }
+      finally {
+        if (this.noregTarifAktif === noreg) this.loadingTarifKlaim = false
+      }
+    },
+    async getKunjunganKlaim(noreg, layanan = '') {
+      if (!noreg) {
+        this.kunjunganKlaim = null
+        this.covid19Klaim = null
+        this.sudahPernahKlaim = 0
+        this.totalTarifKlaim = 0
+        return null
+      }
+
+      this.loadingKunjunganKlaim = true
+      try {
+        const resp = await api.get('v1/simrs/penjaminan/klaim/kunjungan-klaim', {
+          params: { noreg, layanan }
+        })
+        const result = resp?.data ?? {}
+
+        this.kunjunganKlaim = result?.data ?? null
+        this.covid19Klaim = result?.covid19 ?? null
+        this.sudahPernahKlaim = Number(result?.sudahpernahklaim ?? 0)
+        this.totalTarifKlaim = Number(result?.total_tarif ?? 0)
+
+        return result
+      }
+      catch (error) {
+        this.kunjunganKlaim = null
+        this.covid19Klaim = null
+        this.sudahPernahKlaim = 0
+        this.totalTarifKlaim = 0
+        notifErrVue('Gagal mengambil data kunjungan klaim')
+        return null
+      }
+      finally {
+        this.loadingKunjunganKlaim = false
+      }
+    },
+    async getCaraMasuk() {
+      this.loadingCaraMasuk = true
+      try {
+        const resp = await api.get('v1/simrs/penjaminan/klaim/cara-masuk')
+        this.caraMasukOptions = [
+          { label: '-', value: '' },
+          ...(resp?.data ?? []).map(item => ({
+            label: item.keterangan,
+            value: item.kode
+          }))
+        ]
+      }
+      catch (error) {
+        this.caraMasukOptions = [{ label: '-', value: '' }]
+        notifErrVue('Gagal mengambil data cara masuk')
+      }
+      finally {
+        this.loadingCaraMasuk = false
+      }
+    },
+    resetFormKlaim() {
+      this.noregTarifAktif = null
+      this.loadingTarifKlaim = false
+      this.tarifKlaim = null
+      this.totalTarifKlaim = 0
+      this.formpasien = {
+        jaminan: '3;JKN',
+        noPeserta: '',
+        noSep: '',
+        cob: '',
+        jenisRawat: '2',
+        kelasEksekutif: false,
+        naikTurunKelas: false,
+        adaRawatIntensif: false,
+        kelasRawat: '3',
+        caraMasuk: '',
+        beratLahir: 0,
+        adlSubAcute: '',
+        adlChronic: '',
+        caraPulang: '1',
+        dpjp: '',
+        jenisTarif: 'kelas_c_pemerintah',
+        pasienTb: false,
+        nomorRegisterSitb: '',
+        pernyataan: true,
+        sistole: 0,
+        diastole: 0,
+        pencarianDiagnosa: null,
+        pencarianProsedur: '',
+        diagnosaIdrg: [],
+        prosedurIdrg: [],
+        hasilIdrg: null,
+        tarif: {
+          prosedurNonBedah: 0,
+          prosedurBedah: 0,
+          konsultasi: 0,
+          tenagaAhli: 0,
+          keperawatan: 0,
+          penunjang: 0,
+          radiologi: 0,
+          laboratorium: 0,
+          pelayananDarah: 0,
+          rehabilitasi: 0,
+          kamar: 0,
+          rawatIntensif: 0,
+          obat: 0,
+          obatKronis: 0,
+          obatKemoterapi: 0,
+          alkes: 0,
+          bmhp: 0,
+          sewaAlat: 0
+        }
+      }
+    },
     setParams(key, val) {
       this.params[key] = val
     },
@@ -188,6 +433,28 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
     },
     notifikasiError(msg) {
       notifErrVue(msg)
+    },
+    async newclaim() {
+      this.loadingnewclaim = true
+      try {
+        const resp = await api.post('v1/simrs/penjaminan/klaim/new-claim', this.formpasien, {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          }
+        })
+        const result = resp?.data ?? null
+        this.newClaimResponse = result
+        return result
+      }
+      catch (error) {
+        this.newClaimResponse = null
+        notifErrVue(error?.response?.data?.message ?? 'Gagal membuat klaim baru')
+        return null
+      }
+      finally {
+        this.loadingnewclaim = false
+      }
     }
   }
 })
