@@ -35,6 +35,13 @@
             </div>
           </div>
         </template>
+        <template #no-data>
+          <q-tr>
+            <q-td :colspan="columnsnpd.length" class="text-center text-caption">
+              Tidak ada data ditemukan
+            </q-td>
+          </q-tr>
+        </template>
         <template #body="props">
           <q-tr>
             <q-td key="nonpdls" :props="props" class="text-left">

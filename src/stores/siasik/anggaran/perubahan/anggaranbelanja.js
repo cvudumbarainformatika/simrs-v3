@@ -50,9 +50,15 @@ export const usePerubahanAnggaranBelanja_PAK = defineStore('perubahan-anggaran-b
             tgl: date.formatDate(Date.now(), 'YYYY-MM-DD'),
             jenis: '',
             page: 1,
-            per_page: 10,
+            per_page: 30,
         },
         dataBarangslama: [],
+        metaBarangLama: {
+            current_page: 1,
+            per_page: 30,
+            next_page_url: null,
+            prev_page_url: null
+        },
         dataBarangsbaru: [],
         dataModals: [],
         dataJasalain: [],
@@ -74,7 +80,18 @@ export const usePerubahanAnggaranBelanja_PAK = defineStore('perubahan-anggaran-b
         //get Barangs
         getBarangslama() {
             waitLoad('show')
-            const params = { params: this.form }
+            // const params = { params: this.form }
+
+            const params = {
+                params: {
+                    tahun: this.form.tahun,
+                    kodeKegiatan: this.form.kodeKegiatan,
+                    q: this.params.q,
+                    page: this.params.page,
+                    per_page: this.params.per_page
+                }
+            }
+
             return new Promise((resolve, reject) => {
                 api
                     .get('v1/anggaran/perubahan/belanja/selectitemlama', params)
@@ -82,9 +99,20 @@ export const usePerubahanAnggaranBelanja_PAK = defineStore('perubahan-anggaran-b
                         waitLoad('done')
                         console.log('resp barang lama', resp)
                         if (resp.status === 200) {
-                            this.dataBarangslama = resp.data.data
-                            this.meta = resp.data.meta
-                            this.setColumns(resp.data.data)
+                            this.dataBarangslama = resp.data.data.map(item => ({
+                                ...item,
+                                tmp_touched: false,
+                                sedangInput: false
+                            }))
+                            console.log('dataBarangslama', this.dataBarangslama)
+                            this.metaBarangLama = {
+                                current_page: resp.data.current_page,
+                                per_page: resp.data.per_page,
+                                next_page_url: resp.data.next_page_url,
+                                prev_page_url: resp.data.prev_page_url
+                            }
+                            this.params.page = resp.data.current_page
+                            // this.setColumns(resp.data.data)
                             // console.log(resp.data.data)
                             resolve(resp.data.data)
                         }
@@ -123,6 +151,19 @@ export const usePerubahanAnggaranBelanja_PAK = defineStore('perubahan-anggaran-b
             // this.columns = thumb[0]
             this.columns = ['kode', 'nama', 'barang108', 'uraian_50', 'depo', 'satuan', 'pengali', 'satuankecil', 'ssh', 'tipe']
             // console.log('columns', this.columns)
+        },
+        nextBarangLama() {
+            if (!this.metaBarangLama.next_page_url) return
+
+            this.params.page = Number(this.params.page || 1) + 1
+            this.getBarangslama()
+        },
+
+        prevBarangLama() {
+            if (!this.metaBarangLama.prev_page_url) return
+
+            this.params.page = Math.max(1, Number(this.params.page || 1) - 1)
+            this.getBarangslama()
         },
         getKegiatan() {
             this.loading = true
@@ -166,6 +207,8 @@ export const usePerubahanAnggaranBelanja_PAK = defineStore('perubahan-anggaran-b
                     kodeKegiatan: result?.kodeKegiatan,
                     kegiatan: result?.kegiatan,
                     kodebagian: result?.kodebagian,
+                    kodepptk: result?.kodepptk,
+                    pptk: result?.pptk,
                     organisasi_nama: result?.organisasi_nama,
                     paguanggaran: result?.paguanggaran,
                     kode50: result?.kode50,
@@ -322,6 +365,7 @@ export const usePerubahanAnggaranBelanja_PAK = defineStore('perubahan-anggaran-b
             this.getData()
         },
         goToPage(val) {
+            // console.log('goToPage', val)
             this.params.page = val
             this.getData()
         },

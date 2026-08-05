@@ -14,6 +14,11 @@ const radiologi = {
       name: 'radiologi.permintaan-luar',
       component: () => import('pages/simrs/radiologi/luar/IndexPage.vue')
     },
+    {
+      path: '/radiologi/laporan',
+      name: 'radiologi.laporan',
+      component: () => import('pages/simrs/radiologi/laporan/IndexPage.vue')
+    },
 
     {
       path: '/radiologi/notfound',

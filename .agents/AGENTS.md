@@ -17,3 +17,17 @@
    * `DaftarTilikOkDialog.vue` (Kamar Operasi) -> ✅ SUDAH DITERAPKAN
    * `daftartilik/IndexPage.vue` & `CetakDaftarTilikDialog.vue` (Daftar Tilik Ranap) -> ✅ SUDAH DITERAPKAN
    * `FormPenandaan.vue` & `PreviewPenandaan.vue` (IC Penandaan Ranap) -> ✅ SUDAH DITERAPKAN (Menggunakan `body-marker-irna37.webp`)
+
+4. **Aturan Database / Migrasi (Kompatibilitas MySQL 5)**:
+   * **JANGAN PERNAH menggunakan tipe data `JSON` pada migrasi database di project ini**. Karena server menggunakan MySQL versi 5 yang belum mendukung tipe JSON, gunakan tipe data **`TEXT`** atau **`LONGTEXT`** untuk seluruh kolom yang menyimpan data objek/JSON.
+
+## 📝 Aturan Commit Git
+* **JANGAN PERNAH berinisiatif melakukan commit secara mandiri/otomatis**. Commit hanya boleh dilakukan jika dan hanya jika diinstruksikan secara eksplisit oleh USER.
+* Setiap kali diperintahkan melakukan commit, gunakan format pesan commit berikut:
+  * **`feat : (deskripsi)`** -> Untuk penambahan fitur baru (new feature).
+  * **`wip : (deskripsi)`** -> Untuk pekerjaan yang belum selesai (work-in-progress).
+  * **`rev : (deskripsi)`** -> Untuk perubahan/perbaikan/modifikasi kode (modification/bug fixes).
+
+## 💅 Aturan Desain & Layout UI (Quasar)
+* **JANGAN PERNAH menggunakan prop `dense` pada input bertipe `textarea` (atau autogrow)**. Penggunaan `dense` pada `textarea` membuat baris input sangat sempit dan tidak estetis. Sebagai gantinya, hilangkan prop `dense` dan batasi baris input menggunakan atribut `rows="..."` (misal: `rows="2"` atau `rows="3"`).
+* **JANGAN PERNAH menggunakan raw `<q-input type="date">`**. Selalu gunakan komponen kustom global **`<app-input-date>`** untuk seluruh input tanggal (dengan format `:model="..."` dan `@set-model="... = $event"`).

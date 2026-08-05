@@ -136,7 +136,7 @@ export const useRekonsiliasiObatStore = defineStore('rekonsiliasi-obat-store', {
         const resp = await api.post('v1/simrs/ranap/layanan/rekonsiliasiobat/hapusdata', payload)
         if (resp.status === 200) {
           const storeRanap = usePengunjungRanapStore()
-          storeRanap.hapusDataInjectan(pasien?.noreg, id, 'rekonsiliasiobats')
+          storeRanap.hapusDataInjectan(pasien, id, 'rekonsiliasiobats')
           notifSuccess(resp)
         }
         this.loadingHapus = false

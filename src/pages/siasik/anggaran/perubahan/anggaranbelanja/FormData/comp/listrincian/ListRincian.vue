@@ -13,7 +13,7 @@
           <div class="text-bold">Total Pengusulan</div>
           <div class="text-bold text-center">:</div>
           <div class="text-bold text-right">
-            {{ formattanpaRp(subtotal()) }}
+            {{ formattanpaRp(subtotal) }}
           </div>
 
           <div class="text-bold">Selisih</div>
@@ -86,7 +86,7 @@
             SUBTOTAL
           </q-td>
           <q-td colspan="2" class="text-right text-bold" style="font-size: 4em">
-            {{ formattanpaRp(subtotal()) }}
+            {{ formattanpaRp(subtotal) }}
           </q-td>
         </q-tr>
       </template>
@@ -214,14 +214,14 @@ function isTransaksiall(row) {
   // return store.transallserahterima.some((item) => item.id === row.id);
 }
 
-function subtotal() {
+const subtotal = computed(() => {
   const subtotalrinci = store.rincians
     .map((x) => parseFloat(x.nilai))
     .reduce((a, b) => a + b, 0);
   return Number(subtotalrinci);
-}
+})
 function selisih() {
-  return subtotal() - Number(store.form.paguanggaran || 0);
+  return subtotal.value - Number(store.form.paguanggaran || 0);
 }
 
 function deleteData(row) {
@@ -245,7 +245,7 @@ function deleteData(row) {
         // carisrt.refreshTable()
         if (store.rincians?.length === 0) {
           store.initForm()
-
+          store.disableSaved = false
         }
         // console.log('data hapus', store.transall)
       })

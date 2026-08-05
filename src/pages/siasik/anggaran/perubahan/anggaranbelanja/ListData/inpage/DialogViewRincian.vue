@@ -22,12 +22,12 @@
                 <div class="text-bold">{{ props.row?.keterangan }}</div>
                 <div>
                   <q-badge color="green">
-                    {{ props.row?.kode_50 }}
+                    {{ props.row?.koderek50 }}
                   </q-badge>
                 </div>
-                <div v-if="props.row?.kode_108">
+                <div v-if="props.row?.koderek108">
                   <q-badge color="green">
-                    {{ props.row?.kode_108 }}
+                    {{ props.row?.koderek108 }}
                   </q-badge>
                 </div>
 
@@ -56,9 +56,10 @@
 
 import { formattanpaRp } from 'src/modules/formatter'
 import { usePengusulanAnggaranStore } from 'src/stores/siasik/anggaran/penyusunan/pengusulan'
+import { usePerubahanAnggaranBelanja_PAK } from 'src/stores/siasik/anggaran/perubahan/anggaranbelanja'
 import { ref } from 'vue'
 
-const store = usePengusulanAnggaranStore()
+const store = usePerubahanAnggaranBelanja_PAK()
 
 function hiddenDialog() {
   console.log('hidden dialog')
@@ -67,7 +68,7 @@ const rincinpd = [
   {
     label: 'Item Pengusulan',
     name: 'keterangan',
-    field: row => [row.keterangan, row.kode_108]
+    field: row => [row.keterangan, row.koderek108]
   },
   {
     label: 'Rincian',

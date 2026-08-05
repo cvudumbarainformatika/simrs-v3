@@ -115,7 +115,7 @@ const columnsx = [
     label: 'Stok Masuk',
     align: 'right',
     field: (row) => (
-      hitungPenerimaan(row?.penerimaanrinci) + hitungMutasiMasuk(row?.mutasimusuk) + newReturResep(row?.returpenjualan) +
+      hitungPenerimaan(row?.penerimaanrinci) + hitungMutasiMasuk(row?.mutasimasuk) + newReturResep(row?.returpenjualan) +
       hitungPenyesuaianMasuk(row?.penyesuaian) + hitungReturDistribusi(row?.persiapanretur) + hitungReturGudang(row?.returgudang)
     ),
     format: (val) => formatDecimal(val)
@@ -192,100 +192,64 @@ function changeMonth (val) {
 }
 
 function hitungSaldoAwal (arr) {
-  return arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jumlah), 0)
+  return arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jumlah || 0), 0) ?? 0
 }
 
 function hitungPenerimaan (arr) {
-  // jika jenis penerimaan bukan 'Pesanan' maka langsung jadi stok .... asal kunci =1
-  // jika jenis penerimaan = 'Pesanan' maka harus jadi Faktur dulu,  jadi stok .... asal kunci = 1
-  // const filt = arr?.filter((x) => x.jenissurat !== 'Surat Jalan') sf
+  if (!arr || !arr.length) return 0
+  const terimalangsung = arr.filter((x) => x.jenis_penerimaan !== 'Pesanan' && x.kunci === '1')
+  const jmlterimalangsung = terimalangsung.reduce((x, y) => parseFloat(x) + parseFloat(y.jml_terima_k || 0), 0) ?? 0
 
-  const terimalangsung = arr?.filter((x) => x.jenis_penerimaan !== 'Pesanan' && x.kunci === '1')
-  const jmlterimalangsung = terimalangsung?.reduce((x, y) => parseFloat(x) + parseFloat(y.jml_terima_k), 0)
+  const terimafaktur = arr.filter((x) => x.jenis_penerimaan === 'Pesanan' && x.kunci === '1' && x.jenissurat === 'Faktur')
+  const jmlterimafaktur = terimafaktur.reduce((x, y) => parseFloat(x) + parseFloat(y.jml_terima_k || 0), 0) ?? 0
 
-  const terimafaktur = arr?.filter((x) => x.jenis_penerimaan === 'Pesanan' && x.kunci === '1' && x.jenissurat === 'Faktur')
-  const jmlterimafaktur = terimafaktur?.reduce((x, y) => parseFloat(x) + parseFloat(y.jml_terima_k), 0)
-
-  // eslint-disable-next-line no-unused-vars
-  const totalJml = jmlterimalangsung + jmlterimafaktur
-  return totalJml
+  return (jmlterimalangsung + jmlterimafaktur) ?? 0
 }
 function hitungMutasiKeluar (arr) {
-  return arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jml), 0)
+  return arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jml || 0), 0) ?? 0
 }
 function hitungMutasiMasuk (arr) {
-  return arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jml), 0)
+  return arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jml || 0), 0) ?? 0
 }
 function hitungReturGudang (arr) {
-  return arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jumlah), 0)
+  return arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jumlah || 0), 0) ?? 0
 }
 function hitungReturDepo (arr) {
-  return arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jumlah), 0)
+  return arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jumlah || 0), 0) ?? 0
 }
 const gudang = ['Gd-05010100', 'Gd-03010100']
 function hitungBarangRusak (arr) {
-  // console.log(gudang.includes(app?.user?.kdruangansim), app?.user?.kdruangansim)
-  if (gudang.includes(app?.user?.kdruangansim)) return arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jumlah), 0)
+  if (gudang.includes(app?.user?.kdruangansim)) return arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jumlah || 0), 0) ?? 0
   else return 0
 }
 function hitungResepKeluar (arr, dist) {
-  // if (app?.user?.kdruangansim === 'Gd-04010103') {
-  //   const noreseps = app?.user?.kdruangansim === 'Gd-04010103' ? dist?.map(m => m?.noresep) : []
-  //   // console.log('nores', noreseps)
-  //   const resepkeluar = arr?.filter(f => !noreseps.includes(f?.noresep))?.reduce((x, y) => parseFloat(x) + parseFloat(y?.jumlah), 0)
-
-  //   return resepkeluar
-  // }
-  // else {
-  //   const resepkeluar = arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jumlah), 0)
-
-  //   // console.log('returresep', jmlRetur)
-  //   return resepkeluar
-  // }
-  const resepkeluar = arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jumlah), 0)
-
-  // console.log('returresep', jmlRetur)
-  return resepkeluar
+  return arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jumlah || 0), 0) ?? 0
 }
 function hitungDistribusi (arr) {
   if (app?.user?.kdruangansim === 'Gd-04010103') {
-    const dsitribusi = arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.keluar), 0)
-
-    // console.log('returresep', jmlRetur)
-    return dsitribusi
+    return arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.keluar || 0), 0) ?? 0
   }
   else return 0
 }
 function hitungReturDistribusi (arr) {
   if (app?.user?.kdruangansim === 'Gd-04010103') {
-    const returDist = arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.retur), 0)
-
-    // console.log('returresep', jmlRetur)
-    return returDist
+    return arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.retur || 0), 0) ?? 0
   }
   else return 0
 }
 
 function hitungResepRacikanKeluar (arr) {
-  const resepkeluar = arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jumlah), 0)
-  // console.log('racikan', resepkeluar)
-  return resepkeluar
+  return arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jumlah || 0), 0) ?? 0
 }
 
 function newReturResep (arr) {
-  const jmlRetur = arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jumlah_retur), 0)
-  // console.log('racikan', jmlRetur)
-  return jmlRetur
+  return arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jumlah_retur || 0), 0) ?? 0
 }
 function returPbf (arr) {
-  const jmlRetur = arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jumlah_retur), 0)
-  // console.log('racikan', jmlRetur)
-  return jmlRetur
+  return arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jumlah_retur || 0), 0) ?? 0
 }
 function pengembalian (arr) {
-  const pengembalian = arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jumlah), 0)
-  // console.log('pengembalian', arr, pengembalian)
-  return pengembalian
+  return arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jumlah || 0), 0) ?? 0
 }
 // function returResep (arr, kodeObat) {
 //   const arrreturResep = arr?.length ? arr.map(x => x.retur)?.reduce((a, b) => a.concat(b), []) : []

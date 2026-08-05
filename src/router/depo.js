@@ -60,6 +60,10 @@ const depo = {
           component: () => import('src/pages/simrs/logistik/depo/farmasi/eresep/IndexPage.vue')
         },
         {
+          path: '/depo/farmasi/kunjungan',
+          component: () => import('pages/simrs/logistik/depo/farmasi/kunjungan/IndexPage.vue')
+        },
+        {
           path: '/depo/farmasi/distribusipermintaanruangan',
           component: () => import('src/pages/simrs/logistik/depo/farmasi/distribusipermintaanruangan/IndexPage.vue')
         },
