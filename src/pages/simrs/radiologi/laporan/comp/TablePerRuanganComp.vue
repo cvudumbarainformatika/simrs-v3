@@ -2,12 +2,12 @@
   <q-card class="shadow-1 full-height column no-wrap">
     <q-card-section class="q-pa-sm bg-blue-grey-1 col-auto">
       <div class="row items-center justify-between">
-        <div class="text-subtitle2 text-weight-bold text-primary">
-          <q-icon name="icon-mat-folder" class="q-mr-xs" color="amber-9" />
-          Rekapitulasi Per Dokter Pengirim / Peminta
+        <div class="text-subtitle2 text-weight-bold text-deep-purple">
+          <q-icon name="icon-mat-folder" class="q-mr-xs" color="deep-purple-5" />
+          Rekapitulasi Per Dokter Pelaksana Radiologi
         </div>
         <div class="text-caption text-grey-7">
-          Total {{ store.filteredDokterMinta.length }} dokter
+          Total {{ store.filteredDokterLaksana.length }} dokter pelaksana
         </div>
       </div>
     </q-card-section>
@@ -17,26 +17,26 @@
     <!-- Container dengan Scroll Area -->
     <q-card-section class="q-pa-none col scroll">
       <div v-if="store.loading" class="q-pa-md text-center">
-        <q-spinner color="primary" size="3em" />
-        <div class="text-caption text-grey-7 q-mt-xs">Memuat data dokter...</div>
+        <q-spinner color="deep-purple" size="3em" />
+        <div class="text-caption text-grey-7 q-mt-xs">Memuat data dokter pelaksana...</div>
       </div>
 
-      <div v-else-if="!store.filteredDokterMinta.length" class="q-pa-lg text-center text-grey-6">
+      <div v-else-if="!store.filteredDokterLaksana.length" class="q-pa-lg text-center text-grey-6">
         <q-icon name="icon-mat-folder_open" size="48px" class="q-mb-xs" />
-        <div>Belum ada data dokter peminta</div>
+        <div>Belum ada data dokter pelaksana</div>
       </div>
 
       <!-- Tampilan Tree / Folder Explorer -->
       <div v-else class="tree-explorer q-pa-sm">
         <div
-          v-for="(dok, dIdx) in store.filteredDokterMinta"
+          v-for="(dok, dIdx) in store.filteredDokterLaksana"
           :key="dIdx"
           class="tree-folder-node q-mb-xs"
         >
-          <!-- Root Node: Dokter (Folder) -->
-          <div class="tree-folder-header row items-center justify-between q-pa-xs rounded-borders bg-blue-grey-1">
+          <!-- Root Node: Dokter Pelaksana (Folder) -->
+          <div class="tree-folder-header row items-center justify-between q-pa-xs rounded-borders bg-deep-purple-1">
             <div class="row items-center q-gutter-xs">
-              <q-icon name="icon-mat-folder_open" color="amber-9" size="20px" />
+              <q-icon name="icon-mat-folder_open" color="deep-purple" size="20px" />
               <span class="text-weight-bold text-subtitle2 text-grey-9">
                 {{ dIdx + 1 }}. {{ dok.nama }}
               </span>
@@ -45,7 +45,7 @@
               <span class="text-caption text-grey-7">Total Tindakan:</span>
               <q-chip
                 dense
-                color="primary"
+                color="deep-purple"
                 text-color="white"
                 class="text-weight-bold"
                 size="11px"
@@ -65,10 +65,10 @@
               <div class="row items-center q-gutter-xs">
                 <!-- Tree connector line / icon -->
                 <span class="tree-branch-symbol text-grey-5">└─</span>
-                <q-icon name="icon-mat-insert_drive_file" color="blue-6" size="16px" />
+                <q-icon name="icon-mat-insert_drive_file" color="purple-6" size="16px" />
                 <span class="text-caption text-weight-medium text-grey-8">{{ pmr.nama }}</span>
               </div>
-              <q-badge color="teal-7" text-color="white" class="text-weight-bold" style="min-width: 24px; text-align: center;">
+              <q-badge color="deep-purple-7" text-color="white" class="text-weight-bold" style="min-width: 24px; text-align: center;">
                 {{ pmr.total }}
               </q-badge>
             </div>
@@ -81,11 +81,11 @@
     <q-separator />
     <q-card-section class="q-pa-sm bg-blue-grey-2 col-auto">
       <div class="row items-center justify-between">
-        <div class="text-weight-bold text-caption text-primary">
-          TOTAL TINDAKAN SELURUH DOKTER
+        <div class="text-weight-bold text-caption text-deep-purple">
+          TOTAL TINDAKAN SELURUH DOKTER PELAKSANA
         </div>
-        <div class="text-subtitle2 text-weight-bold text-teal-9">
-          {{ store.dataDokterMinta.reduce((sum, item) => sum + (Number(item?.total) || 0), 0) }} Tindakan
+        <div class="text-subtitle2 text-weight-bold text-deep-purple-9">
+          {{ store.dataDokterLaksana.reduce((sum, item) => sum + (Number(item?.total) || 0), 0) }} Tindakan
         </div>
       </div>
     </q-card-section>
@@ -104,18 +104,18 @@ const store = useLaporanRadiologiStore()
 }
 
 .tree-folder-node {
-  border: 1px solid #CFD8DC;
+  border: 1px solid #D1C4E9;
   border-radius: 6px;
   overflow: hidden;
   background: #ffffff;
 }
 
 .tree-folder-header {
-  border-bottom: 1px solid #ECEFF1;
+  border-bottom: 1px solid #EDE7F6;
 }
 
 .tree-children {
-  border-left: 2px solid #E0E0E0;
+  border-left: 2px solid #D1C4E9;
   margin-left: 12px;
 }
 
@@ -125,7 +125,7 @@ const store = useLaporanRadiologiStore()
     border-bottom: none;
   }
   &:hover {
-    background: #F5F5F5;
+    background: #F3E5F5;
     border-radius: 4px;
   }
 }

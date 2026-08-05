@@ -8,52 +8,38 @@
 
     <!-- Tabs -->
     <div class="row no-wrap q-mt-sm q-mb-xs" style="flex: 0 0 auto;">
-      <q-tabs
-        v-model="store.activeTab"
-        dense
-        align="left"
-        active-color="primary"
-        indicator-color="primary"
-        class="full-width bg-white shadow-1 rounded-borders"
-        narrow-indicator
-      >
+      <q-tabs v-model="store.activeTab" dense align="left" active-color="primary" indicator-color="primary"
+        class="full-width bg-white shadow-1 rounded-borders" narrow-indicator>
         <q-tab name="global" no-caps>
           <div class="row items-center q-gutter-xs">
             <q-icon name="icon-mat-bar_chart" size="16px" />
-            <span>Rekap Global</span>
-            <q-badge
-              v-if="store.rekapGlobal.length"
-              :label="store.rekapGlobal.length"
-              color="primary"
-              rounded
-              floating
-            />
+            <span>Per Pemeriksaan</span>
+            <q-badge v-if="store.filteredPemeriksaan.length" :label="store.filteredPemeriksaan.length" color="primary" rounded
+              floating />
           </div>
         </q-tab>
         <q-tab name="dokter" no-caps>
           <div class="row items-center q-gutter-xs">
             <q-icon name="icon-mat-person_search" size="16px" />
-            <span>Per Dokter</span>
-            <q-badge
-              v-if="store.rekapDokter.length"
-              :label="store.rekapDokter.length"
-              color="teal"
-              rounded
-              floating
-            />
+            <span>Per Dokter Minta</span>
+            <q-badge v-if="store.filteredDokterMinta.length" :label="store.filteredDokterMinta.length" color="teal" rounded
+              floating />
+          </div>
+        </q-tab>
+        <q-tab name="ruangan" no-caps>
+          <div class="row items-center q-gutter-xs">
+            <q-icon name="icon-mat-apartment" size="16px" />
+            <span>Per Dokter Pelaksana</span>
+            <q-badge v-if="store.filteredDokterLaksana.length" :label="store.filteredDokterLaksana.length" color="deep-purple"
+              rounded floating />
           </div>
         </q-tab>
         <q-tab name="detail" no-caps>
           <div class="row items-center q-gutter-xs">
             <q-icon name="icon-mat-format_list_bulleted" size="16px" />
-            <span>Detail Pasien</span>
-            <q-badge
-              v-if="store.detailItems.length"
-              :label="store.detailItems.length"
-              color="orange"
-              rounded
-              floating
-            />
+            <span>Per Ruangan</span>
+            <q-badge v-if="store.filteredRuangan.length" :label="store.filteredRuangan.length" color="orange" rounded
+              floating />
           </div>
         </q-tab>
       </q-tabs>
@@ -74,7 +60,12 @@
         <TablePerDokterComp />
       </div>
 
-      <!-- Detail Pasien -->
+      <!-- Per Ruangan / Poli -->
+      <div v-else-if="store.activeTab === 'ruangan'" class="full-height">
+        <TablePerRuanganComp />
+      </div>
+
+      <!-- Detail Transaksi Pasien -->
       <div v-else-if="store.activeTab === 'detail'" class="full-height">
         <TableDetailComp />
       </div>
@@ -94,6 +85,7 @@ const HeaderComp = defineAsyncComponent(() => import('./comp/HeaderComp.vue'))
 const SummaryCards = defineAsyncComponent(() => import('./comp/SummaryCards.vue'))
 const TableGlobalComp = defineAsyncComponent(() => import('./comp/TableGlobalComp.vue'))
 const TablePerDokterComp = defineAsyncComponent(() => import('./comp/TablePerDokterComp.vue'))
+const TablePerRuanganComp = defineAsyncComponent(() => import('./comp/TablePerRuanganComp.vue'))
 const TableDetailComp = defineAsyncComponent(() => import('./comp/TableDetailComp.vue'))
 const CetakLaporanDialog = defineAsyncComponent(() => import('./comp/CetakLaporanDialog.vue'))
 
@@ -105,10 +97,9 @@ function openCetakDialog() {
 }
 
 onMounted(async () => {
-  // Load master dokter dan data awal secara paralel
   await Promise.all([
     store.fetchMasterDokter(),
-    store.getData()
+    store.getDataAll()
   ])
 })
 </script>
