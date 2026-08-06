@@ -191,7 +191,7 @@ const availableTindakans = computed(() => {
   if (props.pasien?.tindakan?.length > 0) {
     props.pasien.tindakan.forEach(item => {
       const namaTindakan = item.mastertindakan?.rs2 || item.tindakan || ''
-      if (namaTindakan.toLowerCase().startsWith('kanulasi vena sentral')) {
+      if (namaTindakan.toLowerCase().includes('kanulasi vena sentral')) {
         if (!list.some(x => x.rs2 === item.rs2)) {
           list.push({
             id: item.id,
