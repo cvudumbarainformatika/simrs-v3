@@ -203,6 +203,13 @@ const documents = ref([
     label: 'Daftar Tilik Pre dan Paska Operasi',
     value: 'DaftarTilikOp'
   },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'KONSUL',
+    label: 'Konsul Spesialis',
+    value: 'KonsulSpesialis'
+  },
   // {
   //   icon: 'icon-mat-email',
   //   color: 'primary',
@@ -298,6 +305,7 @@ const comp = [
   { nama: 'Monitoringselamaanestesi', page: defineAsyncComponent(() => import('./comp/MonitoringSelamaAnastesiDoc.vue')) },
   { nama: 'Monitoringpascaanestesi', page: defineAsyncComponent(() => import('./comp/MonitoringPascaAnastesiDoc.vue')) },
   { nama: 'Laporanoperasi', page: defineAsyncComponent(() => import('./comp/LaporanOperasiDoc.vue')) },
+  { nama: 'KonsulSpesialis', page: defineAsyncComponent(() => import('./comp/LembarKonsulDoc.vue')) },
   { nama: 'DaftarTilikOp', page: defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/dokumen/daftartilik/IndexPage.vue')) },
   { nama: 'CPPT', page: defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/dokumen/cppt/IndexPage.vue')) },
   { nama: 'EDUKASI', page: defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/dokumen/edukasi/IndexPage.vue')) },
