@@ -3,7 +3,7 @@
     <div id="pdfDoc" ref="rePdfDoc" class="page-legal f-12 bg-white shadow-2">
       <div class="contentx">
         <!-- KOP SURAT INTERNAL -->
-        <app-kop-surat-Internal v-if="!history" title1="LEMBAR KONSUL" title2="SPESIALIS" />
+        <app-kop-surat-Internal v-if="!history" title1="LEMBAR" title2="KONSULTASI" />
 
         <!-- BIODATA PASIEN -->
         <div v-if="!history" class="biodata-pasien q-my-md">
@@ -47,7 +47,8 @@
           </div>
 
           <div v-else>
-            <div v-for="(item, index) in konsultasis" :key="item.id" class="q-mb-xl p-box" style="page-break-inside: avoid;">
+            <div v-for="(item, index) in konsultasis" :key="item.id" class="q-mb-xl p-box"
+              style="page-break-inside: avoid;">
               <!-- Sub Header for Konsul Index -->
               <div class="text-weight-bold f-13 bg-grey-3 q-pa-sm text-primary border-top-bottom">
                 KONSULTASI #{{ index + 1 }}
@@ -112,8 +113,10 @@
                     <tr>
                       <td class="text-weight-bold">Status Verifikasi</td>
                       <td>
-                        <q-badge :color="item?.user_jawab === item?.kddokterkonsul ? 'primary' : 'orange-9'" text-color="white" class="q-px-sm">
-                          {{ item?.user_jawab === item?.kddokterkonsul ? 'Terverifikasi Dokter Konsul' : 'Belum Terverif Dokter Konsul' }}
+                        <q-badge :color="item?.user_jawab === item?.kddokterkonsul ? 'primary' : 'orange-9'"
+                          text-color="white" class="q-px-sm">
+                          {{ item?.user_jawab === item?.kddokterkonsul ? 'Terverifikasi Dokter Konsul' : 'Belum Terverif
+                          Dokter Konsul' }}
                         </q-badge>
                       </td>
                     </tr>
@@ -134,7 +137,8 @@
                   <div class="text-weight-bold q-mb-xs f-10">
                     {{ item?.nakesminta?.kdgroupnakes === '1' ? 'Dokter Peminta Konsul' : 'Nakes Peminta Konsul' }}
                   </div>
-                  <div v-if="qrUrl(item, 'permintaan')" style="height: 75px; width: 75px; margin: 0 auto;" class="q-mb-xs">
+                  <div v-if="qrUrl(item, 'permintaan')" style="height: 75px; width: 75px; margin: 0 auto;"
+                    class="q-mb-xs">
                     <vue-qrcode :value="qrUrl(item, 'permintaan')" tag="svg" :options="{
                       errorCorrectionLevel: 'Q',
                       color: { dark: '#000000', light: '#ffffff' },
@@ -159,7 +163,8 @@
                   <div style="text-decoration: underline;" class="text-weight-bold f-11">
                     {{ item?.dokterkonsul?.nama || namaPetugas(item?.kddokterkonsul) }}
                   </div>
-                  <div class="f-9">{{ formatNipOrId(item?.dokterkonsul?.kdpegsimrs || item?.kddokterkonsul, true) }}</div>
+                  <div class="f-9">{{ formatNipOrId(item?.dokterkonsul?.kdpegsimrs || item?.kddokterkonsul, true) }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -174,8 +179,8 @@
     </div>
 
     <!-- Print Button -->
-    <q-btn v-if="!history && konsultasis && konsultasis.length > 0" ref="refPrint" v-print="printObj" fab icon="icon-mat-print" color="primary"
-      class="fixed-bottom-right" style="margin: 16px;">
+    <q-btn v-if="!history && konsultasis && konsultasis.length > 0" ref="refPrint" v-print="printObj" fab
+      icon="icon-mat-print" color="primary" class="fixed-bottom-right" style="margin: 16px;">
       <q-tooltip>Print</q-tooltip>
     </q-btn>
   </div>
@@ -204,27 +209,27 @@ const konsultasis = computed(() => {
   return props.pasien?.konsultasi ?? []
 })
 
-function namaPetugas(code) {
+function namaPetugas (code) {
   if (!code) return '-'
   return store.dokters?.find(x => x.kdpegsimrs === code)?.nama ?? code
 }
 
-function formatNipOrId(kdpeg, isDokter) {
+function formatNipOrId (kdpeg, isDokter) {
   if (!kdpeg) return ''
-  let target = isDokter 
-    ? store.dokters?.find(x => x.kdpegsimrs === kdpeg) 
+  let target = isDokter
+    ? store.dokters?.find(x => x.kdpegsimrs === kdpeg)
     : store.perawats?.find(x => x.kdpegsimrs === kdpeg)
-    
+
   if (!target) {
-    target = isDokter 
-      ? store.perawats?.find(x => x.kdpegsimrs === kdpeg) 
+    target = isDokter
+      ? store.perawats?.find(x => x.kdpegsimrs === kdpeg)
       : store.dokters?.find(x => x.kdpegsimrs === kdpeg)
   }
-  
+
   if (!target) return ''
   const nip = target?.nip
   if (!nip || nip === '-' || nip === 'undefined') return ''
-  
+
   const cleanNip = nip.replace(/[\s.-]/g, '')
   if (/^\d{18}$/.test(cleanNip) || /^\d{9,}$/.test(cleanNip)) {
     return `NIP. ${nip}`
@@ -232,12 +237,12 @@ function formatNipOrId(kdpeg, isDokter) {
   return nip
 }
 
-function qrUrl(item, type) {
+function qrUrl (item, type) {
   const noreg = props?.pasien?.noreg
   const dok = type === 'jawaban' ? 'JAWABAN KONSUL OK.png' : 'PERMINTAAN KONSUL OK.png'
   const asal = 'PENUNJANG'
-  const petugas = type === 'jawaban' 
-    ? (item?.dokterkonsul?.kdpegsimrs || item?.kddokterkonsul) 
+  const petugas = type === 'jawaban'
+    ? (item?.dokterkonsul?.kdpegsimrs || item?.kddokterkonsul)
     : (item?.nakesminta?.kdpegsimrs || item?.kdminta || props.pasien?.kodedokter)
   if (!petugas) return ''
   const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
@@ -323,7 +328,8 @@ onMounted(() => {
   margin-bottom: 10px;
   font-size: 11px;
 
-  th, td {
+  th,
+  td {
     border: 1px solid #000;
     padding: 5px 8px;
     vertical-align: top;
