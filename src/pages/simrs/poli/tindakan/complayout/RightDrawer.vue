@@ -31,6 +31,9 @@
           <q-tab-panel name="Rehab Medik" class="full-height q-pa-none">
             <RehabPage :pasien="pasien" :no-header="noHeader" />
           </q-tab-panel>
+          <q-tab-panel name="Kamar Operasi" class="full-height q-pa-none">
+            <KamarOperasiDocPage :pasien="pasien" :no-header="noHeader" />
+          </q-tab-panel>
         </q-tab-panels>
       </div>
     </div>
@@ -51,6 +54,7 @@ const RawatJalan = defineAsyncComponent(() => import('./compRight/RawatJalan.vue
 const RawatInap = defineAsyncComponent(() => import('./compRight/RawatInap.vue'))
 const IgdPage = defineAsyncComponent(() => import('./compRight/IgdPage.vue'))
 const RehabPage = defineAsyncComponent(() => import('./compRight/RehabPage.vue'))
+const KamarOperasiDocPage = defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/ok/DokumenPage.vue'))
 
 // const PraAnestesi = defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AsesmenPraAnestesia.vue'))
 

@@ -115,8 +115,7 @@
                       <td>
                         <q-badge :color="item?.user_jawab === item?.kddokterkonsul ? 'primary' : 'orange-9'"
                           text-color="white" class="q-px-sm">
-                          {{ item?.user_jawab === item?.kddokterkonsul ? 'Terverifikasi Dokter Konsul' : 'Belum Terverif
-                          Dokter Konsul' }}
+                          {{ item?.user_jawab === item?.kddokterkonsul ? 'Terverifikasi Dokter Konsul' : 'Belum Terverifikasi Dokter Konsul' }}
                         </q-badge>
                       </td>
                     </tr>
