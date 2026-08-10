@@ -104,10 +104,12 @@
               <PopupPenolakanResusitasi v-if="item?.penolakan_resusitasi && item?.penolakan_resusitasi?.length > 0"
                 :penolakan-resusitasi="item.penolakan_resusitasi" />
               <PopupMpp v-if="item?.pasien_mpp === true" />
-              <PopupRisikoKekerasan
-                v-if="item?.berisiko_kekerasan === true || (item?.kriteria_kekerasan && item?.kriteria_kekerasan?.length > 0)"
-                :kriteria-kekerasan="item?.kriteria_kekerasan || []" />
             </div>
+
+            <!-- Stempel Stop Kekerasan Absolute Kanan Tengah -->
+            <PopupRisikoKekerasan
+              v-if="item?.berisiko_kekerasan === true || (item?.kriteria_kekerasan && item?.kriteria_kekerasan?.length > 0)"
+              :kriteria-kekerasan="item?.kriteria_kekerasan || []" />
 
           </q-item-section>
           <q-item-section side>

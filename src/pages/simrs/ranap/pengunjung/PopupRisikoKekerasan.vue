@@ -1,24 +1,37 @@
 <template>
-  <span class="stamp-kekerasan-wrapper vertical-middle cursor-pointer" title="Risiko & Perlindungan Kekerasan">
-    <!-- Symbol Stempel Stop Kekerasan -->
-    <div class="stamp-circle flex flex-center shadow-1">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Stamp Outer Ring -->
-        <circle cx="12" cy="12" r="10.5" stroke="#6a1b9a" stroke-width="1.6" stroke-dasharray="3 1" />
-        <circle cx="12" cy="12" r="9" stroke="#6a1b9a" stroke-width="1.2" />
-        <!-- Hand Palm / Stop Hand -->
-        <path d="M12 6V11M10 7V11M14 7V11M8 8.5V11.5C8 13.7 9.8 15.5 12 15.5C14.2 15.5 16 13.7 16 11.5V9.5" stroke="#6a1b9a" stroke-width="1.3" stroke-linecap="round" />
-        <!-- Horizontal Bar across hand -->
-        <line x1="4.5" y1="11.5" x2="19.5" y2="11.5" stroke="#6a1b9a" stroke-width="1.5" />
+  <div class="stamp-kekerasan-absolute cursor-pointer" title="Klik untuk Informasi Perlindungan Kekerasan">
+    <!-- Realistic Rubber Stamp SVG Symbol -->
+    <div class="stamp-container transition-hover">
+      <svg width="62" height="62" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" class="stamp-svg">
+        <!-- Outer Stamp Rings (Double Ring + Rough Edges) -->
+        <circle cx="30" cy="30" r="28" stroke="#6a1b9a" stroke-width="2.2" stroke-dasharray="5 1.5" opacity="0.85" />
+        <circle cx="30" cy="30" r="25" stroke="#6a1b9a" stroke-width="1.8" opacity="0.9" />
+
+        <!-- Hand Palm / Raised Hand Icon -->
+        <g stroke="#6a1b9a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.9">
+          <!-- Fingers -->
+          <path d="M22 17V27M26 14.5V27M30 13.5V27M34 15V27M38 19V27C38 32.5 34.5 37 30 37C25.5 37 22 32.5 22 27" />
+        </g>
+
+        <!-- Horizontal Bar across Palm (Peraturan Stempel Stop) -->
+        <rect x="11" y="25.5" width="38" height="4.5" rx="1" fill="#6a1b9a" opacity="0.9" />
+
+        <!-- Bottom Curved Text "KEKERASAN" along Round Arc -->
+        <path id="stampArcPath" d="M 10,30 A 20,20 0 0,0 50,30" fill="none" />
+        <text font-family="'Arial Black', 'Inter', sans-serif" font-size="6.2" font-weight="900" fill="#6a1b9a" letter-spacing="0.8" opacity="0.95">
+          <textPath href="#stampArcPath" startOffset="50%" text-anchor="middle">
+            KEKERASAN
+          </textPath>
+        </text>
       </svg>
     </div>
 
-    <!-- Popup Info Criteria -->
-    <q-popup-proxy class="bg-purple-1" style="max-width: 320px;">
-      <q-card flat bordered class="bg-purple-1 text-purple-10" style="border-color: #8e24aa; width: 100%;">
+    <!-- Popup Info Proxy Card -->
+    <q-popup-proxy class="bg-purple-1" style="max-width: 330px;">
+      <q-card flat bordered class="bg-purple-1 text-purple-10 shadow-3" style="border-color: #8e24aa; width: 100%;">
         <q-card-section class="row items-center q-pb-none">
-          <q-avatar icon="icon-mat-pan_tool" color="purple-9" text-color="white" size="26px" class="q-mr-xs" />
-          <div class="text-subtitle2 text-bold">✋ PERLINDUNGAN KEKERASAN</div>
+          <q-avatar icon="icon-mat-pan_tool" color="purple-9" text-color="white" size="28px" class="q-mr-xs" />
+          <div class="text-subtitle2 text-bold">✋ PERLINDUNGAN &amp; RISIKO KEKERASAN</div>
         </q-card-section>
 
         <q-card-section class="q-pt-sm">
@@ -47,7 +60,7 @@
         </q-card-section>
       </q-card>
     </q-popup-proxy>
-  </span>
+  </div>
 </template>
 
 <script setup>
@@ -60,35 +73,33 @@ defineProps({
 </script>
 
 <style lang="scss" scoped>
-.stamp-kekerasan-wrapper {
-  display: inline-block;
-  vertical-align: middle;
+.stamp-kekerasan-absolute {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-12deg);
+  z-index: 5;
+  pointer-events: auto;
 }
 
-.stamp-circle {
-  width: 22px;
-  height: 22px;
+.stamp-container {
+  display: inline-block;
+  padding: 2px;
   border-radius: 50%;
-  background-color: #f3e5f5;
-  border: 1px solid #8e24aa;
-  transition: all 0.2s ease-in-out;
-  animation: pulse-stamp 1.8s infinite;
+  background: rgba(243, 229, 245, 0.4);
+  backdrop-filter: blur(1px);
+  box-shadow: 0 2px 8px rgba(106, 27, 154, 0.15);
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
   &:hover {
-    transform: scale(1.15);
-    background-color: #e1bee7;
+    transform: scale(1.15) rotate(0deg);
+    box-shadow: 0 6px 16px rgba(106, 27, 154, 0.3);
+    background: rgba(243, 229, 245, 0.8);
   }
 }
 
-@keyframes pulse-stamp {
-  0% {
-    box-shadow: 0 0 0 0 rgba(142, 36, 170, 0.6);
-  }
-  70% {
-    box-shadow: 0 0 0 5px rgba(142, 36, 170, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(142, 36, 170, 0);
-  }
+.stamp-svg {
+  display: block;
+  filter: drop-shadow(0px 1px 1px rgba(106, 27, 154, 0.25));
 }
 </style>
