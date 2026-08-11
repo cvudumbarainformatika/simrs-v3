@@ -222,7 +222,7 @@ const store = useKonsulKamarOperasiStore()
 const refPrint = ref()
 
 const konsultasis = computed(() => {
-    console.log('props.pasien?.konsultasi', props.pasien)
+    // console.log('props.pasien?.konsultasi', props.pasien)
     return props.pasien?.jawabankonsul ?? []
 })
 
