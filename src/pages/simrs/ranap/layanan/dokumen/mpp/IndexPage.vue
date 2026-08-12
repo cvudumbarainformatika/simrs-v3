@@ -1075,9 +1075,31 @@
                   <!-- Tanda Tangan MPP inside Terminasi Column -->
                   <div class="q-mt-sm text-center q-pb-xs" style="font-size: 8px; border-top: 1px dashed #ccc; padding-top: 4px;">
                     <div class="q-mb-xs">Mengetahui</div>
-                    <div class="text-weight-bold">Manajer Pelayanan Pasien</div>
-                    <div style="height: 30px;"></div>
-                    <div>( ...................................................... )</div>
+                    <div class="text-weight-bold q-mb-xs">Manajer Pelayanan Pasien</div>
+
+                    <!-- Jika dokumen sudah di-update oleh MPP (kdpegsimrs dan kdpegsimrs_updated tidak sama) -->
+                    <div v-if="item?.kdpegsimrs_updated && item?.kdpegsimrs_updated !== item?.kdpegsimrs" class="column flex-center q-my-xs">
+                      <app-qr-petugas
+                        :noreg="item?.noreg"
+                        :jnssurat="'DOKUMEN-MPP.png'"
+                        :asal="'RANAP'"
+                        :kdpegsimrs="item?.kdpegsimrs_updated"
+                        height="45px"
+                        width="45px"
+                      />
+                      <div class="text-weight-bold q-mt-xs" style="font-size: 8px;">
+                        ( {{ item?.petugas_updated?.nama || '..............................................' }} )
+                      </div>
+                      <div v-if="item?.petugas_updated?.nip" class="text-grey-9" style="font-size: 7px;">
+                        NIP. {{ item?.petugas_updated?.nip }}
+                      </div>
+                    </div>
+
+                    <!-- Jika belum di-update oleh MPP -->
+                    <div v-else>
+                      <div style="height: 35px;"></div>
+                      <div>( ...................................................... )</div>
+                    </div>
                   </div>
 
                 </div>
