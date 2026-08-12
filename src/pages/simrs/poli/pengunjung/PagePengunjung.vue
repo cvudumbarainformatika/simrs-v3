@@ -46,7 +46,7 @@ import PageTindakan from '../tindakan/IndexPage.vue'
 import { laravelEcho } from 'src/modules/newsockets'
 
 // import CetakRekapBilling from 'src/pages/simrs/kasir/rajal/listkunjungan/comp/CetakRekapBilling.vue'
-import { useQuasar } from 'quasar'
+import { useQuasar,Dialog } from 'quasar'
 import { useSpeechStore } from 'src/stores/antrian/speech'
 import { useSettingsAplikasi } from 'src/stores/simrs/settings'
 
@@ -244,8 +244,30 @@ function bukaTindakan(val) {
       return
     }
   }
-  pasien.value = val
-  store.setTerima(val)
+  
+  Dialog.create({
+    title:'Konfirmasi',
+    message:`Apakah <b/> ${val?.nama} </b> sudah datang dan akan <b/>DITERIMA</b>?`,
+    html: true,
+    ok: {
+          push: true,
+          label: 'TERIMA',
+          // 'no-caps': true,
+          color: 'green'
+        },
+        cancel: {
+          push: true,
+          label: 'Batal',
+          'no-caps': true,
+          color: 'dark'
+        }
+  })
+  .onOk(()=>{
+    // console.log('anu')
+    pasien.value = val
+    store.setTerima(val)
+    
+  })
 }
 
 function tidakdatangs(val) {
@@ -261,7 +283,27 @@ function tidakdatangs(val) {
       return
     }
   }
-  store.settidakdatang(val)
+  Dialog.create({
+    title:'Konfirmasi',
+    message:'Apakah Pasien ini benar-benar TIDAK DATANG ?',
+    ok: {
+          push: true,
+          label: 'TIDAK DATANG',
+          // 'no-caps': true,
+          color: 'negative'
+        },
+        cancel: {
+          push: true,
+          label: 'Batal',
+          'no-caps': true,
+          color: 'dark'
+        }
+  })
+  .onOk(()=>{
+    // console.log('anu')
+    store.settidakdatang(val)
+    
+  })
 }
 
 function subscribedChannel() {
