@@ -187,16 +187,16 @@
                             <td class="text-bold">
                               Keluaran
                             </td>
-                            <td>
+                            <td style="white-space: pre-line; word-break: break-word;">
                               {{ store.pergeseran.keluaranlama }}
                             </td>
-                            <td class="text-right">
+                            <td class="text-right" style="white-space: pre-line; word-break: break-word;">
                               {{ store.pergeseran.targetkeluaranlama }}
                             </td>
-                            <td>
+                            <td style="white-space: pre-line; word-break: break-word;">
                               {{ store.pergeseran.keluaranbaru }}
                             </td>
-                            <td class="text-right">
+                            <td class="text-right" style="white-space: pre-line; word-break: break-word;">
                               {{ store.pergeseran.targetkeluaranbaru }}
                             </td>
                           </tr>

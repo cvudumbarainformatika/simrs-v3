@@ -4,10 +4,10 @@
       <div class="row items-center justify-between">
         <div class="text-subtitle2 text-weight-bold text-primary">
           <q-icon name="icon-mat-bar_chart" class="q-mr-xs" />
-          Rekapitulasi Global Tindakan Radiologi
+          Rekapitulasi Tindakan Radiologi Per Pemeriksaan
         </div>
         <div class="text-caption text-grey-7">
-          Total {{ store.rekapGlobal.length }} jenis tindakan
+          Total {{ store.filteredPemeriksaan.length }} jenis tindakan
         </div>
       </div>
     </q-card-section>
@@ -15,18 +15,9 @@
     <q-separator />
 
     <q-card-section class="q-pa-none">
-      <q-table
-        :rows="store.rekapGlobal"
-        :columns="columns"
-        row-key="kode"
-        flat
-        dense
-        :loading="store.loading"
-        :rows-per-page-options="[15, 25, 50, 0]"
-        rows-per-page-label="Per halaman"
-        no-data-label="Belum ada data tindakan radiologi"
-        class="table-laporan-radiologi"
-      >
+      <q-table :rows="store.filteredPemeriksaan" :columns="columns" row-key="kode" flat dense :loading="store.loading"
+        :rows-per-page-options="[15, 25, 50, 0]" rows-per-page-label="Per halaman"
+        no-data-label="Belum ada data tindakan radiologi" class="table-laporan-radiologi">
         <!-- Loading skeleton -->
         <template #loading>
           <q-inner-loading showing color="primary" />
@@ -54,28 +45,16 @@
         </template>
 
         <!-- Jumlah Pasien -->
-        <template #body-cell-jlhPasien="props">
+        <template #body-cell-total_nota="props">
           <q-td :props="props" class="text-center">
-            <q-chip
-              dense
-              color="blue-1"
-              text-color="primary"
-              :label="String(props.value)"
-              class="text-weight-bold"
-            />
+            <q-chip dense color="blue-1" text-color="primary" :label="String(props.value)" class="text-weight-bold" />
           </q-td>
         </template>
 
         <!-- Jumlah Tindakan -->
-        <template #body-cell-jlhTindakan="props">
+        <template #body-cell-total="props">
           <q-td :props="props" class="text-center">
-            <q-chip
-              dense
-              color="teal-1"
-              text-color="teal-9"
-              :label="String(props.value)"
-              class="text-weight-bold"
-            />
+            <q-chip dense color="teal-1" text-color="teal-9" :label="String(props.value)" class="text-weight-bold" />
           </q-td>
         </template>
 
@@ -83,12 +62,8 @@
         <template #body-cell-persentase="props">
           <q-td :props="props">
             <div class="row items-center q-gutter-xs no-wrap">
-              <q-linear-progress
-                :value="props.value / 100"
-                color="primary"
-                rounded
-                style="height: 8px; min-width: 60px; flex: 1;"
-              />
+              <q-linear-progress :value="props.value / 100" color="primary" rounded
+                style="height: 8px; min-width: 60px; flex: 1;" />
               <span class="text-caption text-weight-bold text-primary" style="min-width: 38px; text-align: right;">
                 {{ props.value }}%
               </span>
@@ -103,10 +78,12 @@
               TOTAL
             </q-td>
             <q-td class="text-center text-weight-bold text-primary">
-              {{ store.summary.totalPasien }}
+              {{ store.totalNotaUnik }}
             </q-td>
             <q-td class="text-center text-weight-bold text-teal">
-              {{ store.summary.totalTindakan }}
+              {{store.dataPemeriksaan.reduce((sum, item) => {
+                return sum + (Number(item?.total) || 0)
+              }, 0)}}
             </q-td>
             <q-td class="text-right text-weight-bold text-primary">
               100%
@@ -127,9 +104,9 @@ const columns = [
   { name: 'no', label: 'No', field: 'no', align: 'center', style: 'width: 48px' },
   { name: 'kode', label: 'Kode', field: 'kode', align: 'left', style: 'width: 100px' },
   { name: 'nama', label: 'Nama Tindakan / Pemeriksaan', field: 'nama', align: 'left', sortable: true },
-  { name: 'jlhPasien', label: 'Jml Pasien', field: 'jlhPasien', align: 'center', sortable: true, style: 'width: 110px' },
-  { name: 'jlhTindakan', label: 'Jml Tindakan', field: 'jlhTindakan', align: 'center', sortable: true, style: 'width: 120px' },
-  { name: 'persentase', label: 'Kontribusi', field: 'persentase', align: 'left', sortable: true, style: 'width: 180px' }
+  { name: 'total_nota', label: 'NOTA', field: 'total_nota', align: 'center', sortable: true, style: 'width: 110px' },
+  { name: 'total', label: 'TOTAL', field: 'total', align: 'center', sortable: true, style: 'width: 120px' },
+  { name: 'persentase', label: 'Kontribusi', field: 'persen_nota', align: 'left', sortable: true, style: 'width: 180px' }
 ]
 </script>
 
@@ -142,9 +119,11 @@ const columns = [
     color: #37474F;
     padding: 6px 8px;
   }
+
   :deep(.q-table tbody tr:hover td) {
     background: #E3F2FD;
   }
+
   :deep(.q-table td) {
     padding: 5px 8px;
   }

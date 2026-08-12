@@ -9,11 +9,11 @@ const ranap = {
       name: 'ranap.pengunjung',
       component: () => import('pages/simrs/ranap/pengunjung/IndexPage.vue')
     },
-    // {
-    //   path: '/ranap/suratkontrol',
-    //   name: 'ranap.suratkontrol',
-    //   component: () => import('pages/simrs/ranap/suratkontrol/IndexPage.vue')
-    // },
+    {
+      path: '/ranap/dashboard',
+      name: 'ranap.dashboard',
+      component: () => import('pages/simrs/ranap/dashboard/IndexPage.vue')
+    },
 
     {
       path: '/ranap/notfound',

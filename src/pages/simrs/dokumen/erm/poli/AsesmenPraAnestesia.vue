@@ -523,9 +523,11 @@ function dokter () {
 
   if (dc) return dc?.nama
 
-  const keys = Object.keys(props.pasien?.dokter)
-  if (keys.length) return props.pasien?.dokter?.nama
-  else return props.pasien?.dokter
+  if (!props.pasien?.dokter) return '-'
+  if (typeof props.pasien.dokter !== 'object') return props.pasien.dokter
+  const keys = Object.keys(props.pasien.dokter)
+  if (keys.length) return props.pasien.dokter.nama
+  else return props.pasien.dokter
 }
 onMounted(async () => {
   await store.getMaster()

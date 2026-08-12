@@ -1,6 +1,6 @@
 <template>
-  <div ref="main" class="column flex-center full-height  bg-white">
-    <div class="container full-height">
+  <div ref="main" class="column flex-center full-height bg-white" :class="{ 'q-pa-md': props.noHeader }">
+    <div :class="props.noHeader ? 'container-history' : 'container'" class="full-height">
       <div class="column full-height ">
         <div class="col-grow">
           <KumpulanSurat :key="doc" :items="filterDokumen" @go-to="(item) => goTo(item)" />
@@ -10,21 +10,86 @@
   </div>
   <app-fullscreen-blue v-model="open">
     <template #default>
-      <component :is="cekPanel()" :key="props.pasien" :pasien="props.pasien" :menu="selectedMenu" :data-header="dataHeader" />
+      <component :is="cekPanel()" :key="localPasien" :pasien="localPasien" :menu="selectedMenu" :data-header="dataHeader" />
     </template>
   </app-fullscreen-blue>
 </template>
 <script setup>
 // import KumpulanSurat from './KumpulanSurat.vue'
 import { findWithAttr } from 'src/modules/utils'
-import { ref, defineAsyncComponent, computed, onMounted } from 'vue'
-// eslint-disable-next-line no-unused-vars
+import { ref, defineAsyncComponent, computed, onMounted, watch } from 'vue'
+import { api } from 'src/boot/axios'
+
 const props = defineProps({
   pasien: {
     type: Object,
     default: null
+  },
+  noHeader: {
+    type: Boolean,
+    default: false
   }
 })
+
+const localPasien = ref({ ...props.pasien })
+
+watch(() => props.pasien, (newVal) => {
+  localPasien.value = { ...newVal }
+  fetchOkData()
+}, { deep: true })
+
+const fetchOkData = async () => {
+  if (!props.pasien?.noreg) return
+  try {
+    const respList = await api.get(`v1/simrs/penunjang/ok/listkamaroperasi?q=${props.pasien.noreg}`)
+    const items = respList.data?.data || respList.data || []
+    if (items.length > 0) {
+      for (const item of items) {
+        const nota = item.rs2
+        const respDetail = await api.post('v1/simrs/penunjang/ok/buka-layanan', {
+          noreg: props.pasien.noreg,
+          nota: nota
+        })
+        const detail = respDetail.data || {}
+        
+        // Merge detail arrays into localPasien
+        if (detail.laporanop) {
+          localPasien.value.laporanop = localPasien.value.laporanop || []
+          detail.laporanop.forEach(lap => {
+            if (!localPasien.value.laporanop.some(x => x.id === lap.id)) {
+              localPasien.value.laporanop.push(lap)
+            }
+          })
+        }
+        if (detail.pra_bedah) {
+          localPasien.value.pra_bedah = detail.pra_bedah
+        }
+        if (detail.pra_induksi) {
+          localPasien.value.pra_induksi = detail.pra_induksi
+        }
+        if (detail.surgical) {
+          localPasien.value.surgical = detail.surgical
+        }
+        if (detail.manytindakanop) {
+          localPasien.value.manytindakanop = detail.manytindakanop
+        }
+        if (detail.implant) {
+          localPasien.value.implant = detail.implant
+        }
+        if (detail.implant_seri) {
+          localPasien.value.implant_seri = detail.implant_seri
+        }
+      }
+    }
+  } catch (err) {
+    console.error('Error fetching OK patient details for documents:', err)
+  }
+}
+
+onMounted(() => {
+  fetchOkData()
+})
+
 const KumpulanSurat = defineAsyncComponent(() => import('src/pages/simrs/dokumen/comppoli/KumpulanSurat.vue'))
 const open = ref(false)
 const doc = ref('')
@@ -203,6 +268,13 @@ const documents = ref([
     label: 'Daftar Tilik Pre dan Paska Operasi',
     value: 'DaftarTilikOp'
   },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'KONSUL',
+    label: 'Konsul Spesialis',
+    value: 'KonsulSpesialis'
+  },
   // {
   //   icon: 'icon-mat-email',
   //   color: 'primary',
@@ -268,7 +340,7 @@ function getLabel (val) {
 }
 
 const filterDokumen = computed(() => {
-  const kodepoli = props.pasien?.kodepoli
+  const kodepoli = localPasien.value?.kodepoli
   if (kodepoli !== 'POL022' && kodepoli !== 'POL010') {
     return documents.value.filter(a => a.jenis !== 'SKD')
   } else {
@@ -298,6 +370,7 @@ const comp = [
   { nama: 'Monitoringselamaanestesi', page: defineAsyncComponent(() => import('./comp/MonitoringSelamaAnastesiDoc.vue')) },
   { nama: 'Monitoringpascaanestesi', page: defineAsyncComponent(() => import('./comp/MonitoringPascaAnastesiDoc.vue')) },
   { nama: 'Laporanoperasi', page: defineAsyncComponent(() => import('./comp/LaporanOperasiDoc.vue')) },
+  { nama: 'KonsulSpesialis', page: defineAsyncComponent(() => import('./comp/LembarKonsulDoc.vue')) },
   { nama: 'DaftarTilikOp', page: defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/dokumen/daftartilik/IndexPage.vue')) },
   { nama: 'CPPT', page: defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/dokumen/cppt/IndexPage.vue')) },
   { nama: 'EDUKASI', page: defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/dokumen/edukasi/IndexPage.vue')) },
@@ -342,5 +415,15 @@ const filteredDocuments = computed(() =>
   border: 3px solid rgba(255, 255, 255, 0.5);
   border-right: 3px solid rgba(255, 255, 255, 0.2);
   border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+}
+.container-history {
+  position: relative;
+  width: 100%;
+  min-height: 90vh;
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+  font-size: 10px;
+  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 </style>

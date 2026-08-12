@@ -162,6 +162,13 @@ const documents = ref([
     label: 'Profil Ringkasan Medis Rawat Jalan',
     value: 'PRMRJ'
   },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'SuratKonsul',
+    label: 'Surat-Konsul',
+    value: 'SuratKonsul'
+  },
   // {
   //   icon: 'icon-mat-email',
   //   color: 'primary',
@@ -225,6 +232,8 @@ const comp = [
   // { nama: 'SrtKnslinternal', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/KonsulInternal/SuratKonsulInternalPage.vue')) },
   { nama: 'SkrRajal', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/SkriningRajalPage.vue')) },
   { nama: 'PRMRJ', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/Prmrj/PrmrjPage.vue')) },
+  { nama: 'SuratKonsul', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/SuratKonsul/SuratKonsulPage.vue')) },
+
 ]
 // eslint-disable-next-line no-unused-vars
 const cekPanel = () => {

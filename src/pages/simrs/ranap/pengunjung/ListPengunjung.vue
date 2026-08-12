@@ -106,6 +106,11 @@
               <PopupMpp v-if="item?.pasien_mpp === true" />
             </div>
 
+            <!-- Stempel Stop Kekerasan Absolute Kanan Tengah -->
+            <PopupRisikoKekerasan
+              v-if="item?.berisiko_kekerasan === true || (item?.kriteria_kekerasan && item?.kriteria_kekerasan?.length > 0)"
+              :kriteria-kekerasan="item?.kriteria_kekerasan || []" />
+
           </q-item-section>
           <q-item-section side>
             <q-btn v-if="item?.status !== '1'" dense outline size="sm" no-caps color="primary" label="LIHAT LAYANAN"
@@ -132,6 +137,7 @@ import PopupResikoJatuh from './PopupResikoJatuh.vue'
 import PopupNamaSama from './PopupNamaSama.vue'
 import PopupPenolakanResusitasi from './PopupPenolakanResusitasi.vue'
 import PopupMpp from './PopupMpp.vue'
+import PopupRisikoKekerasan from './PopupRisikoKekerasan.vue'
 import { calcDate, humanDate } from 'src/modules/formatter'
 import { useTriageIgd } from 'src/stores/simrs/igd/triage'
 import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'

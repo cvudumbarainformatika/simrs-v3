@@ -5,6 +5,11 @@ const radiologi = {
   children: [
     { path: '', redirect: '/radiologi/pengunjung' },
     {
+      path: '/radiologi/dashboard',
+      name: 'radiologi.dashboard',
+      component: () => import('pages/simrs/radiologi/dashboard/IndexPage.vue')
+    },
+    {
       path: '/radiologi/pengunjung',
       name: 'radiologi.pengunjung',
       component: () => import('pages/simrs/radiologi/pengunjung/IndexPage.vue')
