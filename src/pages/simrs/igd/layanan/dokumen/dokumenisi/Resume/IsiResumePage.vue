@@ -290,7 +290,7 @@
             <span v-else-if="carakeluar?.rs4 === 'Rawat Inap'">{{ carakeluar?.rs4 }} Ke {{
               carakeluar?.planranap?.ruangranap?.rs2 }}</span>
             <span v-else-if="carakeluar?.rs4 === 'Rujuk'">{{ carakeluar?.rs4 }} Ke {{ carakeluar?.transrujukan?.rs7
-              }}</span>
+            }}</span>
             <span v-else></span>
           </div>
         </div>
@@ -303,8 +303,29 @@
         <div class="text-center text-weight-bold q-pt-md">
           Pasien/Keluarga
         </div>
-        <div class="text-center" style="height: 120px;">
-          <div class="signature-line">(......................................................................)</div>
+        <div v-if="!resumeSignature" class="no-print">
+          <app-input-simrs v-model="store.form.saksiPasien" label="Nama Saksi Pasien" class="col-6"
+            :valid="{ required: false }" />
+
+          <q-select v-model="store.form.hubunganPasien" :options="hubunganPasienOptions"
+            label="Hubungan dengan Pasien" outlined dense emit-value map-options class="q-mt-sm" />
+
+          <app-signature :ttd="store.form.resumekeluargapasien" :width="250" :height="150" label-ttd="TTD yg Menyatakan"
+            @save-ttd="(val) => store.form.resumekeluargapasien = val" :pasien="pasien" uuid="resumekeluargapasien"
+            @signature="(val) => {
+              store.form.resumekeluargapasien = val
+            }" />
+          <div class="row justify-center q-mt-sm">
+            <q-btn color="teal" icon="icon-mat-save" label="Simpan TTD" no-caps style="width: 250px;"
+              :loading="store.loadingsimpanttd" @click="saveResumeSignature" />
+          </div>
+        </div>
+        <div class="text-center signature-box" style="height: 120px;">
+          <img v-if="resumeSignature" :src="resumeSignatureUrl" alt="Tanda tangan pasien/keluarga"
+            class="signature-image" />
+          <div v-if="resumeSignature" class="signature-line signature-line--with-image">
+            ({{ resumeSignerName }})
+          </div>
         </div>
       </div>
       <div class="col-6">
@@ -326,7 +347,7 @@
             }" />
           </div>
           <div class="q-mt-sm text-weight-bold text-center">
-            {{ pasien.dokter }}
+            {{ pasien?.dokter }}
           </div>
         </div>
       </div>
@@ -337,14 +358,67 @@
 <script setup>
 import { formatRp } from 'src/modules/formatter';
 import { useKasirIgdStore } from 'src/stores/simrs/kasir/igd/kasirigd';
+import { pathImg } from 'src/boot/axios';
 import { date } from 'quasar';
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
+import AppSignature from 'src/components/~global/AppSignature.vue';
 
 const store = useKasirIgdStore()
 const props = defineProps({
   pasien: { type: Object, default: () => { } }
 })
 
+const savedResumeSignature = ref('')
+
+watch(
+  () => [props.pasien?.noreg, props.pasien?.norm],
+  ([noreg, norm]) => {
+    savedResumeSignature.value = ''
+    store.form.kodedokumen = 'DK-RE'
+    store.form.noreg = noreg ?? ''
+    store.form.norm = norm ?? ''
+  },
+  { immediate: true }
+)
+
+const hubunganPasienOptions = [
+  { label: 'Pasien sendiri', value: 'Pasien sendiri' },
+  { label: 'Orangtua', value: 'Orangtua' },
+  { label: 'Anak', value: 'Anak' },
+  { label: 'Saudara', value: 'Saudara' },
+  { label: 'Teman', value: 'Teman' },
+  { label: 'Orang lain', value: 'Orang lain' }
+]
+
+const resumeTtdDocument = computed(() => {
+  const documents = props.pasien?.ttd_dokumen_igd ?? []
+  if (!Array.isArray(documents)) return null
+
+  return documents.find(item => String(item?.kodedokumen ?? '').trim().toUpperCase() === 'DK-RE') ?? null
+})
+
+const resumeSignature = computed(() => {
+  const document = resumeTtdDocument.value
+  return document?.ttd || document?.resumekeluargapasien || document?.signature || savedResumeSignature.value
+})
+
+const resumeSignerName = computed(() => {
+  return resumeTtdDocument.value?.nama || store.form.saksiPasien || ''
+})
+
+const resumeSignatureUrl = computed(() => {
+  const signature = resumeSignature.value
+  if (!signature || signature.startsWith('data:image') || signature.startsWith('http')) return signature
+  return pathImg + signature
+})
+
+async function saveResumeSignature() {
+  const signature = store.form.resumekeluargapasien
+  if (!signature) return
+
+  const result = await store.simpanttd()
+  if (result) savedResumeSignature.value = signature
+}
 
 const qrDokter = computed(() => {
   // const petugas = 'Nama : ' + dpjp?.value?.nama ?? '' + 'NIP : ' + dpjp?.value?.nip ?? ''
@@ -472,6 +546,24 @@ const nyeri = computed(() => {
   padding-top: 130px;
 }
 
+.signature-line--with-image {
+  padding-top: 100px;
+}
+
+.signature-box {
+  position: relative;
+}
+
+.signature-image {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  max-width: 250px;
+  max-height: 100px;
+  object-fit: contain;
+  transform: translateX(-50%);
+}
+
 .b {
   border-right: 2px solid #000;
   border-left: 2px solid #000;
@@ -517,5 +609,11 @@ const nyeri = computed(() => {
   border-right: none;
   border-bottom: none;
   border-top: none;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
 }
 </style>

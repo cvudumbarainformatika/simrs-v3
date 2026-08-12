@@ -6,6 +6,7 @@ export const useKasirIgdStore = defineStore('kasir_igd_store', {
   state: () => ({
     items: [],
     meta: null,
+    loadingsimpanttd: false,
     params: {
       q: '',
       per_page: 10,
@@ -18,36 +19,44 @@ export const useKasirIgdStore = defineStore('kasir_igd_store', {
     loading: false,
     rekapBill: {},
     notas: {},
-    qris: 'asd'
+    qris: 'asd',
+    form: {
+      kodedokumen: '',
+      noreg: '',
+      norm: '',
+      saksiPasien: '',
+      hubunganPasien: '',
+      resumekeluargapasien: ''
+    }
   }),
   // getters: {
   //   doubleCount: (state) => state.counter * 2
   // },
   actions: {
 
-    setDate (payload) {
+    setDate(payload) {
       this.params.page = 1
       this.params.tgl = payload
       this.getLists()
     },
-    setQ (payload) {
+    setQ(payload) {
       this.params.page = 1
       this.params.q = payload
       this.getLists()
     },
-    setTglAwal () {
+    setTglAwal() {
       this.params.tgl = dateDbFormat(new Date())
     },
-    setPage (payload) {
+    setPage(payload) {
       this.params.page = payload
       this.getLists()
     },
-    setPerPage (payload) {
+    setPerPage(payload) {
       this.params.page = 1
       this.params.per_page = payload
       this.getLists()
     },
-    async getLists () {
+    async getLists() {
       this.loading = true
       const params = { params: this.params }
       // const resp = await api.get('/v1/simrs/pendaftaran/umum/kunjunganpasienumum', params)
@@ -60,7 +69,7 @@ export const useKasirIgdStore = defineStore('kasir_igd_store', {
       }
       this.loading = false
     },
-    getBill (val) {
+    getBill(val) {
       this.rekapBill = {}
       this.loading = true
       const params = { params: val }
@@ -77,7 +86,7 @@ export const useKasirIgdStore = defineStore('kasir_igd_store', {
         })
       })
     },
-    async getNotas (val) {
+    async getNotas(val) {
       this.notas = {}
       this.loading = true
       const params = { params: val }
@@ -90,7 +99,7 @@ export const useKasirIgdStore = defineStore('kasir_igd_store', {
       }
       this.loading = false
     },
-    savePembayaran (payload) {
+    savePembayaran(payload) {
       this.loading = true
       return new Promise(resolve => {
         api.post('/v1/simrs/kasir/rajal/pembayaran', payload)
@@ -104,6 +113,32 @@ export const useKasirIgdStore = defineStore('kasir_igd_store', {
             this.loading = false
           })
       })
+    },
+    async simpanttd() {
+      this.loadingsimpanttd = true
+      try {
+        console.log('responsex:', this.form)
+        const resp = await api.post('/v1/simrs/kasir/rajal/simpanttddokumen', this.form)
+        console.log('response:', resp.data)
+
+        return resp.data
+      } catch (error) {
+        console.error('Gagal simpan TTD:', error)
+
+        const message =
+          error.response?.data?.message ||
+          error.message ||
+          'Terjadi kesalahan saat menyimpan TTD'
+
+        Notify.create({
+          type: 'negative',
+          message
+        })
+
+        return null
+      } finally {
+        this.loadingsimpanttd = false
+      }
     }
   }
 })

@@ -11,6 +11,34 @@
       </div>
       <q-select v-model="periode" dense outlined dark color="white" :options="periods" label="Periode" class="q-ml-sm"
         emit-value map-options style="min-width: 150px;" @update:model-value="gantiPeriode" />
+      <q-input v-if="periode === 4" v-model="to" label="Tgl Dari" dense outlined dark color="white" readonly
+        class="q-ml-sm" style="min-width: 150px;">
+        <template #append>
+          <q-icon name="icon-mat-event" class="cursor-pointer">
+            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+              <q-date v-model="to" mask="YYYY-MM-DD" @update:model-value="gantiTanggal">
+                <div class="row items-center justify-end">
+                  <q-btn v-close-popup label="Tutup" color="primary" flat />
+                </div>
+              </q-date>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+      </q-input>
+      <q-input v-if="periode === 4" v-model="from" label="Tgl Sampai" dense outlined dark color="white" readonly
+        class="q-ml-sm" style="min-width: 150px;">
+        <template #append>
+          <q-icon name="icon-mat-event" class="cursor-pointer">
+            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+              <q-date v-model="from" mask="YYYY-MM-DD" @update:model-value="gantiTanggal">
+                <div class="row items-center justify-end">
+                  <q-btn v-close-popup label="Tutup" color="primary" flat />
+                </div>
+              </q-date>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+      </q-input>
       <q-select v-model="txt" dense outlined dark color="white" :options="txts" label="status pasien" class="q-ml-sm"
         emit-value map-options style="min-width: 150px;" @update:model-value="gantiTxt" />
     </div>
@@ -41,8 +69,7 @@ const periods = ref([
   { value: 1, label: 'Hari ini' },
   { value: 2, label: 'Minggu Ini' },
   { value: 3, label: 'Bulan Ini' },
-  { value: 4, label: 'Tahun Ini' },
-  { value: 5, label: 'Tahun Lalu' },
+  { value: 4, label: 'Periodik' },
 ])
 
 function gantiPeriode(val) {
@@ -50,7 +77,7 @@ function gantiPeriode(val) {
   if (val === 1) hariIni()
   if (val === 2) mingguIni()
   if (val === 3) bulanIni()
-  if (val === 4) tahunIni()
+  if (val === 4) bulanLalu()
   if (val === 5) tahunLalu()
 
   // console.log('asasa', txt.value)
@@ -100,10 +127,10 @@ function bulanIni() {
   // store.getData()
 }
 
-function tahunIni() {
+function bulanLalu() {
   const curr = new Date()
-  const firstday = date.formatDate(curr, 'YYYY') + '-01' + '-01'
-  const lastday = date.formatDate(curr, 'YYYY') + '-12' + '-31'
+  const firstday = new Date(curr.getFullYear(), curr.getMonth() - 1, 1)
+  const lastday = new Date(curr.getFullYear(), curr.getMonth(), 0)
 
   to.value = dateDbFormat(firstday)
   from.value = dateDbFormat(lastday)
@@ -131,6 +158,15 @@ function tahunLalu() {
 function gantiTxt() {
   gantiPeriode(periode.value)
   // console.log('dadada', periode.value)
+}
+
+function gantiTanggal() {
+  const per = {
+    to: to.value,
+    from: from.value,
+    status: gantiStatus(txt.value)
+  }
+  emits('setPeriode', per)
 }
 
 onMounted(() => {
