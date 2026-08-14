@@ -14,6 +14,11 @@ const ranap = {
       name: 'ranap.dashboard',
       component: () => import('pages/simrs/ranap/dashboard/IndexPage.vue')
     },
+    {
+      path: '/ranap/listupdatepulangbpjs',
+      name: 'ranap.listupdatepulangbpjs',
+      component: () => import('pages/simrs/ranap/listupdatepulangbpjs/IndexPage.vue')
+    },
 
     {
       path: '/ranap/notfound',
