@@ -173,7 +173,7 @@ const app = useAplikasiStore()
 
 const availableTindakans = computed(() => {
   const list = []
-  
+
   // 1. Masukkan semua tindakan operasi dari manytindakanop
   if (props.pasien?.manytindakanop?.length > 0) {
     props.pasien.manytindakanop.forEach(item => {
@@ -186,12 +186,20 @@ const availableTindakans = computed(() => {
       })
     })
   }
-  
-  // 2. Masukkan tindakan "Kanulasi Vena Sentral..." dari tindakan umum (rs73)
+
+  // 2. Masukkan tindakan khusus dari tindakan umum (rs73)
   if (props.pasien?.tindakan?.length > 0) {
+    const tindakanKhusus = [
+      'kanulasi vena sentral',
+      'aff (pelepasan) double lumen',
+      'reposisi mandibula (dislokasi)',
+      'pelepasan drain',
+      'lepas wsd'
+    ]
     props.pasien.tindakan.forEach(item => {
       const namaTindakan = item.mastertindakan?.rs2 || item.tindakan || ''
-      if (namaTindakan.toLowerCase().includes('kanulasi vena sentral')) {
+      const namaTindakanLower = namaTindakan.toLowerCase()
+      if (tindakanKhusus.some(t => namaTindakanLower.includes(t))) {
         if (!list.some(x => x.rs2 === item.rs2)) {
           list.push({
             id: item.id,
@@ -204,7 +212,7 @@ const availableTindakans = computed(() => {
       }
     })
   }
-  
+
   return list
 })
 
