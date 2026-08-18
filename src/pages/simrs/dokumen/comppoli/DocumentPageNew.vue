@@ -169,6 +169,13 @@ const documents = ref([
     label: 'Surat-Konsul',
     value: 'SuratKonsul'
   },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'Edukasi',
+    label: 'Edukasi',
+    value: 'Edukasi'
+  },
   // {
   //   icon: 'icon-mat-email',
   //   color: 'primary',
@@ -233,6 +240,7 @@ const comp = [
   { nama: 'SkrRajal', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/SkriningRajalPage.vue')) },
   { nama: 'PRMRJ', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/Prmrj/PrmrjPage.vue')) },
   { nama: 'SuratKonsul', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/SuratKonsul/SuratKonsulPage.vue')) },
+  { nama: 'Edukasi', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/edukasi/EdukasiPage.vue')) },
 
 ]
 // eslint-disable-next-line no-unused-vars
