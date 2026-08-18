@@ -25,7 +25,7 @@
             <Suspense :key="menu.comp" timeout="0">
               <template #default>
                 <component :is="menu.comp" :key="pasien" :pasien="pasien" :loadingaja="loadingaja"
-                  :ruangranap="store.ruangranaps" depo="igd" />
+                  :ruangranap="store.ruangranaps" :nakes="auth?.user?.pegawai?.kdgroupnakes" depo="igd" />
               </template>
               <template #fallback>
                 <AppLoader />
@@ -43,9 +43,11 @@ import { defineAsyncComponent, onMounted, ref, shallowRef, watchEffect } from 'v
 import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung'
 import { useInacbgIgd } from 'src/stores/simrs/igd/inacbg'
 import { usePemakaianObatStore } from 'src/stores/simrs/igd/pemakaianobat'
+import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useRoute } from 'vue-router'
 const store = usePengunjungIgdStore()
 const storepemakaianobat = usePemakaianObatStore()
+const auth = useAplikasiStore()
 
 const HeaderLayout = defineAsyncComponent(() => import('./layoutcomp/HeaderLayout.vue'))
 const LeftDrawer = defineAsyncComponent(() => import('./layoutcomp/LeftDrawer.vue'))
@@ -171,6 +173,14 @@ const menus = ref([
     icon: 'icon-my-medication',
     route: ['igd'],
     comp: shallowRef(defineAsyncComponent(() => import('../layanan/visum/IndexPage.vue')))
+  },
+  {
+    name: 'edukasi-page',
+    label: 'Edukasi',
+    icon: 'icon-mat-people_alt',
+    nakes: ['1', '2', '3', '4', '5', '6', '', null],
+    route: ['igd'],
+    comp: shallowRef(defineAsyncComponent(() => import('../../ranap/layanan/edukasi/IndexPage.vue')))
   },
   {
     name: 'e-dokumen-page',
