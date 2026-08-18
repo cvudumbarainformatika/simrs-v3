@@ -93,7 +93,10 @@ export const useImplementasiEdukasiRanapStore = defineStore('implementasi-edukas
 
       const params = {
         params: {
-          noreg: pasien?.noreg
+          noreg: pasien?.noreg,
+          // Samakan dengan field ruangan yang dikirim saat simpan implementasi.
+          // Untuk pasien IGD/rajal, kode ruangnya berasal dari kodepoli.
+          kdruang: pasien?.kdruang ?? pasien?.kodepoli
         }
       }
 
