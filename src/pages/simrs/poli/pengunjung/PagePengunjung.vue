@@ -46,7 +46,7 @@ import PageTindakan from '../tindakan/IndexPage.vue'
 import { laravelEcho } from 'src/modules/newsockets'
 
 // import CetakRekapBilling from 'src/pages/simrs/kasir/rajal/listkunjungan/comp/CetakRekapBilling.vue'
-import { useQuasar,Dialog } from 'quasar'
+import { useQuasar, Dialog } from 'quasar'
 import { useSpeechStore } from 'src/stores/antrian/speech'
 import { useSettingsAplikasi } from 'src/stores/simrs/settings'
 
@@ -91,7 +91,7 @@ onMounted(() => {
   // console.log('setting', kdDisplay.value)
 })
 
-function getListVoices() {
+function getListVoices () {
   return new Promise(
     function (resolve, reject) {
       const synth = speech.synth
@@ -108,7 +108,7 @@ function getListVoices() {
   )
 }
 
-function settingsVoice() {
+function settingsVoice () {
   const voices = speech.voiceList
   if (voices?.length) {
     const lang = voices?.map(x => {
@@ -134,7 +134,7 @@ function settingsVoice() {
   listenForSpeechEvents()
 }
 
-function listenForSpeechEvents() {
+function listenForSpeechEvents () {
   speech.utterance.onstart = () => {
     console.log('start...')
     speech.isLoading = true
@@ -145,7 +145,7 @@ function listenForSpeechEvents() {
   }
 }
 
-function setSpeech(txt) {
+function setSpeech (txt) {
   // console.log(speech.voiceList[indexVoices.value])
   const voice = speech.utterance
   voice.text = txt
@@ -158,7 +158,7 @@ function setSpeech(txt) {
   return voice
 }
 
-function panggil(row) {
+function panggil (row) {
   // Log untuk debugging speech
   console.log('Speech panggilan dimulai:', {
     browser: navigator.userAgent,
@@ -182,7 +182,7 @@ function panggil(row) {
     // speech.synth.speak(setSpeech(txt3))
     console.log('Speech berhasil dipanggil:')
 
-    speakDynamic(noAntrean, nama, unit);
+    speakDynamic(noAntrean, nama, unit)
   } catch (error) {
     console.error('Error saat memanggil speech:', error)
   }
@@ -191,46 +191,46 @@ function panggil(row) {
   store.sendPanggil(row, `display${kdDisplay.value}`)
 }
 
-function speakDynamic(noAntrean, nama, unit) {
-  const voiceList = speech?.voiceList[indexVoices.value];
-  console.log('suorone sopo?', voiceList);
-  console.log('index', indexVoices.value);
+function speakDynamic (noAntrean, nama, unit) {
+  const voiceList = speech?.voiceList[indexVoices.value]
+  console.log('suorone sopo?', voiceList)
+  console.log('index', indexVoices.value)
 
   // Bersihkan antrian speech yang mungkin masih ada
-  speechSynthesis.cancel();
+  speechSynthesis.cancel()
 
   // Gunakan satu utterance saja untuk menghindari masalah dengan multiple utterances
-  const fullText = `Nomor Antrian ... ${noAntrean} ... Nama! ... ${nama} ... Harap menuju ... ${unit}`;
-  const utterance = new SpeechSynthesisUtterance(fullText);
-  utterance.voice = voiceList;
-  utterance.volume = 1;
-  utterance.pitch = 1.2;
-  utterance.rate = 0.95;
-  utterance.lang = 'id-ID';
+  const fullText = `Nomor Antrian ... ${noAntrean} ... Nama! ... ${nama} ... Harap menuju ... ${unit}`
+  const utterance = new SpeechSynthesisUtterance(fullText)
+  utterance.voice = voiceList
+  utterance.volume = 1
+  utterance.pitch = 1.2
+  utterance.rate = 0.95
+  utterance.lang = 'id-ID'
 
   // Tambahkan event listener untuk debugging
-  utterance.onstart = () => console.log('Speech mulai diputar');
-  utterance.onend = () => console.log('Speech selesai diputar');
-  utterance.onerror = (e) => console.error('Speech error:', e);
+  utterance.onstart = () => console.log('Speech mulai diputar')
+  utterance.onend = () => console.log('Speech selesai diputar')
+  utterance.onerror = (e) => console.error('Speech error:', e)
 
   // Coba dengan timeout kecil untuk mengatasi masalah timing
   setTimeout(() => {
-    console.log('Mencoba memainkan speech...');
-    speechSynthesis.speak(utterance);
-  }, 100);
+    console.log('Mencoba memainkan speech...')
+    speechSynthesis.speak(utterance)
+  }, 100)
 
   // Alternatif: gunakan metode lama jika yang baru tidak berfungsi
   if (speech.synth && speech.utterance) {
     setTimeout(() => {
-      console.log('Mencoba metode alternatif...');
-      const altUtterance = setSpeech(fullText);
-      speech.synth.speak(altUtterance);
-    }, 200);
+      console.log('Mencoba metode alternatif...')
+      const altUtterance = setSpeech(fullText)
+      speech.synth.speak(altUtterance)
+    }, 200)
   }
 }
 
-function bukaTindakan(val) {
-  // console.log('buka tindakan', val)
+function bukaTindakan (val) {
+  console.log('buka tindakan', val)
   if (val?.groups === '1') {
     if (!val?.sep) {
       $q.notify({
@@ -244,33 +244,38 @@ function bukaTindakan(val) {
       return
     }
   }
-  
-  Dialog.create({
-    title:'Konfirmasi',
-    message:`Apakah <b/> ${val?.nama} </b> sudah datang dan akan <b/>DITERIMA</b>?`,
-    html: true,
-    ok: {
-          push: true,
-          label: 'TERIMA',
-          // 'no-caps': true,
-          color: 'green'
-        },
-        cancel: {
-          push: true,
-          label: 'Batal',
-          'no-caps': true,
-          color: 'dark'
-        }
-  })
-  .onOk(()=>{
-    // console.log('anu')
+  if (val?.status == '') {
+    Dialog.create({
+      title: 'Konfirmasi',
+      message: `Apakah <b/> ${val?.nama} </b> sudah datang dan akan <b/>DITERIMA</b>?`,
+      html: true,
+      ok: {
+        push: true,
+        label: 'TERIMA',
+        // 'no-caps': true,
+        color: 'green'
+      },
+      cancel: {
+        push: true,
+        label: 'Batal',
+        'no-caps': true,
+        color: 'dark'
+      }
+    })
+      .onOk(() => {
+        // console.log('anu')
+        pasien.value = val
+        store.setTerima(val)
+
+      })
+
+  } else {
     pasien.value = val
     store.setTerima(val)
-    
-  })
+  }
 }
 
-function tidakdatangs(val) {
+function tidakdatangs (val) {
   if (val?.groups === '1') {
     if (!val?.sep) {
       $q.notify({
@@ -284,29 +289,29 @@ function tidakdatangs(val) {
     }
   }
   Dialog.create({
-    title:'Konfirmasi',
-    message:'Apakah Pasien ini benar-benar TIDAK DATANG ?',
+    title: 'Konfirmasi',
+    message: 'Apakah Pasien ini benar-benar TIDAK DATANG ?',
     ok: {
-          push: true,
-          label: 'TIDAK DATANG',
-          // 'no-caps': true,
-          color: 'negative'
-        },
-        cancel: {
-          push: true,
-          label: 'Batal',
-          'no-caps': true,
-          color: 'dark'
-        }
+      push: true,
+      label: 'TIDAK DATANG',
+      // 'no-caps': true,
+      color: 'negative'
+    },
+    cancel: {
+      push: true,
+      label: 'Batal',
+      'no-caps': true,
+      color: 'dark'
+    }
   })
-  .onOk(()=>{
-    // console.log('anu')
-    store.settidakdatang(val)
-    
-  })
+    .onOk(() => {
+      // console.log('anu')
+      store.settidakdatang(val)
+
+    })
 }
 
-function subscribedChannel() {
+function subscribedChannel () {
   if (kdDisplay.value) {
 
     const channel = laravelEcho.private('private.notif.display' + kdDisplay.value)
@@ -322,7 +327,7 @@ function subscribedChannel() {
 //   printRekap.value = false
 // }
 
-function kirimkepenjaminan(val) {
+function kirimkepenjaminan (val) {
 
   if (val?.satatus === 1) {
     $q.notify({
