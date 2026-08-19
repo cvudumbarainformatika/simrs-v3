@@ -331,6 +331,10 @@ const laporan = {
       path: '/laporan/farmasi/evaluasi-resep',
       component: () => import('pages/simrs/laporan/farmasi/evaluasiResep/IndexPage.vue')
     },
+    {
+      path: '/laporan/perkasus',
+      component: () => import('pages/simrs/laporan/perkasus/IndexPage.vue')
+    },
 
     // ini Harus ada
     {
