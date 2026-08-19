@@ -17,8 +17,14 @@
         </div>
       </div> -->
       <div class="row justify-center f-20 text-weight-bold q-mb-md">
-        ASESMEN AWAL KEPERAWATAN RAWAT JALAN
+        <template v-if="props.pasien?.diagnosakebidanan?.length > 0">
+          ASESMEN AWAL KEBIDANAN/KANDUNGAN RAWAT JALAN
+        </template>
+        <template v-else>
+          ASESMEN AWAL KEPERAWATAN RAWAT JALAN
+        </template>
       </div>
+
       <div v-if="store.loading">
         <app-loading />
       </div>
@@ -389,23 +395,25 @@ store.setParams('noreg', props.pasien?.noreg)
 // console.log('noreg', props.pasien?.noreg)
 store.getData()
 
-function skorgizi (val) {
+console.log('props pasien', props.pasien)
+
+function skorgizi(val) {
   if (val > 0) {
     return 'Ya'
   } else {
     return 'Tidak'
   }
 }
-function cekHasil (val) {
+function cekHasil(val) {
   console.log('cek hasil', val)
-
+  console.log('props items', store.item)
   let hasil = ''
   if (val.hasil == 2) hasil = 'Tinggi'
   else if (val.hasil == 1) hasil = 'Sedang'
   else hasil = 'Rendah'
   return hasil
 }
-function keteranganSkorGizi (nilai) {
+function keteranganSkorGizi(nilai) {
   const skor = nilai || 0
   if (skor < 2) {
     return 'tidak beresiko malnutrisi'
@@ -435,7 +443,7 @@ const jenisPPA = (val) => {
     return 'Fisoterapis'
   }
 }
-function iconNyeri (val) {
+function iconNyeri(val) {
   const val2 = typeof val === 'string' ? (isNaN(parseInt(val)) ? 0 : parseInt(val)) : 0
   let icon = 'icon-my-emoticon-excited-outline'
   if (val < 2) {
@@ -492,7 +500,7 @@ const qrPenerima = (ttd) => {
   const enc = btoa(`${noreg}|${dok}|${asal}|${ttdPenerima}`)
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
 }
-function skornyeri (val) {
+function skornyeri(val) {
   if (val === 0) {
     return 'Tidak Ada Nyeri'
   } else if (val >= 1) {
