@@ -290,7 +290,7 @@
             <span v-else-if="carakeluar?.rs4 === 'Rawat Inap'">{{ carakeluar?.rs4 }} Ke {{
               carakeluar?.planranap?.ruangranap?.rs2 }}</span>
             <span v-else-if="carakeluar?.rs4 === 'Rujuk'">{{ carakeluar?.rs4 }} Ke {{ carakeluar?.transrujukan?.rs7
-              }}</span>
+            }}</span>
             <span v-else></span>
           </div>
         </div>

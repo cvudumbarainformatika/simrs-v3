@@ -50,7 +50,7 @@
         <div class="q-py-xs text-left">
           <div class="flex q-gutter-sm ">
             <div style="width: 100px;">Nama Pasien </div>
-            <div>: {{ pasien?.nama_panggil }}</div>
+            <div>: {{ pasien?.nama_panggil ?? pasien?.nama ?? pasien?.pasien }}</div>
           </div>
           <div class="flex q-gutter-sm">
             <div style="width: 100px;">Usia </div>

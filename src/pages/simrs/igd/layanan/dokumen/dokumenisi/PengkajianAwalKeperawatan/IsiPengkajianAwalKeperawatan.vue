@@ -113,7 +113,7 @@
         <div class="row items-center q-pb-xs full-width">
           <div class="col">Hasil :
             <span> {{ resikoJatuh?.hasil_resiko_pasien_jatuh === '' ? '-' : resikoJatuh?.hasil_resiko_pasien_jatuh
-            }}</span>
+              }}</span>
           </div>
         </div>
         <div class="row items-center q-pb-xs full-width">
@@ -224,7 +224,7 @@
       <div class="text-weight-bold text-uppercase" style="width: 300px;">15. SKRINING GIZI</div>
       <div class="text-weight-bold text-uppercase" style="width: 10px;"> : </div>
       <div class="col">Apakah Ada Penurunan Berat badan yang tidak diinginkan selama 6 Bulan terakhir? : {{ skriningGizi
-      }}</div><br>
+        }}</div><br>
     </div>
     <div class="row q-pl-xs q-mt-md items-start">
       <div class="text-weight-bold text-uppercase" style="width: 300px;">16. DIAGNOSA KEPERAWATAN</div>

@@ -74,6 +74,9 @@
         <q-tab-panel name="Asesmen Pra Bedah" class="full-height q-pa-none">
           <AsesmenPraBedah :pasien="props?.pasien" />
         </q-tab-panel>
+        <q-tab-panel name="Edukasi Pasien" class="full-height q-pa-none">
+          <EdukasiPage :pasien="props?.pasien" />
+        </q-tab-panel>
       </q-tab-panels>
     </div>
   </div>
@@ -108,6 +111,8 @@ import PengkajianAwalKebidanan from './dokumenisi/PengkajianAwalKebidanan/Pengka
 import SerahTerimaRuangan from './dokumenisi/SerahTerimaRuangan/SerahTerimaRuangan.vue';
 import PasienPulang from './dokumenisi/PasienPulang/PasienPulang.vue';
 import SuratRanap from './dokumenisi/suratrencanainap/SuratRencanaInap.vue';
+import EdukasiPage from './dokumenisi/Edukasi/EdukasiPage.vue';
+
 // import KriteriamasukIcu from './dokumenisi/KriteriaMasukIcu/KriteriamasukIcu.vue';
 
 const AsesmenPraAnestesia = defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AsesmenPraAnestesia.vue'))
