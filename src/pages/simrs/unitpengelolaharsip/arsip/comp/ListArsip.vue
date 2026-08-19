@@ -62,7 +62,7 @@
               Posisi Arsip :
               <span class="text-negative text-weight-bold">{{
                 flagingan(item?.flaging)
-                }}</span>
+              }}</span>
             </q-item-label>
             <q-item-label>
               Lokasi :
@@ -79,13 +79,13 @@
               Tanggal :
               <i class="text-weight-bold text-green">{{
                 dateFullFormat(item.tanggal)
-                }}</i>
+              }}</i>
             </q-item-label>
             <q-item-label>
               Keterangan :
               <span class="text-negative text-weight-bold">{{
                 item?.keterangan ?? "-"
-                }}</span>
+              }}</span>
             </q-item-label>
             <!-- <q-item-label>
               User :
