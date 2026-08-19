@@ -297,6 +297,7 @@ import { api } from 'src/boot/axios'
 import { humanDate, jamTnpDetik } from 'src/modules/formatter'
 import { useImplementasiEdukasiRanapStore } from 'src/stores/simrs/ranap/implementasiEdukasi'
 import { computed, onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
 const props = defineProps({
   pasien: {
@@ -309,6 +310,7 @@ const props = defineProps({
   }
 })
 const store = useImplementasiEdukasiRanapStore()
+const route = useRoute()
 const refPrint = ref()
 
 const loading = ref(false)
