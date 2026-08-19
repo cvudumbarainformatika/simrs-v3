@@ -25,7 +25,7 @@
             <Suspense :key="menu.comp" timeout="0">
               <template #default>
                 <component :is="menu.comp" :key="pasien" :pasien="pasien" :loadingaja="loadingaja"
-                  :ruangranap="store.ruangranaps" :nakes="auth?.user?.pegawai?.kdgroupnakes" depo="igd" />
+                  :ruangranap="store.ruangranaps" :nakes="auth?.user?.pegawai?.kdgroupnakes" :depo="'igd'" />
               </template>
               <template #fallback>
                 <AppLoader />

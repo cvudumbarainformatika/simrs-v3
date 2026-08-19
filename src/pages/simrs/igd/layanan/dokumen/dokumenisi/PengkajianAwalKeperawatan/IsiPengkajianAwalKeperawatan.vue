@@ -113,7 +113,7 @@
         <div class="row items-center q-pb-xs full-width">
           <div class="col">Hasil :
             <span> {{ resikoJatuh?.hasil_resiko_pasien_jatuh === '' ? '-' : resikoJatuh?.hasil_resiko_pasien_jatuh
-              }}</span>
+            }}</span>
           </div>
         </div>
         <div class="row items-center q-pb-xs full-width">
@@ -224,7 +224,7 @@
       <div class="text-weight-bold text-uppercase" style="width: 300px;">15. SKRINING GIZI</div>
       <div class="text-weight-bold text-uppercase" style="width: 10px;"> : </div>
       <div class="col">Apakah Ada Penurunan Berat badan yang tidak diinginkan selama 6 Bulan terakhir? : {{ skriningGizi
-        }}</div><br>
+      }}</div><br>
     </div>
     <div class="row q-pl-xs q-mt-md items-start">
       <div class="text-weight-bold text-uppercase" style="width: 300px;">16. DIAGNOSA KEPERAWATAN</div>
@@ -316,6 +316,9 @@ watch(
     store.form.kodedokumen = 'DK-PAK'
     store.form.noreg = noreg ?? ''
     store.form.norm = norm ?? ''
+    store.form.resumekeluargapasien = ''
+    store.form.saksiPasien = ''
+    store.form.hubunganPasien = ''
   },
   { immediate: true }
 )
@@ -326,7 +329,9 @@ const hubunganPasienOptions = [
   { label: 'Anak', value: 'Anak' },
   { label: 'Saudara', value: 'Saudara' },
   { label: 'Teman', value: 'Teman' },
-  { label: 'Orang lain', value: 'Orang lain' }
+  { label: 'Orang lain', value: 'Orang lain' },
+  { label: 'Suami', value: 'Suami' },
+  { label: 'Istri', value: 'Istri' }
 ]
 
 const filtered = computed(() => {

@@ -290,7 +290,7 @@
             <span v-else-if="carakeluar?.rs4 === 'Rawat Inap'">{{ carakeluar?.rs4 }} Ke {{
               carakeluar?.planranap?.ruangranap?.rs2 }}</span>
             <span v-else-if="carakeluar?.rs4 === 'Rujuk'">{{ carakeluar?.rs4 }} Ke {{ carakeluar?.transrujukan?.rs7
-            }}</span>
+              }}</span>
             <span v-else></span>
           </div>
         </div>
@@ -307,8 +307,8 @@
           <app-input-simrs v-model="store.form.saksiPasien" label="Nama Saksi Pasien" class="col-6"
             :valid="{ required: false }" />
 
-          <q-select v-model="store.form.hubunganPasien" :options="hubunganPasienOptions"
-            label="Hubungan dengan Pasien" outlined dense emit-value map-options class="q-mt-sm" />
+          <q-select v-model="store.form.hubunganPasien" :options="hubunganPasienOptions" label="Hubungan dengan Pasien"
+            outlined dense emit-value map-options class="q-mt-sm" />
 
           <app-signature :ttd="store.form.resumekeluargapasien" :width="250" :height="150" label-ttd="TTD yg Menyatakan"
             @save-ttd="(val) => store.form.resumekeluargapasien = val" :pasien="pasien" uuid="resumekeluargapasien"
@@ -377,6 +377,9 @@ watch(
     store.form.kodedokumen = 'DK-RE'
     store.form.noreg = noreg ?? ''
     store.form.norm = norm ?? ''
+    store.form.resumekeluargapasien = ''
+    store.form.saksiPasien = ''
+    store.form.hubunganPasien = ''
   },
   { immediate: true }
 )
@@ -387,7 +390,9 @@ const hubunganPasienOptions = [
   { label: 'Anak', value: 'Anak' },
   { label: 'Saudara', value: 'Saudara' },
   { label: 'Teman', value: 'Teman' },
-  { label: 'Orang lain', value: 'Orang lain' }
+  { label: 'Orang lain', value: 'Orang lain' },
+  { label: 'Suami', value: 'Suami' },
+  { label: 'Istri', value: 'Istri' }
 ]
 
 const resumeTtdDocument = computed(() => {

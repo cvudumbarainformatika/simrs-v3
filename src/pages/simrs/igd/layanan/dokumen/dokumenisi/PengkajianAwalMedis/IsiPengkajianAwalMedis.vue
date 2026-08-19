@@ -67,31 +67,31 @@
       <div class="q-pl-sm q-mt-md">
         <div class="q-pl-md">
           1. Kepala : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs5 ?? '-'
-          }}</span>
+            }}</span>
         </div>
         <div class="q-pl-md">
           2. Leher : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs6 ?? '-'
-          }}</span>
+            }}</span>
         </div>
         <div class="q-pl-md">
           3. Dada : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs7 ?? '-'
-          }}</span>
+            }}</span>
         </div>
         <div class="q-pl-md">
           4. Punggung : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs8 ?? '-'
-          }}</span>
+            }}</span>
         </div>
         <div class="q-pl-md">
           5. Perut : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs9 ?? '-'
-          }}</span>
+            }}</span>
         </div>
         <div class="q-pl-md">
           6. Tangan : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs10 ?? '-'
-          }}</span>
+            }}</span>
         </div>
         <div class="q-pl-md">
           7. Kaki : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs11 ?? '-'
-          }}</span>
+            }}</span>
         </div>
         <div class="q-pl-md">
           8. Status Neurologis : <span class="text-weight-bold"> {{
@@ -118,7 +118,7 @@
           <div class="q-pl-lg q-gutter-xs row">
             <div v-for="(radiologi, l) in props?.pasien?.radiologi" :key="l">
               <q-badge outline color="black">{{ radiologi?.rs4
-                }}</q-badge>
+              }}</q-badge>
             </div>
           </div>
         </div>
@@ -262,8 +262,8 @@
               label="Hubungan dengan Pasien" outlined dense emit-value map-options class="q-mt-sm" />
 
             <app-signature :ttd="store.form.resumekeluargapasien" :width="250" :height="150"
-              label-ttd="TTD yg Menyatakan" @save-ttd="(val) => store.form.resumekeluargapasien = val"
-              :pasien="pasien" uuid="resumekeluargapasien-pam" @signature="(val) => {
+              label-ttd="TTD yg Menyatakan" @save-ttd="(val) => store.form.resumekeluargapasien = val" :pasien="pasien"
+              uuid="resumekeluargapasien-pam" @signature="(val) => {
                 store.form.resumekeluargapasien = val
               }" />
             <div class="row justify-center q-mt-sm">
@@ -369,6 +369,9 @@ watch(
     store.form.kodedokumen = 'DK-PAM'
     store.form.noreg = noreg ?? ''
     store.form.norm = norm ?? ''
+    store.form.resumekeluargapasien = ''
+    store.form.saksiPasien = ''
+    store.form.hubunganPasien = ''
   },
   { immediate: true }
 )
@@ -379,7 +382,9 @@ const hubunganPasienOptions = [
   { label: 'Anak', value: 'Anak' },
   { label: 'Saudara', value: 'Saudara' },
   { label: 'Teman', value: 'Teman' },
-  { label: 'Orang lain', value: 'Orang lain' }
+  { label: 'Orang lain', value: 'Orang lain' },
+  { label: 'Suami', value: 'Suami' },
+  { label: 'Istri', value: 'Istri' }
 ]
 
 const resumeTtdDocument = computed(() => {

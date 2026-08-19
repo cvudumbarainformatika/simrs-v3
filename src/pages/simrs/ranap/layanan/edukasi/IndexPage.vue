@@ -52,6 +52,10 @@ const props = defineProps({
   nakes: {
     type: String,
     default: null
+  },
+  depo: {
+    type: String,
+    default: null
   }
 })
 // const nakes = computed(() => {
@@ -96,10 +100,12 @@ const menu = computed(() => {
 })
 
 const tabs = computed(() => {
-
+  // Jika dari IGD dan username 'sa', tampilkan semua tab
+  if (props.depo === 'igd' && auth?.user?.username === 'sa') {
+    return tabsxx
+  }
+  // Selain itu, filter berdasarkan nakes
   return tabsxx.filter(i => i?.nakes?.includes(props?.nakes))
-
-  // return tabsxx
 })
 
 </script>

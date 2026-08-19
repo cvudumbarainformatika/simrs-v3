@@ -5,6 +5,7 @@ import { notifSuccess } from 'src/modules/utils'
 import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
 import { useListPasienHemodialisaStore } from '../hemodialisa/hemodialisa'
 import { usePermintaanOperasistore } from 'src/stores/simrs/kamaroperasi/permintaanoperasi'
+import { usePengunjungIgdStore } from '../igd/pengunjung'
 
 export const usePerencanaanEdukasiRanapStore = defineStore('perencanaan-edukasi-ranap', {
   state: () => ({
@@ -30,24 +31,24 @@ export const usePerencanaanEdukasiRanapStore = defineStore('perencanaan-edukasi-
     doubleCount: (state) => state.counter * 2
   },
   actions: {
-    async getMasterPenerimaEdukasi () {
+    async getMasterPenerimaEdukasi() {
       const resp = await api.get('v1/simrs/pelayanan/mpenerimaedukasi')
       // console.log('mpenerimaedukasi', resp)
       if (resp?.status === 200) {
         this.mpenerimaedukasi = resp?.data
       }
     },
-    async getMasterKebutuhanEdukasi () {
+    async getMasterKebutuhanEdukasi() {
       const resp = await api.get('v1/simrs/pelayanan/mkebutuhanedukasi')
       // console.log('mkebutuhanedukasi', resp)
       if (resp?.status === 200) {
         this.mkebutuhanedukasi = resp?.data
       }
     },
-    setForm (key, val) {
+    setForm(key, val) {
       this.form[key] = val
     },
-    async simpanEdukasi (pasien) {
+    async simpanEdukasi(pasien) {
       this.loadingSave = true
 
       this.form.noreg = pasien?.noreg
@@ -59,11 +60,13 @@ export const usePerencanaanEdukasiRanapStore = defineStore('perencanaan-edukasi-
         if (resp?.status === 200) {
           const storePasien = usePengunjungPoliStore()
           const storeRananp = usePengunjungRanapStore()
+          const storeIgd = usePengunjungIgdStore()
           const storeHD = useListPasienHemodialisaStore()
           const storeOK = usePermintaanOperasistore()
           const isi = resp?.data?.result
           storePasien.injectDataPasien(pasien, isi, 'edukasi')
           storeRananp.injectDataPasien(pasien?.noreg, isi, 'edukasi')
+          storeIgd.injectDataPasien(pasien, isi, 'edukasi')
           storeHD.injectDataPasien(pasien?.noreg, isi, 'edukasi')
           storeOK.injectDataPasien(pasien, isi, 'edukasi')
           notifSuccess(resp)
@@ -76,7 +79,7 @@ export const usePerencanaanEdukasiRanapStore = defineStore('perencanaan-edukasi-
       }
     },
 
-    async hapusItem (pasien, id) {
+    async hapusItem(pasien, id) {
       const payload = { id, noreg: pasien?.noreg }
       try {
         const resp = await api.post('v1/simrs/pelayanan/hapusedukasi', payload)
@@ -86,10 +89,12 @@ export const usePerencanaanEdukasiRanapStore = defineStore('perencanaan-edukasi-
           const storeRananp = usePengunjungRanapStore()
           const storeHD = useListPasienHemodialisaStore()
           const storeOK = usePermintaanOperasistore()
+          const storeIgd = usePengunjungIgdStore()
           storePasien.hapusDataEdukasi(pasien, id)
           storeRananp.hapusDataInjectan(pasien, id, 'edukasi')
           storeHD.hapusDataInjectan(pasien, id, 'edukasi')
           storeOK.hapusDataInjectan(pasien, id, 'edukasi')
+          storeIgd.hapusDataInjectan(pasien, id, 'edukasi')
           notifSuccess(resp)
         }
       }
