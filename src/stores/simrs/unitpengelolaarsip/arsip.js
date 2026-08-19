@@ -38,6 +38,7 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
       dokumen: null
     },
     formgambar: {
+      id: null,
       noarsip: '',
       dokumen: []
     },
@@ -179,7 +180,14 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
         return
       }
 
+      if (!this.formgambar.id) {
+        this.loadingForm = false
+        notifErr('ID arsip belum tersedia dari data list')
+        return
+      }
+
       data.append('dokumen', file)
+      data.append('id', this.formgambar.id)
       data.append('noarsip', this.formgambar.noarsip)
 
       return new Promise((resolve, reject) => {
@@ -207,8 +215,9 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
       })
     },
     initFormGambar() {
-      this.form.noarsip = ''
-      this.form.dokumen = []
+      this.formgambar.id = null
+      this.formgambar.noarsip = ''
+      this.formgambar.dokumen = []
     },
     initForm() {
       // this.from = date.formatDate(Date.now(), 'YYYY-MM-DD')

@@ -278,6 +278,7 @@ function editForm(val) {
 
 function addgambar(val) {
   store.dialoggambar = true;
+  store.formgambar.id = val?.id;
   store.formgambar.noarsip = val?.noarsip;
 }
 
