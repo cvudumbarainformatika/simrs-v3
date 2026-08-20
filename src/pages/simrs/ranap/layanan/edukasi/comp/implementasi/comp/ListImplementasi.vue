@@ -151,16 +151,18 @@
                           :valid:="{ required: false }" :disable="item.penerima === 'Pasien'" />
                         <app-input-simrs label="Estimasi Waktu" v-model="item.estimasi" :valid:="{ required: false }" />
                         <div class="q-pa-sm" style="border: 1px solid #ccc;">
-                          <div class="q-mt-md q-mb-xs">
+                          <div class="q-mt-md q-mb-xs text-weight-bold">
                             TTD PASIEN / KELUARGA :
                           </div>
-                          <TtdWacom v-if="!item.ttdPenerima" uuid="ttd-penerima-edukasi"
-                            :ttd-name="item.namaPenerima ?? 'nama pasien / keluarga'" @signature:ttd-penerima-edukasi="(val) => {
-                              item.ttdPenerima = val
-                            }" />
-                          <div v-else>
-                            <q-img :src="pathImg + item.ttdPenerima" contain />
-                          </div>
+                          <app-signature
+                            :ttd="item.ttdPenerima"
+                            label-ttd="TTD Pasien / Keluarga"
+                            :uuid="`ttd-penerima-edukasi-${item.id || n}`"
+                            :width="200"
+                            :height="120"
+                            @save-ttd="(val) => { item.ttdPenerima = val }"
+                            @signature="(val) => { item.ttdPenerima = val }"
+                          />
                         </div>
                       </q-card-section>
                     </q-card>
@@ -192,9 +194,6 @@ import { useImplementasiEdukasiRanapStore } from 'src/stores/simrs/ranap/impleme
 import { computed, defineAsyncComponent } from 'vue';
 
 const AutocompleteInput = defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/components/AutocompleteInput.vue'))
-const TtdWacom = defineAsyncComponent(() => {
-  return import('src/components/~static/TtdWacomStu540.vue')
-})
 
 // console.log('implementasiEdukasiRanapStore', useImplementasiEdukasiRanapStore());
 
