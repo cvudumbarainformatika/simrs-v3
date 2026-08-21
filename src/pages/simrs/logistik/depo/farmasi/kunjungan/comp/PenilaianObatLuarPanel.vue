@@ -59,7 +59,7 @@ const loadData = async () => {
   if (!props.pasien) return
   $q.loading.show({ message: 'Memuat data penilaian...' })
   try {
-    const resp = await api.get('v1/simrs/farmasinew/depo/get-penilaian-obat-luar', {
+    const resp = await api.get('v1/simrs/farmasinew/kunjungan/get-penilaian-obat-luar', {
       params: { norm: props.pasien.norm, noreg: props.pasien.noreg }
     })
     if (resp.data) {
@@ -105,7 +105,7 @@ const simpanData = async () => {
 
   $q.loading.show({ message: 'Menyimpan data penilaian...' })
   try {
-    const resp = await api.post('v1/simrs/farmasinew/depo/simpan-penilaian-obat-luar', payload)
+    const resp = await api.post('v1/simrs/farmasinew/kunjungan/simpan-penilaian-obat-luar', payload)
     $q.notify({ type: 'positive', message: resp.data?.message || 'Penilaian obat luar berhasil disimpan!' })
   } catch (err) {
     console.error('Gagal menyimpan data', err)

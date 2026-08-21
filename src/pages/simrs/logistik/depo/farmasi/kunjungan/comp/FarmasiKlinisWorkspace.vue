@@ -769,7 +769,7 @@ function setMenu(val) {
 // Loading Data from Backend
 async function loadEdukasi() {
   try {
-    const resp = await api.get('v1/simrs/farmasinew/depo/get-edukasi-farmasi', {
+    const resp = await api.get('v1/simrs/farmasinew/kunjungan/get-edukasi-farmasi', {
       params: { norm: store.selectedPasien?.norm, noreg: store.selectedPasien?.noreg }
     })
     if (resp.data) {
@@ -812,7 +812,7 @@ function resetEdukasiForm() {
 
 async function loadMeso() {
   try {
-    const resp = await api.get('v1/simrs/farmasinew/depo/get-meso', {
+    const resp = await api.get('v1/simrs/farmasinew/kunjungan/get-meso', {
       params: { norm: store.selectedPasien?.norm, noreg: store.selectedPasien?.noreg }
     })
     if (resp.data) {
@@ -869,7 +869,7 @@ async function simpanEdukasi() {
 
   $q.loading.show({ message: 'Menyimpan data edukasi...' })
   try {
-    const resp = await api.post('v1/simrs/farmasinew/depo/simpan-edukasi-farmasi', payload)
+    const resp = await api.post('v1/simrs/farmasinew/kunjungan/simpan-edukasi-farmasi', payload)
     $q.notify({ type: 'positive', message: resp.data?.message || 'Edukasi farmasi berhasil disimpan!' })
   } catch (err) {
     console.error(err)
@@ -892,7 +892,7 @@ async function simpanMeso() {
 
   $q.loading.show({ message: 'Menyimpan data MESO...' })
   try {
-    const resp = await api.post('v1/simrs/farmasinew/depo/simpan-meso', payload)
+    const resp = await api.post('v1/simrs/farmasinew/kunjungan/simpan-meso', payload)
     $q.notify({ type: 'positive', message: resp.data?.message || 'Monitoring ESO berhasil disimpan!' })
   } catch (err) {
     console.error(err)
