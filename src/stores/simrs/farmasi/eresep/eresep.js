@@ -977,7 +977,7 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
     simpanPelayananInfoObat () {
       this.loadingPelayananInfoObat = true
       return new Promise(resolve => {
-        api.post('v1/simrs/farmasinew/depo/simpan-pelayanan-informasi-obat', this.formInfo)
+        api.post('v1/simrs/farmasinew/kunjungan/simpan-pelayanan-informasi-obat', this.formInfo)
           .then(resp => {
             this.loadingPelayananInfoObat = false
 
