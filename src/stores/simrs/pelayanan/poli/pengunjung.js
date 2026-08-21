@@ -273,6 +273,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
             findPasien[0].tindakan = responseData?.tindakan
             // BARU
             findPasien[0].laporantindakan = responseData?.laporantindakan
+            findPasien[0].laporaneswl = responseData?.laporaneswl
             findPasien[0].psikiatri = responseData?.psikiatri
             findPasien[0].neonatusmedis = responseData?.neonatusmedis
             findPasien[0].neonatuskeperawatan = responseData?.neonatuskeperawatan
@@ -351,6 +352,9 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
       // console.log('inject pasien', findPasien)
       if (findPasien?.length) {
         const data = findPasien[0]
+        if (!data[kode]) {
+          data[kode] = []
+        }
         const target = data[kode]?.find(x => x.id === val.id)
 
         if (target) {
@@ -512,6 +516,14 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
       if (findPasien?.length) {
         const data = findPasien[0].laporantindakan
         const pos = data.findIndex(el => el.id === id)
+        if (pos >= 0) { data.splice(pos, 1) }
+      }
+    },
+    hapusDataLaporanEswl(pasien, id) {
+      const findPasien = this.items.filter(x => x === pasien)
+      if (findPasien?.length) {
+        const data = findPasien[0].laporaneswl
+        const pos = data?.findIndex(el => el.id === id)
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },

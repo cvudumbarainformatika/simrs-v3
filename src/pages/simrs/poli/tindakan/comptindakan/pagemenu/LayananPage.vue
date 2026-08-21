@@ -11,7 +11,7 @@
             active-bg-color="dark" :mobile-arrows="false" :outside-arrows="false">
             <!-- style="flex-wrap: wrap !important;"> -->
             <!-- <q-tab v-for="(item, i) in store.tabs" :key="i" :name="item" :label="item"></q-tab> -->
-            <q-tab v-for="(tb, i) in store.tabs" :key="i" :ripple="true" :name="tb" content-class="tab-classes">
+            <q-tab v-for="(tb, i) in filteredTabs" :key="i" :ripple="true" :name="tb" content-class="tab-classes">
               <template #default>
                 <div class="row q-gutter-x-xs items-center q-px-sm no-wrap" style="border-radius: 10px;">
                   <!-- <q-icon :name="tb?.icon" size="18px" /> -->
@@ -50,6 +50,9 @@
           <q-tab-panel name="Laporan Tindakan" class="full-height q-pa-none">
             <LaporanTindakan :key="props.pasien" :pasien="props.pasien" />
           </q-tab-panel>
+          <q-tab-panel name="Laporan ESWL" class="full-height q-pa-none">
+            <LaporanEswl :key="props.pasien" :pasien="props.pasien" />
+          </q-tab-panel>
           <q-tab-panel name="Pra Bedah" class="full-height q-pa-none">
             <PraBedah :key="props.pasien" :pasien="props.pasien" />
           </q-tab-panel>
@@ -69,10 +72,11 @@ import DiagnosaKeperawatanPage from './complayanan/DiagnosaKeperawatanPage.vue'
 import DiagnosaKebidananPage from './complayanan/DiagnosaKebidananPage.vue'
 import PraAnestesiaPage from './complayanan/PraAnestesiaPage.vue'
 import LaporanTindakan from './complayanan/LaporanTindakan.vue'
-import { defineAsyncComponent, onMounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
 
 const RencanaPengobatan = defineAsyncComponent(() => import('./complayanan/compRencanaPengobatan/IndexPage.vue'))
 const PraBedah = defineAsyncComponent(() => import('src/pages/simrs/kamaroperasi/pelayanan/comppelayanan/pagemenu/compAssasement/comp/PraBedahPage.vue'))
+const LaporanEswl = defineAsyncComponent(() => import('./complayanan/LaporanEswl.vue'))
 const props = defineProps({
   pasien: {
     type: Object,
@@ -81,6 +85,15 @@ const props = defineProps({
 })
 
 const store = useLayananPoli()
+
+const filteredTabs = computed(() => {
+  return store.tabs.filter(tb => {
+    if (tb === 'Laporan ESWL') {
+      return props.pasien?.kodepoli === 'POL032'
+    }
+    return true
+  })
+})
 
 const tabsRef = ref(null)
 // const inacbg = useInacbgPoli()
