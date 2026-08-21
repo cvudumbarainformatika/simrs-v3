@@ -198,8 +198,9 @@ function isTransaksiall(row) {
 }
 
 function subtotal() {
-  const subtotalrinci = store.rincians
+  const subtotalrinci = (store.rincians || [])
     .map((x) => parseFloat(x.pagu))
+    .filter((value) => !Number.isNaN(value))
     .reduce((a, b) => a + b, 0);
   return Number(subtotalrinci);
 }

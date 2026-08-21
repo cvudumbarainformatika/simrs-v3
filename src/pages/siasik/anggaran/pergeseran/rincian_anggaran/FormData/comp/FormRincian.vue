@@ -35,7 +35,7 @@
                 store.form.uraian50 = cari ? cari.uraian : ''
                 store.form.koderek50 = cari ? cari.kodeall2 : ''
 
-                options108 = cari?.rekening108 || []
+                options108.value = cari?.rekening108 || []
                 if (!options108.length) {
                   // tidak ada rekening 108
                   store.form.koderek108 = ' '
@@ -239,15 +239,17 @@ function updateSatuan(val) {
 }
 
 function updateVolume(val) {
-  const _removedZeros = val.replace(/^0+/, '')
-  if (val > 1) store.form.volumebaru = _removedZeros
-  store.form.totalbaru = parseInt(store.form.hargabaru) * parseInt(val)
+  const value = String(val ?? '')
+  const _removedZeros = value.replace(/^0+/, '')
+  if (Number(value) > 1) store.form.volumebaru = _removedZeros
+  store.form.totalbaru = Number(store.form.hargabaru || 0) * Number(value || 0)
   store.form.jumlahacc = 0
 }
 function updateHarga(val) {
-  const _removedZeros = val.replace(/^0+/, '')
-  if (val > 1) store.form.hargabaru = _removedZeros
-  store.form.totalbaru = parseInt(store.form.volumebaru) * parseInt(val)
+  const value = String(val ?? '')
+  const _removedZeros = value.replace(/^0+/, '')
+  if (Number(value) > 1) store.form.hargabaru = _removedZeros
+  store.form.totalbaru = Number(store.form.volumebaru || 0) * Number(value || 0)
   store.form.jumlahacc = 0
 }
 const optionsBarangs = ref([])

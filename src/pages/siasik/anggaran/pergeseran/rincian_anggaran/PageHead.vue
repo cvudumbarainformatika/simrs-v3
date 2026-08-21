@@ -50,7 +50,6 @@
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-
 // const emits = defineEmits(['togleDraw'])
 defineProps({
   title: {
@@ -68,7 +67,6 @@ defineProps({
 })
 
 function goTo(val) {
-  console.log('sasa', val)
   router.push({ path: val, replace: true })
 }
 
