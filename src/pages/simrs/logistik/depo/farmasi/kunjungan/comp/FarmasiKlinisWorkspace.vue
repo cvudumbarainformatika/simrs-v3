@@ -92,6 +92,19 @@
             </q-item-section>
             <q-item-section>Monitoring ESO (MESO)</q-item-section>
           </q-item>
+
+          <q-item
+            clickable
+            v-ripple
+            :active="store.activeMenu === 'penilaian_obat_luar'"
+            active-class="bg-teal-1 text-teal text-weight-bold"
+            @click="setMenu('penilaian_obat_luar')"
+          >
+            <q-item-section avatar>
+              <q-icon name="assignment" />
+            </q-item-section>
+            <q-item-section>Penilaian Obat Luar</q-item-section>
+          </q-item>
         </q-list>
       </div>
 
@@ -510,6 +523,11 @@
 
           </div>
         </div>
+
+        <!-- PANEL PENILAIAN OBAT LUAR -->
+        <div v-if="store.activeMenu === 'penilaian_obat_luar'" class="q-pa-lg">
+          <PenilaianObatLuarPanel :pasien="store.selectedPasien" :apotekers="eresepStore.apotekers" />
+        </div>
       </div>
     </div>
 
@@ -532,6 +550,7 @@ import { useQuasar } from 'quasar'
 const InfoPage = defineAsyncComponent(() => import('../../eresep/comp/InfoPage.vue'))
 const CetakEdukasiDialog = defineAsyncComponent(() => import('./CetakEdukasiDialog.vue'))
 const CetakMesoDialog = defineAsyncComponent(() => import('./CetakMesoDialog.vue'))
+const PenilaianObatLuarPanel = defineAsyncComponent(() => import('./PenilaianObatLuarPanel.vue'))
 
 const store = useKunjunganPasienDepoStore()
 const eresepStore = useEResepDepoFarmasiStore()
@@ -742,6 +761,8 @@ function setMenu(val) {
     loadEdukasi()
   } else if (val === 'meso') {
     loadMeso()
+  } else if (val === 'penilaian_obat_luar') {
+    // Handled in subcomponent PenilaianObatLuarPanel
   }
 }
 
