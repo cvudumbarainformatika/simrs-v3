@@ -32,8 +32,11 @@
     </div>
 
     <div>
-      <q-input v-model.number="store.form.total" outlined dense label="Nilai Penetapan" type="number"
-        :disable="store.loadingSave" :loading="store.loadingSave" />
+      <!-- <q-input v-model.number="store.form.total" outlined dense label="Nilai Penetapan" type="number"
+        :disable="store.loadingSave" :loading="store.loadingSave" /> -->
+      <q-input ref="nilaiRef" v-model="nilaiInput" outlined dense label="Nilai Penetapan" inputmode="decimal"
+        :disable="store.loadingSave" :loading="store.loadingSave" @focus="fokusNilai" @update:model-value="setNilai"
+        @blur="formatNilai" />
     </div>
 
     <q-separator class="q-my-lg" />
@@ -45,8 +48,9 @@
 <script setup>
 
 import { api } from 'src/boot/axios';
+import { formattanpaRp } from 'src/modules/formatter';
 import { usePenetapanPaguStore } from 'src/stores/siasik/anggaran/penyusunan/penetapanpagu';
-import { nextTick, onMounted, ref } from 'vue';
+import { nextTick, onMounted, ref, watch } from 'vue';
 
 const store = usePenetapanPaguStore()
 const formRef = ref(null)
@@ -54,6 +58,61 @@ const formRef = ref(null)
 const options = ref([])
 const options_kegiatan = ref([])
 const tahuns = ref([])
+
+const nilaiRef = ref(null)
+const nilaiInput = ref(formattanpaRp(store.form.total))
+const nilaiFocused = ref(false)
+
+function fokusNilai(event) {
+  nilaiFocused.value = true
+  nilaiInput.value = String(store.form.total ?? '')
+  event.target.select()
+}
+
+function setNilai(value) {
+  const inputValue = String(value ?? '')
+  const inputElement = nilaiRef.value?.$el?.querySelector('input')
+  const cursorPosition = inputElement?.selectionStart ?? inputValue.length
+  const digitsBeforeCursor = inputValue.slice(0, cursorPosition).replace(/\D/g, '').length
+  const rawValue = inputValue.replace(/\D/g, '')
+  const numericValue = Number(rawValue)
+  store.form.total = rawValue === '' || Number.isNaN(numericValue) ? 0 : numericValue
+
+  nilaiInput.value = rawValue
+    ? Number(rawValue).toLocaleString('en-US')
+    : ''
+
+  nextTick(() => {
+    const formattedInput = nilaiRef.value?.$el?.querySelector('input')
+    if (!formattedInput) return
+
+    let digitCount = 0
+    let nextCursorPosition = nilaiInput.value.length
+    for (let index = 0; index < nilaiInput.value.length; index++) {
+      if (/\d/.test(nilaiInput.value[index])) digitCount++
+      if (digitCount === digitsBeforeCursor) {
+        nextCursorPosition = index + 1
+        break
+      }
+    }
+    formattedInput.setSelectionRange(nextCursorPosition, nextCursorPosition)
+  })
+}
+
+function formatNilai() {
+  nilaiFocused.value = false
+  nilaiInput.value = formattanpaRp(store.form.total)
+}
+
+watch(
+  () => store.form.total,
+  (value) => {
+    if (!nilaiFocused.value) {
+      nilaiInput.value = formattanpaRp(value)
+    }
+  },
+  { immediate: true }
+)
 
 function init() {
   const d = new Date()

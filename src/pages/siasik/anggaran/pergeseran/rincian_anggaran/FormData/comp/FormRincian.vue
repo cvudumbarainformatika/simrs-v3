@@ -107,8 +107,8 @@
             @update:model-value="updateVolume" :valid="{ number: true }" :autofocus="false" />
         </div>
         <div class="col-3 q-pa-sm q-gutter-y-md">
-          <app-input-simrs label="Harga Baru" v-model="store.form.hargabaru" :disable="store.disabled" outlined dense
-            :valid="{ number: true }" :autofocus="false" @update:model-value="updateHarga" />
+          <q-input ref="nilaiRef" v-model="nilaiInput" outlined dense label="Harga Baru" inputmode="decimal"
+            :disable="store.disabled" @focus="fokusNilai" @update:model-value="setNilai" @blur="formatNilai" />
         </div>
         <div class="col-3 q-pa-sm q-gutter-y-md">
           <app-input-simrs label="Total Baru" readonly :model-value="formattanpaRp(store.form.totalbaru || 0)"
@@ -145,7 +145,7 @@
 import { notifErrVue } from 'src/modules/utils';
 import { dataBastFarmasiStore } from 'src/stores/siasik/transaksi/ls/newnpdls/bastfarmasi';
 import { formInputNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formnpdls';
-import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, nextTick, onMounted, ref, watch } from 'vue';
 import { formattanpaRp } from 'src/modules/formatter'
 import { api } from 'src/boot/axios';
 import { usePergeseranAnggaranStore } from 'src/stores/siasik/anggaran/pergeseran/pergeseranrincian';
@@ -160,6 +160,63 @@ const options108 = ref([])
 onMounted(() => {
 })
 
+const nilaiRef = ref(null)
+const nilaiInput = ref(formattanpaRp(store.form.hargabaru))
+const nilaiFocused = ref(false)
+
+function fokusNilai(event) {
+  nilaiFocused.value = true
+  nilaiInput.value = String(store.form.hargabaru ?? '')
+  event.target.select()
+}
+
+function setNilai(value) {
+  const inputValue = String(value ?? '')
+  const inputElement = nilaiRef.value?.$el?.querySelector('input')
+  const cursorPosition = inputElement?.selectionStart ?? inputValue.length
+  const digitsBeforeCursor = inputValue.slice(0, cursorPosition).replace(/\D/g, '').length
+  const rawValue = inputValue.replace(/\D/g, '')
+  const numericValue = Number(rawValue)
+  store.form.hargabaru = rawValue === '' || Number.isNaN(numericValue) ? 0 : numericValue
+  store.form.totalbaru = Number(store.form.volumebaru || 0) * store.form.hargabaru
+  store.form.jumlahacc = 0
+
+  nilaiInput.value = rawValue
+    ? Number(rawValue).toLocaleString('en-US')
+    : ''
+
+  nextTick(() => {
+    const formattedInput = nilaiRef.value?.$el?.querySelector('input')
+    if (!formattedInput) return
+
+    let digitCount = 0
+    let nextCursorPosition = nilaiInput.value.length
+    for (let index = 0; index < nilaiInput.value.length; index++) {
+      if (/\d/.test(nilaiInput.value[index])) digitCount++
+      if (digitCount === digitsBeforeCursor) {
+        nextCursorPosition = index + 1
+        break
+      }
+    }
+    formattedInput.setSelectionRange(nextCursorPosition, nextCursorPosition)
+  })
+
+}
+
+function formatNilai() {
+  nilaiFocused.value = false
+  nilaiInput.value = formattanpaRp(store.form.hargabaru)
+}
+
+watch(
+  () => store.form.hargabaru,
+  (value) => {
+    if (!nilaiFocused.value) {
+      nilaiInput.value = formattanpaRp(value)
+    }
+  },
+  { immediate: true }
+)
 const pilihanJenis = [
   { label: 'Barang Persediaan (SIGARANG)', value: 'Barang' },
   { label: 'Barang Modal (ASET)', value: 'Modal' },
@@ -243,13 +300,6 @@ function updateVolume(val) {
   const _removedZeros = value.replace(/^0+/, '')
   if (Number(value) > 1) store.form.volumebaru = _removedZeros
   store.form.totalbaru = Number(store.form.hargabaru || 0) * Number(value || 0)
-  store.form.jumlahacc = 0
-}
-function updateHarga(val) {
-  const value = String(val ?? '')
-  const _removedZeros = value.replace(/^0+/, '')
-  if (Number(value) > 1) store.form.hargabaru = _removedZeros
-  store.form.totalbaru = Number(store.form.volumebaru || 0) * Number(value || 0)
   store.form.jumlahacc = 0
 }
 const optionsBarangs = ref([])
