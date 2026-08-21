@@ -85,7 +85,7 @@ export const useLaporanEswlPoliStore = defineStore('laporan-eswl-poli', {
         api.get('v1/simrs/pelayanan/laporantindakan/listdokter')
           .then(resp => {
             this.listdokters = resp.data?.length ? resp.data.map(x => {
-              return { nama: x.nama, kode: x.kdpegsimrs }
+              return { nama: x.nama, kode: x.kdpegsimrs, nip: x.nip, nik: x.nik }
             }) : []
             resolve(resp)
           })
@@ -101,7 +101,7 @@ export const useLaporanEswlPoliStore = defineStore('laporan-eswl-poli', {
         api.get('v1/simrs/master/nakes/perawat')
           .then(resp => {
             this.listperawats = resp.data?.length ? resp.data.map(x => {
-              return { nama: x.nama, kode: x.kdpegsimrs }
+              return { nama: x.nama, kode: x.kdpegsimrs, nip: x.nip, nik: x.nik }
             }) : []
             resolve(resp)
           })
