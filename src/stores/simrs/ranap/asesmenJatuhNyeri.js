@@ -6,6 +6,7 @@ export const useAsesmenJatuhNyeriStore = defineStore('asesmen-jatuh-nyeri-store'
   state: () => ({
     itemsJatuh: [],
     itemsNyeri: [],
+    itemsPascaJatuh: [],
     loading: false,
     loadingSave: false
   }),
@@ -20,6 +21,7 @@ export const useAsesmenJatuhNyeriStore = defineStore('asesmen-jatuh-nyeri-store'
         if (resp.status === 200) {
           this.itemsJatuh = resp.data?.jatuh ?? []
           this.itemsNyeri = resp.data?.nyeri ?? []
+          this.itemsPascaJatuh = resp.data?.pasca_jatuh ?? []
         }
       } catch (err) {
         console.log(err)
@@ -85,6 +87,40 @@ export const useAsesmenJatuhNyeriStore = defineStore('asesmen-jatuh-nyeri-store'
         const resp = await api.post('v1/simrs/ranap/layanan/asesmenulang/hapus-nyeri', { id })
         if (resp.status === 200) {
           notifSuccess('Hapus Asesmen Nyeri Berhasil')
+          this.getData(pasien)
+          return true
+        }
+      } catch (err) {
+        console.log(err)
+      } finally {
+        this.loading = false
+      }
+      return false
+    },
+
+    async simpanPascaJatuh(pasien, payload) {
+      this.loadingSave = true
+      try {
+        const resp = await api.post('v1/simrs/ranap/layanan/asesmenulang/simpan-pasca-jatuh', payload)
+        if (resp.status === 200) {
+          notifSuccess('Simpan Monitoring Pasca Jatuh Berhasil')
+          this.getData(pasien)
+          return true
+        }
+      } catch (err) {
+        console.log(err)
+      } finally {
+        this.loadingSave = false
+      }
+      return false
+    },
+
+    async hapusPascaJatuh(pasien, id) {
+      this.loading = true
+      try {
+        const resp = await api.post('v1/simrs/ranap/layanan/asesmenulang/hapus-pasca-jatuh', { id })
+        if (resp.status === 200) {
+          notifSuccess('Hapus Monitoring Pasca Jatuh Berhasil')
           this.getData(pasien)
           return true
         }
