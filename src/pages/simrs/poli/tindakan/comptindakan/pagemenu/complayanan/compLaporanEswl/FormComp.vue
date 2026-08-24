@@ -211,10 +211,20 @@
             :options="['ECG', 'Frekuensi']" standout="bg-yellow-3 text-black" />
         </div>
 
-        <div class="col-md-8 col-sm-6">
-          <q-select v-model="store.form.tingkat_kesakitan" label="Tingkat Kesakitan Pasien" outlined dense
-            :options="['Tidak sakit', 'Sedikit sakit', 'Cukup sakit', 'Sakit sekali']"
-            standout="bg-yellow-3 text-black" />
+        <div class="col-md-8 col-sm-12">
+          <div class="row items-center q-col-gutter-sm">
+            <div class="col-md-6 col-sm-12 text-weight-bold text-caption text-grey-8">
+              Tingkat Kesakitan Pasien : <em class="text-primary text-subtitle2">{{ keteranganscorenyeri }}</em>
+              <span class="q-ml-sm">
+                <q-icon size="md" color="teal" :name="iconNyeri" />
+              </span>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <q-slider v-model="skornyeri" color="primary" thumb-color="primary" label-color="primary"
+                label-text-color="yellow" markers label-always :min="0" :max="10"
+                @update:model-value="onSkorNyeriUpdate" />
+            </div>
+          </div>
         </div>
 
         <!-- Penembakan Details (3 batu) -->
@@ -316,7 +326,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { useLaporanEswlPoliStore } from 'src/stores/simrs/pelayanan/poli/laporanEswl'
 import bodyMarkerImg from 'src/assets/human/anatomys/body-marker-eswl.webp'
 
@@ -492,6 +502,81 @@ function submitForm () {
 
   store.simpanData(props.pasien)
 }
+
+// Pain Score / Skor Nyeri Logic
+const skornyeri = ref(0)
+const keteranganscorenyeri = ref('tidak ada nyeri')
+
+const iconNyeri = computed(() => {
+  const val = skornyeri.value
+  let icon = 'icon-my-emoticon-excited-outline'
+  if (val < 2) {
+    icon = 'icon-my-emoticon-excited-outline'
+  }
+  else if (val >= 2 && val < 4) {
+    icon = 'icon-my-emoticon-outline'
+  }
+  else if (val >= 4 && val < 6) {
+    icon = 'icon-my-emoticon-neutral-outline'
+  }
+  else if (val >= 6 && val < 8) {
+    icon = 'icon-my-emoticon-confused-outline'
+  }
+  else if (val >= 8 && val < 10) {
+    icon = 'icon-my-emoticon-angry-outline'
+  }
+  else if (val === 10) {
+    icon = 'icon-my-emoticon-cry-outline'
+  }
+
+  return icon
+})
+
+function updateKeteranganNyeri (val) {
+  if (val === 0) {
+    keteranganscorenyeri.value = 'tidak ada nyeri'
+  } else if (val > 0 && val <= 3) {
+    keteranganscorenyeri.value = 'nyeri ringan'
+  } else if (val > 3 && val <= 6) {
+    keteranganscorenyeri.value = 'nyeri sedang'
+  } else if (val > 6 && val <= 10) {
+    keteranganscorenyeri.value = 'nyeri berat'
+  }
+  
+  store.form.tingkat_kesakitan = `${val} (${keteranganscorenyeri.value})`
+}
+
+const onSkorNyeriUpdate = (val) => {
+  updateKeteranganNyeri(val)
+}
+
+watch(() => store.form.tingkat_kesakitan, (newVal) => {
+  if (newVal) {
+    const match = newVal.match(/^(\d+)/)
+    if (match) {
+      const parsedSkor = parseInt(match[1])
+      if (skornyeri.value !== parsedSkor) {
+        skornyeri.value = parsedSkor
+        updateKeteranganNyeri(parsedSkor)
+      }
+    } else {
+      // Fallback for old/legacy values
+      if (newVal.includes('Tidak sakit')) {
+        skornyeri.value = 0
+      } else if (newVal.includes('Sedikit sakit')) {
+        skornyeri.value = 3
+      } else if (newVal.includes('Cukup sakit')) {
+        skornyeri.value = 5
+      } else if (newVal.includes('Sakit sekali')) {
+        skornyeri.value = 8
+      }
+      updateKeteranganNyeri(skornyeri.value)
+    }
+  } else {
+    skornyeri.value = 0
+    keteranganscorenyeri.value = 'tidak ada nyeri'
+  }
+}, { immediate: true })
 </script>
 
 <style scoped>

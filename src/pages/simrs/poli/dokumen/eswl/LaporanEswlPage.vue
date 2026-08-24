@@ -180,7 +180,10 @@
           </tr>
           <tr>
             <td class="text-weight-bold bg-grey-2">Tingkat Kesakitan</td>
-            <td>{{ selectedReport.tingkat_kesakitan || '-' }}</td>
+            <td>
+              Skor Nyeri : <b>{{ parsedTingkatKesakitan.skor }}</b>
+              <em v-if="parsedTingkatKesakitan.ket" class="text-primary q-ml-sm">({{ parsedTingkatKesakitan.ket }})</em>
+            </td>
             <td class="text-weight-bold bg-grey-2">Monitor USG / Rontgen</td>
             <td>USG: {{ selectedReport.monitor_usg || '-' }} | Rontgen: {{ selectedReport.monitor_rontgen || '-' }}</td>
           </tr>
@@ -307,6 +310,42 @@ const reportOptions = computed(() => {
 
 const selectedReport = computed(() => {
   return props.pasien?.laporaneswl?.find(x => x.id === selectedReportId.value) || null
+})
+
+const parsedTingkatKesakitan = computed(() => {
+  const val = selectedReport.value?.tingkat_kesakitan
+  if (!val) return { skor: '-', ket: '' }
+  
+  // Format is "3 (nyeri ringan)"
+  const match = val.match(/^(\d+)\s*\((.+)\)$/)
+  if (match) {
+    return {
+      skor: match[1],
+      ket: match[2]
+    }
+  }
+  
+  // Fallback for old/legacy values (e.g. "Tidak sakit", "Sedikit sakit")
+  let tempSkor = val
+  let tempKet = ''
+  if (val.includes('Tidak sakit')) {
+    tempSkor = '0'
+    tempKet = 'tidak ada nyeri'
+  } else if (val.includes('Sedikit sakit')) {
+    tempSkor = '3'
+    tempKet = 'nyeri ringan'
+  } else if (val.includes('Cukup sakit')) {
+    tempSkor = '5'
+    tempKet = 'nyeri sedang'
+  } else if (val.includes('Sakit sekali')) {
+    tempSkor = '8'
+    tempKet = 'nyeri berat'
+  }
+  
+  return {
+    skor: tempSkor,
+    ket: tempKet
+  }
 })
 
 onMounted(() => {
