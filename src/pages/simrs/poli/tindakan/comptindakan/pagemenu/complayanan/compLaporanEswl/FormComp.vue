@@ -47,10 +47,10 @@
             standout="bg-yellow-3 text-black" />
         </div>
 
-        <div class="col-12">
+        <!-- <div class="col-12">
           <q-input v-model="store.form.riwayat" label="Diagnosa" outlined type="textarea" rows="2"
             standout="bg-yellow-3 text-black" />
-        </div>
+        </div> -->
 
         <!-- SECTION 2: INFORMASI TINDAKAN -->
         <div class="col-12 q-mt-md">
