@@ -216,7 +216,7 @@ const filterDokumen = computed(() => {
     filteredDocuments = filteredDocuments.filter(item => item.value !== 'PRMRJ')
   }
 
-  if (kodepoli !== 'POL032') {
+  if (kodepoli !== 'POL032' && !props.pasien?.laporaneswl?.length) {
     filteredDocuments = filteredDocuments.filter(item => item.value !== 'LaporanEswl')
   }
 
