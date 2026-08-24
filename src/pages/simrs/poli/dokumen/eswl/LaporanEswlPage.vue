@@ -91,7 +91,7 @@
           </tr>
           <tr>
             <td class="text-weight-bold bg-grey-2">Diagnosa</td>
-            <td colspan="3" class="line-height-tight" style="white-space: pre-wrap;">{{ selectedReport.riwayat || '-' }}
+            <td colspan="3" class="line-height-tight" style="white-space: pre-wrap;">{{ pasien?.memodiagnosa || '-' }}
             </td>
           </tr>
         </tbody>
