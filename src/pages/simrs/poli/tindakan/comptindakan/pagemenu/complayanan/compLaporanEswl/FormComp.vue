@@ -48,7 +48,7 @@
         </div>
 
         <div class="col-12">
-          <q-input v-model="store.form.riwayat" label="Catatan Riwayat Penyakit" outlined type="textarea" rows="2"
+          <q-input v-model="store.form.riwayat" label="Diagnosa" outlined type="textarea" rows="2"
             standout="bg-yellow-3 text-black" />
         </div>
 
@@ -542,7 +542,7 @@ function updateKeteranganNyeri (val) {
   } else if (val > 6 && val <= 10) {
     keteranganscorenyeri.value = 'nyeri berat'
   }
-  
+
   store.form.tingkat_kesakitan = `${val} (${keteranganscorenyeri.value})`
 }
 
