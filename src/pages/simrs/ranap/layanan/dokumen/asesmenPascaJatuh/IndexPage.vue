@@ -185,13 +185,16 @@ const formattedItems = computed(() => {
 
     Object.keys(details).forEach(k => {
       const itemDetail = details[k]
-      const cat = itemDetail.category || 'segera'
-      const grp = groups.find(g => g.key === cat)
-      if (grp) {
-        grp.list.push(itemDetail)
-        if (itemDetail.petugas && !grp.petugas) {
-          grp.petugas = itemDetail.petugas
-          grp.kdpegsimrs = itemDetail.kdpegsimrs
+      // Hanya masukkan poin yang BENAR-BENAR diisi/dicentang oleh perawat
+      if (itemDetail.ya || itemDetail.tidak || itemDetail.keterangan || (itemDetail.jam && itemDetail.jam !== '')) {
+        const cat = itemDetail.category || 'segera'
+        const grp = groups.find(g => g.key === cat)
+        if (grp) {
+          grp.list.push(itemDetail)
+          if (itemDetail.petugas && !grp.petugas) {
+            grp.petugas = itemDetail.petugas
+            grp.kdpegsimrs = itemDetail.kdpegsimrs
+          }
         }
       }
     })

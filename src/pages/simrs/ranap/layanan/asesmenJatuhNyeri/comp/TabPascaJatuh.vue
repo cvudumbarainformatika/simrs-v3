@@ -496,18 +496,24 @@ function bukaEdit(item) {
 }
 
 async function simpanData() {
-  const currentKdPeg = localStorage.getItem('kdpegsimrs') || ''
+  const currentKdPeg = appStore.user?.pegawai?.kdpegsimrs || appStore.user?.kdpegsimrs || localStorage.getItem('kdpegsimrs') || ''
   const currentNamaPeg = appStore.user?.pegawai?.nama || appStore.user?.nama || localStorage.getItem('nama') || 'Perawat'
 
-  // Injeksikan identitas PPA/Perawat per poin jika poin tersebut diisi/diupdate
+  // Injeksikan identitas PPA/Perawat per poin saat poin tersebut PERTAMA KALI diisi/dicentang oleh perawat saat itu
   const updatedDetails = { ...form.value.details }
   Object.keys(updatedDetails).forEach(k => {
     const d = updatedDetails[k]
-    if (d.ya || d.tidak || d.keterangan || d.jam) {
-      if (!d.kdpegsimrs) {
+    // Jika poin dicentang (Ya/Tidak) atau diisi Keterangan
+    if (d.ya === true || d.tidak === true || (d.keterangan && d.keterangan.trim() !== '')) {
+      // Hanya set ke user login jika BELUM ada pemilik/pengisi sebelumnya
+      if (!d.kdpegsimrs || !d.petugas) {
         d.kdpegsimrs = currentKdPeg
         d.petugas = currentNamaPeg
       }
+    } else {
+      // Jika poin belum pernah dicentang/diisi sama sekali, hapus identitas petugas
+      delete d.kdpegsimrs
+      delete d.petugas
     }
   })
 
