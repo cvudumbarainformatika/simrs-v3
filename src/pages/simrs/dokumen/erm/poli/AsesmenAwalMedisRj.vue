@@ -329,11 +329,22 @@
 
       <q-separator />
       <div style="margin-left: 10px;">
-        <b><u>Daftar Masalah Keperawatan</u></b>
+        <b><u>{{ props.pasien?.diagnosakeperawatan.length > 0 ? 'Daftar Masalah Keperawatan' :
+          'Daftar Masalah Kebidanan'
+            }}</u></b>
       </div>
-      <div class="row">
+      <div v-if="props.pasien?.diagnosakeperawatan.length > 0" class="row">
         <div v-for="(erm, e1) in store.item" :key="e1">
           <div v-for="(kep, e3x) in erm.diagnosakeperawatan" :key="e3x">
+            <div class="col-5" style="margin-left: 20px;">
+              - {{ kep?.nama }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-else class="row">
+        <div v-for="(erm, e1) in store.item" :key="e1">
+          <div v-for="(kep, e3x) in erm.diagnosakebidanan" :key="e3x">
             <div class="col-5" style="margin-left: 20px;">
               - {{ kep?.nama }}
             </div>
@@ -343,12 +354,16 @@
 
       <q-separator />
       <div style="margin-left: 10px;">
-        <b><u>Rencana Keperawatan</u></b>
+        <b><u>{{ props.pasien?.diagnosakeperawatan.length > 0 ? 'Rencana Keperawatan' :
+          'Rencana Kebidanan'
+        }}</u></b>
       </div>
       <div class="row">
         <div class="col-5" style="margin-left: 20px;">
           <div v-for="(erm, e1) in store.item" :key="e1">
-            <div v-for="(kep, e3x) in erm.diagnosakeperawatan" :key="e3x">
+            <div
+              v-for="(kep, e3x) in (erm.diagnosakeperawatan.length > 0 ? erm.diagnosakeperawatan : erm.diagnosakebidanan)"
+              :key="e3x">
               <div v-if="kep.intervensi?.filter(x => x.masterintervensi.group === 'plann')?.length"
                 style="margin-left: 20px;">
                 <div v-for="item in kep.intervensi?.filter(x => x.masterintervensi.group === 'plann')" :key="item">
@@ -357,8 +372,8 @@
               </div>
             </div>
           </div>
-
         </div>
+
       </div>
 
       <q-separator />
@@ -368,7 +383,9 @@
       <div class="row">
         <div class="col-5" style="margin-left: 20px;">
           <div v-for="(erm, e1) in store.item" :key="e1">
-            <div v-for="(kep, e3x) in erm.diagnosakeperawatan" :key="e3x">
+            <div
+              v-for="(kep, e3x) in (erm.diagnosakeperawatan.length > 0 ? erm.diagnosakeperawatan : erm.diagnosakebidanan)"
+              :key="e3x">
               <div v-if="kep.intervensi?.filter(x => x.masterintervensi.group !== 'plann')?.length"
                 style="margin-left: 20px;">
                 <div v-for="item in kep.intervensi?.filter(x => x.masterintervensi.group !== 'plann')" :key="item">
@@ -386,7 +403,9 @@
       </div>
       <div class="row">
         <div v-for="(erm, e1) in store.item" :key="e1">
-          <div v-for="(kep, e3x) in erm.diagnosakeperawatan" :key="e3x">
+          <div
+            v-for="(kep, e3x) in (erm.diagnosakeperawatan.length > 0 ? erm.diagnosakeperawatan : erm.diagnosakebidanan)"
+            :key="e3x">
             <div class="col-5" style="margin-left: 20px;">
               <span v-html="getNewLine(kep?.evaluasi ?? '-')" />
 
