@@ -1,0 +1,685 @@
+<template>
+  <q-dialog :model-value="modelValue" @update:model-value="emit('update:modelValue', $event)" persistent
+    backdrop-filter="blur(4px)">
+    <q-card
+      style="width: min(calc(100vw - 24px), 1700px); max-width: min(calc(100vw - 24px), 1700px); height: 95vh; overflow: hidden;">
+      <q-layout view="lHh Lpr lFf" container class="shadow-2 rounded-borders dialog-layout">
+        <q-header elevated>
+          <q-bar class="bg-black text-white">
+            <div>Cetak RKA</div>
+            <q-space />
+
+            <q-btn dense flat icon="icon-mat-close" v-close-popup>
+              <q-tooltip>Close</q-tooltip>
+            </q-btn>
+          </q-bar>
+        </q-header>
+        <q-page-container>
+          <div id="printMe" class="print-container">
+            <q-card-section class="print-contentx">
+              <div class="col-auto" style="font-size: 1.2em">
+                <div class="row justify-between full-width full-height ">
+                  <div class="row b1 justify-between full-width">
+                    <div class="row b2" style="width:70%">
+                      <div class="row flex-center full-width">
+                        <div class="col text-weight-bold full-width q-pa-sm b3 text-center">
+                          <div>
+                            RENCANA KERJA DAN ANGGARAN
+                          </div>
+                          <div>
+                            SATUAN KERJA PERANGKAT DAERAH
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row text-center text-bold full-width q-py-sm">
+                        <div class="full-width">
+                          UOBK RSUD DOKTER MOHAMAD SALEH
+                        </div>
+                        <div class="full-width">
+                          TAHUN ANGGARAN {{ store.params.tahun }}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row" style="width:30%">
+                      <div class="row text-weight-bold full-width text-center">
+
+                        <div class="col flex-center q-pa-md full-width">
+                          <div class="q-pb-sm">
+                            Formulir
+                          </div>
+                          <div class="q-pb-sm">
+                            RKA - RINCIAN BELANJA SKPD
+                          </div>
+                          <div>
+                            PERGESERAN-ANGGARAN
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row b4 justify-between full-width full-height ">
+                    <div class="row q-pl-sm q-py-xs" style="width:100%">
+                      <div class="row q-pl-sm q-py-xs flex-center">
+                        <div class="col-auto" style="width:150px">
+                          <div class="q-py-xs" style="height: 35px">
+                            URUSAN PEMERINTAHAN
+                          </div>
+                          <div class="q-py-xs" style="height: 35px">
+                            BIDANG URUSAN
+                          </div>
+                          <div class="q-py-xs" style="height: 35px">
+                            PROGRAM
+                          </div>
+                          <div class="q-py-xs" style="height: 35px">
+                            KEGIATAN
+                          </div>
+                          <div class="q-py-xs" style="height: 35px">
+                            ORGANISASI
+                          </div>
+                          <div class="q-py-xs" style="height: 35px">
+                            SUB ORGANISASI
+                          </div>
+                        </div>
+                        <div class="q-px-md" />
+                        <div class="col-auto">
+                          <div class="q-py-xs" style="height: 35px">
+                            : 1 - URUSAN PEMERINTAHAN WAJIB YANG BERKAITAN DENGAN PELAYANAN DASAR
+                          </div>
+                          <div class="q-py-xs" style="height: 35px">
+                            : 1.02 - URUSAN PEMERINTAHAN BIDANG KESEHATAN
+                          </div>
+                          <div class="q-py-xs" style="height: 35px">
+                            : 1.02.01 - PROGRAM PENUNJANG URUSAN PEMERINTAHAN DAERAH KABUPATEN/KOTA
+                          </div>
+                          <div class="q-py-xs" style="height: 35px">
+                            : 1.02.01.2.10 - PENINGKATAN PELAYANAN BLUD
+                          </div>
+                          <div class="q-py-xs" style="height: 35px">
+                            : 1.02.2.14.0.00.03.0000 - DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA
+                          </div>
+                          <div class="q-py-xs" style="height: 35px">
+                            : 1.02.2.14.0.00.03.0301 - UOBK RSUD DOKTER MOHAMAD SALEH
+                          </div>
+                        </div>
+                        <div class="q-px-md" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row b6 justify-between full-width full-height ">
+                    <div class="row q-pl-sm q-py-xs" style="width:100%">
+                      <div class="row text-bold q-pl-sm q-py-sm flex-center full-width text-center">
+                        Indikator Tolak Ukur Kinerja Kegiatan
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row justify-between full-width full-height ">
+                    <div class="full-width" style="width:100%">
+
+                      <table class="full-width">
+                        <thead>
+                          <tr style="height: 25px">
+                            <th rowspan="2">
+                              Indikator
+                            </th>
+                            <th colspan="2">
+                              Sebelum Perubahan
+                            </th>
+                            <th colspan="2">
+                              Setelah Perubahan
+                            </th>
+                          </tr>
+                          <tr style="height: 25px">
+                            <th>
+                              Uraian
+                            </th>
+                            <th>
+                              Target Kinerja
+                            </th>
+                            <th>
+                              Uraian
+                            </th>
+                            <th>
+                              Target Kinerja
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr style="height: 25px">
+                            <td class="text-bold">
+                              Capaian Kegiatan
+                            </td>
+                            <td>
+                              {{ store.pergeseran[0].capaianprogram }}
+                            </td>
+                            <td class="text-right">
+                              {{ store.pergeseran[0].targetcapaian }}
+                            </td>
+                            <td>
+                              {{ store.pergeseran[0].capaianprogram }}
+                            </td>
+                            <td class="text-right">
+                              {{ store.pergeseran[0].targetcapaian }}
+                            </td>
+                          </tr>
+                          <tr style="height: 25px">
+                            <td class="text-bold">
+                              Masukan
+                            </td>
+                            <td>
+                              {{ store.pergeseran[0].masukan }}
+                            </td>
+                            <td class="text-right">
+                              {{ formatRpDouble(store.datarkapergeseran[0].pagu) }}
+                            </td>
+                            <td>
+                              {{ store.pergeseran[0].masukan }}
+                            </td>
+                            <td class="text-right">
+                              {{ formatRpDouble(store.datarkapergeseran[0].pagubaru) }}
+                            </td>
+                          </tr>
+                          <tr style="height: 25px">
+                            <td class="text-bold">
+                              Keluaran
+                            </td>
+                            <td>
+                              {{ store.pergeseran[0].keluaran }}
+                            </td>
+                            <td class="text-right">
+                              {{ store.pergeseran[0].targetkeluaran }}
+                            </td>
+                            <td>
+                              {{ store.pergeseran[0].keluaran }}
+                            </td>
+                            <td class="text-right">
+                              {{ store.pergeseran[0].targetkeluaran }}
+                            </td>
+                          </tr>
+                          <tr style="height: 25px">
+                            <td class="text-bold">
+                              Hasil
+                            </td>
+                            <td>
+                              {{ store.pergeseran[0].hasil }}
+                            </td>
+                            <td class="text-right">
+                              {{ store.pergeseran[0].targethasil }}
+                            </td>
+                            <td>
+                              {{ store.pergeseran[0].hasil }}
+                            </td>
+                            <td class="text-right">
+                              {{ store.pergeseran[0].targethasil }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                    </div>
+                  </div>
+
+                  <div class="row b4 justify-between full-width full-height ">
+                    <div class="row q-pl-sm q-py-xs" style="width:100%">
+                      <div class="row q-pl-sm q-py-xs flex-center">
+                        <div class="col-auto" style="width:150px">
+                          <div class="q-py-xs" style="height: 35px">
+                            SUB KEGIATAN
+                          </div>
+                          <div class="q-py-xs" style="height: 35px">
+                            KEGIATAN BLUD
+                          </div>
+                          <div class="q-py-xs" style="height: 35px">
+                            SUMBER PENDANAAN
+                          </div>
+                          <div class="q-py-xs" style="height: 35px">
+                            WAKTU PELAKSANAAN
+                          </div>
+                        </div>
+                        <div class="q-px-md" />
+                        <div class="col-auto">
+                          <div class="q-py-xs" style="height: 35px">
+                            : 1.02.01.2.10.0001 - Pelayanan dan Penunjang Pelayanan BLUD
+                          </div>
+                          <div class="q-py-xs" style="height: 35px">
+                            : {{ store.kegiatanblud }}
+                          </div>
+                          <div class="q-py-xs" style="height: 35px">
+                            : Pendapatan dari BLUD
+                          </div>
+                          <div class="q-py-xs" style="height: 35px">
+                            : Januari s/d Desember {{ store.params.tahun }}
+                          </div>
+                        </div>
+                        <div class="q-px-md" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row justify-between full-width full-height ">
+                    <div class="full-width" style="width:100%">
+
+                      <table class="full-width">
+                        <thead>
+                          <tr class="text-bold text-center" style="height:50px">
+                            <td class="text-center" colspan="2">REKENING</td>
+                            <td class="text-center" colspan="4">SEBELUM PERUBAHAN</td>
+                            <td class="text-center" colspan="4">SESUDAH PERUBAHAN</td>
+                            <td class="text-center" style="width: 100px" rowspan="2">SELISIH (RP.)</td>
+                            <td class="text-center aksi-col" rowspan="2">ooo</td>
+                          </tr>
+                          <tr class="text-bold text-center" style="height:50px">
+                            <td class="text-center">KODE</td>
+                            <td class="text-center" style="width: 30%">URAIAN</td>
+                            <td class="text-center" style="width: 70px">VOLUME</td>
+                            <td class="text-center" style="width: 70px">SATUAN</td>
+                            <td class="text-center" style="width: 100px">HARGA (Rp.)</td>
+                            <td class="text-center" style="width: 120px">PAGU (Rp.)</td>
+                            <td class="text-center" style="width: 70px">VOLUME</td>
+                            <td class="text-center" style="width: 70px">SATUAN</td>
+                            <td class="text-center" style="width: 100px">HARGA (Rp.)</td>
+                            <td class="text-center" style="width: 120px">PAGU (Rp.)</td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <template v-for="it in store.datarkapergeseran" :key="it">
+                            <tr>
+                              <td class="text-bold text-left q-py-sm"> {{ it.kode }} </td>
+                              <td class="text-bold text-left q-py-sm" colspan="4"> {{ it.uraian }} </td>
+                              <td class="text-right text-bold">
+                                <!-- <span class="row justify-between">
+                                  <span class="col-auto flex-start">Rp. </span> -->
+                                <span class="flex-end text-right">
+                                  {{ formattanpaRp(it.pagu) }}
+                                </span>
+                                <!-- </span> -->
+                              </td>
+                              <td colspan="3"></td>
+                              <td class="text-right text-bold">
+                                <!-- <span class="row justify-between">
+                                  <span class="col-auto flex-start">Rp. </span> -->
+                                <span class="flex-end text-right">
+                                  {{ formattanpaRp(it.pagubaru) }}
+                                </span>
+                                <!-- </span> -->
+                              </td>
+                              <td class="text-right text-bold">
+                                <span class="flex-end text-right">
+                                  {{ formattanpaRp(it.selisih) }}
+                                </span>
+                              </td>
+                              <td class="text-center aksi-col">
+                                <q-btn v-if="!printed && it.kode.length > 12" dense round flat color="primary"
+                                  :loading="store.loading" icon="icon-mat-play_arrow" @click.stop="bukaRincian(it)">
+                                  <q-tooltip>Input Batasan</q-tooltip>
+                                </q-btn>
+                              </td>
+                            </tr>
+                            <template v-for="rinci in it?.rincian" :key="rinci">
+                              <tr>
+                                <td>
+                                  <span class="q-py-sm">
+                                    {{ rinci.kode108 }}
+                                  </span>
+                                </td>
+                                <td>
+                                  <span class="q-py-sm">
+                                    - {{ rinci.usulan }}
+                                  </span>
+                                </td>
+                                <td class="text-right">
+                                  <span class="q-py-sm">
+                                    {{ rinci.volume }}
+                                  </span>
+                                </td>
+                                <td>
+                                  <span class="q-py-sm">
+                                    {{ rinci.satuan }}
+                                  </span>
+                                </td>
+                                <td class="text-right">
+                                  <!-- <span class="row justify-between">
+                                    <span class="col-auto flex-start">Rp. </span> -->
+                                  <span class="flex-end text-right">
+                                    {{ formattanpaRp(rinci.harga) }}
+                                  </span>
+                                  <!-- </span> -->
+                                </td>
+                                <td class="text-right">
+                                  <!-- <span class="row justify-between">
+                                    <span class="col-auto flex-start">Rp. </span> -->
+                                  <span class="flex-end text-right">
+                                    {{ formattanpaRp(rinci.pagu) }}
+                                  </span>
+                                  <!-- </span> -->
+                                </td>
+                                <td class="text-right">
+                                  <span class="q-py-sm">
+                                    {{ rinci.volumebaru }}
+                                  </span>
+                                </td>
+                                <td>
+                                  <span class="q-py-sm">
+                                    {{ rinci.satuan }}
+                                  </span>
+                                </td>
+                                <td class="text-right">
+                                  <!-- <span class="row justify-between">
+                                    <span class="col-auto flex-start">Rp. </span> -->
+                                  <span class="flex-end text-right">
+                                    {{ formattanpaRp(rinci.hargabaru) }}
+                                  </span>
+                                  <!-- </span> -->
+                                </td>
+                                <td class="text-right">
+                                  <!-- <span class="row justify-between">
+                                    <span class="col-auto flex-start">Rp. </span> -->
+                                  <span class="flex-end text-right">
+                                    {{ formattanpaRp(rinci.pagubaru) }}
+                                  </span>
+                                  <!-- </span> -->
+                                </td>
+                                <td class="text-right">
+                                  <span class="flex-end text-right">
+                                    {{ formattanpaRp(rinci.selisih) }}
+                                  </span>
+                                </td>
+                                <td class="aksi-col"></td>
+                              </tr>
+                            </template>
+                          </template>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div class="row b5 justify-between q-pt-xl q-pb-md full-width">
+                    <div class="row q-pl-sm q-py-xs text-weight-bold" style="width:100%">
+                      <div class="col text-center">
+                        <div class="text-bold">
+                          Pejabat Pelaksana Teknis Kegiatan
+                        </div>
+                        <div style="padding-bottom: 60px" />
+                        <div class="underline text-bold q-py-xs">
+                          {{ store.namapptk }}
+                          <div class="garis-bawah" style="text-decoration-line: underline;" />
+                        </div>
+                        <div>
+                          NIP. {{ store.kodepptk }}
+                        </div>
+                      </div>
+                      <div class="col text-center" v-for="it in tt.ttd" :key="it">
+                        <div class="text-bold">
+                          Kuasa Pengguna Anggaran
+                        </div>
+                        <div style="padding-bottom: 60px" />
+                        <div class="underline text-bold q-py-xs">
+                          {{ it.nama }}
+                          <div class="garis-bawah" style="text-decoration-line: underline;" />
+                        </div>
+                        <div>
+                          NIP. {{ it.nip }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </q-card-section>
+          </div>
+        </q-page-container>
+        <q-footer elevated>
+          <q-card-section class="q-pa-none bg-primary text-white">
+            <div class="q-pa-md row justify-end items-end">
+              <div class="items-end">
+                <q-btn v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
+                  <q-tooltip class="primary" :offset="[10, 10]">
+                    Print
+                  </q-tooltip>
+                </q-btn>
+              </div>
+            </div>
+          </q-card-section>
+        </q-footer>
+      </q-layout>
+    </q-card>
+  </q-dialog>
+  <input-batasan v-if="user === 'sa'" v-model="showRincian" :datas="selectedRincian" />
+</template>
+<script setup>
+import { useBukubesarStore } from 'src/stores/siasik/akuntansi/bukubesar/bukubesar'
+import { onMounted, ref, defineAsyncComponent, computed } from 'vue'
+
+// eslint-disable-next-line no-unused-vars
+import { formatDenganRp, formatRpDouble, formattanpaRp } from 'src/modules/formatter'
+import { usePergeseranAnggaranStore } from 'src/stores/siasik/anggaran/pergeseran/pergeseranrincian'
+import { useAplikasiStore } from 'src/stores/app/aplikasi.js'
+
+const InputBatasan = defineAsyncComponent(() => import('./DialogInputBatasan.vue'))
+// import listDatapergeseran from '../inpage/ListDataRKApergeseran.vue'
+// import listData from '../inpage/ListDataRKA.vue'
+
+const auth = useAplikasiStore()
+const user = computed(() => auth.user?.pegawai?.kdpegsimrs)
+const props = defineProps({
+  modelValue: {
+    type: Boolean,
+    default: false
+  },
+  datanpds: {
+    type: Object,
+    default: null
+  }
+})
+const emit = defineEmits(['update:modelValue'])
+const tt = useBukubesarStore()
+const store = usePergeseranAnggaranStore()
+onMounted(() => {
+  tt.getTtd()
+  // store.getDataBukubesar()
+})
+const printed = ref(false)
+const printObj = {
+  id: 'printMe',
+  popTitle: 'Rencana Kerja dan Anggaran | SIASIK',
+  beforeOpenCallback(vue) {
+    printed.value = true
+    console.log('wait...')
+  },
+  openCallback(vue) {
+    console.log('opened')
+  },
+  closeCallback(vue) {
+    printed.value = false
+    console.log('closePrint')
+  }
+}
+
+const showRincian = ref(false)
+const selectedRincian = ref(null)
+const bukaRincian = async (item) => {
+  if (!item?.rincian?.length) {
+    showRincian.value = false
+    return
+  }
+
+  selectedRincian.value = item
+
+  try {
+
+    await store.getDataBatasan(item)
+
+    store.form_batasan.flag = store.databatasan?.flag
+    store.form_batasan.batasan = store.databatasan?.batasan ?? 0
+
+    showRincian.value = true
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+// const init = () => {
+//   store.dataTersimpan()
+// }
+// const cetakNPD = ref(false)
+// function hitungSubtotal () {
+//   const arr = store.form.rincians
+//   const obj = arr?.length ? arr.map((x) => x.nominalpembayaran) : []
+//   const subtotal = obj.reduce((x, y) => x + y, 0)
+//   // console.log('jumlah', obj)
+//   // const total = nominal.reduce((x, y) => x + y, 0)
+//   return subtotal
+// }
+</script>
+<style>
+.dialog-layout {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 11px;
+}
+
+.b {
+  border-bottom-style: solid;
+  border-width: 2px;
+}
+
+.b1 {
+  border-style: solid;
+  border-width: 2px;
+}
+
+.b2 {
+  border-right-style: solid;
+  border-width: 2px;
+}
+
+.b3 {
+  border-bottom-style: solid;
+  border-width: 2px;
+}
+
+.b4 {
+  border-right-style: solid;
+  border-left-style: solid;
+  border-width: 2px;
+}
+
+.b5 {
+  border-right-style: solid;
+  border-left-style: solid;
+  border-bottom-style: solid;
+  border-width: 2px;
+}
+
+.b6 {
+  border-right-style: solid;
+  border-left-style: solid;
+  border-top-style: solid;
+  border-width: 2px;
+}
+
+table,
+thead,
+th,
+td {
+  border-width: 2px;
+  border-style: solid;
+  border-collapse: collapse;
+  border-right-style: solid;
+  border-left-style: solid;
+  font-size: 11px;
+}
+
+td {
+  height: 35px;
+  max-height: 50px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.aksi-col {
+  width: 50px;
+  min-width: 50px;
+}
+
+.print-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 12px;
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.print-content {
+  width: 100%;
+  max-width: 1123px;
+  /* preview */
+  box-sizing: border-box;
+}
+
+.print-contentx,
+#printMe {
+  max-width: 100%;
+  overflow-x: hidden;
+
+}
+
+.print-contentx *,
+#printMe * {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+
+}
+
+@page {
+  size: landscape;
+  margin: 8mm;
+}
+
+@media print {
+
+  .print-container {
+    display: block;
+    padding: 0;
+  }
+
+  .print-content {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  #printMe {
+    width: 100%;
+    font-size: 11px;
+  }
+
+  table {
+    width: 100%;
+    max-width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    padding: 2px 4px;
+    font-size: 10px;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+
+  .aksi-col {
+    display: none !important;
+  }
+}
+</style>

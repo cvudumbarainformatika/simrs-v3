@@ -194,69 +194,69 @@ const anggaran = {
       ]
     },
 
-    // {
-    //   path: '/anggaran/pergeseranperubahan',
-    //   // name: 'laporan.rekap.datapasien',
-    //   component: () => import('pages/siasik/anggaran/pergeseran_perubahan/IndexPage.vue'),
-    //   children: [
-    //     { path: '', redirect: '/anggaran/pergeseranperubahan/pendapatan' },
-    //     {
-    //       path: '/anggaran/pergeseranperubahan/pendapatan',
-    //       name: 'anggaran.pergeseranperubahan.pendapatan',
-    //       component: () =>
-    //         import('src/pages/siasik/anggaran/pergeseran_perubahan/anggaranpendapatan/IndexPage.vue')
-    //     },
-    //     {
-    //       path: '/anggaran/pergeseranperubahan/pagu',
-    //       name: 'anggaran.pergeseranperubahan.pagu',
-    //       component: () =>
-    //         import('src/pages/siasik/anggaran/pergeseran_perubahan/pergeseran_pagu/IndexPage.vue')
-    //     },
-    //     {
-    //       path: '/anggaran/pergeseranperubahan/belanja',
-    //       name: 'anggaran.pergeseranperubahan.belanja',
-    //       component: () => import('pages/siasik/anggaran/pergeseran_perubahan/rincian_anggaran/IndexPage.vue'),
-    //       children: [
-    //         { path: '', name: 'pengusulan', redirect: '/anggaran/pergeseranperubahan/belanja/listdata' },
-    //         {
-    //           path: '/anggaran/pergeseranperubahan/belanja/listdata',
-    //           name: 'anggaran.pergeseranperubahan.belanja.listdata',
-    //           component: () =>
-    //             import('src/pages/siasik/anggaran/pergeseran_perubahan/rincian_anggaran/ListData/IndexPage.vue')
-    //         },
-    //         {
-    //           path: '/anggaran/pergeseranperubahan/belanja/form',
-    //           name: 'anggaran.pergeseranperubahan.belanja.form',
-    //           component: () =>
-    //             import('src/pages/siasik/anggaran/pergeseran_perubahan/rincian_anggaran/FormData/IndexPage.vue')
-    //         },
+    {
+      path: '/anggaran/pergeseranperubahan',
+      // name: 'laporan.rekap.datapasien',
+      component: () => import('pages/siasik/anggaran/pergeseran_perubahan/IndexPage.vue'),
+      children: [
+        { path: '', redirect: '/anggaran/pergeseranperubahan/pendapatan' },
+        {
+          path: '/anggaran/pergeseranperubahan/pendapatan',
+          name: 'anggaran.pergeseranperubahan.pendapatan',
+          component: () =>
+            import('src/pages/siasik/anggaran/pergeseran_perubahan/anggaranpendapatan/IndexPage.vue')
+        },
+        {
+          path: '/anggaran/pergeseranperubahan/pagu',
+          name: 'anggaran.pergeseranperubahan.pagu',
+          component: () =>
+            import('src/pages/siasik/anggaran/pergeseran_perubahan/pergeseran_pagu/IndexPage.vue')
+        },
+        {
+          path: '/anggaran/pergeseranperubahan/belanja',
+          name: 'anggaran.pergeseranperubahan.belanja',
+          component: () => import('pages/siasik/anggaran/pergeseran_perubahan/rincian_anggaran/IndexPage.vue'),
+          children: [
+            { path: '', name: 'pengusulan', redirect: '/anggaran/pergeseranperubahan/belanja/listdata' },
+            {
+              path: '/anggaran/pergeseranperubahan/belanja/listdata',
+              name: 'anggaran.pergeseranperubahan.belanja.listdata',
+              component: () =>
+                import('src/pages/siasik/anggaran/pergeseran_perubahan/rincian_anggaran/ListData/IndexPage.vue')
+            },
+            {
+              path: '/anggaran/pergeseranperubahan/belanja/form',
+              name: 'anggaran.pergeseranperubahan.belanja.form',
+              component: () =>
+                import('src/pages/siasik/anggaran/pergeseran_perubahan/rincian_anggaran/FormData/IndexPage.vue')
+            },
 
 
-    //       ]
-    //     },
-    //     // {
-    //     //   path: '/anggaran/penyusunan/prioritas',
-    //     //   name: 'anggaran.penyusunan.prioritas',
-    //     //   component: () => import('pages/siasik/anggaran/penyusunan/penyesuaian_prioritas/IndexPage.vue'),
-    //     //   children: [
-    //     //     { path: '', name: 'prioritas', redirect: '/anggaran/penyusunan/prioritas/form' },
-    //     //     {
-    //     //       path: '/anggaran/penyusunan/prioritas/form',
-    //     //       name: 'anggaran.penyusunan.prioritas.form',
-    //     //       component: () =>
-    //     //         import('src/pages/siasik/anggaran/penyusunan/penyesuaian_prioritas/FormData/IndexPage.vue')
-    //     //     },
-    //     //     {
-    //     //       path: '/anggaran/penyusunan/prioritas/listdata',
-    //     //       name: 'anggaran.penyusunan.prioritas.listdata',
-    //     //       component: () =>
-    //     //         import('src/pages/siasik/anggaran/penyusunan/penyesuaian_prioritas/ListData/IndexPage.vue')
-    //     //     },
+          ]
+        },
+        // {
+        //   path: '/anggaran/penyusunan/prioritas',
+        //   name: 'anggaran.penyusunan.prioritas',
+        //   component: () => import('pages/siasik/anggaran/penyusunan/penyesuaian_prioritas/IndexPage.vue'),
+        //   children: [
+        //     { path: '', name: 'prioritas', redirect: '/anggaran/penyusunan/prioritas/form' },
+        //     {
+        //       path: '/anggaran/penyusunan/prioritas/form',
+        //       name: 'anggaran.penyusunan.prioritas.form',
+        //       component: () =>
+        //         import('src/pages/siasik/anggaran/penyusunan/penyesuaian_prioritas/FormData/IndexPage.vue')
+        //     },
+        //     {
+        //       path: '/anggaran/penyusunan/prioritas/listdata',
+        //       name: 'anggaran.penyusunan.prioritas.listdata',
+        //       component: () =>
+        //         import('src/pages/siasik/anggaran/penyusunan/penyesuaian_prioritas/ListData/IndexPage.vue')
+        //     },
 
-    //     //   ]
-    //     // },
-    //   ]
-    // },
+        //   ]
+        // },
+      ]
+    },
     {
       path: '/anggaran/notfound',
       component: () => import('pages/MidlewareNotFound.vue')
