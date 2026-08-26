@@ -112,7 +112,7 @@ const menus = ref([
   },
   {
     name: 'BayiAnakPage',
-    label: 'Bayi & Anak',
+    label: 'Bayi, Anak & Ibu',
     icon: 'icon-my-baby-head',
     route: ['poli'],
     comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/BayiAnakPage.vue')))
