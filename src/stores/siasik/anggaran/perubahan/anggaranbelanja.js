@@ -541,5 +541,26 @@ export const usePerubahanAnggaranBelanja_PAK = defineStore('perubahan-anggaran-b
             this.datarkapergeseran = dataRKApergeseran
             console.log('rka', this.datarkapergeseran)
         },
+
+        async penetapan(payload) {
+            this.loadingSave = true
+            try {
+                const resp = await api.post('/v1/anggaran/perubahan/belanja/penetapanpak', payload)
+
+                if (resp.status === 200) {
+                    notifSuccess(resp)
+                    await this.getData()
+                }
+
+                return resp // 🔥 penting
+
+            } catch (error) {
+                notifErr(error)
+                throw error // 🔥 penting biar bisa ditangkap di component
+
+            } finally {
+                this.loadingSave = false // 🔥 paling aman
+            }
+        },
     }
 })

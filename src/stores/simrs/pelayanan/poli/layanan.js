@@ -10,7 +10,7 @@ export const useLayananPoli = defineStore('layanan-poli', {
   state: () => ({
     tab: 'Diagnosa Medik',
     // tabs: ['Tindakan Medik', 'Prosedur (Icd 9)', 'Diagnosa Keperawatan', 'Diagnosa Kebidanan', 'Laporan Tindakan', 'Pra Anestesia'],
-    tabs: ['Diagnosa Medik', 'Tindakan Medik', 'Prosedur (Icd 9)', 'Rencana Pengobatan', 'Diagnosa Keperawatan', 'Diagnosa Kebidanan', 'Laporan Tindakan', 'Pra Anestesia', 'Pra Bedah',], // diagnosa di hapus
+    tabs: ['Diagnosa Medik', 'Tindakan Medik', 'Prosedur (Icd 9)', 'Rencana Pengobatan', 'Diagnosa Keperawatan', 'Diagnosa Kebidanan', 'Laporan Tindakan', 'Laporan ESWL', 'Pra Anestesia', 'Pra Bedah',], // diagnosa di hapus
     // diagnosa
     searchdiagnosa: '',
     listDiagnosa: [],
@@ -414,6 +414,7 @@ export const useLayananPoli = defineStore('layanan-poli', {
           'Diagnosa Keperawatan',
           'Diagnosa Kebidanan',
           'Laporan Tindakan',
+          'Laporan ESWL',
           'Pra Anestesia',
           'Pra Bedah',
           'Rencana Pengobatan'

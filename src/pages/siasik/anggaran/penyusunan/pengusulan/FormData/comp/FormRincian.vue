@@ -47,8 +47,10 @@
         </div>
 
         <div class="col-3 q-pa-sm q-gutter-y-md">
-          <app-input-simrs label="Harga" v-model="store.form.harga" :disable="store.disabled" outlined dense
-            :valid="{ number: true }" @update:model-value="updateHarga" />
+          <!-- <app-input-simrs label="Harga" v-model="store.form.harga" :disable="store.disabled" outlined dense
+            :valid="{ number: true }" @update:model-value="updateHarga" /> -->
+          <q-input ref="nilaiRef" v-model="nilaiInput" outlined dense label="Harga" inputmode="decimal"
+            :disable="store.disabled" @focus="fokusNilai" @update:model-value="setNilai" @blur="formatNilai" />
         </div>
         <div class="col-3 q-pa-sm q-gutter-y-md">
           <app-input-simrs label="Total" readonly :model-value="formattanpaRp(store.form.nilai)"
@@ -67,7 +69,7 @@
 import { notifErrVue } from 'src/modules/utils';
 import { dataBastFarmasiStore } from 'src/stores/siasik/transaksi/ls/newnpdls/bastfarmasi';
 import { formInputNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formnpdls';
-import { defineAsyncComponent, onMounted, ref } from 'vue';
+import { watch, defineAsyncComponent, nextTick, onMounted, ref } from 'vue';
 import { formattanpaRp } from 'src/modules/formatter'
 import { usePengusulanAnggaranStore } from 'src/stores/siasik/anggaran/penyusunan/pengusulan';
 import { api } from 'src/boot/axios';
@@ -77,8 +79,65 @@ import { api } from 'src/boot/axios';
 const store = usePengusulanAnggaranStore()
 const carisrt = dataBastFarmasiStore()
 const satuan = ref(null)
+
 onMounted(() => {
 })
+
+
+const nilaiRef = ref(null)
+const nilaiInput = ref(formattanpaRp(store.form.harga))
+const nilaiFocused = ref(false)
+
+function fokusNilai(event) {
+  nilaiFocused.value = true
+  nilaiInput.value = String(store.form.harga ?? '')
+  event.target.select()
+}
+
+function setNilai(value) {
+  const inputValue = String(value ?? '')
+  const inputElement = nilaiRef.value?.$el?.querySelector('input')
+  const cursorPosition = inputElement?.selectionStart ?? inputValue.length
+  const digitsBeforeCursor = inputValue.slice(0, cursorPosition).replace(/\D/g, '').length
+  const rawValue = inputValue.replace(/\D/g, '')
+  const numericValue = Number(rawValue)
+  store.form.harga = rawValue === '' || Number.isNaN(numericValue) ? 0 : numericValue
+  store.form.nilai = Number(store.form.volume || 0) * store.form.harga
+  nilaiInput.value = rawValue
+    ? Number(rawValue).toLocaleString('en-US')
+    : ''
+
+  nextTick(() => {
+    const formattedInput = nilaiRef.value?.$el?.querySelector('input')
+    if (!formattedInput) return
+
+    let digitCount = 0
+    let nextCursorPosition = nilaiInput.value.length
+    for (let index = 0; index < nilaiInput.value.length; index++) {
+      if (/\d/.test(nilaiInput.value[index])) digitCount++
+      if (digitCount === digitsBeforeCursor) {
+        nextCursorPosition = index + 1
+        break
+      }
+    }
+    formattedInput.setSelectionRange(nextCursorPosition, nextCursorPosition)
+  })
+}
+
+function formatNilai() {
+  nilaiFocused.value = false
+  nilaiInput.value = formattanpaRp(store.form.harga)
+}
+
+watch(
+  () => store.form.harga,
+  (value) => {
+    if (!nilaiFocused.value) {
+      nilaiInput.value = formattanpaRp(value)
+    }
+  },
+  { immediate: true }
+)
 
 const pilihanJenis = [
   { label: 'Barang Persediaan (SIGARANG)', value: 'Barang' },

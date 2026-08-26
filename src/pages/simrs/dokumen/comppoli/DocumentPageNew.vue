@@ -164,6 +164,13 @@ const documents = ref([
   },
   {
     icon: 'icon-mat-email',
+    color: 'green',
+    jenis: 'ESWL',
+    label: 'Laporan Tindakan ESWL',
+    value: 'LaporanEswl'
+  },
+  {
+    icon: 'icon-mat-email',
     color: 'primary',
     jenis: 'SuratKonsul',
     label: 'Surat-Konsul',
@@ -209,6 +216,10 @@ const filterDokumen = computed(() => {
     filteredDocuments = filteredDocuments.filter(item => item.value !== 'PRMRJ')
   }
 
+  if (kodepoli !== 'POL032' && !props.pasien?.laporaneswl?.length) {
+    filteredDocuments = filteredDocuments.filter(item => item.value !== 'LaporanEswl')
+  }
+
   if (kodepoli !== 'POL022' && kodepoli !== 'POL010') {
     return filteredDocuments.filter(item => item.jenis !== 'SKD')
   }
@@ -241,6 +252,7 @@ const comp = [
   { nama: 'PRMRJ', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/Prmrj/PrmrjPage.vue')) },
   { nama: 'SuratKonsul', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/SuratKonsul/SuratKonsulPage.vue')) },
   { nama: 'Edukasi', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/edukasi/EdukasiPage.vue')) },
+  { nama: 'LaporanEswl', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/eswl/LaporanEswlPage.vue')) },
 
 ]
 // eslint-disable-next-line no-unused-vars

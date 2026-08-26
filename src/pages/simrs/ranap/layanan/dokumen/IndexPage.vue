@@ -257,6 +257,15 @@ const menus = ref([
     icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3'],
     comp: shallowRef(defineAsyncComponent(() => import('./asesmenNyeri/IndexPage.vue')))
+  },
+  {
+    name: 'asesmen-pasca-jatuh-document',
+    label: 'MONITORING PASIEN SETELAH JATUH',
+    title: 'MONITORING PASIEN SETELAH JATUH',
+    desc: 'Dokumen Pemantauan dan Intervensi Pasien Pasca Jatuh (Setelah Jatuh)',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./asesmenPascaJatuh/IndexPage.vue')))
   }
 ])
 

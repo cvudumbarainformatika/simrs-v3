@@ -23,6 +23,15 @@
               </div>
             </template>
           </q-tab>
+
+          <q-tab name="pasca_jatuh" :ripple="true">
+            <template #default>
+              <div class="row q-gutter-x-xs items-center q-px-sm" style="border-radius: 10px;">
+                <q-icon name="icon-mat-warning" size="18px" />
+                <div><strong>Pasca Jatuh / Setelah Jatuh</strong></div>
+              </div>
+            </template>
+          </q-tab>
         </q-tabs>
       </div>
 
@@ -36,6 +45,10 @@
           <q-tab-panel name="nyeri" class="q-pa-none">
             <TabAsesmenNyeri :pasien="pasien" :kasus="kasus" />
           </q-tab-panel>
+
+          <q-tab-panel name="pasca_jatuh" class="q-pa-none">
+            <TabPascaJatuh :pasien="pasien" :kasus="kasus" />
+          </q-tab-panel>
         </q-tab-panels>
       </div>
 
@@ -48,6 +61,7 @@ import { ref, defineAsyncComponent } from 'vue'
 
 const TabAsesmenJatuh = defineAsyncComponent(() => import('./comp/TabAsesmenJatuh.vue'))
 const TabAsesmenNyeri = defineAsyncComponent(() => import('./comp/TabAsesmenNyeri.vue'))
+const TabPascaJatuh = defineAsyncComponent(() => import('./comp/TabPascaJatuh.vue'))
 
 const props = defineProps({
   pasien: {

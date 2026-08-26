@@ -36,73 +36,178 @@
       <div class="row">
         <div v-for="(erm, e) in store.item" :key="e">
           <div v-for="(anamnesis, anm) in erm?.anamnesis" :key="anm">
-            <div class="col-5" style="margin-left: 20px;">
-              1. Riwayat Kesehatan Sekarang (Alasan masuk RS/Keluhan Utama) :
-            </div>
-            <div class="row">
-              <div class="col-8" style="margin-left: 30px;">
-                - Keluhan Utama: {{ anamnesis?.rs4 ?? '' }}
+            <div v-for="(kandungan, knd) in erm?.kandungan" :key="knd">
+
+              <div class="col-5" style="margin-left: 20px;">
+                1. Riwayat Kesehatan Sekarang (Alasan masuk RS/Keluhan Utama) :
               </div>
-              <div class="col-8" style="margin-left: 30px;">
-                - Riwayat Penyakit (Sekarang) : {{ anamnesis?.riwayatpenyakitsekarang ?? '' }}
-              </div>
-              <div class="col-8" style="margin-left: 30px;">
-                - Riwayat Penyakit (Dahulu): {{ anamnesis?.riwayatpenyakit ?? '' }}
-              </div>
-              <div class="col-8" style="margin-left: 30px;">
-                - Riwayat Penyakit Keluarga: {{ anamnesis?.riwayatpenyakitkeluarga ?? '' }}
-              </div>
-              <div class="col-8" style="margin-left: 30px;">
-                - Riwayat Alergi : {{ anamnesis?.riwayatalergi ?? '' }}
-              </div>
-              <div class="col-8" style="margin-left: 30px;">
-                - Reaksi berupa : {{ anamnesis?.keteranganalergi ?? '' }}
-              </div>
-              <div class="col-8" style="margin-left: 30px;">
-                - Riwayat Pengobatan : {{ anamnesis?.riwayatpengobatan ?? '' }}
-              </div>
-              <br>
-              <div class="col-8 " style="margin-left: 20px;">
-                2. Keluhan Nyeri
-              </div>
-              <div class="col-8" style="margin-left: 35px;">
-                <div class="text-weight-bold">
-                  Keluhan Nyeri ? <em class="text-primary">{{ anamnesis.keteranganscorenyeri }}</em>
-                  <span class="q-ml-sm">
-                    <q-icon size="lg" color="teal" :name="iconNyeri(anamnesis.scorenyeri)" />
-                  </span>
+              <div class="row">
+                <div class="col-8" style="margin-left: 30px;">
+                  - Keluhan Utama: {{ anamnesis?.rs4 ?? '-' }}
+                </div>
+                <div class="col-8" style="margin-left: 30px;">
+                  - Riwayat Penyakit (Sekarang) : {{ anamnesis?.riwayatpenyakitsekarang ?? '-' }}
+                </div>
+                <div class="col-8" style="margin-left: 30px;">
+                  - Riwayat Penyakit (Dahulu): {{ anamnesis?.riwayatpenyakit ?? '-' }}
+                </div>
+                <div class="col-8" style="margin-left: 30px;">
+                  - Riwayat Penyakit Keluarga: {{ anamnesis?.riwayatpenyakitkeluarga ?? '-' }}
+                </div>
+                <div class="col-8" style="margin-left: 30px;">
+                  - Riwayat Alergi : {{ anamnesis?.riwayatalergi ?? '-' }}
+                </div>
+                <div class="col-8" style="margin-left: 30px;">
+                  - Reaksi berupa : {{ anamnesis?.keteranganalergi ?? '-' }}
+                </div>
+                <div v-if="!erm.kandungan.length" class="col-8" style="margin-left: 30px;">
+                  - Riwayat Pengobatan : {{ anamnesis?.riwayatpengobatan ?? '-' }}
+                </div>
+
+                <template v-if="erm.kandungan.length">
+                  <div class="col-8" style="margin-left: 30px;">
+                    - Operasi yang pernah dialami : {{ kandungan?.operasi ?? '-' }}
+                  </div>
+                  <div class="col-8" style="margin-left: 30px;">
+                    - Riwayat Obstetri :
+                  </div>
+                  <div class="col-10" style="margin-left: 30px;">
+                    <table class="q-ma-xs">
+                      <thead>
+                        <tr>
+                          <th width="3%">
+                            No
+                          </th>
+                          <th width="3%">
+                            P/L
+                          </th>
+                          <th width="10%">
+                            Umur Anak
+                          </th>
+                          <th>K/U Anak</th>
+                          <th>BBL</th>
+                          <th>Riwayat Kehamilan</th>
+
+                        </tr>
+                      </thead>
+                      <tbody v-if="erm?.riwayatobsetri.length">
+                        <tr v-for="(obs, i) in erm?.riwayatobsetri" :key="i">
+                          <td>{{ i + 1 }}</td>
+                          <td>{{ obs?.pl }}</td>
+                          <td>{{ obs?.umurAnak }}</td>
+                          <td>{{ obs?.kuAnak }}</td>
+                          <td>{{ obs?.bbl }}</td>
+                          <td>{{ obs?.riwayatKehamilan }}</td>
+
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr>
+                          <td colspan="7">
+                            <div class="flex flex-center">
+                              Belum ada riwayat obsetri
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="col-8" style="margin-left: 30px;">
+                    - Menarche : {{ kandungan?.menarche ?? '-' }}
+                  </div>
+                  <div class="col-8" style="margin-left: 30px;">
+                    - Menstruasi : {{ kandungan?.menstruasi ?? '-' }}
+                  </div>
+                  <div class="col-8" style="margin-left: 30px;">
+                    - Kontrasepsi yang digunakan : {{ kandungan?.kontrasepsi ?? '-' }}
+                  </div>
+                  <div class="col-8" style="margin-left: 30px;">
+                    - Menikah yang ke : {{ kandungan?.menikahKe ?? '-' }}
+                  </div>
+                </template>
+
+                <br>
+                <div class="col-8 " style="margin-left: 20px;">
+                  2. Keluhan Nyeri
+                </div>
+                <div class="col-8" style="margin-left: 35px;">
+                  <div class="text-weight-bold">
+                    Keluhan Nyeri ? <em class="text-primary">{{ anamnesis.keteranganscorenyeri }}</em>
+                    <span class="q-ml-sm">
+                      <q-icon size="lg" color="teal" :name="iconNyeri(anamnesis.scorenyeri)" />
+                    </span>
+                  </div>
+                </div>
+                <q-separator class="q-my-xs" />
+                <div class="col-4" style="margin-left: 35px;">
+                  <q-slider v-model="anamnesis.scorenyeri" color="primary" thumb-color="primary" label-color="primary"
+                    label-text-color="yellow" markers :marker-labels="(val) => fnMarkerLabel"
+                    marker-labels-class="text-primary" label-always switch-label-side :min="0" :max="10" />
+
                 </div>
               </div>
-              <q-separator class="q-my-xs" />
-              <div class="col-4" style="margin-left: 35px;">
-                <q-slider v-model="anamnesis.scorenyeri" color="primary" thumb-color="primary" label-color="primary"
-                  label-text-color="yellow" markers :marker-labels="(val) => fnMarkerLabel"
-                  marker-labels-class="text-primary" label-always switch-label-side :min="0" :max="10" />
-
+              <div class="col-5 q-mt-sm" style="margin-left: 20px;">
+                3. Assasement Jatuh (skor Up an Go)
               </div>
-            </div>
-            <div class="col-5 q-mt-sm" style="margin-left: 20px;">
-              3. Assasement Jatuh (skor Up an Go)
-            </div>
-            <div class="row">
-              <div class="col-8" style="margin-left: 30px;">
-                - Setelah diperhatikan cara berjalan pasien saat akan duduk di kursi. Pasien
-                tampak <span class="text-weight-bold" v-if="parseInt(anamnesis?.seimbang) == 1">tidak</span> seimbang
-                (<span class="text-weight-bold" v-if="parseInt(anamnesis?.seimbang) == 0">tidak </span><span
-                  :class="parseInt(anamnesis?.seimbang) == 1 ? 'text-weight-bold' : ''">sempoyongan</span> )
-              </div>
-              <div class="col-8" style="margin-left: 30px;">- Pasien <span class="text-weight-bold"
-                  v-if="parseInt(anamnesis?.penopang) == 0">tidak</span> memegang pinggiran kursi atau benda lain
-                sebagai
-                penopang saat akan duduk
-              </div>
-              <div class="col-8" style="margin-left: 30px;">- Sehingga disimpulkan bahwa resiko jatuh pasien adalah
-                <span class="text-weight-bold">{{ cekHasil(anamnesis) }}</span>
+              <div class="row">
+                <div class="col-8" style="margin-left: 30px;">
+                  - Setelah diperhatikan cara berjalan pasien saat akan duduk di kursi. Pasien
+                  tampak <span class="text-weight-bold" v-if="parseInt(anamnesis?.seimbang) == 1">tidak</span> seimbang
+                  (<span class="text-weight-bold" v-if="parseInt(anamnesis?.seimbang) == 0">tidak </span><span
+                    :class="parseInt(anamnesis?.seimbang) == 1 ? 'text-weight-bold' : ''">sempoyongan</span> )
+                </div>
+                <div class="col-8" style="margin-left: 30px;">- Pasien <span class="text-weight-bold"
+                    v-if="parseInt(anamnesis?.penopang) == 0">tidak</span> memegang pinggiran kursi atau benda lain
+                  sebagai
+                  penopang saat akan duduk
+                </div>
+                <div class="col-8" style="margin-left: 30px;">- Sehingga disimpulkan bahwa resiko jatuh pasien adalah
+                  <span class="text-weight-bold">{{ cekHasil(anamnesis) }}</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      <template v-if="props.pasien.diagnosakebidanan?.length > 0">
+        <q-separator />
+        <div style="margin-left: 10px;">
+          <b><u>Data Kehamilan/Kandungan Sekarang</u></b>
+        </div>
+
+        <div class="row">
+          <div v-for="(erm, e1) in store.item" :key="e1">
+            <div v-for="(kandungan, knd) in erm?.kandungan" :key="knd">
+
+              <div class="row">
+                <div class="col-8" style="margin-left: 30px;">
+                  - G: {{ kandungan?.kandunganG ?? '-' }}
+                </div>
+                <div class="col-8" style="margin-left: 30px;">
+                  - P: {{ kandungan?.kandunganP ?? '-' }}
+                </div>
+                <div class="col-8" style="margin-left: 30px;">
+                  - A: {{ kandungan?.kandunganA ?? '-' }}
+                </div>
+                <div class="col-8" style="margin-left: 30px;">
+                  - Hari pertama haid terakhir: {{ kandungan?.haidAwal ?? '-' }}
+                </div>
+                <div class="col-8" style="margin-left: 30px;">
+                  - Tanggal harapan lahir: {{ kandungan?.tglHarapanLahir ?? '-' }}
+                </div>
+                <div class="col-8" style="margin-left: 30px;">
+                  - Keluhan selama hamil ini: {{ kandungan?.keluhan ?? '-' }}
+                </div>
+                <div class="col-8" style="margin-left: 30px;">
+                  - Pemeriksaan dalam: {{ kandungan?.pemeriksaanDalam ?? '-' }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+
 
       <q-separator />
       <div style="margin-left: 10px;">
@@ -224,9 +329,11 @@
 
       <q-separator />
       <div style="margin-left: 10px;">
-        <b><u>Daftar Masalah Keperawatan</u></b>
+        <b><u>{{ props.pasien?.diagnosakeperawatan.length > 0 ? 'Daftar Masalah Keperawatan' :
+          'Daftar Masalah Kebidanan'
+        }}</u></b>
       </div>
-      <div class="row">
+      <div v-if="props.pasien?.diagnosakeperawatan.length > 0" class="row">
         <div v-for="(erm, e1) in store.item" :key="e1">
           <div v-for="(kep, e3x) in erm.diagnosakeperawatan" :key="e3x">
             <div class="col-5" style="margin-left: 20px;">
@@ -235,15 +342,77 @@
           </div>
         </div>
       </div>
+      <div v-else class="row">
+        <div v-for="(erm, e1) in store.item" :key="e1">
+          <div v-for="(kep, e3x) in erm.diagnosakebidanan" :key="e3x">
+            <div class="col-5" style="margin-left: 20px;">
+              - {{ kep?.nama }}
+            </div>
+          </div>
+        </div>
+      </div>
+
 
       <q-separator />
       <div style="margin-left: 10px;">
-        <b><u>Rencana Keperawatan</u></b>
+        <b><u>{{ props.pasien?.diagnosakeperawatan.length > 0 ? 'Diagnosa Keperawatan' :
+          'Diagnosa Kebidanan'
+            }}</u></b>
+      </div>
+
+      <div class="row">
+        <div class="col" style="margin-left: 20px;">
+          <table style="margin-top: 5px; margin-bottom: 5px;">
+            <thead>
+              <tr>
+                <th>DIAGNOSA KEBIDANAN</th>
+                <th>PLANN</th>
+                <th>INTERVENSI</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template
+                v-for="(item, i) in (props.pasien?.diagnosakeperawatan.length > 0 ? props.pasien?.diagnosakeperawatan : props.pasien?.diagnosakebidanan)"
+                :key="i">
+                <tr>
+                  <td>
+                    <div> - {{ item?.nama }}</div>
+                  </td>
+                  <td>
+                    <div v-for="plann in kepPlann(item)" :key="plann">
+                      <div class="row no-wrap">
+                        <div class="col-auto q-mr-xs">-</div>
+                        <div class="col-auto">{{ plann?.masterintervensi?.nama }}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div v-for="plann in kepInter(item)" :key="plann">
+                      <div class="row no-wrap">
+                        <div class="col-auto q-mr-xs">-</div>
+                        <div class="col-auto">{{ plann?.masterintervensi?.nama }}</div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <q-separator />
+      <div style="margin-left: 10px;">
+        <b><u>{{ props.pasien?.diagnosakeperawatan.length > 0 ? 'Rencana Keperawatan' :
+          'Rencana Kebidanan'
+            }}</u></b>
       </div>
       <div class="row">
         <div class="col-5" style="margin-left: 20px;">
           <div v-for="(erm, e1) in store.item" :key="e1">
-            <div v-for="(kep, e3x) in erm.diagnosakeperawatan" :key="e3x">
+            <div
+              v-for="(kep, e3x) in (erm.diagnosakeperawatan.length > 0 ? erm.diagnosakeperawatan : erm.diagnosakebidanan)"
+              :key="e3x">
               <div v-if="kep.intervensi?.filter(x => x.masterintervensi.group === 'plann')?.length"
                 style="margin-left: 20px;">
                 <div v-for="item in kep.intervensi?.filter(x => x.masterintervensi.group === 'plann')" :key="item">
@@ -252,8 +421,8 @@
               </div>
             </div>
           </div>
-
         </div>
+
       </div>
 
       <q-separator />
@@ -263,7 +432,9 @@
       <div class="row">
         <div class="col-5" style="margin-left: 20px;">
           <div v-for="(erm, e1) in store.item" :key="e1">
-            <div v-for="(kep, e3x) in erm.diagnosakeperawatan" :key="e3x">
+            <div
+              v-for="(kep, e3x) in (erm.diagnosakeperawatan.length > 0 ? erm.diagnosakeperawatan : erm.diagnosakebidanan)"
+              :key="e3x">
               <div v-if="kep.intervensi?.filter(x => x.masterintervensi.group !== 'plann')?.length"
                 style="margin-left: 20px;">
                 <div v-for="item in kep.intervensi?.filter(x => x.masterintervensi.group !== 'plann')" :key="item">
@@ -281,7 +452,9 @@
       </div>
       <div class="row">
         <div v-for="(erm, e1) in store.item" :key="e1">
-          <div v-for="(kep, e3x) in erm.diagnosakeperawatan" :key="e3x">
+          <div
+            v-for="(kep, e3x) in (erm.diagnosakeperawatan.length > 0 ? erm.diagnosakeperawatan : erm.diagnosakebidanan)"
+            :key="e3x">
             <div class="col-5" style="margin-left: 20px;">
               <span v-html="getNewLine(kep?.evaluasi ?? '-')" />
 
@@ -466,6 +639,17 @@ function iconNyeri(val) {
   }
 
   return icon
+}
+
+function kepPlann(item) {
+  const inter = item?.intervensi?.filter(x => x?.masterintervensi?.group?.trim()?.toLowerCase() === 'plann')
+  // console.log('item    ccccc', item, inter)
+  return inter
+}
+function kepInter(item) {
+  const inter = item?.intervensi?.filter(x => x?.masterintervensi?.group?.trim()?.toLowerCase() !== 'plann')
+  // console.log('item', item, inter)
+  return inter
 }
 // function getYT(val) {
 //   if (val === 1 || val === '1') {

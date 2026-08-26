@@ -92,6 +92,19 @@
             </q-item-section>
             <q-item-section>Monitoring ESO (MESO)</q-item-section>
           </q-item>
+
+          <q-item
+            clickable
+            v-ripple
+            :active="store.activeMenu === 'penilaian_obat_luar'"
+            active-class="bg-teal-1 text-teal text-weight-bold"
+            @click="setMenu('penilaian_obat_luar')"
+          >
+            <q-item-section avatar>
+              <q-icon name="assignment" />
+            </q-item-section>
+            <q-item-section>Penilaian Obat Luar</q-item-section>
+          </q-item>
         </q-list>
       </div>
 
@@ -510,6 +523,11 @@
 
           </div>
         </div>
+
+        <!-- PANEL PENILAIAN OBAT LUAR -->
+        <div v-if="store.activeMenu === 'penilaian_obat_luar'" class="q-pa-lg">
+          <PenilaianObatLuarPanel :pasien="store.selectedPasien" :apotekers="eresepStore.apotekers" />
+        </div>
       </div>
     </div>
 
@@ -532,6 +550,7 @@ import { useQuasar } from 'quasar'
 const InfoPage = defineAsyncComponent(() => import('../../eresep/comp/InfoPage.vue'))
 const CetakEdukasiDialog = defineAsyncComponent(() => import('./CetakEdukasiDialog.vue'))
 const CetakMesoDialog = defineAsyncComponent(() => import('./CetakMesoDialog.vue'))
+const PenilaianObatLuarPanel = defineAsyncComponent(() => import('./PenilaianObatLuarPanel.vue'))
 
 const store = useKunjunganPasienDepoStore()
 const eresepStore = useEResepDepoFarmasiStore()
@@ -742,13 +761,15 @@ function setMenu(val) {
     loadEdukasi()
   } else if (val === 'meso') {
     loadMeso()
+  } else if (val === 'penilaian_obat_luar') {
+    // Handled in subcomponent PenilaianObatLuarPanel
   }
 }
 
 // Loading Data from Backend
 async function loadEdukasi() {
   try {
-    const resp = await api.get('v1/simrs/farmasinew/depo/get-edukasi-farmasi', {
+    const resp = await api.get('v1/simrs/farmasinew/kunjungan/get-edukasi-farmasi', {
       params: { norm: store.selectedPasien?.norm, noreg: store.selectedPasien?.noreg }
     })
     if (resp.data) {
@@ -791,7 +812,7 @@ function resetEdukasiForm() {
 
 async function loadMeso() {
   try {
-    const resp = await api.get('v1/simrs/farmasinew/depo/get-meso', {
+    const resp = await api.get('v1/simrs/farmasinew/kunjungan/get-meso', {
       params: { norm: store.selectedPasien?.norm, noreg: store.selectedPasien?.noreg }
     })
     if (resp.data) {
@@ -848,7 +869,7 @@ async function simpanEdukasi() {
 
   $q.loading.show({ message: 'Menyimpan data edukasi...' })
   try {
-    const resp = await api.post('v1/simrs/farmasinew/depo/simpan-edukasi-farmasi', payload)
+    const resp = await api.post('v1/simrs/farmasinew/kunjungan/simpan-edukasi-farmasi', payload)
     $q.notify({ type: 'positive', message: resp.data?.message || 'Edukasi farmasi berhasil disimpan!' })
   } catch (err) {
     console.error(err)
@@ -871,7 +892,7 @@ async function simpanMeso() {
 
   $q.loading.show({ message: 'Menyimpan data MESO...' })
   try {
-    const resp = await api.post('v1/simrs/farmasinew/depo/simpan-meso', payload)
+    const resp = await api.post('v1/simrs/farmasinew/kunjungan/simpan-meso', payload)
     $q.notify({ type: 'positive', message: resp.data?.message || 'Monitoring ESO berhasil disimpan!' })
   } catch (err) {
     console.error(err)

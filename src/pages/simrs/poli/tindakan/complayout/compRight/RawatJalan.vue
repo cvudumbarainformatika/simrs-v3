@@ -277,6 +277,39 @@
               </q-card-section>
               <q-separator />
 
+              <q-card-section v-if="item?.laporaneswl?.length" class="q-pa-none" flat bordered square dark>
+                <q-bar class="bg-teal text-white">
+                  <div>LAPORAN ESWL</div>
+                </q-bar>
+                <q-list dark separator>
+                  <q-item v-for="(eswl, eswIdx) in item?.laporaneswl" :key="eswIdx">
+                    <q-item-section>
+                      <q-item-label class="text-weight-bold text-yellow">
+                        Sesi {{ eswl?.sesi || '-' }} (Tanggal: {{ eswl?.tanggal ? eswl.tanggal.substring(0, 10) : '-' }})
+                      </q-item-label>
+                      <q-item-label caption lines="10" class="text-white">
+                        <div class="q-mt-xs">
+                          <strong>No. ESWL:</strong> {{ eswl?.no_eswl || '-' }} | 
+                          <strong>Tingkat Kesakitan:</strong> {{ eswl?.tingkat_kesakitan || '-' }}
+                        </div>
+                        <div class="q-mt-xs">
+                          <strong>Posisi Pasien:</strong> {{ eswl?.posisi || '-' }} | 
+                          <strong>Sinkronisasi:</strong> {{ eswl?.sinkronisasi || '-' }}
+                        </div>
+                        <div class="q-mt-xs">
+                          <strong>Kepecahan Batu:</strong> {{ eswl?.kepecahan_batu || '-' }} | 
+                          <strong>Lama Penembakan:</strong> {{ eswl?.lama_penembakan || '-' }} menit
+                        </div>
+                        <div v-if="eswl?.keterangan" class="q-mt-xs">
+                          <strong>Catatan:</strong> {{ eswl?.keterangan }}
+                        </div>
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-card-section>
+              <q-separator v-if="item?.laporaneswl?.length" />
+
               <q-card-section v-if="item?.laborat?.length || item?.laborats?.length" class="q-pa-none">
                 <q-bar class="bg-accent">
                   PEMERIKSAAN LABORAT

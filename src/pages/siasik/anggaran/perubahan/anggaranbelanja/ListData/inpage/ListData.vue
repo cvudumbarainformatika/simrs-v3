@@ -97,6 +97,9 @@
                         <q-item clickable v-close-popup @click="viewCetakData(props?.row)">
                           <q-item-section>Cetak Data</q-item-section>
                         </q-item>
+                        <q-item v-if="user === 'sa'" clickable v-close-popup @click="penetapan(props?.row)">
+                          <q-item-section>Penetapan</q-item-section>
+                        </q-item>
                         <!-- <q-item clickable v-close-popup @click="PrintPencairan(props?.row)">
                           <q-item-section>Cetak Pencairan</q-item-section>
                         </q-item> -->
@@ -210,7 +213,7 @@ const onRowClick = (row) =>
 
 const datanpds = ref(null)
 async function viewCetakData(row) {
-  console.log('row', row)
+  // console.log('row', row)
   datanpds.value = row
   store.params.notrans = row.notrans
   store.params.kodeKegiatan = row.kodeKegiatan
@@ -223,7 +226,7 @@ async function viewCetakData(row) {
 }
 
 function editDataPangusulan(row) {
-  console.log('rooow', row)
+  // console.log('rooow', row)
   // if (auth.user?.pegawai?.kdpegsimrs !== 'sa') {
   //   $q.notify({
   //     type: 'negative',
@@ -262,6 +265,15 @@ function PrintPencairan(row) {
   // printcair.value = row
   // store.dataSaved = printcair.value
   // console.log('openNPD', store.dataSaved)
+}
+
+async function penetapan(row) {
+  // console.log('row', row)
+  const payload = {
+    kodekegiatanblud: row.kodeKegiatan,
+  }
+
+  await store.penetapan(payload)
 }
 function gantiKunci(row) {
   const data = row.kunci === "1"
