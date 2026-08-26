@@ -175,6 +175,14 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('../layanan/visum/IndexPage.vue')))
   },
   {
+    name: 'inform-consent-page',
+    label: 'Informed Consent',
+    icon: 'icon-mat-app_registration',
+    nakes: ['1', '2', '3'],
+    route: ['igd'],
+    comp: shallowRef(defineAsyncComponent(() => import('../../ranap/layanan/informconsent/IndexPage.vue')))
+  },
+  {
     name: 'edukasi-page',
     label: 'Edukasi',
     icon: 'icon-mat-people_alt',

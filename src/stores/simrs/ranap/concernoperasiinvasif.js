@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { api, pathImg } from 'src/boot/axios'
 import { usePengunjungRanapStore } from './pengunjung'
+import { usePengunjungIgdStore } from '../igd/pengunjung'
 // eslint-disable-next-line no-unused-vars
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
 import { date } from 'quasar'
@@ -131,15 +132,23 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
 
       console.log('save inform form payload', payload)
 
-      const storeRanap = usePengunjungRanapStore()
-
       try {
         const resp = await api.post('v1/simrs/ranap/layanan/informconcern/simpandata', payload)
         console.log('save inform concern', resp.data)
         if (resp.status === 200) {
-          storeRanap.deleteInjectanNull2(pasien?.noreg, 'informconcern')
           const isi = resp?.data?.result
-          storeRanap.injectDataPasien(pasien?.noreg, isi, 'informconcern')
+          const storeIgd = usePengunjungIgdStore()
+          const storeRanap = usePengunjungRanapStore()
+          const isIgdPatient = storeIgd.items.some(item => item === pasien)
+
+          if (isIgdPatient) {
+            storeIgd.deleteInjectanNull2(pasien?.noreg, 'informconcern')
+            storeIgd.injectDataPasien(pasien, isi, 'informconcern')
+          }
+          else {
+            storeRanap.deleteInjectanNull2(pasien?.noreg, 'informconcern')
+            storeRanap.injectDataPasien(pasien?.noreg, isi, 'informconcern')
+          }
           notifSuccess(resp)
           this.loadingSave = false
           this.loadingOrder = false
@@ -158,6 +167,7 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
       this.loadingHapus = true
 
       if (!id) {
+        this.loadingHapus = false
         return notifErrVue('Tidak dapat dihapus')
       }
 
@@ -167,10 +177,16 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
         this.loadingHapus = false
         // console.log(resp)
         if (resp.status === 200) {
-          // const storePasien = usePengunjungPoliStore()
+          const storeIgd = usePengunjungIgdStore()
           const storeRanap = usePengunjungRanapStore()
-          // storePasien.hapusDataFisio(pasien, id)
-          storeRanap.hapusDataInjectan(pasien, id, 'informconcern')
+          const isIgdPatient = storeIgd.items.some(item => item === pasien)
+
+          if (isIgdPatient) {
+            storeIgd.hapusDataInjectan(pasien, id, 'informconcern')
+          }
+          else {
+            storeRanap.hapusDataInjectan(pasien, id, 'informconcern')
+          }
           notifSuccess(resp)
           if (this.form?.id === id) {
             this.initReset(pasien, null, true)
@@ -201,7 +217,7 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
           })
         }
       })
-      
+
       // Parse diagnosis if it is a string representation of array
       if (typeof this.form.diagnosis === 'string' && this.form.diagnosis.trim() !== '') {
         try {
@@ -246,7 +262,7 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
       this.nonNakes = pengunjung?.nonNakes
     },
 
-    initReset(pasien, menuName = null, force = false) {
+    async initReset(pasien, menuName = null, force = false) {
       if (!force && this.form?.id) {
         return Promise.resolve()
       }
@@ -364,7 +380,15 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
         this.form.komplikasi = null
       }
 
-      const pengunjung = usePengunjungRanapStore()
+      const storeIgd = usePengunjungIgdStore()
+      const storeRanap = usePengunjungRanapStore()
+      const isIgdPatient = storeIgd.items.some(item => item === pasien)
+      const pengunjung = isIgdPatient ? storeIgd : storeRanap
+
+      if (!Array.isArray(pengunjung.nakes)) {
+        await pengunjung.getNakes()
+      }
+
       this.dokters = pengunjung?.nakes?.filter(x => x?.kdgroupnakes === '1') ?? []
       // this.perawats = pengunjung?.nakes
       this.perawats = pengunjung?.nakes?.filter(x => x?.kdgroupnakes === '2' || x?.kdgroupnakes === '3') ?? []
