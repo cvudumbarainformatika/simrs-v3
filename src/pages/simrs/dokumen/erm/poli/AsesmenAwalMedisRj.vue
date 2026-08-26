@@ -71,7 +71,7 @@
                   <div class="col-8" style="margin-left: 30px;">
                     - Riwayat Obstetri :
                   </div>
-                  <div class="col-8" style="margin-left: 30px;">
+                  <div class="col-10" style="margin-left: 30px;">
                     <table class="q-ma-xs">
                       <thead>
                         <tr>
@@ -331,7 +331,7 @@
       <div style="margin-left: 10px;">
         <b><u>{{ props.pasien?.diagnosakeperawatan.length > 0 ? 'Daftar Masalah Keperawatan' :
           'Daftar Masalah Kebidanan'
-            }}</u></b>
+        }}</u></b>
       </div>
       <div v-if="props.pasien?.diagnosakeperawatan.length > 0" class="row">
         <div v-for="(erm, e1) in store.item" :key="e1">
@@ -352,11 +352,60 @@
         </div>
       </div>
 
+
+      <q-separator />
+      <div style="margin-left: 10px;">
+        <b><u>{{ props.pasien?.diagnosakeperawatan.length > 0 ? 'Diagnosa Keperawatan' :
+          'Diagnosa Kebidanan'
+            }}</u></b>
+      </div>
+
+      <div class="row">
+        <div class="col" style="margin-left: 20px;">
+          <table style="margin-top: 5px; margin-bottom: 5px;">
+            <thead>
+              <tr>
+                <th>DIAGNOSA KEBIDANAN</th>
+                <th>PLANN</th>
+                <th>INTERVENSI</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template
+                v-for="(item, i) in (props.pasien?.diagnosakeperawatan.length > 0 ? props.pasien?.diagnosakeperawatan : props.pasien?.diagnosakebidanan)"
+                :key="i">
+                <tr>
+                  <td>
+                    <div> - {{ item?.nama }}</div>
+                  </td>
+                  <td>
+                    <div v-for="plann in kepPlann(item)" :key="plann">
+                      <div class="row no-wrap">
+                        <div class="col-auto q-mr-xs">-</div>
+                        <div class="col-auto">{{ plann?.masterintervensi?.nama }}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div v-for="plann in kepInter(item)" :key="plann">
+                      <div class="row no-wrap">
+                        <div class="col-auto q-mr-xs">-</div>
+                        <div class="col-auto">{{ plann?.masterintervensi?.nama }}</div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <q-separator />
       <div style="margin-left: 10px;">
         <b><u>{{ props.pasien?.diagnosakeperawatan.length > 0 ? 'Rencana Keperawatan' :
           'Rencana Kebidanan'
-        }}</u></b>
+            }}</u></b>
       </div>
       <div class="row">
         <div class="col-5" style="margin-left: 20px;">
@@ -590,6 +639,17 @@ function iconNyeri(val) {
   }
 
   return icon
+}
+
+function kepPlann(item) {
+  const inter = item?.intervensi?.filter(x => x?.masterintervensi?.group?.trim()?.toLowerCase() === 'plann')
+  // console.log('item    ccccc', item, inter)
+  return inter
+}
+function kepInter(item) {
+  const inter = item?.intervensi?.filter(x => x?.masterintervensi?.group?.trim()?.toLowerCase() !== 'plann')
+  // console.log('item', item, inter)
+  return inter
 }
 // function getYT(val) {
 //   if (val === 1 || val === '1') {
