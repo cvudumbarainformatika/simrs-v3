@@ -25,12 +25,12 @@
           <q-tab-panel name="Diagnosa Kebidanan" class="full-height q-pa-none">
             <DiagnosaKebidananPage :pasien="props.pasien" />
           </q-tab-panel>
-          <q-tab-panel name="Pra Anastesi" class="full-height q-pa-none">
+          <!-- <q-tab-panel name="Pra Anastesi" class="full-height q-pa-none">
             <PraAnastesiPage :pasien="props.pasien" />
           </q-tab-panel>
           <q-tab-panel name="Pra Bedah" class="full-height q-pa-none">
             <PraBedah :key="props.pasien" :pasien="props.pasien" />
-          </q-tab-panel>
+          </q-tab-panel> -->
         </q-tab-panels>
       </div>
     </div>
@@ -44,7 +44,7 @@ import DiagnosaPage from '../assesment/diagnosa/DiagnosaPage.vue'
 import TindakanPage from '../assesment/tindakan/TindakanPage.vue'
 import DiagnosaKeperawatanPage from './diagnosakeperawatan/DiagnosaKeperawatanPage.vue'
 import DiagnosaKebidananPage from './diagnosakebidanan/DiagnosaKebidananPage.vue'
-import PraAnastesiPage from './praanastesi/PraAnastesiPage.vue'
+
 import RencanaTerapaiDokterPage from './rencanatrapidokter/RencanaTerapaiDokterPage.vue'
 
 import { defineAsyncComponent, onMounted } from 'vue'

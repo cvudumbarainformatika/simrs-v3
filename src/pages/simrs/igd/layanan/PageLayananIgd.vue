@@ -22,9 +22,9 @@
         <!-- CONTAINER ============================================================================================-->
         <q-page-container>
           <q-page class="contain bg-grey-3">
-            <Suspense :key="menu.comp" timeout="0">
+            <Suspense v-if="menu?.comp" :key="menu.comp" timeout="0">
               <template #default>
-                <component :is="menu.comp" :key="pasien" :pasien="pasien" :loadingaja="loadingaja"
+                <component :is="menu?.comp" :key="pasien" :pasien="pasien" :loadingaja="loadingaja"
                   :ruangranap="store.ruangranaps" :nakes="auth?.user?.pegawai?.kdgroupnakes" :depo="'igd'" />
               </template>
               <template #fallback>
@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent, onMounted, ref, shallowRef, watchEffect } from 'vue'
+import { defineAsyncComponent, onMounted, ref, shallowRef, watch, watchEffect } from 'vue'
 import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung'
 import { useInacbgIgd } from 'src/stores/simrs/igd/inacbg'
 import { usePemakaianObatStore } from 'src/stores/simrs/igd/pemakaianobat'
@@ -115,6 +115,13 @@ const menus = ref([
     icon: 'icon-mat-analytics',
     route: ['igd'],
     comp: shallowRef(defineAsyncComponent(() => import('../layanan/assesment/AssesmentPage.vue')))
+  },
+  {
+    name: 'AssesmenBedahtPage',
+    label: 'Assesmen Pembedahan',
+    icon: 'icon-fa-book-medical-solid',
+    route: ['igd'],
+    comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/prabedah/IndexPage.vue')))
   },
   {
     name: 'penunjang-page',
@@ -210,6 +217,32 @@ function menuDiganti(val) {
   menu.value = val
 }
 
+function filterMenus(pathSegments) {
+  const user = auth?.user ?? {}
+  const kdPegawai = String(user?.pegawai?.kdpegsimrs ?? user?.kdpegsimrs ?? '').toLowerCase()
+  const username = String(user?.username ?? '').toLowerCase()
+  const isSa = kdPegawai === 'sa' || username === 'sa'
+  const kdGroupNakes = String(auth?.user?.pegawai?.kdgroupnakes ?? '')
+
+  return menus.value.filter(item => {
+    if (!item.route?.some(routeName => pathSegments.includes(routeName))) {
+      return false
+    }
+
+    return isSa || !item.nakes?.length || item.nakes.includes(kdGroupNakes)
+  })
+}
+
+function refreshMenus() {
+  const pathSegments = route?.path?.split('/').filter(Boolean) ?? []
+  const menusBaru = filterMenus(pathSegments)
+  filteredMenus.value = menusBaru
+
+  if (!menu.value || !menusBaru.includes(menu.value)) {
+    menu.value = menusBaru[0]
+  }
+}
+
 function historyPasien() {
   drawerRight.value = !drawerRight.value
 }
@@ -228,12 +261,14 @@ onMounted(() => {
   store.getsistembayarrinci()
   storepemakaianobat.carisatuan()
 
-  const link = route?.path
-  const pathSegments = link.split('/').filter(Boolean)
-  // console.log('index page cuy', pathSegments)
-  filteredMenus.value = menus.value?.filter(menu => menu?.route?.some(r => pathSegments.includes(r)))
-  menu.value = filteredMenus.value[0]
+  refreshMenus()
 })
+
+watch(
+  () => [auth.user?.username, auth.user?.pegawai?.kdpegsimrs, auth.user?.pegawai?.kdgroupnakes],
+  refreshMenus,
+  { immediate: true }
+)
 
 watchEffect(() => {
   // console.log('watch effect', store.loadingTerima)

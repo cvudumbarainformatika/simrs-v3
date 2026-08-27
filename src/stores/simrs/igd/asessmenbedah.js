@@ -3,10 +3,10 @@ import { api } from 'src/boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
 
-export const usePengunjungIgdStore = defineStore('pengunjung-igd', {
+export const useasessmenbedahigdstore = defineStore('asessmen-bedah-igd', {
   state: () => ({
-    tab: 'Diagnosa Medik',
-    tabs: ['Diagnosa Medik', 'Rencana Terapi Dokter', 'Tindakan Medik', 'Diagnosa Keperawatan', 'Diagnosa Kebidanan'],
+    tab: 'Pra Anastesi',
+    tabs: ['Pra Anastesi', 'Pra Bedah'],
     items: [],
     ruangranaps: [],
     loadingfinish: false,
