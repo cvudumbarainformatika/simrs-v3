@@ -126,15 +126,15 @@ function pilihPajak(val) {
   store.form.uraian = obj?.uraian ?? ''
 }
 function submitPajak() {
-  console.log('row', store.form)
   const payload = {
     nonpdls: npd.form?.nonpdls
   }
+  store.reqs.nonpdls = npd.form?.nonpdls
   store.savePajak(payload).then(() => {
     // store.savelist.push(savelistdata.value)
     // savelistdata.value = store.savelist
     store.getListpajak()
-    console.log('hasil', store.savelist);
+    // console.log('hasil', store.savelist);
     // store.resetForm()
     // formpajak.value.resetValidation()
 
