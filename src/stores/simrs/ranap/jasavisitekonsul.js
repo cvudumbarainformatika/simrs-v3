@@ -109,6 +109,7 @@ export const useJasaVisitedanKonsulStore = defineStore('visite-konsul-ranap-stor
       this.form.kdruang = pasien?.kdruangan
       this.form.kelas_ruangan = pasien?.kelas_ruangan
       this.form.hak_kelas = pasien?.hak_kelas
+      this.form.kodesistembayar = pasien?.kodesistembayar
       console.log('form', this.form);
 
       this.loadingSave = true

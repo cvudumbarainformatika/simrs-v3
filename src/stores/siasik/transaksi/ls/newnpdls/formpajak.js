@@ -50,10 +50,13 @@ export const formInputPajakStore = defineStore('form_input_pajak', {
         }).catch(() => { this.loading = false })
       })
     },
-    async savePajak() {
+    async savePajak(payload = {}) {
       this.loading = true
       return new Promise((resolve) => {
-        api.post('/v1/transaksi/belanja_ls/savepajakls', this.form)
+        api.post('/v1/transaksi/belanja_ls/savepajakls', {
+          ...this.form,
+          ...payload
+        })
           .then((resp) => {
             this.loading = false
             notifSuccess(resp)

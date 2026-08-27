@@ -67,12 +67,15 @@
           store.rinci.totalls = parseFloat(store.rinci.hargals) * parseFloat(val)
           store.rinci.nominalpembayaran = parseFloat(store.rinci.hargals) * parseFloat(val)
         }" />
-      <app-input-simrs v-model="store.rinci.hargals" class="q-pa-sm q-gutter-y-md" style="width: 25%"
+      <q-input ref="nilaiRef" class="q-pa-sm q-gutter-y-md" style="width: 25%" v-model="nilaiInput" outlined dense
+        label="Harga Permintaan" inputmode="decimal" :disable="store.disabled" @focus="fokusNilai"
+        @update:model-value="setNilai" @blur="formatNilai" />
+      <!-- <app-input-simrs v-model="store.rinci.hargals" class="q-pa-sm q-gutter-y-md" style="width: 25%"
         label="Harga Permintaan" outlined :autofocus="false" :valid="{ required: true, number: true }"
         @update:model-value="(val) => {
           store.rinci.totalls = parseFloat(store.rinci.volumels) * parseFloat(val)
           store.rinci.nominalpembayaran = parseFloat(store.rinci.volumels) * parseFloat(val)
-        }" />
+        }" /> -->
       <app-input-simrs :model-value="formattanpaRp(store.rinci.nominalpembayaran)" class="q-pa-sm q-gutter-y-md"
         style="width: 25%" label="Total Permintaan" outlined readonly />
       <div v-if="store.form.bast !== 'Sigarang' && store.form.bast !== 'Siasik'"
@@ -89,12 +92,14 @@
   <form-input-pajak v-model="store.openDialogPajak" />
 </template>
 <script setup>
+import { useQuasar } from 'quasar';
 import { notifErrVue } from 'src/modules/utils';
 import { dataBastFarmasiStore } from 'src/stores/siasik/transaksi/ls/newnpdls/bastfarmasi';
 import { formInputNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formnpdls';
 import { formInputPajakStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formpajak';
-import { defineAsyncComponent, ref } from 'vue';
+import { defineAsyncComponent, ref, watch } from 'vue';
 import { formattanpaRp } from 'src/modules/formatter'
+import { nextTick } from 'vue';
 const FormInputPajak = defineAsyncComponent(() => import('./formpajak/FormPajak.vue'))
 
 
@@ -103,6 +108,92 @@ const carisrt = dataBastFarmasiStore()
 const pjk = formInputPajakStore()
 const options = ref([])
 const formNpdLS = ref(null)
+const $q = useQuasar()
+
+
+const nilaiRef = ref(null)
+const nilaiInput = ref(formattanpaRp(store.rinci.hargals))
+const nilaiFocused = ref(false)
+
+function fokusNilai(event) {
+  nilaiFocused.value = true
+  nilaiInput.value = String(store.rinci.hargals ?? '')
+  event.target.select()
+}
+
+function setNilai(value) {
+  const inputValue = String(value ?? '')
+  const normalizedValue = inputValue.replace(/,/g, '')
+  const inputElement = nilaiRef.value?.$el?.querySelector('input')
+  const cursorPosition = inputElement?.selectionStart ?? inputValue.length
+  const digitsBeforeCursor = inputValue.slice(0, cursorPosition).replace(/\D/g, '').length
+  const sanitizedValue = normalizedValue.replace(/,/g, '').replace(/[^\d.]/g, '')
+  const separatorIndex = sanitizedValue.indexOf('.')
+  const integerValue = separatorIndex >= 0
+    ? sanitizedValue.slice(0, separatorIndex)
+    : sanitizedValue
+  const decimalValue = separatorIndex >= 0
+    ? sanitizedValue.slice(separatorIndex + 1)
+    : ''
+  const rawValue = separatorIndex >= 0
+    ? `${integerValue || '0'}.${decimalValue}`
+    : integerValue
+  const numericValue = Number(rawValue)
+  store.rinci.hargals = rawValue === '' || Number.isNaN(numericValue) ? 0 : numericValue
+  store.rinci.totalls = Number(store.rinci.volumels || 0) * store.rinci.hargals
+  store.rinci.nominalpembayaran = Number(store.rinci.volumels || 0) * store.rinci.hargals
+  // store.form.jumlahacc = 0
+
+  nilaiInput.value = integerValue
+    ? `${Number(integerValue).toLocaleString('en-US')}${separatorIndex >= 0 ? `.${decimalValue}` : ''}`
+    : ''
+
+  nextTick(() => {
+    const formattedInput = nilaiRef.value?.$el?.querySelector('input')
+    if (!formattedInput) return
+
+    let digitCount = 0
+    let nextCursorPosition = nilaiInput.value.length
+    for (let index = 0; index < nilaiInput.value.length; index++) {
+      if (/\d/.test(nilaiInput.value[index])) digitCount++
+      if (digitCount === digitsBeforeCursor) {
+        nextCursorPosition = index + 1
+        break
+      }
+    }
+    formattedInput.setSelectionRange(nextCursorPosition, nextCursorPosition)
+  })
+}
+
+function formatNilai() {
+  nilaiFocused.value = false
+  nilaiInput.value = formattanpaRp(store.rinci.hargals)
+}
+
+watch(
+  () => store.rinci.hargals,
+  (value) => {
+    if (!nilaiFocused.value) {
+      nilaiInput.value = formattanpaRp(value)
+    }
+  },
+  { immediate: true }
+)
+
+watch(() => store.transall, (transall) => {
+  console.log('pajak', pjk.listpajak)
+  if (pjk.listpajak?.length === 0 && transall.some((item) => Number(item?.nominalpembayaran) > 2000000)) {
+    $q.dialog({
+      title: 'Peringatan',
+      message: 'Nilai sudah mencapai 2 juta, apakah ada pajak?',
+      ok: 'Ya',
+      cancel: 'Tidak',
+      persistent: true
+    }).onOk(() => {
+      store.openDialogPajak = true
+    })
+  }
+}, { deep: true })
 // const rincianNpd = ref([])
 // function gantibotton(row) {
 //   const bast_id = row?.bast_r_id
