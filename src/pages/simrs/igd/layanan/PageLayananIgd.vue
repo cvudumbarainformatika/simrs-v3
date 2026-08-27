@@ -120,6 +120,7 @@ const menus = ref([
     name: 'AssesmenBedahtPage',
     label: 'Assesmen Pembedahan',
     icon: 'icon-fa-book-medical-solid',
+    // Menu ini wajib tersedia pada layanan IGD, termasuk untuk login sa.
     route: ['igd'],
     comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/prabedah/IndexPage.vue')))
   },
@@ -134,7 +135,7 @@ const menus = ref([
     name: 'konsulspesialis',
     label: 'Konsul Spesialis',
     icon: 'icon-mat-textsms',
-    nakes: ['1'],
+
     route: ['igd'],
     comp: shallowRef(defineAsyncComponent(() => import('./konsul/IndexPage.vue')))
   },
@@ -142,7 +143,7 @@ const menus = ref([
     name: 'tinjauanulang',
     label: 'Tinjauan Ulang',
     icon: 'icon-mat-transfer_within_a_station',
-    nakes: ['1'],
+
     route: ['igd'],
     comp: shallowRef(defineAsyncComponent(() => import('./tinjauanulang/IndexPage.vue')))
   },
