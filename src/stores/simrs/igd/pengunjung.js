@@ -232,6 +232,7 @@ export const usePengunjungIgdStore = defineStore('pengunjung-igd', {
             findPasien[0].ambulantrans = resp?.data?.ambulantrans
             findPasien[0].memodiagnosa = resp?.data?.memodiagnosa
             findPasien[0].edukasi = resp?.data?.edukasi
+            findPasien[0].informconcern = resp?.data?.informconcern ?? []
             // BARU
             // findPasien[0].laporantindakan = resp?.data?.laporantindakan
             // findPasien[0].psikiatri = resp?.data?.psikiatri
@@ -539,6 +540,7 @@ export const usePengunjungIgdStore = defineStore('pengunjung-igd', {
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },
+
     async getruangranap() {
       const resp = await api.get('v1/simrs/master/kamar')
       if (resp.status === 200) {
