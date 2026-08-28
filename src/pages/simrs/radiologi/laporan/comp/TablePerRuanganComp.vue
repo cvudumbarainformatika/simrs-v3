@@ -40,6 +40,9 @@
               <span class="text-weight-bold text-subtitle2 text-grey-9">
                 {{ dIdx + 1 }}. {{ dok.nama }}
               </span>
+              <q-badge v-if="dok.nama.includes('Belum Diisi')" color="orange-9" text-color="white" class="q-ml-xs text-weight-bold" style="font-size: 10px;">
+                Belum Diisi
+              </q-badge>
             </div>
             <div class="row items-center q-gutter-xs">
               <span class="text-caption text-grey-7">Total Tindakan:</span>

@@ -1,14 +1,14 @@
 <template>
-  <div class="bg-primary text-white q-pa-md rounded-borders shadow-1">
-    <div class="row items-center justify-between no-wrap q-col-gutter-sm">
-      <!-- Left side: Filter Periode & Jenis Pasien -->
-      <div class="col-12 col-sm-7 col-md-6">
-        <div class="row q-col-gutter-sm items-center">
+  <div class="bg-primary text-white q-pa-sm rounded-borders shadow-1">
+    <div class="row items-center justify-between q-col-gutter-xs">
+      <!-- Left side: Filter Periode, Jenis Pasien, Status (Inline 1 Baris) -->
+      <div class="col-12 col-md-7">
+        <div class="row items-center q-col-gutter-xs">
           <!-- Periode Tanggal -->
-          <div class="col-12 col-sm-6">
-            <q-btn outline color="white" class="bg-primary full-width justify-start" padding="sm" size="md" no-caps>
-              <div class="flex items-center justify-between full-width q-px-xs">
-                <div class="f-12 text-weight-medium text-white q-mr-sm">
+          <div class="col-12 col-sm-4">
+            <q-btn outline color="white" class="bg-primary full-width justify-start" padding="xs sm" size="md" no-caps style="height: 40px;">
+              <div class="flex items-center justify-between full-width">
+                <div class="f-12 text-weight-medium text-white ellipsis">
                   {{ store.header.periode }}
                 </div>
                 <transition>
@@ -55,20 +55,24 @@
           </div>
 
           <!-- Jenis Pasien (Rajal, Ranap, IGD, Luar) -->
-          <div class="col-12 col-sm-6">
+          <div class="col-12 col-sm-4">
             <q-select v-model="store.params.jenis_pasien" :options="jenisPasienOptions" emit-value map-options outlined
               dense dark class="bg-primary" label="Jenis Pasien" @update:model-value="onFilterData" />
+          </div>
+
+          <!-- Status Pemeriksaan (Semua, Selesai, Belum Selesai) -->
+          <div class="col-12 col-sm-4">
+            <q-select v-model="store.params.status" :options="statusPemeriksaanOptions" emit-value map-options outlined
+              dense dark class="bg-primary" label="Status" @update:model-value="onFilterData" />
           </div>
         </div>
       </div>
 
-      <q-space />
-
-      <!-- Right side: Quick Search & Action Buttons -->
-      <div class="col-12 col-sm-5 col-md-5">
+      <!-- Right side: Quick Search & Action Buttons (Inline Right) -->
+      <div class="col-12 col-md-5">
         <div class="row items-center justify-end q-gutter-xs">
           <!-- Input Search -->
-          <q-input v-model="store.params.q" placeholder="Search ... " outlined dense dark class="bg-primary col"
+          <q-input v-model="store.params.q" placeholder="Cari..." outlined dense dark class="bg-primary col" style="max-width: 250px;"
             clearable @update:model-value="onSearchInput">
             <template #append>
               <q-icon name="icon-mat-search" />
@@ -117,6 +121,12 @@ const jenisPasienOptions = [
   { label: 'Rawat Inap', value: 'Ranap' },
   { label: 'IGD', value: 'IGD' },
   { label: 'Pasien Luar', value: 'Luar' }
+]
+
+const statusPemeriksaanOptions = [
+  { label: 'Semua Status', value: 'ALL' },
+  { label: 'Selesai', value: 'Selesai' },
+  { label: 'Belum Selesai', value: 'Belum' }
 ]
 
 let searchTimeout = null
