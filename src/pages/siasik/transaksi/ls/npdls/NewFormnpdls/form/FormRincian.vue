@@ -68,8 +68,8 @@
           store.rinci.nominalpembayaran = parseFloat(store.rinci.hargals) * parseFloat(val)
         }" />
       <q-input ref="nilaiRef" class="q-pa-sm q-gutter-y-md" style="width: 25%" v-model="nilaiInput" outlined dense
-        label="Harga Permintaan" inputmode="decimal" :disable="store.disabled" @focus="fokusNilai"
-        @update:model-value="setNilai" @blur="formatNilai" />
+        label="Harga Permintaan" inputmode="decimal" @focus="fokusNilai" @update:model-value="setNilai"
+        @blur="formatNilai" />
       <!-- <app-input-simrs v-model="store.rinci.hargals" class="q-pa-sm q-gutter-y-md" style="width: 25%"
         label="Harga Permintaan" outlined :autofocus="false" :valid="{ required: true, number: true }"
         @update:model-value="(val) => {

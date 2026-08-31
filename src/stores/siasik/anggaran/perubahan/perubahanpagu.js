@@ -23,7 +23,7 @@ export const usePenetapanPerubahanPaguStore = defineStore('penetapan-perubahan-p
     },
     params: {
       q: '',
-      tahun: date.formatDate(Date.now(), 'YYYY'),
+      tahun: date.formatDate(Date.now(), 'YYYY')
     },
     akuns: [],
     kegiatans: [],
@@ -113,10 +113,24 @@ export const usePenetapanPerubahanPaguStore = defineStore('penetapan-perubahan-p
       this.form.total = val?.total
       this.form.notrans = val?.notrans
       this.form.tahun = val?.tahun
-      console.log('valedit', val)
-      console.log('valedit form', this.form)
+      // console.log('valedit', val)
+      // console.log('valedit form', this.form)
       // this.form.group = val?.groups?.toString()
 
+    },
+    async penetapan() {
+      this.loadingSave = true
+      try {
+        const resp = await api.post('v1/anggaran/perubahan/pagu/penetapan', this.params)
+
+        if (resp.success === true) {
+          notifSuccessVue(resp?.data?.message)
+        }
+        this.loadingSave = false
+      } catch (error) {
+        console.log(error)
+        this.loadingSave = false
+      }
     },
     async deleteData(id) {
       this.loadingDelete = true
