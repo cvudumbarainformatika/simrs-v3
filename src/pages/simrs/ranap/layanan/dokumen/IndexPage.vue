@@ -275,6 +275,15 @@ const menus = ref([
     icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3'],
     comp: shallowRef(defineAsyncComponent(() => import('./asesmenPenyakitMenular/IndexPage.vue')))
+  },
+  {
+    name: 'asesmen-monitoring-restrain-document',
+    label: 'MONITORING PENGIKATAN RESTRAIN',
+    title: 'LEMBAR OBSERVASI / MONITORING PENGIKATAN (RESTRAIN)',
+    desc: 'Dokumen Observasi dan Monitoring Pengikatan Restrain Pasien Rawat Inap',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./asesmenMonitoringRestrain/IndexPage.vue')))
   }
 ])
 
