@@ -82,6 +82,20 @@ export const useListBastObatKonsinyasiStore = defineStore('list_bast_obat_konsin
         .catch(() => {
           this.loading = false
         })
+    },
+    async getRinci (row) {
+      if (row.rinci && row.rinci.length) return
+      row.loadingRinci = true
+      await api.get('v1/simrs/penunjang/farmasinew/bast-konsi/rinci-konsi', {
+        params: { notranskonsi: row.notranskonsi }
+      })
+        .then(resp => {
+          row.loadingRinci = false
+          row.rinci = resp?.data || []
+        })
+        .catch(() => {
+          row.loadingRinci = false
+        })
     }
   }
 })

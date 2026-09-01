@@ -239,7 +239,11 @@
       </template>
 
       <template #expand="{ row }">
-        <div v-if="row.rinci?.length">
+        <div v-if="row.loadingRinci" class="row items-center justify-center q-pa-md text-primary">
+          <q-spinner-dots size="2em" class="q-mr-sm" />
+          <span>Memuat rincian barang...</span>
+        </div>
+        <div v-else-if="row.rinci?.length">
           <div class="row items-center text-weight-bold">
             <div class="col-1 ">
               No
@@ -393,23 +397,25 @@ function gantiPeriode (val) {
   // console.log('ganti periode', val, keys)
 
 }
-function onClick (val) {
-  // console.log('click', val)
+async function onClick (val) {
   val.item.expand = !val.item.expand
   val.item.highlight = !val.item.highlight
+  if (val.item.expand && (!val.item.rinci || !val.item.rinci.length)) {
+    await store.getRinci(val.item)
+  }
 }
 const isOpenPrint = ref(false)
 const dataToPrint = ref({})
-function openPrint (val) {
-  console.log('openPrint', val)
+async function openPrint (val) {
+  if (!val.rinci || !val.rinci.length) {
+    await store.getRinci(val)
+  }
   val.expand = !val.expand
   val.highlight = !val.highlight
   isOpenPrint.value = true
   dataToPrint.value = val
 }
 function onClose () {
-  // console.log('onClose')
-
   isOpenPrint.value = false
 }
 // eslint-disable-next-line no-unused-vars
