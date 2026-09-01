@@ -27,16 +27,6 @@
             @on-select="(val) => store.form.asisten = val" @clear="() => store.form.asisten = null" />
         </div>
 
-        <div class="col-md-3 col-sm-6">
-          <q-input v-model.number="store.form.berat_badan" label="Berat Badan (kg)" outlined dense type="number"
-            standout="bg-yellow-3 text-black" />
-        </div>
-
-        <div class="col-md-3 col-sm-6">
-          <q-input v-model.number="store.form.tinggi_badan" label="Tinggi Badan (cm)" outlined dense type="number"
-            standout="bg-yellow-3 text-black" />
-        </div>
-
         <div class="col-md-4 col-sm-6">
           <q-input v-model.number="store.form.sesi" label="Sesi Tindakan Ke-" outlined dense type="number"
             standout="bg-yellow-3 text-black" />
@@ -46,11 +36,6 @@
           <q-input v-model="store.form.no_eswl" label="No. Pasien ESWL" outlined dense
             standout="bg-yellow-3 text-black" />
         </div>
-
-        <!-- <div class="col-12">
-          <q-input v-model="store.form.riwayat" label="Diagnosa" outlined type="textarea" rows="2"
-            standout="bg-yellow-3 text-black" />
-        </div> -->
 
         <!-- SECTION 2: INFORMASI TINDAKAN -->
         <div class="col-12 q-mt-md">
@@ -68,23 +53,8 @@
             standout="bg-yellow-3 text-black" @update:model-value="calculateDuration" />
         </div>
 
-        <div class="col-md-6 col-sm-12">
+        <div class="col-md-3 col-sm-6">
           <q-input v-model="store.form.elektrode_sn" label="Elektrode S/N" outlined dense
-            standout="bg-yellow-3 text-black" />
-        </div>
-
-        <div class="col-md-3 col-sm-6">
-          <q-input v-model.number="store.form.td_sistol" label="TD Sistol Min (mmHg)" outlined dense type="number"
-            standout="bg-yellow-3 text-black" />
-        </div>
-
-        <div class="col-md-3 col-sm-6">
-          <q-input v-model.number="store.form.td_diastol" label="TD Diastol Min (mmHg)" outlined dense type="number"
-            standout="bg-yellow-3 text-black" />
-        </div>
-
-        <div class="col-md-3 col-sm-6">
-          <q-input v-model.number="store.form.nadi" label="Nadi (x/menit)" outlined dense type="number"
             standout="bg-yellow-3 text-black" />
         </div>
 

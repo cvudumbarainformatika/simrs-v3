@@ -84,10 +84,10 @@
           </tr>
           <tr>
             <td class="text-weight-bold bg-grey-2">Berat / Tinggi Badan</td>
-            <td>{{ selectedReport.berat_badan || '-' }} kg / {{ selectedReport.tinggi_badan || '-' }} cm</td>
+            <td>{{ vitalFisik?.beratbadan || selectedReport.berat_badan || '-' }} kg / {{ vitalFisik?.tinggibadan || selectedReport.tinggi_badan || '-' }} cm</td>
             <td class="text-weight-bold bg-grey-2">Keadaan Vital</td>
-            <td>TD: {{ selectedReport.td_sistol || '-' }}/{{ selectedReport.td_diastol || '-' }} mmHg | Nadi: {{
-              selectedReport.nadi || '-' }} x/m</td>
+            <td>TD: {{ vitalFisik?.sistole || selectedReport.td_sistol || '-' }}/{{ vitalFisik?.diastole || selectedReport.td_diastol || '-' }} mmHg | Nadi: {{
+              vitalFisik?.rs4 || vitalFisik?.denyutjantung || selectedReport.nadi || '-' }} x/m</td>
           </tr>
           <tr>
             <td class="text-weight-bold bg-grey-2">Diagnosa</td>
@@ -301,6 +301,14 @@ const reportOptions = computed(() => {
 
 const selectedReport = computed(() => {
   return props.pasien?.laporaneswl?.find(x => x.id === selectedReportId.value) || null
+})
+
+const vitalFisik = computed(() => {
+  const list = props.pasien?.pemeriksaanfisik
+  if (Array.isArray(list) && list.length > 0) {
+    return list[list.length - 1] || list[0]
+  }
+  return list || {}
 })
 
 const parsedTingkatKesakitan = computed(() => {

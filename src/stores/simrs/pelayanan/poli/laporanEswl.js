@@ -128,6 +128,15 @@ export const useLaporanEswlPoliStore = defineStore('laporan-eswl-poli', {
       payload.monitor_usg = this.form.monitor_usg === 'Ya' ? 'Ya - ' + this.form.monitor_usg_catatan : 'Tidak'
       payload.monitor_rontgen = this.form.monitor_rontgen === 'Ya' ? 'Ya - ' + this.form.monitor_rontgen_catatan : 'Tidak'
 
+      // Ambil otomatis dari pemeriksaan fisik jika belum terisi
+      const listFisik = pasien?.pemeriksaanfisik
+      const fisik = Array.isArray(listFisik) && listFisik.length ? (listFisik[listFisik.length - 1] || listFisik[0]) : (listFisik || {})
+      if (!payload.berat_badan) payload.berat_badan = fisik?.beratbadan || null
+      if (!payload.tinggi_badan) payload.tinggi_badan = fisik?.tinggibadan || null
+      if (!payload.td_sistol) payload.td_sistol = fisik?.sistole || null
+      if (!payload.td_diastol) payload.td_diastol = fisik?.diastole || null
+      if (!payload.nadi) payload.nadi = fisik?.rs4 || fisik?.denyutjantung || null
+
       return new Promise((resolve, reject) => {
         api.post('v1/simrs/pelayanan/laporaneswl/simpan', payload)
           .then((resp) => {
