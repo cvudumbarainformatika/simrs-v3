@@ -160,8 +160,8 @@ export const registerJurnal = defineStore('register_jurnal', {
     },
     dataregisterjurnal() {
       // DATA SERAHTERIMA SIASIK //
-      console.log('stp', this.stp)
-      console.log('bastsigarang', this.bastsigarang)
+      // console.log('stp', this.stp)
+      // console.log('bastsigarang', this.bastsigarang)
       const unikstp = this.stp.map((x) => x.noserahterimapekerjaan)
       const dataunikstp = unikstp?.length ? [...new Set(unikstp)] : []
       const dataserahterima = []
@@ -231,33 +231,40 @@ export const registerJurnal = defineStore('register_jurnal', {
         stp.push(obj)
 
         dataserahterima.push(...beban, ...utangstp)
-        // console.log('datastp', dataserahterima)
-      }
 
+      }
+      console.log('datastp', dataserahterima)
+      // console.log('sigarang', this.bastsigarang)
       // DATA SERAHTERIMA SIGARANG //
       const bastsigarang = []
       const arr50siga = []
       for (let i = 0; i < this.bastsigarang.length; i++) {
-        const el = this.bastsigarang[i];
-        const ri = el.details;
-        // console.log('el details', el.details);
+        const el = this.bastsigarang[i]
+        const ri = Array.isArray(el?.details) ? el.details : []
+
+        if (!ri.length) {
+          console.warn('Bast sigarang tanpa details', el)
+          continue
+        }
+
         const rinci = ri.map((x) => {
           return {
-            tanggal: el.tanggal_bast,
-            nobast: el.no_bast,
-            kegiatanblud: x.pagu?.kegiatanblud?.kegiatan ?? 'TIDAK ADA ANGGARAN',
-            kode50: x.pagu?.jurnal.kode50 ?? 'TIDAK ADA ANGGARAN',
-            uraian: x.pagu?.jurnal.uraian50 ?? 'TIDAK ADA ANGGARAN',
-            kode_bast: x.pagu?.jurnal.kode_bast ?? 'TIDAK ADA ANGGARAN',
-            uraian_bast: x.pagu?.jurnal.uraian_bast ?? 'TIDAK ADA ANGGARAN',
-            kode_bastx: x.pagu?.jurnal.kode_bastx ?? 'TIDAK ADA ANGGARAN',
-            uraian_bastx: x.pagu?.jurnal.uraian_bastx ?? 'TIDAK ADA ANGGARAN',
-            nilai: parseFloat(x.sub_total)
+            tanggal: el?.tanggal_bast,
+            nobast: el?.no_bast,
+            kegiatanblud: x?.pagu?.kegiatanblud?.kegiatan ?? 'TIDAK ADA ANGGARAN',
+            kode50: x?.pagu?.jurnal?.kode50 ?? 'TIDAK ADA ANGGARAN',
+            uraian: x?.pagu?.jurnal?.uraian50 ?? 'TIDAK ADA ANGGARAN',
+            kode_bast: x?.pagu?.jurnal?.kode_bast ?? 'TIDAK ADA ANGGARAN',
+            uraian_bast: x?.pagu?.jurnal?.uraian_bast ?? 'TIDAK ADA ANGGARAN',
+            kode_bastx: x?.pagu?.jurnal?.kode_bastx ?? 'TIDAK ADA ANGGARAN',
+            uraian_bastx: x?.pagu?.jurnal?.uraian_bastx ?? 'TIDAK ADA ANGGARAN',
+            nilai: parseFloat(x?.sub_total)
           }
         })
-        arr50siga.push(...rinci);
+        arr50siga.push(...rinci)
+        // console.log('el details', [...arr50siga])
       }
-      // console.log('arr50siga', arr50siga);
+      // console.log('arr50siga', [...arr50siga])
 
       const unikBast = arr50siga.map((s) => s.nobast)
       const unik50Bast = unikBast?.length ? [...new Set(unikBast)] : []
@@ -320,8 +327,8 @@ export const registerJurnal = defineStore('register_jurnal', {
         bastsigarang.push(obj)
         dataserahterima.push(...debit, ...kredit)
       }
-      // console.log('bastsigarang', bastsigarang);
-      // console.log('dataserahterima', dataserahterima);
+      // console.log('bastsigarang xxxx', bastsigarang);
+      // console.log('dataserahterima xxxx', dataserahterima);
 
 
       // for (let i = 0; i < this.bastsigarang.length; i++) {
@@ -2067,7 +2074,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         )
       const arrJurnal = sortByDate(gabungan)
       this.jurnals = arrJurnal
-      // console.log('data JURNAL', this.jurnals)
+      console.log('data JURNAL', this.jurnals)
 
       // DATA POSTING JURNAL CREATE
       const sortDate = (dataserahterima) =>
