@@ -109,8 +109,15 @@ const documents = ref([
     icon: 'icon-fa-file-regular',
     color: 'primary',
     jenis: 'INTR',
-    label: 'Pemantauan Itradialitik',
+    label: 'Pemantauan Intradialitik',
     value: 'Intradialitik'
+  },
+  {
+    icon: 'icon-fa-file-regular',
+    color: 'primary',
+    jenis: 'EDUKASI',
+    label: 'Catatan Edukasi Terintegrasi',
+    value: 'Edukasi'
   },
   // {
   //   icon: 'icon-fa-file-regular',
@@ -178,6 +185,7 @@ function getLabel (val) {
 const comp = [
   { nama: 'Resume', page: defineAsyncComponent(() => import('./compdokumen/ResumePage.vue')) },
   { nama: 'Intradialitik', page: defineAsyncComponent(() => import('./compdokumen/IntradialitikPage.vue')) },
+  { nama: 'Edukasi', page: defineAsyncComponent(() => import('./compdokumen/EdukasiPage.vue')) },
   // { nama: 'Billing', page: defineAsyncComponent(() => import('./BillingPage.vue')) },
   // { nama: 'Sakit', page: defineAsyncComponent(() => import('../surat/compsurat/SuratSakitPage.vue')) },
   // { nama: 'Sehat', page: defineAsyncComponent(() => import('../surat/compsurat/SuratSehatPage.vue')) },
