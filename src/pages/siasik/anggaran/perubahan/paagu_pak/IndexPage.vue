@@ -45,8 +45,13 @@
             </q-input>
           </div>
         </div>
-        <div class="f-14 text-weight-bold q-pt-sm full-width row justify-end items-end content-end">
-          Total Pagu : {{ formatRpDouble(totalPagu || 0) }}
+        <div class="f-14 text-weight-bold q-pt-md full-width row justify-end items-center content-end">
+          <div class="row q-pr-sm">
+            <q-btn label="PENETAPAN PERUBAHAN" rounded size="sm" color="green-9" @click="Penetapan" />
+          </div>
+          <div class="row">
+            Total Pagu : {{ formatRpDouble(totalPagu || 0) }}
+          </div>
         </div>
       </q-card-section>
       <q-separator />
@@ -155,6 +160,32 @@ function kunciData(row) {
     }).onDismiss(() => {
     })
   }
+}
+
+
+function Penetapan() {
+  console.log('Penetapan', store.items, store.params)
+
+  $q.dialog({
+    dark: true,
+    title: 'Peringatan',
+    message: 'Apakah Anda yakin akan melakukan Penetapan?',
+    cancel: true,
+    persistent: true
+  }).onOk(() => {
+    store.penetapan().then(() => {
+      store.getData()
+    }).catch((error) => {
+      console.error('Error during penetapan:', error)
+      $q.notify({
+        type: 'negative',
+        message: 'Terjadi kesalahan saat melakukan Penetapan'
+      })
+    })
+  }).onCancel(() => {
+    console.log('Cancel')
+  }).onDismiss(() => {
+  })
 }
 
 function init() {

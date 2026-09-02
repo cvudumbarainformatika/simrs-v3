@@ -21,6 +21,7 @@ export const useLaporanRadiologiStore = defineStore('laporan_radiologi', {
       to: date.formatDate(new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0), 'YYYY-MM-DD'),
       dokter: 'ALL',
       jenis_pasien: 'ALL', // ALL, Rajal, Ranap, IGD, Luar
+      status: 'Selesai', // Default Selesai (ALL, Selesai, Belum)
       q: ''
     },
 
@@ -83,8 +84,15 @@ export const useLaporanRadiologiStore = defineStore('laporan_radiologi', {
 
     filteredDokterLaksana: (state) => {
       const q = (state.params.q || '').trim().toLowerCase()
-      if (!q) return state.dataDokterLaksana || []
-      return (state.dataDokterLaksana || []).filter(item => {
+      const list = (state.dataDokterLaksana || []).map(item => {
+        if (!item.nama || item.nama.toLowerCase().includes('tidak diketahui')) {
+          return { ...item, nama: 'Tanpa Dokter Pelaksana (Belum Diisi)' }
+        }
+        return item
+      })
+
+      if (!q) return list
+      return list.filter(item => {
         const matchDokter = item.nama && item.nama.toLowerCase().includes(q)
         const matchPmr = (item.pemeriksaan || []).some(p => p.nama && p.nama.toLowerCase().includes(q))
         return matchDokter || matchPmr

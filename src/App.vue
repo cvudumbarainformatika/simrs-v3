@@ -27,6 +27,16 @@ $q.dark.set(false)
 $q.iconSet.set(customIcons)
 document.body.setAttribute(['data-theme'], 'custom')
 
+// Suppress harmless browser ResizeObserver loop undelivered notifications
+if (typeof window !== 'undefined') {
+  window.addEventListener('error', (e) => {
+    if (e.message && e.message.includes('ResizeObserver loop completed with undelivered notifications')) {
+      e.stopImmediatePropagation()
+      e.preventDefault()
+    }
+  })
+}
+
 // const auth = useAplikasiStore()
 // onMounted(() => {
 publicChannel()

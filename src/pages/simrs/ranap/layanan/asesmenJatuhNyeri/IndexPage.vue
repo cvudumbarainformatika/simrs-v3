@@ -32,6 +32,24 @@
               </div>
             </template>
           </q-tab>
+
+          <q-tab name="penyakit_menular" :ripple="true">
+            <template #default>
+              <div class="row q-gutter-x-xs items-center q-px-sm" style="border-radius: 10px;">
+                <q-icon name="icon-mat-coronavirus" size="18px" />
+                <div><strong>Asesmen Penyakit Menular</strong></div>
+              </div>
+            </template>
+          </q-tab>
+
+          <q-tab name="monitoring_restrain" :ripple="true">
+            <template #default>
+              <div class="row q-gutter-x-xs items-center q-px-sm" style="border-radius: 10px;">
+                <q-icon name="icon-mat-lock_clock" size="18px" />
+                <div><strong>Monitoring Restrain</strong></div>
+              </div>
+            </template>
+          </q-tab>
         </q-tabs>
       </div>
 
@@ -49,6 +67,14 @@
           <q-tab-panel name="pasca_jatuh" class="q-pa-none">
             <TabPascaJatuh :pasien="pasien" :kasus="kasus" />
           </q-tab-panel>
+
+          <q-tab-panel name="penyakit_menular" class="q-pa-none">
+            <TabAsesmenPenyakitMenular :pasien="pasien" :kasus="kasus" />
+          </q-tab-panel>
+
+          <q-tab-panel name="monitoring_restrain" class="q-pa-none">
+            <TabMonitoringRestrain :pasien="pasien" :kasus="kasus" />
+          </q-tab-panel>
         </q-tab-panels>
       </div>
 
@@ -62,6 +88,8 @@ import { ref, defineAsyncComponent } from 'vue'
 const TabAsesmenJatuh = defineAsyncComponent(() => import('./comp/TabAsesmenJatuh.vue'))
 const TabAsesmenNyeri = defineAsyncComponent(() => import('./comp/TabAsesmenNyeri.vue'))
 const TabPascaJatuh = defineAsyncComponent(() => import('./comp/TabPascaJatuh.vue'))
+const TabAsesmenPenyakitMenular = defineAsyncComponent(() => import('./comp/TabAsesmenPenyakitMenular.vue'))
+const TabMonitoringRestrain = defineAsyncComponent(() => import('./comp/TabMonitoringRestrain.vue'))
 
 const props = defineProps({
   pasien: {

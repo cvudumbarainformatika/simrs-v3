@@ -266,6 +266,24 @@ const menus = ref([
     icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3'],
     comp: shallowRef(defineAsyncComponent(() => import('./asesmenPascaJatuh/IndexPage.vue')))
+  },
+  {
+    name: 'asesmen-penyakit-menular-document',
+    label: 'ASSESMENT KHUSUS PENYAKIT MENULAR',
+    title: 'ASSESSMENT KHUSUS PENYAKIT MENULAR DAN IMUNOSUPRESED',
+    desc: 'Dokumen Pengkajian Khusus Penyakit Menular dan Imunosupresed (Penularan Daya Tahan Tubuh)',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./asesmenPenyakitMenular/IndexPage.vue')))
+  },
+  {
+    name: 'asesmen-monitoring-restrain-document',
+    label: 'MONITORING PENGIKATAN RESTRAIN',
+    title: 'LEMBAR OBSERVASI / MONITORING PENGIKATAN (RESTRAIN)',
+    desc: 'Dokumen Observasi dan Monitoring Pengikatan Restrain Pasien Rawat Inap',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./asesmenMonitoringRestrain/IndexPage.vue')))
   }
 ])
 

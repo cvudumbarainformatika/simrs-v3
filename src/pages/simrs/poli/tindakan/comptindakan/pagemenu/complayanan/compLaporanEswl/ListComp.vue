@@ -28,8 +28,13 @@
             <!-- Time & General Info -->
             <div class="row q-col-gutter-x-md text-caption text-grey-7 q-mb-xs">
               <div><strong>Waktu:</strong> {{ item.waktu_mulai || '-' }} - {{ item.waktu_selesai || '-' }} ({{ item.lama_penembakan || 0 }} menit)</div>
-              <div><strong>BB/TB:</strong> {{ item.berat_badan || '-' }} kg / {{ item.tinggi_badan || '-' }} cm</div>
-              <div><strong>TD:</strong> {{ item.td_sistol || '-' }}/{{ item.td_diastol || '-' }} mmHg | <strong>Nadi:</strong> {{ item.nadi || '-' }} x/m</div>
+              <div><strong>BB / TB:</strong> {{ item.berat_badan || vitalFisik?.beratbadan || '-' }} kg / {{ item.tinggi_badan || vitalFisik?.tinggibadan || '-' }} cm</div>
+            </div>
+            <div class="row q-col-gutter-x-sm text-caption text-grey-8 q-mb-xs bg-grey-2 q-pa-xs rounded-borders">
+              <div class="col-auto"><strong>TD:</strong> {{ item.td_sistol || vitalFisik?.sistole || '-' }}/{{ item.td_diastol || vitalFisik?.diastole || '-' }} mmHg</div>
+              <div class="col-auto">| <strong>Nadi:</strong> {{ item.nadi || vitalFisik?.rs4 || vitalFisik?.denyutjantung || '-' }} x/m</div>
+              <div class="col-auto">| <strong>RR:</strong> {{ vitalFisik?.pernapasan || '-' }} x/m</div>
+              <div class="col-auto">| <strong>Suhu:</strong> {{ vitalFisik?.suhutubuh || '-' }} &deg;C</div>
             </div>
 
             <!-- Stones details -->
@@ -114,6 +119,7 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { date, useQuasar } from 'quasar'
 import { useLaporanEswlPoliStore } from 'src/stores/simrs/pelayanan/poli/laporanEswl'
 import bodyMarkerImg from 'src/assets/human/anatomys/body-marker-eswl.webp'
@@ -138,6 +144,14 @@ const props = defineProps({
     type: Object,
     default: null
   }
+})
+
+const vitalFisik = computed(() => {
+  const list = props.pasien?.pemeriksaanfisik
+  if (Array.isArray(list) && list.length > 0) {
+    return list[list.length - 1] || list[0]
+  }
+  return list || {}
 })
 
 function getNamaDokter(kddokter) {

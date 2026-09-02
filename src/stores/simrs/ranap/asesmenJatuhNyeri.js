@@ -7,6 +7,8 @@ export const useAsesmenJatuhNyeriStore = defineStore('asesmen-jatuh-nyeri-store'
     itemsJatuh: [],
     itemsNyeri: [],
     itemsPascaJatuh: [],
+    itemsPenyakitMenular: [],
+    itemsMonitoringRestrain: [],
     loading: false,
     loadingSave: false
   }),
@@ -22,6 +24,8 @@ export const useAsesmenJatuhNyeriStore = defineStore('asesmen-jatuh-nyeri-store'
           this.itemsJatuh = resp.data?.jatuh ?? []
           this.itemsNyeri = resp.data?.nyeri ?? []
           this.itemsPascaJatuh = resp.data?.pasca_jatuh ?? []
+          this.itemsPenyakitMenular = resp.data?.penyakit_menular ?? []
+          this.itemsMonitoringRestrain = resp.data?.monitoring_restrain ?? []
         }
       } catch (err) {
         console.log(err)
@@ -121,6 +125,74 @@ export const useAsesmenJatuhNyeriStore = defineStore('asesmen-jatuh-nyeri-store'
         const resp = await api.post('v1/simrs/ranap/layanan/asesmenulang/hapus-pasca-jatuh', { id })
         if (resp.status === 200) {
           notifSuccess('Hapus Monitoring Pasca Jatuh Berhasil')
+          this.getData(pasien)
+          return true
+        }
+      } catch (err) {
+        console.log(err)
+      } finally {
+        this.loading = false
+      }
+      return false
+    },
+
+    async simpanPenyakitMenular(pasien, payload) {
+      this.loadingSave = true
+      try {
+        const resp = await api.post('v1/simrs/ranap/layanan/asesmenulang/simpan-penyakit-menular', payload)
+        if (resp.status === 200) {
+          notifSuccess('Simpan Asesmen Penyakit Menular Berhasil')
+          this.getData(pasien)
+          return true
+        }
+      } catch (err) {
+        console.log(err)
+      } finally {
+        this.loadingSave = false
+      }
+      return false
+    },
+
+    async hapusPenyakitMenular(pasien, id) {
+      this.loading = true
+      try {
+        const resp = await api.post('v1/simrs/ranap/layanan/asesmenulang/hapus-penyakit-menular', { id })
+        if (resp.status === 200) {
+          notifSuccess('Hapus Asesmen Penyakit Menular Berhasil')
+          this.getData(pasien)
+          return true
+        }
+      } catch (err) {
+        console.log(err)
+      } finally {
+        this.loading = false
+      }
+      return false
+    },
+
+    async simpanMonitoringRestrain(pasien, payload) {
+      this.loadingSave = true
+      try {
+        const resp = await api.post('v1/simrs/ranap/layanan/asesmenulang/simpan-monitoring-restrain', payload)
+        if (resp.status === 200) {
+          notifSuccess('Simpan Monitoring Pengikatan Restrain Berhasil')
+          this.getData(pasien)
+          return true
+        }
+      } catch (err) {
+        console.log(err)
+      } finally {
+        this.loadingSave = false
+      }
+      return false
+    },
+
+    async hapusMonitoringRestrain(pasien, id) {
+      this.loading = true
+      try {
+        const resp = await api.post('v1/simrs/ranap/layanan/asesmenulang/hapus-monitoring-restrain', { id })
+        if (resp.status === 200) {
+          notifSuccess('Hapus Monitoring Pengikatan Restrain Berhasil')
           this.getData(pasien)
           return true
         }

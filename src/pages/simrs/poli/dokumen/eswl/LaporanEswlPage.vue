@@ -83,16 +83,20 @@
             <td>{{ getNamaAsisten(selectedReport.asisten) }}</td>
           </tr>
           <tr>
-            <td class="text-weight-bold bg-grey-2">Berat / Tinggi Badan</td>
-            <td>{{ selectedReport.berat_badan || '-' }} kg / {{ selectedReport.tinggi_badan || '-' }} cm</td>
-            <td class="text-weight-bold bg-grey-2">Keadaan Vital</td>
-            <td>TD: {{ selectedReport.td_sistol || '-' }}/{{ selectedReport.td_diastol || '-' }} mmHg | Nadi: {{
-              selectedReport.nadi || '-' }} x/m</td>
+            <td class="text-weight-bold bg-grey-2">BB / TB</td>
+            <td>{{ vitalFisik?.beratbadan || selectedReport.berat_badan || '-' }} kg &nbsp;/&nbsp; {{ vitalFisik?.tinggibadan || selectedReport.tinggi_badan || '-' }} cm</td>
+            <td class="text-weight-bold bg-grey-2">Tekanan Darah</td>
+            <td>{{ vitalFisik?.sistole || selectedReport.td_sistol || '-' }}/{{ vitalFisik?.diastole || selectedReport.td_diastol || '-' }} mmHg</td>
+          </tr>
+          <tr>
+            <td class="text-weight-bold bg-grey-2">Nadi</td>
+            <td>{{ vitalFisik?.rs4 || vitalFisik?.denyutjantung || selectedReport.nadi || '-' }} x/menit</td>
+            <td class="text-weight-bold bg-grey-2">RR / Suhu Tubuh</td>
+            <td>RR: {{ vitalFisik?.pernapasan || '-' }} x/m &nbsp;|&nbsp; Suhu: {{ vitalFisik?.suhutubuh || '-' }} &deg;C</td>
           </tr>
           <tr>
             <td class="text-weight-bold bg-grey-2">Diagnosa</td>
-            <td colspan="3" class="line-height-tight" style="white-space: pre-wrap;">{{ pasien?.memodiagnosa || '-' }}
-            </td>
+            <td colspan="3" class="line-height-tight" style="white-space: pre-wrap;">{{ pasien?.memodiagnosa || '-' }}</td>
           </tr>
         </tbody>
       </table>
@@ -301,6 +305,14 @@ const reportOptions = computed(() => {
 
 const selectedReport = computed(() => {
   return props.pasien?.laporaneswl?.find(x => x.id === selectedReportId.value) || null
+})
+
+const vitalFisik = computed(() => {
+  const list = props.pasien?.pemeriksaanfisik
+  if (Array.isArray(list) && list.length > 0) {
+    return list[list.length - 1] || list[0]
+  }
+  return list || {}
 })
 
 const parsedTingkatKesakitan = computed(() => {

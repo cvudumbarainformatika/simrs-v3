@@ -160,8 +160,8 @@ export const registerJurnal = defineStore('register_jurnal', {
     },
     dataregisterjurnal() {
       // DATA SERAHTERIMA SIASIK //
-      console.log('stp', this.stp)
-      console.log('bastsigarang', this.bastsigarang)
+      // console.log('stp', this.stp)
+      // console.log('bastsigarang', this.bastsigarang)
       const unikstp = this.stp.map((x) => x.noserahterimapekerjaan)
       const dataunikstp = unikstp?.length ? [...new Set(unikstp)] : []
       const dataserahterima = []
@@ -231,33 +231,40 @@ export const registerJurnal = defineStore('register_jurnal', {
         stp.push(obj)
 
         dataserahterima.push(...beban, ...utangstp)
-        // console.log('datastp', dataserahterima)
-      }
 
+      }
+      console.log('datastp', dataserahterima)
+      // console.log('sigarang', this.bastsigarang)
       // DATA SERAHTERIMA SIGARANG //
       const bastsigarang = []
       const arr50siga = []
       for (let i = 0; i < this.bastsigarang.length; i++) {
-        const el = this.bastsigarang[i];
-        const ri = el.details;
-        // console.log('el details', el.details);
+        const el = this.bastsigarang[i]
+        const ri = Array.isArray(el?.details) ? el.details : []
+
+        if (!ri.length) {
+          console.warn('Bast sigarang tanpa details', el)
+          continue
+        }
+
         const rinci = ri.map((x) => {
           return {
-            tanggal: el.tanggal_bast,
-            nobast: el.no_bast,
-            kegiatanblud: x.pagu?.kegiatanblud?.kegiatan ?? 'TIDAK ADA ANGGARAN',
-            kode50: x.pagu?.jurnal.kode50 ?? 'TIDAK ADA ANGGARAN',
-            uraian: x.pagu?.jurnal.uraian50 ?? 'TIDAK ADA ANGGARAN',
-            kode_bast: x.pagu?.jurnal.kode_bast ?? 'TIDAK ADA ANGGARAN',
-            uraian_bast: x.pagu?.jurnal.uraian_bast ?? 'TIDAK ADA ANGGARAN',
-            kode_bastx: x.pagu?.jurnal.kode_bastx ?? 'TIDAK ADA ANGGARAN',
-            uraian_bastx: x.pagu?.jurnal.uraian_bastx ?? 'TIDAK ADA ANGGARAN',
-            nilai: parseFloat(x.sub_total)
+            tanggal: el?.tanggal_bast,
+            nobast: el?.no_bast,
+            kegiatanblud: x?.pagu?.kegiatanblud?.kegiatan ?? 'TIDAK ADA ANGGARAN',
+            kode50: x?.pagu?.datajurnal?.kode50 ?? 'TIDAK ADA ANGGARAN',
+            uraian: x?.pagu?.datajurnal?.uraian50 ?? 'TIDAK ADA ANGGARAN',
+            kode_bast: x?.pagu?.datajurnal?.kode_bast ?? 'TIDAK ADA ANGGARAN',
+            uraian_bast: x?.pagu?.datajurnal?.uraian_bast ?? 'TIDAK ADA ANGGARAN',
+            kode_bastx: x?.pagu?.datajurnal?.kode_bastx ?? 'TIDAK ADA ANGGARAN',
+            uraian_bastx: x?.pagu?.datajurnal?.uraian_bastx ?? 'TIDAK ADA ANGGARAN',
+            nilai: parseFloat(x?.sub_total)
           }
         })
-        arr50siga.push(...rinci);
+        arr50siga.push(...rinci)
+        // console.log('el details', [...arr50siga])
       }
-      // console.log('arr50siga', arr50siga);
+      // console.log('arr50siga', [...arr50siga])
 
       const unikBast = arr50siga.map((s) => s.nobast)
       const unik50Bast = unikBast?.length ? [...new Set(unikBast)] : []
@@ -320,8 +327,8 @@ export const registerJurnal = defineStore('register_jurnal', {
         bastsigarang.push(obj)
         dataserahterima.push(...debit, ...kredit)
       }
-      // console.log('bastsigarang', bastsigarang);
-      // console.log('dataserahterima', dataserahterima);
+      // console.log('bastsigarang xxxx', bastsigarang);
+      // console.log('dataserahterima xxxx', dataserahterima);
 
 
       // for (let i = 0; i < this.bastsigarang.length; i++) {
@@ -333,12 +340,12 @@ export const registerJurnal = defineStore('register_jurnal', {
       //       tanggal: el.tanggal_bast,
       //       nobast: el.no_bast,
       //       kegiatanblud: x.pagu?.kegiatanblud?.kegiatan ?? 'TIDAK ADA ANGGARAN',
-      //       kode50: x.pagu?.jurnal.kode50 ?? 'TIDAK ADA ANGGARAN',
-      //       uraian: x.pagu?.jurnal.uraian50 ?? 'TIDAK ADA ANGGARAN',
-      //       kode_bast: x.pagu?.jurnal.kode_bast ?? 'TIDAK ADA ANGGARAN',
-      //       uraian_bast: x.pagu?.jurnal.uraian_bast ?? 'TIDAK ADA ANGGARAN',
-      //       kode_bastx: x.pagu?.jurnal.kode_bastx ?? 'TIDAK ADA ANGGARAN',
-      //       uraian_bastx: x.pagu?.jurnal.uraian_bastx ?? 'TIDAK ADA ANGGARAN',
+      //       kode50: x.pagu?.datajurnal.kode50 ?? 'TIDAK ADA ANGGARAN',
+      //       uraian: x.pagu?.datajurnal.uraian50 ?? 'TIDAK ADA ANGGARAN',
+      //       kode_bast: x.pagu?.datajurnal.kode_bast ?? 'TIDAK ADA ANGGARAN',
+      //       uraian_bast: x.pagu?.datajurnal.uraian_bast ?? 'TIDAK ADA ANGGARAN',
+      //       kode_bastx: x.pagu?.datajurnal.kode_bastx ?? 'TIDAK ADA ANGGARAN',
+      //       uraian_bastx: x.pagu?.datajurnal.uraian_bastx ?? 'TIDAK ADA ANGGARAN',
       //       nilai: parseFloat(x.sub_total)
       //     }
       //   })
@@ -446,14 +453,14 @@ export const registerJurnal = defineStore('register_jurnal', {
         const rinci = ri.map((x) => {
           return {
             tanggal: el.tgl_bast,
-            nobast: x.nobast,
-            kode50: x.masterobat.jurnal.kode50,
-            uraian: x.masterobat.jurnal.uraian50,
-            kode_bast: x.masterobat.jurnal.kode_bast,
-            uraian_bast: x.masterobat.jurnal.uraian_bast,
-            kode_bastx: x.masterobat.jurnal.kode_bastx,
-            uraian_bastx: x.masterobat.jurnal.uraian_bastx,
-            nilai: parseFloat(x.subtotal),
+            nobast: x?.nobast,
+            kode50: x?.masterobat?.jurnal?.kode50,
+            uraian: x?.masterobat?.jurnal?.uraian50,
+            kode_bast: x?.masterobat?.jurnal?.kode_bast,
+            uraian_bast: x?.masterobat?.jurnal?.uraian_bast,
+            kode_bastx: x?.masterobat?.jurnal?.kode_bastx,
+            uraian_bastx: x?.masterobat?.jurnal?.uraian_bastx,
+            nilai: parseFloat(x?.subtotal),
           };
         });
 
@@ -469,7 +476,7 @@ export const registerJurnal = defineStore('register_jurnal', {
 
         for (let j = 0; j < unik?.length; j++) {
           const elUnik = unik[j];
-          const items = arr50bast.filter((x) => x.nobast === elUnik);
+          const items = arr50bast.filter((x) => x?.nobast === elUnik);
 
           const totalNilai = items.reduce((sum, item) => sum + item.nilai, 0);
           // Kelompokkan berdasarkan kode_bast (debit)
@@ -562,13 +569,13 @@ export const registerJurnal = defineStore('register_jurnal', {
           return {
             tanggal: el.tgl_bast,
             nobast: el.nobast,
-            kode50: x.obat.jurnal.kode50,
-            uraian: x.obat.jurnal.uraian50,
-            kode_bast: x.obat.jurnal.kode_bast,
-            uraian_bast: x.obat.jurnal.uraian_bast,
-            kode_bastx: x.obat.jurnal.kode_bastx,
-            uraian_bastx: x.obat.jurnal.uraian_bastx,
-            nilai: parseFloat(x.subtotal)
+            kode50: x?.obat?.jurnal?.kode50,
+            uraian: x?.obat?.jurnal?.uraian50,
+            kode_bast: x?.obat?.jurnal?.kode_bast,
+            uraian_bast: x?.obat?.jurnal?.uraian_bast,
+            kode_bastx: x?.obat?.jurnal?.kode_bastx,
+            uraian_bastx: x?.obat?.jurnal?.uraian_bastx,
+            nilai: parseFloat(x?.subtotal)
           }
         })
         arr50kons.push(...rinci)
@@ -581,7 +588,7 @@ export const registerJurnal = defineStore('register_jurnal', {
 
         for (let i = 0; i < unik?.length; i++) {
           const elUnik = unik[i];
-          const items = arr50kons.filter((x) => x.nobast === elUnik)
+          const items = arr50kons.filter((x) => x?.nobast === elUnik)
 
           const totalNilai = items.reduce((sum, item) => sum + item.nilai, 0)
           const groupedByKodeBast = {}
@@ -660,7 +667,7 @@ export const registerJurnal = defineStore('register_jurnal', {
       // console.log('KONSINYASI', bastkons)
 
       // DATA PENCAIRAN TANPA STP //
-      const uniks = this.cairnostp.map((x) => x.nonpdls)
+      const uniks = this.cairnostp.map((x) => x?.nonpdls)
       const unik = uniks?.length ? [...new Set(uniks)] : []
       const cairnonstp = []
       // const arrcair = []
@@ -670,12 +677,12 @@ export const registerJurnal = defineStore('register_jurnal', {
 
         const kode50x = []
         const kode50 = {
-          koderek50: arr.filter((x) => x.nonpdls === el)?.map((x) => x.kode50),
-          uraian50: arr.filter((x) => x.nonpdls === el)?.map((x) => x.rincianbelanja)
+          koderek50: arr.filter((x) => x?.nonpdls === el)?.map((x) => x?.kode50),
+          uraian50: arr.filter((x) => x?.nonpdls === el)?.map((x) => x?.rincianbelanja)
         }
         kode50x.push(kode50)
 
-        const arrfilter = arr.filter((x) => x.nonpdls === el).map((x) => x)
+        const arrfilter = arr.filter((x) => x?.nonpdls === el).map((x) => x)
         const bendpg = []
         for (let y = 0; y < arrfilter?.length; y++) {
           const er = arrfilter[y]
@@ -2067,7 +2074,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         )
       const arrJurnal = sortByDate(gabungan)
       this.jurnals = arrJurnal
-      // console.log('data JURNAL', this.jurnals)
+      console.log('data JURNAL', this.jurnals)
 
       // DATA POSTING JURNAL CREATE
       const sortDate = (dataserahterima) =>

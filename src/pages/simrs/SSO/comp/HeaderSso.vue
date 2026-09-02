@@ -22,7 +22,7 @@
         <div class="q-mr-md text-subtitle">
           <q-skeleton v-if="loading" type="text" width="100px" />
           <div v-else>
-            {{ userLocal ? userLocal?.nama : '-' }}
+            {{ userLocal?.pegawai?.nama ?? userLocal?.nama ?? '-' }}
           </div>
         </div>
         <q-avatar size="40px" class="cursor-pointer bg-grey" @mouseover="() => {
@@ -36,7 +36,7 @@
               <q-card-section class="bg-grey-2">
                 <div class="row no-wrap items-center">
                   <div class="col text-h6 ellipsis">
-                    {{ userLocal ? userLocal?.nama : '-' }}
+                    {{ userLocal?.pegawai?.nama ?? userLocal?.nama ?? '-' }}
                   </div>
                 </div>
               </q-card-section>
