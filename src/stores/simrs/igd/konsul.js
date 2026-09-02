@@ -83,6 +83,10 @@ export const useKonsulIgdStore = defineStore('konsul-igd-store', {
           const storeRanap = usePengunjungIgdStore()
           // storePasien.hapusDataFisio(pasien, id)
           storeRanap.hapusDataInjectan(pasien, id, 'konsultasi')
+          const konsultasiPengganti = resp?.data?.result
+          if (konsultasiPengganti) {
+            storeRanap.injectDataPasien(pasien, konsultasiPengganti, 'konsultasi')
+          }
           notifSuccess(resp)
         }
       }
