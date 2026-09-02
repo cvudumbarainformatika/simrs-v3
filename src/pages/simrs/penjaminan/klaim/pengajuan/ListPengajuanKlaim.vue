@@ -90,6 +90,6 @@ defineProps({
   loadingTerima: {
     type: Boolean,
     default: false
-  }
+  },
 })
 </script>

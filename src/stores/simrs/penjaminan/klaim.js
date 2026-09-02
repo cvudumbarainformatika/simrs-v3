@@ -2,6 +2,13 @@ import { defineStore } from "pinia"
 import { api } from "src/boot/axios"
 import { notifErrVue } from "src/modules/utils"
 
+const DEFAULT_TOPUP_DRUG_OPTIONS = [
+  { label: 'None', value: '' },
+  { label: 'Deferiprone', value: '10012' },
+  { label: 'Deferoksamin', value: '10022' },
+  { label: 'Deferasirox', value: '10032' }
+]
+
 export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
   state: () => ({
     loading: false,
@@ -11,7 +18,9 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
     loadingKunjunganKlaim: false,
     loadingTarifKlaim: false,
     loadingDiagnosaIdrg: false,
-    loadingnewclaim: false,
+    loadingGetDiagnosaIdrg: false,
+    loadingGroupingIdrg: null,
+    loadingnewclaim: null,
     items: [],
     caraMasukOptions: [],
     kunjunganKlaim: null,
@@ -21,6 +30,7 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
     tarifKlaim: null,
     noregTarifAktif: null,
     diagnosaIdrgOptions: [],
+    prosedurIdrgOptions: [],
     newClaimResponse: null,
     meta: {},
     pageLayanan: false,
@@ -50,6 +60,7 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
       pencarianProsedur: '',
       diagnosaIdrg: [],
       prosedurIdrg: [],
+      topupDrug: '',
       hasilIdrg: null,
       tarif: {
         prosedurNonBedah: 0,
@@ -106,6 +117,143 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
         this.loadingDiagnosaIdrg = false
       }
     },
+    async cariProsedurIdrg(term) {
+      const pencarian = String(term ?? '').trim()
+      if (pencarian.length < 2) {
+        this.prosedurIdrgOptions = []
+        return []
+      }
+      try {
+        const resp = await api.get('v1/simrs/penjaminan/klaim/prosedur-idrg', { params: { term: pencarian } })
+        this.prosedurIdrgOptions = resp?.data ?? []
+        return this.prosedurIdrgOptions
+      }
+      catch (error) {
+        this.prosedurIdrgOptions = []
+        notifErrVue('Gagal mencari prosedur iDRG')
+        return []
+      }
+    },
+    async simpanProsedurIdrg(payload) {
+      try {
+        const resp = await api.post('v1/simrs/penjaminan/klaim/prosedur-idrg', payload)
+        return resp?.data ?? null
+      }
+      catch (error) {
+        notifErrVue(formatClaimError(error?.response?.data, error?.message, 'Gagal menyimpan prosedur iDRG'))
+        return null
+      }
+    },
+    async ubahJumlahProsedurIdrg(payload) {
+      try {
+        const resp = await api.put('v1/simrs/penjaminan/klaim/prosedur-idrg', payload)
+        return resp?.data ?? null
+      }
+      catch (error) {
+        notifErrVue(formatClaimError(error?.response?.data, error?.message, 'Gagal mengubah jumlah prosedur iDRG'))
+        return null
+      }
+    },
+    async hapusProsedurIdrg(payload) {
+      try {
+        const resp = await api.delete('v1/simrs/penjaminan/klaim/prosedur-idrg', { data: payload })
+        return resp?.data ?? null
+      }
+      catch (error) {
+        notifErrVue(formatClaimError(error?.response?.data, error?.message, 'Gagal menghapus prosedur iDRG'))
+        return null
+      }
+    },
+    async simpanDiagnosaIdrg(payload) {
+      try {
+        const resp = await api.post('v1/simrs/penjaminan/klaim/diagnosa-idrg', payload)
+        return resp?.data ?? null
+      }
+      catch (error) {
+        notifErrVue(formatClaimError(error?.response?.data, error?.message, 'Gagal menyimpan diagnosis iDRG'))
+        return null
+      }
+    },
+    async hapusDiagnosaIdrg(payload) {
+      try {
+        const resp = await api.delete('v1/simrs/penjaminan/klaim/diagnosa-idrg', { data: payload })
+        return resp?.data ?? null
+      }
+      catch (error) {
+        notifErrVue(formatClaimError(error?.response?.data, error?.message, 'Gagal menghapus diagnosis iDRG'))
+        return null
+      }
+    },
+    async getDiagnosaIdrg(payload) {
+      const noreg = payload?.noreg
+      const nomorSep = payload?.nomor_sep
+      if (!noreg || !nomorSep) return null
+
+      this.loadingGetDiagnosaIdrg = true
+      try {
+        const resp = await api.get('v1/simrs/penjaminan/klaim/diagnosa-idrg/get', {
+          params: { noreg, nomor_sep: nomorSep }
+        })
+        const result = resp?.data ?? null
+        if (result?.success) {
+          this.formpasien.diagnosaIdrg = normalizeIdrgItems(result?.items ?? result?.diagnosa)
+        }
+        return result
+      }
+      catch (error) {
+        notifErrVue(formatClaimError(error?.response?.data, error?.message, 'Gagal mengambil diagnosa iDRG dari E-Klaim'))
+        return null
+      }
+      finally {
+        this.loadingGetDiagnosaIdrg = false
+      }
+    },
+    async getProsedurIdrg(payload) {
+      const noreg = payload?.noreg
+      const nomorSep = payload?.nomor_sep
+      if (!noreg || !nomorSep) return null
+
+      this.loadingGetDiagnosaIdrg = true
+      try {
+        const resp = await api.get('v1/simrs/penjaminan/klaim/prosedur-idrg/get', {
+          params: { noreg, nomor_sep: nomorSep }
+        })
+        const result = resp?.data ?? null
+        if (result?.success) {
+          this.formpasien.prosedurIdrg = normalizeIdrgItems(result?.items ?? result?.procedure)
+        }
+        return result
+      }
+      catch (error) {
+        notifErrVue(formatClaimError(error?.response?.data, error?.message, 'Gagal mengambil prosedur iDRG dari E-Klaim'))
+        return null
+      }
+      finally {
+        this.loadingGetDiagnosaIdrg = false
+      }
+    },
+    async groupingIdrg(payload) {
+      const noreg = payload?.noreg
+      if (!noreg || this.loadingGroupingIdrg === noreg) return null
+
+      this.loadingGroupingIdrg = noreg
+      try {
+        const resp = await api.post('v1/simrs/penjaminan/klaim/grouping-idrg', payload)
+        const result = resp?.data ?? null
+
+        if (result?.success) return result
+
+        notifErrVue(formatGroupingError(result))
+        return null
+      }
+      catch (error) {
+        notifErrVue(formatGroupingError(error?.response?.data, error?.message))
+        return null
+      }
+      finally {
+        this.loadingGroupingIdrg = null
+      }
+    },
     async getTarifKlaim(noreg, layanan = '') {
       if (!noreg) return null
 
@@ -156,7 +304,7 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
         if (this.noregTarifAktif === noreg) this.loadingTarifKlaim = false
       }
     },
-    async getKunjunganKlaim(noreg, layanan = '') {
+    async getKunjunganKlaim(noreg, layanan = '', silent = false) {
       if (!noreg) {
         this.kunjunganKlaim = null
         this.covid19Klaim = null
@@ -165,7 +313,7 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
         return null
       }
 
-      this.loadingKunjunganKlaim = true
+      if (!silent) this.loadingKunjunganKlaim = true
       try {
         const resp = await api.get('v1/simrs/penjaminan/klaim/kunjungan-klaim', {
           params: { noreg, layanan }
@@ -188,7 +336,7 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
         return null
       }
       finally {
-        this.loadingKunjunganKlaim = false
+        if (!silent) this.loadingKunjunganKlaim = false
       }
     },
     async getCaraMasuk() {
@@ -242,6 +390,7 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
         pencarianProsedur: '',
         diagnosaIdrg: [],
         prosedurIdrg: [],
+        topupDrug: '',
         hasilIdrg: null,
         tarif: {
           prosedurNonBedah: 0,
@@ -434,10 +583,10 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
     notifikasiError(msg) {
       notifErrVue(msg)
     },
-    async newclaim() {
-      this.loadingnewclaim = true
+    async newclaim(payload = null) {
+      this.loadingnewclaim = payload?.noreg ?? '__global__'
       try {
-        const resp = await api.post('v1/simrs/penjaminan/klaim/new-claim', this.formpasien, {
+        const resp = await api.post('v1/simrs/penjaminan/klaim/new-claim', payload ?? this.formpasien, {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
@@ -449,12 +598,210 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
       }
       catch (error) {
         this.newClaimResponse = null
-        notifErrVue(error?.response?.data?.message ?? 'Gagal membuat klaim baru')
+        notifErrVue(formatClaimError(error?.response?.data, error?.message, 'Gagal membuat klaim baru'))
         return null
       }
       finally {
-        this.loadingnewclaim = false
+        this.loadingnewclaim = null
       }
     }
   }
 })
+
+function normalizeIdrgItems(value) {
+  const rawItems = Array.isArray(value) ? value : (value?.diagnosa ?? value?.procedure ?? value?.items ?? value)
+  const items = typeof rawItems === 'string'
+    ? rawItems.split('#').map(item => item.trim()).filter(Boolean)
+    : rawItems
+  return Array.isArray(items)
+    ? items.map(item => {
+      const rawCode = item?.kode ?? item?.code ?? item?.code_diagnosa ?? item?.code_procedure ?? item
+      const match = typeof rawCode === 'string' ? rawCode.match(/^(.+?)(?:\+(\d+))?$/) : null
+      return {
+        kode: match?.[1] ?? rawCode,
+        jumlah: Number(item?.jumlah ?? match?.[2] ?? 1),
+        nama: item?.nama ?? item?.description ?? item?.diagnosa ?? item?.procedure ?? match?.[1] ?? item
+      }
+    }).filter(item => !['', '0', '#'].includes(String(item?.kode ?? '').trim()))
+    : []
+}
+
+function preserveIdrgLabels(items, previousItems) {
+  if (!items.length) return previousItems ?? []
+  const previousByCode = new Map((previousItems ?? []).map(item => [String(item?.kode ?? ''), item]))
+  return items.map(item => {
+    const previous = previousByCode.get(String(item?.kode ?? ''))
+    const labelIsCode = String(item?.nama ?? '') === String(item?.kode ?? '')
+    return previous && labelIsCode
+      ? { ...item, nama: previous.nama }
+      : item
+  })
+}
+
+function normalizeGrouping(value, explicitSpecialDrugOptions = []) {
+  if (!value || typeof value !== 'object') return null
+  const source = value.response_idrg ?? value.response?.response_idrg ?? value.response?.data ?? value
+  const specialOptions = normalizeSpecialCmgOptions(source)
+  const topupDrugOptions = explicitSpecialDrugOptions.length
+    ? explicitSpecialDrugOptions
+    : normalizeSpecialDrugOptions(source)
+  return {
+    info: formatIdrgInfo(source),
+    mdc: source.mdc_description ?? source.mdc ?? '-',
+    mdcCode: source.mdc_number ?? source.mdc_code ?? '-',
+    drg: source.drg_description ?? source.drg ?? '-',
+    drgCode: source.drg_code ?? '-',
+    costWeight: source.cost_weight ?? '-',
+    nbr: source.nbr ?? '-',
+    totalCostWeight: source.total_cost_weight ?? '-',
+    totalKlaim: source.total_tarif ?? source.total_klaim ?? source.total_claim ?? source.tarif ?? source.base_tariff ?? 0,
+    status: source.status_cd ?? source.status ?? '-',
+    topupDrug: source.drug_opt ?? '',
+    topupDrugCostWeight: source.topup_drug_cost_weight ?? source.drug_cost_weight ?? '-',
+    hasTopupDrug: topupDrugOptions.length > 0,
+    topupDrugOptions: mergeTopupDrugOptions(topupDrugOptions),
+    specialProcedureOptions: specialOptions.procedure,
+    specialProsthesisOptions: specialOptions.prosthesis,
+    specialInvestigationOptions: specialOptions.investigation,
+    specialDiagnosticOptions: specialOptions.diagnostic,
+    procedureOpt: source.procedure_opt ?? '',
+    prosthesisOpt: source.prosthesis_opt ?? '',
+    investigationOpt: source.investigation_opt ?? '',
+    topupProcedureCode: source.topup_procedure_code ?? '',
+    topupProcedureCostWeight: source.topup_procedure_cost_weight ?? '',
+    topupProsthesisCode: source.topup_prosthesis_code ?? '',
+    topupProsthesisCostWeight: source.topup_prosthesis_cost_weight ?? '',
+    topupInvestigationCode: source.topup_investigation_code ?? '',
+    topupInvestigationCostWeight: source.topup_investigation_cost_weight ?? ''
+  }
+}
+
+function normalizeSpecialCmgOptions(source) {
+  const raw = parseCmgOptions(source?.special_cmg_option_code ?? source?.opt_cmg)
+  const groups = { procedure: [], prosthesis: [], investigation: [], diagnostic: [] }
+  raw.forEach(option => {
+    const type = String(option?.type ?? '').trim().toLowerCase()
+    const group = type === 'special procedure' ? 'procedure'
+      : type === 'special prosthesis' ? 'prosthesis'
+        : type === 'special investigation' ? 'investigation'
+          : type === 'special diagnostic' ? 'diagnostic' : type
+    if (!groups[group]) return
+    const value = option?.code ?? option?.kode ?? option?.value ?? ''
+    if (value) groups[group].push({
+      label: option?.description ?? option?.nama ?? option?.label ?? value,
+      value
+    })
+  })
+  return groups
+}
+
+function normalizeSpecialDrugOptions(source) {
+  const specialDrug = source?.special_drug ?? source?.special_drugs ?? source?.drug_options
+  const cmgOptions = parseCmgOptions(source?.special_cmg_option_code ?? source?.opt_cmg)
+  const topupOptions = Array.isArray(source?.topup_options)
+    ? source.topup_options.filter(option => isSpecialDrug(option?.type))
+    : []
+  const specialDrugOptions = Array.isArray(specialDrug)
+    ? specialDrug
+    : cmgOptions.filter(option => isSpecialDrug(option?.type))
+  const rawOptions = specialDrugOptions.length ? specialDrugOptions : topupOptions
+  return rawOptions.map(option => {
+    if (typeof option === 'string') return { label: option, value: option }
+    const value = option?.code ?? option?.kode ?? option?.value ?? ''
+    const label = option?.description ?? option?.nama ?? option?.label ?? value
+    return { label, value }
+  }).filter(option => option.value)
+}
+
+function mergeTopupDrugOptions(options) {
+  const backendOptions = options.filter(option => option?.value)
+  const usedBackendOptions = new Set()
+  const defaults = DEFAULT_TOPUP_DRUG_OPTIONS.map(defaultOption => {
+    const index = backendOptions.findIndex(option => String(option.label).trim().toLowerCase() === defaultOption.label.toLowerCase())
+    if (index < 0) return defaultOption
+    usedBackendOptions.add(index)
+    return backendOptions[index]
+  })
+
+  return [...defaults, ...backendOptions.filter((_, index) => !usedBackendOptions.has(index))]
+}
+
+function isSpecialDrug(type) {
+  const normalized = String(type ?? '').trim().toLowerCase()
+  return normalized === 'drug' || normalized === 'special drug'
+}
+
+function parseCmgOptions(value) {
+  if (Array.isArray(value)) return value
+  if (typeof value !== 'string' || !value.trim()) return []
+  try {
+    return flattenCmgOptions(JSON.parse(value))
+  }
+  catch {
+    return []
+  }
+}
+
+function flattenCmgOptions(value) {
+  if (Array.isArray(value)) return value.flatMap(item => flattenCmgOptions(item))
+  if (!value || typeof value !== 'object') return []
+  if (value.code || value.kode || value.value || value.description || value.nama || value.label) return [value]
+  return Object.values(value).flatMap(item => flattenCmgOptions(item))
+}
+
+function formatIdrgInfo(value) {
+  const scriptVersion = String(value?.script_version ?? '').trim()
+  const logicVersion = value?.logic_version
+  if (scriptVersion && logicVersion) {
+    const date = new Date(logicVersion)
+    const tanggal = Number.isNaN(date.getTime())
+      ? String(logicVersion)
+      : new Intl.DateTimeFormat('id-ID', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      }).format(date).replace(',', '')
+    return `${scriptVersion} @ ${tanggal}`
+  }
+  return value?.info ?? value?.message ?? value?.created_at ?? '-'
+}
+
+function formatGroupingError(response, fallback = '') {
+  const backendMessage = response?.message
+  const eklaimMessage = response?.metadata?.message
+  const eklaimCode = response?.metadata?.code
+  const errorNo = response?.metadata?.error_no
+  const details = [
+    backendMessage && `Backend: ${backendMessage}`,
+    eklaimMessage && eklaimMessage !== backendMessage && `E-Klaim: ${eklaimMessage}`,
+    eklaimCode && `Kode: ${eklaimCode}`,
+    errorNo && `Error No: ${errorNo}`
+  ].filter(Boolean)
+
+  return details.join(' | ') || fallback || 'Gagal mengambil data grouping IDRG'
+}
+
+function formatClaimError(response, fallback = '', defaultMessage = 'Gagal memproses klaim') {
+  const validationErrors = Object.entries(response?.errors ?? {})
+    .flatMap(([field, messages]) => (Array.isArray(messages) ? messages : [messages])
+      .filter(Boolean)
+      .map(message => `${field}: ${message}`))
+  const backendMessage = response?.message
+  const eklaimMessage = response?.metadata?.message
+  const eklaimCode = response?.metadata?.code
+  const errorNo = response?.metadata?.error_no
+  const details = [
+    ...validationErrors,
+    backendMessage && !validationErrors.some(message => message.endsWith(`: ${backendMessage}`))
+      ? `Backend: ${backendMessage}`
+      : null,
+    eklaimMessage && eklaimMessage !== backendMessage ? `E-Klaim: ${eklaimMessage}` : null,
+    eklaimCode ? `Kode: ${eklaimCode}` : null,
+    errorNo ? `Error No: ${errorNo}` : null
+  ].filter(Boolean)
+
+  return details.join(' | ') || fallback || defaultMessage
+}

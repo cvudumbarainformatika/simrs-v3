@@ -8,8 +8,8 @@
 
     <q-card flat no-shadow square class="my-flex-1" style="overflow: hidden;">
       <q-scroll-area style="height: calc(100% - 1px);">
-        <ListPengajuanKlaim v-if="store.meta !== null" :items="store.items"
-          :loading="store.loading" :loading-terima="store.loadingTerima" @bukalayanan="bukaTindakan" />
+        <ListPengajuanKlaim v-if="store.meta !== null" :items="store.items" :loading="store.loading"
+          :loading-terima="store.loadingTerima" @bukalayanan="bukaTindakan" />
       </q-scroll-area>
       <div class=" absolute-bottom bg-primary text-white z-top">
         <footer-page :meta="store.meta" @go-to="store.goToPage" />
