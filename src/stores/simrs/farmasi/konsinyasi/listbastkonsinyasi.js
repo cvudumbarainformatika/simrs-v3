@@ -9,7 +9,7 @@ export const useListBastObatKonsinyasiStore = defineStore('list_bast_obat_konsin
     params: {
       q: '',
       page: 1,
-      per_page: 100,
+      per_page: 50,
       bast: 'belum',
       bayar: 'belum'
     },
@@ -73,9 +73,9 @@ export const useListBastObatKonsinyasiStore = defineStore('list_bast_obat_konsin
           this.meta = resp?.data?.meta ?? resp?.data
 
           if (this.items?.length) {
-            this.total.bast = this.items.reduce((a, b) => a + b.jumlah_bast, 0)
-            this.total.trans = this.items.reduce((a, b) => a + b.jumlah_konsi, 0)
-            this.total.bayar = this.items.reduce((a, b) => a + b.total_pembayaran, 0)
+            this.total.bast = this.items.reduce((a, b) => a + (parseFloat(b.jumlah_bast) || 0), 0)
+            this.total.trans = this.items.reduce((a, b) => a + (parseFloat(b.jumlah_konsi) || 0), 0)
+            this.total.bayar = this.items.reduce((a, b) => a + (parseFloat(b.total_pembayaran) || 0), 0)
           }
           console.log('items', this.items)
         })
