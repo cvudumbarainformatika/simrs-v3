@@ -3,7 +3,12 @@ const satset = {
   component: () => import('layouts/V2/IndexLayout.vue'),
   meta: { requireAuth: true },
   children: [
-    { path: '', redirect: '/satset/strukturorganisasi' },
+    { path: '', redirect: '/satset/dashboard' },
+    {
+      path: '/satset/dashboard',
+      name: 'satset.dashboard',
+      component: () => import('pages/satset/dashboard/IndexPage.vue')
+    },
     {
       path: '/satset/strukturorganisasi',
       name: 'satset.strukturorganisasi',
@@ -29,12 +34,10 @@ const satset = {
       name: 'satset.mapingkfa',
       component: () => import('pages/satset/mapingkfa/IndexPage.vue')
     },
-
     {
       path: '/satset/notfound',
       component: () => import('pages/MidlewareNotFound.vue')
     }
-
   ]
 }
 export default satset
