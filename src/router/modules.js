@@ -33,6 +33,7 @@ import mpp from './mpp'
 import penjaminan from './penjaminan'
 import homecare from './homecare'
 import anggaran from './anggaran'
+import spo from './spo'
 
 
 export {
@@ -40,5 +41,5 @@ export {
   masters, pendaftaran, percobaan, farmasi, poli, monitoring,
   kasir, dokumen, gudang, ptk, depo, ruangan, igd, ranap, satset,
   kamaroperasi, rehabmedik, hemodialisa, siasik, radiologi, rekammedik, cathlab, akuntansi,
-  ruangkonsul, unitpengelolaharsip, mpp, penjaminan, homecare, anggaran
+  ruangkonsul, unitpengelolaharsip, mpp, penjaminan, homecare, anggaran, spo
 }

@@ -60,6 +60,8 @@ export default defineConfig((ctx) => {
           // ? 'http://localhost:8000/storage/'
           ? 'http://192.168.150.111:3507'
           : 'http://192.168.150.111:3507',
+
+        SPO_DOCUMENT_HOST: process.env.SPO_DOCUMENT_HOST || 'http://192.168.100.100',
       },
 
       vueRouterMode: 'history', // available values: 'hash', 'history'
