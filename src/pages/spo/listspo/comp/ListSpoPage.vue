@@ -142,7 +142,7 @@ import { computed, onMounted } from 'vue'
 import { useSpoStore } from 'src/stores/spo/spo'
 
 const store = useSpoStore()
-const documentBaseUrl = `${process.env.API}/spo/uploadsxxxspo`
+const documentBaseUrl = `${process.env.PATHIMG}/storage/spo/uploadsxxxspo`
 
 const ownerOptions = computed(() => [...new Set(
   store.items.map(item => item?.pemilik?.trim()).filter(Boolean)
