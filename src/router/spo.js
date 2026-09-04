@@ -16,14 +16,13 @@ const spo = {
       component: () => import('pages/spo/listspo/IndexPage.vue')
     },
 
-    // Form SPO
     {
       path: 'form',
       name: 'spo.form',
-      component: () => import('pages/spo/formspo/IndexPage.vue')
+      component: () => import('pages/spo/listspo/IndexPage.vue')
     },
 
-// Not Found khusus SPO
+    // Not Found khusus SPO
     {
       path: 'notfound',
       name: 'spo.notfound',
