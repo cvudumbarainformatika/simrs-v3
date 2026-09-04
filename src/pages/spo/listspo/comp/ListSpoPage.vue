@@ -69,7 +69,8 @@
       @virtual-scroll="loadMoreWhenNeeded"
     >
       <template #default="{ item, index }">
-      <q-item :key="item.id" class="q-py-md">
+      <q-card :key="item.id" flat bordered class="spo-item-card q-mx-sm q-my-sm">
+      <q-item class="q-py-md">
         <q-item-section avatar top>
           <q-avatar color="blue-1" text-color="primary" icon="description" />
         </q-item-section>
@@ -116,6 +117,7 @@
           />
         </q-item-section>
       </q-item>
+      </q-card>
       </template>
     </q-virtual-scroll>
 
@@ -179,6 +181,11 @@ function loadMoreWhenNeeded ({ to }) {
 .spo-card {
   min-height: 320px;
   position: relative;
+}
+
+.spo-item-card {
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgb(28 78 121 / 7%);
 }
 
 .spo-list :deep(.q-item) {
