@@ -19,7 +19,7 @@ const spo = {
     {
       path: 'form',
       name: 'spo.form',
-      component: () => import('pages/spo/listspo/IndexPage.vue')
+      component: () => import('pages/spo/formspo/IndexPage.vue')
     },
 
     // Not Found khusus SPO
