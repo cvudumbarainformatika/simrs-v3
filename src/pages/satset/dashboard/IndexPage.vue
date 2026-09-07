@@ -24,7 +24,7 @@
                     no-caps
                     to="/satset/kunjungan"
                   />
-                  <!-- Button Filter Periode -->
+                  <!-- Button Filter Periode Header -->
                   <q-btn
                     outline
                     rounded
@@ -43,6 +43,7 @@
                         <div class="row q-gutter-xs q-mt-sm">
                           <q-btn size="xs" color="grey-3" text-color="dark" label="Hari Ini" no-caps @click="setFilterCepat('hari_ini')" />
                           <q-btn size="xs" color="grey-3" text-color="dark" label="7 Hari" no-caps @click="setFilterCepat('7_hari')" />
+                          <q-btn size="xs" color="grey-3" text-color="dark" label="30 Hari" no-caps @click="setFilterCepat('30_hari')" />
                           <q-btn size="xs" color="grey-3" text-color="dark" label="Bulan Ini" no-caps @click="setFilterCepat('bulan_ini')" />
                         </div>
                         <div class="row justify-end q-mt-md">
@@ -59,16 +60,20 @@
                     label="Refresh Data"
                     icon="icon-mat-refresh"
                     no-caps
-                    :loading="store.loadingSummary"
+                    :loading="store.loadingSummary || store.loadingResource"
                     @click="store.initDashboard()"
                   />
                 </div>
               </div>
-              <div class="col-12 col-md-4 text-right q-mt-md-none q-mt-lg">
-                <div class="header-stat-box">
-                  <div class="text-overline">Kepatuhan Pengiriman</div>
-                  <div class="text-h3 text-weight-bolder">{{ store.summary?.compliance_rate || '0%' }}</div>
-                  <div class="text-caption text-weight-bold">Update: {{ currentTime }}</div>
+              <div class="col-12 col-md-4 text-right q-mt-md q-mt-md-none">
+                <div class="header-stat-box text-center">
+                  <div class="text-h6 text-weight-medium">Kepatuhan Total</div>
+                  <div class="text-h2 text-weight-bolder q-my-xs text-white">
+                    {{ store.summary?.compliance_rate || '0%' }}
+                  </div>
+                  <div class="text-caption opacity-80">
+                    {{ formatNumber(store.summary?.total_terkirim) }} dari {{ formatNumber(store.summary?.total_kunjungan) }} Kunjungan
+                  </div>
                 </div>
               </div>
             </div>
@@ -76,178 +81,146 @@
             <div class="header-shape shape-1"></div>
             <div class="header-shape shape-2"></div>
           </q-card-section>
-          <q-inner-loading :showing="store.loadingSummary">
-            <q-spinner-dots size="50px" color="white" />
-          </q-inner-loading>
         </q-card>
       </div>
 
-      <!-- 4 Status Cards (100% Identik Radiologi) -->
-      <!-- Card 1: Total Kunjungan -->
-      <div class="col-12 col-sm-6 col-md-3">
-        <q-card flat class="stat-card border-radius-15 transition-hover shadow-sm">
-          <q-card-section class="row items-center no-wrap">
-            <div class="col">
-              <div class="text-overline text-grey-7">TOTAL KUNJUNGAN</div>
-              <div class="text-h5 text-weight-bolder text-primary">{{ formatNumber(store.summary?.total_kunjungan) }}</div>
-              <div class="text-caption text-weight-bold text-blue items-center flex q-mt-xs">
-                <q-icon name="icon-mat-receipt" size="xs" class="q-mr-xs" />
-                Kunjungan SIMRS
-              </div>
+      <!-- =========================================================================
+           SECTION 1: RINGKASAN TRANSAKSI FHIR (100% PERSIS SATUSEHAT PORTAL KEMKES)
+           ========================================================================= -->
+      <div class="col-12">
+        <q-card flat class="bg-white border-radius-15 shadow-sm q-pa-lg">
+          
+          <!-- Header Bar: Title + Badges + Modul Filters + Period Selector -->
+          <div class="row items-center justify-between q-col-gutter-md q-mb-md">
+            
+            <!-- Left Side: Title & Info Badge -->
+            <div class="col-12 col-lg-5 row items-center q-gutter-sm">
+              <span class="text-h6 text-weight-bolder text-grey-9">Ringkasan transaksi FHIR</span>
+              <q-badge
+                rounded
+                class="q-px-sm q-py-xs cursor-pointer badge-penjelasan"
+                @click="dialogPenjelasan = true"
+              >
+                <span class="text-weight-medium">Lihat Penjelasan &rsaquo;</span>
+              </q-badge>
             </div>
-            <div class="col-auto">
-              <q-avatar color="primary" text-color="white" icon="icon-mat-receipt" size="50px" class="shadow-2" />
-            </div>
-          </q-card-section>
-          <q-inner-loading :showing="store.loadingSummary">
-            <q-spinner-oval size="20px" color="primary" />
-          </q-inner-loading>
-        </q-card>
-      </div>
 
-      <!-- Card 2: Terkirim Sukses -->
-      <div class="col-12 col-sm-6 col-md-3">
-        <q-card flat class="stat-card border-radius-15 transition-hover shadow-sm">
-          <q-card-section class="row items-center no-wrap">
-            <div class="col">
-              <div class="text-overline text-grey-7">TERKIRIM SUKSES</div>
-              <div class="text-h5 text-weight-bolder text-teal-9">{{ formatNumber(store.summary?.total_terkirim) }}</div>
-              <div class="text-caption text-weight-bold text-teal items-center flex q-mt-xs">
-                <q-icon name="icon-mat-check_circle" size="xs" class="q-mr-xs" />
-                Bundle Sukses (201)
-              </div>
-            </div>
-            <div class="col-auto">
-              <q-avatar color="teal" text-color="white" icon="icon-mat-cloud_done" size="50px" class="shadow-2" />
-            </div>
-          </q-card-section>
-          <q-inner-loading :showing="store.loadingSummary">
-            <q-spinner-oval size="20px" color="teal" />
-          </q-inner-loading>
-        </q-card>
-      </div>
+            <!-- Right Side: Filter Modul (Semua, Rajal, Ranap, IGD) + Periode Dropdown + Date Range -->
+            <div class="col-12 col-lg-7 row items-center justify-end q-gutter-sm">
+              
+              <!-- Pilihan Filter Modul (Pill Button Group) -->
+              <q-btn-toggle
+                v-model="store.filterJenis"
+                no-caps
+                rounded
+                unelevated
+                dense
+                toggle-color="teal-8"
+                toggle-text-color="white"
+                color="grey-2"
+                text-color="grey-8"
+                class="q-px-xs text-weight-bold"
+                :options="[
+                  { label: 'Semua', value: 'all' },
+                  { label: 'Rawat Jalan', value: 'rajal' },
+                  { label: 'Rawat Inap', value: 'ranap' },
+                  { label: 'IGD', value: 'igd' }
+                ]"
+                @update:model-value="store.setFilterJenis($event)"
+              />
 
-      <!-- Card 3: Resource FHIR -->
-      <div class="col-12 col-sm-6 col-md-3">
-        <q-card flat class="stat-card border-radius-15 transition-hover shadow-sm">
-          <q-card-section class="row items-center no-wrap">
-            <div class="col">
-              <div class="text-overline text-grey-7">RESOURCE FHIR</div>
-              <div class="text-h5 text-weight-bolder text-purple-9">{{ formatNumber(store.totalResourceTerkirim) }}</div>
-              <div class="text-caption text-weight-bold text-purple items-center flex q-mt-xs">
-                <q-icon name="icon-mat-hub" size="xs" class="q-mr-xs" />
-                Entry Resource Aktif
-              </div>
-            </div>
-            <div class="col-auto">
-              <q-avatar color="purple" text-color="white" icon="icon-mat-dataset" size="50px" class="shadow-2" />
-            </div>
-          </q-card-section>
-          <q-inner-loading :showing="store.loadingResource">
-            <q-spinner-oval size="20px" color="purple" />
-          </q-inner-loading>
-        </q-card>
-      </div>
+              <!-- Dropdown Periode Cepat -->
+              <q-select
+                v-model="selectedPeriodeCepat"
+                dense
+                outlined
+                rounded
+                options-dense
+                class="bg-white"
+                style="width: 160px;"
+                :options="[
+                  { label: '30 hari ke belakang', value: '30_hari' },
+                  { label: '7 hari ke belakang', value: '7_hari' },
+                  { label: 'Bulan ini', value: 'bulan_ini' },
+                  { label: 'Hari ini', value: 'hari_ini' }
+                ]"
+                @update:model-value="onSelectPeriodeCepat($event)"
+              />
 
-      <!-- Card 4: Gagal / Error -->
-      <div class="col-12 col-sm-6 col-md-3">
-        <q-card flat class="stat-card border-radius-15 transition-hover shadow-sm">
-          <q-card-section class="row items-center no-wrap">
-            <div class="col">
-              <div class="text-overline text-grey-7">GAGAL / ERROR</div>
-              <div class="text-h5 text-weight-bolder text-orange-9">{{ formatNumber(store.summary?.total_error) }}</div>
-              <div class="text-caption text-weight-bold text-orange-9 items-center flex q-mt-xs">
-                <q-icon name="icon-mat-warning" size="xs" class="q-mr-xs" />
-                Perlu Tindak Lanjut
-              </div>
-            </div>
-            <div class="col-auto">
-              <q-avatar color="orange-9" text-color="white" icon="icon-mat-error_outline" size="50px" class="shadow-2" />
-            </div>
-          </q-card-section>
-          <q-inner-loading :showing="store.loadingSummary">
-            <q-spinner-oval size="20px" color="orange-9" />
-          </q-inner-loading>
-        </q-card>
-      </div>
-
-      <!-- Visualizations Row (100% Identik Radiologi 8 cols vs 4 cols) -->
-      <!-- Left: Horizontal Bar Chart Resource FHIR (8 cols) -->
-      <div class="col-12 col-md-8">
-        <q-card flat class="border-radius-15 shadow-sm full-height">
-          <q-card-section class="row items-center q-pb-none">
-            <div class="text-subtitle1 text-weight-bold">Rincian Resource FHIR Terkirim ke SatuSehat</div>
-            <q-space />
-            <q-badge outline color="primary" :label="`${store.resourceStats.length} Resource`" />
-          </q-card-section>
-          <q-card-section>
-            <div v-if="!store.resourceStats?.length && !store.loadingResource" class="text-center q-pa-xl text-grey-6">
-              Belum ada data resource pada periode ini.
-            </div>
-            <div v-else>
-              <apexchart type="bar" height="320" :options="chartOptionsResources" :series="seriesResources" />
-            </div>
-          </q-card-section>
-          <q-inner-loading :showing="store.loadingResource">
-            <q-spinner-box size="50px" color="primary" />
-          </q-inner-loading>
-        </q-card>
-      </div>
-
-      <!-- Right: Donut Chart & Top 5 Errors List (4 cols) -->
-      <div class="col-12 col-md-4">
-        <div class="column q-gutter-lg">
-          <!-- Donut Chart Komposisi Pengiriman Modul -->
-          <q-card flat class="border-radius-15 shadow-sm">
-            <q-card-section class="q-pb-none text-center">
-              <div class="text-subtitle1 text-weight-bold">Komposisi Pengiriman Modul</div>
-            </q-card-section>
-            <q-card-section>
-              <apexchart type="donut" height="240" :options="chartOptionsDonutModul" :series="seriesDonutModul" />
-            </q-card-section>
-            <q-inner-loading :showing="store.loadingSummary">
-              <q-spinner-pie size="50px" color="primary" />
-            </q-inner-loading>
-          </q-card>
-
-          <!-- Top 5 Errors List (Identik Top Ruangan Radiologi) -->
-          <q-card flat class="border-radius-15 shadow-sm overflow-hidden">
-            <q-card-section class="bg-teal-9 text-white q-pa-sm row items-center">
-              <q-icon name="icon-mat-error_outline" size="sm" class="q-mr-sm" />
-              <div class="text-subtitle2">Top 5 Penyebab Error</div>
-            </q-card-section>
-            <q-list separator class="scroll" style="max-height: 200px;">
-              <div v-if="!store.topErrors?.length && !store.loadingErrorStats" class="text-center q-pa-md text-grey-6 text-caption">
-                Tidak ada catatan error pada periode ini.
-              </div>
-              <q-item v-for="(err, idx) in top5Errors" :key="idx" class="q-py-sm items-center no-wrap" style="max-width: 100%; overflow: hidden;">
-                <q-item-section avatar style="min-width: 32px; max-width: 32px; flex-shrink: 0;">
-                  <q-avatar size="26px" color="teal-1" text-color="teal-9" class="text-weight-bold f-12">
-                    {{ idx + 1 }}
-                  </q-avatar>
-                </q-item-section>
-                <q-item-section style="min-width: 0; overflow: hidden; flex: 1 1 auto;">
-                  <div class="text-weight-bold f-12 text-grey-9 ellipsis" style="width: 100%; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                    {{ truncateText(err.pesan_error, 40) }}
+              <!-- Date Range Display Box with Calendar Popup -->
+              <q-btn
+                outline
+                rounded
+                dense
+                color="grey-7"
+                class="q-px-md bg-white text-caption text-weight-medium"
+                no-caps
+              >
+                <div class="row items-center no-wrap">
+                  <span class="q-mr-sm">{{ formattedDateRange }}</span>
+                  <q-icon name="icon-mat-event" size="18px" color="grey-7" />
+                </div>
+                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                  <div class="q-pa-md bg-white" style="min-width: 280px;">
+                    <div class="text-subtitle2 text-weight-bold text-teal-8 q-mb-sm">Atur Custom Periode</div>
+                    <div class="q-gutter-sm">
+                      <q-input v-model="store.tglAwal" type="date" dense outlined label="Tanggal Awal" />
+                      <q-input v-model="store.tglAkhir" type="date" dense outlined label="Tanggal Akhir" />
+                    </div>
+                    <div class="row justify-end q-mt-md">
+                      <q-btn v-close-popup label="Terapkan" color="teal-8" dense class="q-px-md" @click="store.initDashboard()" />
+                    </div>
                   </div>
-                  <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, 5]">{{ err.pesan_error }}</q-tooltip>
-                </q-item-section>
-                <q-item-section side style="flex-shrink: 0;">
-                  <q-chip dense color="orange-1" text-color="orange-9" class="text-weight-bold f-10 q-ma-none" :label="`${err.total} Kasus`" />
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-card>
-        </div>
+                </q-popup-proxy>
+              </q-btn>
+
+            </div>
+          </div>
+
+          <!-- Subtitle / Last Update Timestamp -->
+          <div class="row justify-end q-mb-lg">
+            <span class="text-caption text-grey-7">
+              Update data terakhir: <b class="text-grey-9">{{ store.lastUpdated || formattedCurrentDate }}</b>
+            </span>
+          </div>
+
+          <!-- Loading Indicator -->
+          <q-inner-loading :showing="store.loadingResource">
+            <q-spinner-dots size="40px" color="teal-8" />
+          </q-inner-loading>
+
+          <!-- 19 FHIR Resource Cards Grid (4 Kolom Sesuai Screenshot SatuSehat) -->
+          <div class="row q-col-gutter-md">
+            <div
+              v-for="card in fhirCardList"
+              :key="card.key"
+              class="col-12 col-sm-6 col-md-3"
+            >
+              <q-card flat class="fhir-resource-card full-height">
+                <q-card-section class="q-pa-md column justify-between full-height">
+                  <div class="text-body2 text-weight-medium text-grey-8 q-mb-sm">
+                    {{ card.label }}
+                  </div>
+                  <div class="text-h4 text-weight-bolder text-satset-teal">
+                    {{ formatFhirValue(store.cardGrid?.[card.key]) }}
+                  </div>
+                </q-card-section>
+              </q-card>
+            </div>
+          </div>
+
+        </q-card>
       </div>
 
-      <!-- 3 Modul Kepatuhan (Rawat Jalan, Rawat Inap, IGD) -->
+      <!-- =========================================================================
+           SECTION 2: MODUL BREAKDOWN CARDS (Rajal, Ranap, IGD)
+           ========================================================================= -->
       <div class="col-12 col-md-4">
         <q-card flat class="border-radius-15 shadow-sm transition-hover">
           <q-card-section class="q-pa-md">
             <div class="row items-center justify-between no-wrap">
               <div class="row items-center no-wrap">
-                <q-avatar color="blue-1" text-color="primary" icon="icon-mat-medical_services" size="36px" class="q-mr-sm" />
+                <q-avatar color="blue-1" text-color="primary" icon="icon-mat-airline_seat_recline_normal" size="36px" class="q-mr-sm" />
                 <div>
                   <div class="text-subtitle1 text-weight-bold text-dark">Rawat Jalan (Rajal)</div>
                   <div class="text-caption text-grey-6">Poliklinik & Spesialis</div>
@@ -329,21 +302,133 @@
         </q-card>
       </div>
 
+      <!-- =========================================================================
+           SECTION 3: ANALITIK KEPATUHAN & TOP 5 ERROR RESPON
+           ========================================================================= -->
+      <div class="col-12 col-lg-8">
+        <q-card flat class="bg-white border-radius-15 shadow-sm q-pa-md full-height">
+          <q-card-section>
+            <div class="row items-center justify-between q-mb-md">
+              <div>
+                <div class="text-h6 text-weight-bolder text-grey-9">Distribusi Volume Resource Terkirim</div>
+                <div class="text-caption text-grey-6">Perbandingan jumlah resource FHIR yang berhasil terbridging</div>
+              </div>
+              <q-badge color="teal-8" class="q-pa-xs text-weight-bold">
+                Total: {{ formatNumber(store.totalResourceTerkirim) }} Resource
+              </q-badge>
+            </div>
+            <div v-if="store.resourceStats && store.resourceStats.length > 0" style="min-height: 280px;">
+              <apexchart
+                type="bar"
+                height="280"
+                :options="chartOptionsResources"
+                :series="seriesResources"
+              />
+            </div>
+            <div v-else class="text-center text-grey-5 q-py-xl">
+              Belum ada data resource FHIR pada periode ini
+            </div>
+          </q-card-section>
+        </q-card>
+      </div>
+
+      <div class="col-12 col-lg-4">
+        <q-card flat class="bg-white border-radius-15 shadow-sm q-pa-md full-height">
+          <q-card-section>
+            <div class="text-h6 text-weight-bolder text-grey-9 q-mb-xs">Top 5 Respon Error</div>
+            <div class="text-caption text-grey-6 q-mb-md">Kendala validasi data SatuSehat paling sering</div>
+
+            <div v-if="top5Errors && top5Errors.length > 0">
+              <q-list separator dense>
+                <q-item v-for="(err, idx) in top5Errors" :key="idx" class="q-py-sm">
+                  <q-item-section avatar top style="min-width: 28px;">
+                    <q-badge rounded color="negative" :label="idx + 1" />
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label class="text-weight-bold text-caption text-grey-9 ellipsis-2-lines">
+                      {{ truncateText(err.pesan_error, 45) }}
+                    </q-item-label>
+                    <q-item-label caption class="text-grey-6">
+                      Terjadi sebanyak {{ formatNumber(err.total) }} kali
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </div>
+            <div v-else class="text-center text-grey-5 q-py-xl">
+              <q-icon name="icon-mat-check_circle" size="36px" color="teal-5" class="q-mb-sm" />
+              <div>Tidak ada respon error pada periode ini</div>
+            </div>
+          </q-card-section>
+        </q-card>
+      </div>
+
     </div>
+
+    <!-- Dialog Penjelasan FHIR Resource -->
+    <q-dialog v-model="dialogPenjelasan">
+      <q-card style="min-width: 480px; max-width: 600px;" class="border-radius-15">
+        <q-card-section class="row items-center justify-between q-pb-none">
+          <div class="text-h6 text-weight-bold text-teal-9">Tentang Transaksi FHIR SatuSehat</div>
+          <q-btn v-close-popup icon="icon-mat-close" flat round dense />
+        </q-card-section>
+        <q-card-section class="q-pa-md text-body2 text-grey-8">
+          <p>
+            <b>HL7 FHIR (Fast Healthcare Interoperability Resources)</b> adalah standar pertukaran data kesehatan digital yang digunakan oleh Kementerian Kesehatan Republik Indonesia pada platform <b>SatuSehat</b>.
+          </p>
+          <p>
+            Setiap kunjungan medis pasien dipecah menjadi beberapa resource standar, antara lain:
+          </p>
+          <ul class="q-pl-md">
+            <li><b>Encounter:</b> Riwayat kunjungan admisi, poli, bangsal, atau IGD.</li>
+            <li><b>Condition:</b> Diagnosa medis ICD-10 (utama dan sekunder).</li>
+            <li><b>Observation:</b> Tanda vital (TTV), hasil lab, dan observasi fisik.</li>
+            <li><b>Procedure:</b> Tindakan medis / keperawatan / operasi ICD-9-CM.</li>
+            <li><b>Medication & Dispense:</b> Resep dan pemberian obat berbasis KFA Kemenkes.</li>
+            <li><b>ImagingStudy & ServiceRequest:</b> Radiologi DICOM dan order penunjang.</li>
+          </ul>
+        </q-card-section>
+        <q-card-actions align="right" class="q-pa-md">
+          <q-btn v-close-popup flat label="Tutup" color="teal-9" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
   </q-page>
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useSatsetDashboardStore } from 'src/stores/satset/dashboard'
 import { date } from 'quasar'
 
 const store = useSatsetDashboardStore()
 
-const currentTime = computed(() => {
-  const now = new Date()
-  return now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
-})
+const dialogPenjelasan = ref(false)
+const selectedPeriodeCepat = ref({ label: '30 hari ke belakang', value: '30_hari' })
+
+/* 19 Standard FHIR Resource Cards List (Urutan Persis Screenshot Kemenkes) */
+const fhirCardList = [
+  { key: 'Encounter', label: 'Encounter' },
+  { key: 'Condition', label: 'Condition' },
+  { key: 'Observation', label: 'Observation' },
+  { key: 'Procedure', label: 'Procedure' },
+  { key: 'Composition', label: 'Composition' },
+  { key: 'Medication', label: 'Medication' },
+  { key: 'MedicationRequest', label: 'MedicationRequest' },
+  { key: 'MedicationDispense', label: 'MedicationDispense' },
+  { key: 'AllergyIntolerance', label: 'AllergyIntolerance' },
+  { key: 'ImagingStudy', label: 'ImagingStudy' },
+  { key: 'ServiceRequest', label: 'ServiceRequest' },
+  { key: 'ClinicalImpression', label: 'ClinicalImpression' },
+  { key: 'Immunization', label: 'Immunization' },
+  { key: 'QuestionnaireResponse', label: 'QuestionnaireResponse' },
+  { key: 'MedicationStatement', label: 'MedicationStatement' },
+  { key: 'CarePlan', label: 'CarePlan' },
+  { key: 'Specimen', label: 'Specimen' },
+  { key: 'DiagnosticReport', label: 'DiagnosticReport' },
+  { key: 'EpisodeOfCare', label: 'EpisodeOfCare' }
+]
 
 const currentMonthYear = computed(() => {
   const now = new Date()
@@ -358,6 +443,14 @@ const periodeBtnLabel = computed(() => {
   return `Periode: ${date.formatDate(store.tglAwal, 'DD/MM')} - ${date.formatDate(store.tglAkhir, 'DD/MM/YYYY')}`
 })
 
+const formattedDateRange = computed(() => {
+  return `${date.formatDate(store.tglAwal, 'MMM DD, YYYY')} - ${date.formatDate(store.tglAkhir, 'MMM DD, YYYY')}`
+})
+
+const formattedCurrentDate = computed(() => {
+  return date.formatDate(Date.now(), 'DD MMMM YYYY, HH:mm') + ' WIB'
+})
+
 const top5Errors = computed(() => {
   return (store.topErrors || []).slice(0, 5)
 })
@@ -365,6 +458,11 @@ const top5Errors = computed(() => {
 onMounted(() => {
   store.initDashboard()
 })
+
+function formatFhirValue(val) {
+  if (val === undefined || val === null || val === 0) return '-'
+  return formatNumber(val)
+}
 
 function truncateText(text, maxLen = 40) {
   if (!text) return '-'
@@ -382,6 +480,10 @@ function getRateValue(rateStr) {
   return isNaN(num) ? 0 : num / 100
 }
 
+function onSelectPeriodeCepat(opt) {
+  setFilterCepat(opt?.value || '30_hari')
+}
+
 function setFilterCepat(tipe) {
   const now = Date.now()
   if (tipe === 'hari_ini') {
@@ -391,6 +493,10 @@ function setFilterCepat(tipe) {
     const tujuhHariLalu = date.formatDate(date.subtractFromDate(now, { days: 7 }), 'YYYY-MM-DD')
     const today = date.formatDate(now, 'YYYY-MM-DD')
     store.setPeriode(tujuhHariLalu, today)
+  } else if (tipe === '30_hari') {
+    const tigaPuluhHariLalu = date.formatDate(date.subtractFromDate(now, { days: 30 }), 'YYYY-MM-DD')
+    const today = date.formatDate(now, 'YYYY-MM-DD')
+    store.setPeriode(tigaPuluhHariLalu, today)
   } else if (tipe === 'bulan_ini') {
     const awalBulan = date.formatDate(date.startOfDate(now, 'month'), 'YYYY-MM-DD')
     const akhirBulan = date.formatDate(date.endOfDate(now, 'month'), 'YYYY-MM-DD')
@@ -399,7 +505,7 @@ function setFilterCepat(tipe) {
 }
 
 /* =========================================================================
-   APEXCHART 1: Rincian Resource FHIR Terkirim (Horizontal Bar)
+   APEXCHART: Horizontal Bar Chart Resource Distribution
    ========================================================================= */
 const seriesResources = computed(() => [
   {
@@ -422,7 +528,7 @@ const chartOptionsResources = computed(() => ({
       distributed: true
     }
   },
-  colors: ['#027BE3', '#1565C0', '#1976D2', '#0288D1', '#0097A7', '#00897B', '#2E7D32', '#558B2F', '#F9A825', '#EF6C00'],
+  colors: ['#00A896', '#0288D1', '#1976D2', '#0097A7', '#00897B', '#2E7D32', '#558B2F', '#F9A825', '#EF6C00'],
   dataLabels: {
     enabled: true,
     style: { fontSize: '11px', fontWeight: 'bold' }
@@ -432,46 +538,6 @@ const chartOptionsResources = computed(() => ({
   },
   legend: { show: false }
 }))
-
-/* =========================================================================
-   APEXCHART 2: Komposisi Pengiriman Modul (Donut Top 6)
-   ========================================================================= */
-const seriesDonutModul = computed(() => {
-  const rajal = Number(store.detailModul?.rajal?.terkirim) || 0
-  const ranap = Number(store.detailModul?.ranap?.terkirim) || 0
-  const igd = Number(store.detailModul?.igd?.terkirim) || 0
-  if (rajal === 0 && ranap === 0 && igd === 0) return [1]
-  return [rajal, ranap, igd]
-})
-
-const chartOptionsDonutModul = computed(() => {
-  const rajal = Number(store.detailModul?.rajal?.terkirim) || 0
-  const ranap = Number(store.detailModul?.ranap?.terkirim) || 0
-  const igd = Number(store.detailModul?.igd?.terkirim) || 0
-  const isEmpty = rajal === 0 && ranap === 0 && igd === 0
-
-  return {
-    labels: isEmpty ? ['Belum Ada Data'] : ['Rawat Jalan', 'Rawat Inap', 'IGD'],
-    colors: ['#027BE3', '#21BA45', '#EF6C00'],
-    stroke: { width: 0 },
-    legend: { position: 'bottom' },
-    plotOptions: {
-      pie: {
-        donut: {
-          size: '70%',
-          labels: {
-            show: true,
-            total: {
-              show: true,
-              label: 'Total Sukses',
-              formatter: () => formatNumber(store.summary?.total_terkirim || 0)
-            }
-          }
-        }
-      }
-    }
-  }
-})
 </script>
 
 <style lang="scss" scoped>
@@ -520,11 +586,43 @@ const chartOptionsDonutModul = computed(() => {
   border-radius: 15px;
 }
 
+/* Badge Lihat Penjelasan (Persis SatuSehat Kemenkes) */
+.badge-penjelasan {
+  background: #E6F7F5;
+  color: #00A896;
+  border: 1px solid rgba(0, 168, 150, 0.25);
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background: #00A896;
+    color: #ffffff;
+  }
+}
+
+/* 19 FHIR Resource Card Style */
+.fhir-resource-card {
+  background: #ffffff;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  min-height: 105px;
+  transition: all 0.25s ease-in-out;
+
+  &:hover {
+    border-color: #00A896;
+    box-shadow: 0 4px 12px rgba(0, 168, 150, 0.12);
+    transform: translateY(-2px);
+  }
+}
+
+.text-satset-teal {
+  color: #00A896 !important;
+}
+
 .transition-hover {
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
   &:hover {
-    transform: translateY(-5px);
+    transform: translateY(-4px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08) !important;
   }
 }

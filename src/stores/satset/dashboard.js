@@ -16,7 +16,7 @@ export const useSatsetDashboardStore = defineStore('satset_dashboard_store', {
     activeTab: 'kunjungan', // 'kunjungan' | 'error' | 'resources'
     filterJenis: 'all', // 'all' | 'rajal' | 'ranap' | 'igd'
 
-    tglAwal: date.formatDate(Date.now(), 'YYYY-MM-DD'),
+    tglAwal: date.formatDate(date.subtractFromDate(Date.now(), { days: 30 }), 'YYYY-MM-DD'),
     tglAkhir: date.formatDate(Date.now(), 'YYYY-MM-DD'),
     searchQuery: '',
     searchQueryError: '',
@@ -34,6 +34,28 @@ export const useSatsetDashboardStore = defineStore('satset_dashboard_store', {
     },
 
     resourceStats: [],
+    cardGrid: {
+      Encounter: 0,
+      Condition: 0,
+      Observation: 0,
+      Procedure: 0,
+      Composition: 0,
+      Medication: 0,
+      MedicationRequest: 0,
+      MedicationDispense: 0,
+      AllergyIntolerance: 0,
+      ImagingStudy: 0,
+      ServiceRequest: 0,
+      ClinicalImpression: 0,
+      Immunization: 0,
+      QuestionnaireResponse: 0,
+      MedicationStatement: 0,
+      CarePlan: 0,
+      Specimen: 0,
+      DiagnosticReport: 0,
+      EpisodeOfCare: 0
+    },
+    lastUpdated: '',
     totalResourceTerkirim: 0,
     totalTransaksiBundle: 0,
 
@@ -102,6 +124,8 @@ export const useSatsetDashboardStore = defineStore('satset_dashboard_store', {
         })
         if (resp?.data?.status === 'success') {
           this.resourceStats = resp.data.detail_resource || []
+          this.cardGrid = resp.data.card_grid || this.cardGrid
+          this.lastUpdated = resp.data.last_updated || date.formatDate(Date.now(), 'DD MMMM YYYY, HH:mm') + ' WIB'
           this.totalResourceTerkirim = resp.data.total_resource_terkirim || 0
           this.totalTransaksiBundle = resp.data.total_transaksi_bundle || 0
         }
@@ -219,7 +243,6 @@ export const useSatsetDashboardStore = defineStore('satset_dashboard_store', {
         })
         if (resp?.data?.status === 'success') {
           notifSuccess({ message: `Berhasil memproses kirim ulang no. reg ${noreg}` })
-          // Refresh data
           this.getSummary()
           this.getResourceStats()
           this.getErrorStats()
