@@ -24,6 +24,17 @@
                     no-caps
                     to="/satset/kunjungan"
                   />
+                  <!-- Button Audit Log & Rekonsiliasi -->
+                  <q-btn
+                    unelevated
+                    rounded
+                    color="teal-8"
+                    text-color="white"
+                    label="Audit Log"
+                    icon="icon-mat-fact_check"
+                    no-caps
+                    to="/satset/audit"
+                  />
                   <!-- Button Filter Periode Header -->
                   <q-btn
                     outline
