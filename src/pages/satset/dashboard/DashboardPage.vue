@@ -10,19 +10,14 @@
               <div class="col-12 col-md-7">
                 <div class="text-h4 text-weight-bold q-mb-xs">Dashboard SatuSehat Kemkes 🇮🇩</div>
                 <div class="text-subtitle1 opacity-80">
-                  Ringkasan visual dan analitik kepatuhan pengiriman data Rawat Jalan, Rawat Inap, dan IGD ke platform SatuSehat (Periode {{ currentMonthYear }}).
+                  Ringkasan visual dan analitik kepatuhan pengiriman data Rawat Jalan, Rawat Inap, HD dan IGD ke
+                  platform
+                  SatuSehat (Periode {{ currentMonthYear }}).
                 </div>
                 <div class="q-mt-lg flex q-gutter-sm">
                   <!-- Button Filter Periode -->
-                  <q-btn
-                    unelevated
-                    rounded
-                    color="white"
-                    text-color="primary"
-                    :label="periodeBtnLabel"
-                    icon="icon-mat-event"
-                    no-caps
-                  >
+                  <q-btn unelevated rounded color="white" text-color="primary" :label="periodeBtnLabel"
+                    icon="icon-mat-event" no-caps>
                     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
                       <div class="q-pa-md bg-white" style="min-width: 280px;">
                         <div class="text-subtitle2 text-weight-bold text-primary q-mb-sm">Pilih Rentang Tanggal</div>
@@ -31,27 +26,23 @@
                           <q-input v-model="store.tglAkhir" type="date" dense outlined label="Tgl Akhir" />
                         </div>
                         <div class="row q-gutter-xs q-mt-sm">
-                          <q-btn size="xs" color="grey-3" text-color="dark" label="Hari Ini" no-caps @click="setFilterCepat('hari_ini')" />
-                          <q-btn size="xs" color="grey-3" text-color="dark" label="7 Hari" no-caps @click="setFilterCepat('7_hari')" />
-                          <q-btn size="xs" color="grey-3" text-color="dark" label="Bulan Ini" no-caps @click="setFilterCepat('bulan_ini')" />
+                          <q-btn size="xs" color="grey-3" text-color="dark" label="Hari Ini" no-caps
+                            @click="setFilterCepat('hari_ini')" />
+                          <q-btn size="xs" color="grey-3" text-color="dark" label="7 Hari" no-caps
+                            @click="setFilterCepat('7_hari')" />
+                          <q-btn size="xs" color="grey-3" text-color="dark" label="Bulan Ini" no-caps
+                            @click="setFilterCepat('bulan_ini')" />
                         </div>
                         <div class="row justify-end q-mt-md">
-                          <q-btn v-close-popup label="Terapkan" color="primary" dense class="q-px-md" @click="store.initDashboard()" />
+                          <q-btn v-close-popup label="Terapkan" color="primary" dense class="q-px-md"
+                            @click="store.initDashboard()" />
                         </div>
                       </div>
                     </q-popup-proxy>
                   </q-btn>
                   <!-- Button Refresh Data -->
-                  <q-btn
-                    outline
-                    rounded
-                    color="white"
-                    label="Refresh Data"
-                    icon="icon-mat-refresh"
-                    no-caps
-                    :loading="store.loadingSummary"
-                    @click="store.initDashboard()"
-                  />
+                  <q-btn outline rounded color="white" label="Refresh Data" icon="icon-mat-refresh" no-caps
+                    :loading="store.loadingSummary" @click="store.initDashboard()" />
                 </div>
               </div>
               <div class="col-12 col-md-4 text-right q-mt-md-none q-mt-lg">
@@ -79,7 +70,8 @@
           <q-card-section class="row items-center no-wrap">
             <div class="col">
               <div class="text-overline text-grey-7">TOTAL KUNJUNGAN</div>
-              <div class="text-h5 text-weight-bolder text-primary">{{ formatNumber(store.summary?.total_kunjungan) }}</div>
+              <div class="text-h5 text-weight-bolder text-primary">{{ formatNumber(store.summary?.total_kunjungan) }}
+              </div>
               <div class="text-caption text-weight-bold text-blue items-center flex q-mt-xs">
                 <q-icon name="icon-mat-receipt" size="xs" class="q-mr-xs" />
                 Kunjungan SIMRS
@@ -101,7 +93,8 @@
           <q-card-section class="row items-center no-wrap">
             <div class="col">
               <div class="text-overline text-grey-7">TERKIRIM SUKSES</div>
-              <div class="text-h5 text-weight-bolder text-teal-9">{{ formatNumber(store.summary?.total_terkirim) }}</div>
+              <div class="text-h5 text-weight-bolder text-teal-9">{{ formatNumber(store.summary?.total_terkirim) }}
+              </div>
               <div class="text-caption text-weight-bold text-teal items-center flex q-mt-xs">
                 <q-icon name="icon-mat-check_circle" size="xs" class="q-mr-xs" />
                 Bundle Sukses (201)
@@ -123,7 +116,8 @@
           <q-card-section class="row items-center no-wrap">
             <div class="col">
               <div class="text-overline text-grey-7">RESOURCE FHIR</div>
-              <div class="text-h5 text-weight-bolder text-purple-9">{{ formatNumber(store.totalResourceTerkirim) }}</div>
+              <div class="text-h5 text-weight-bolder text-purple-9">{{ formatNumber(store.totalResourceTerkirim) }}
+              </div>
               <div class="text-caption text-weight-bold text-purple items-center flex q-mt-xs">
                 <q-icon name="icon-mat-hub" size="xs" class="q-mr-xs" />
                 Entry Resource Aktif
@@ -152,7 +146,8 @@
               </div>
             </div>
             <div class="col-auto">
-              <q-avatar color="orange-9" text-color="white" icon="icon-mat-error_outline" size="50px" class="shadow-2" />
+              <q-avatar color="orange-9" text-color="white" icon="icon-mat-error_outline" size="50px"
+                class="shadow-2" />
             </div>
           </q-card-section>
           <q-inner-loading :showing="store.loadingSummary">
@@ -207,7 +202,8 @@
               <div class="text-subtitle2">Top 5 Penyebab Error</div>
             </q-card-section>
             <q-list separator class="scroll" style="max-height: 200px;">
-              <div v-if="!store.topErrors?.length && !store.loadingErrorStats" class="text-center q-pa-md text-grey-6 text-caption">
+              <div v-if="!store.topErrors?.length && !store.loadingErrorStats"
+                class="text-center q-pa-md text-grey-6 text-caption">
                 Tidak ada catatan error pada periode ini.
               </div>
               <q-item v-for="(err, idx) in top5Errors" :key="idx" class="q-py-sm">
@@ -221,7 +217,8 @@
                   <q-tooltip anchor="top middle" self="bottom middle">{{ err.pesan_error }}</q-tooltip>
                 </q-item-section>
                 <q-item-section side>
-                  <q-chip dense color="orange-1" text-color="orange-9" class="text-weight-bold f-10" :label="`${err.total} Kasus`" />
+                  <q-chip dense color="orange-1" text-color="orange-9" class="text-weight-bold f-10"
+                    :label="`${err.total} Kasus`" />
                 </q-item-section>
               </q-item>
             </q-list>
@@ -235,26 +232,23 @@
           <q-card-section class="q-pa-md">
             <div class="row items-center justify-between no-wrap">
               <div class="row items-center no-wrap">
-                <q-avatar color="blue-1" text-color="primary" icon="icon-mat-medical_services" size="36px" class="q-mr-sm" />
+                <q-avatar color="blue-1" text-color="primary" icon="icon-mat-medical_services" size="36px"
+                  class="q-mr-sm" />
                 <div>
                   <div class="text-subtitle1 text-weight-bold text-dark">Rawat Jalan (Rajal)</div>
                   <div class="text-caption text-grey-6">Poliklinik & Spesialis</div>
                 </div>
               </div>
-              <q-badge color="primary" class="q-pa-xs text-weight-bold f-12" :label="store.detailModul?.rajal?.rate || '0%'" />
+              <q-badge color="primary" class="q-pa-xs text-weight-bold f-12"
+                :label="store.detailModul?.rajal?.rate || '0%'" />
             </div>
             <div class="row justify-between q-mt-md text-caption text-grey-8">
               <div>Total: <b>{{ formatNumber(store.detailModul?.rajal?.total_kunjungan) }}</b></div>
               <div>Sukses: <b class="text-teal-9">{{ formatNumber(store.detailModul?.rajal?.terkirim) }}</b></div>
               <div>Error: <b class="text-negative">{{ formatNumber(store.detailModul?.rajal?.error) }}</b></div>
             </div>
-            <q-linear-progress
-              :value="getRateValue(store.detailModul?.rajal?.rate)"
-              color="primary"
-              track-color="blue-1"
-              size="8px"
-              class="q-mt-sm rounded-borders"
-            />
+            <q-linear-progress :value="getRateValue(store.detailModul?.rajal?.rate)" color="primary"
+              track-color="blue-1" size="8px" class="q-mt-sm rounded-borders" />
           </q-card-section>
         </q-card>
       </div>
@@ -270,20 +264,16 @@
                   <div class="text-caption text-grey-6">Ruang Perawatan & Kelas</div>
                 </div>
               </div>
-              <q-badge color="teal-9" class="q-pa-xs text-weight-bold f-12" :label="store.detailModul?.ranap?.rate || '0%'" />
+              <q-badge color="teal-9" class="q-pa-xs text-weight-bold f-12"
+                :label="store.detailModul?.ranap?.rate || '0%'" />
             </div>
             <div class="row justify-between q-mt-md text-caption text-grey-8">
               <div>Total: <b>{{ formatNumber(store.detailModul?.ranap?.total_kunjungan) }}</b></div>
               <div>Sukses: <b class="text-teal-9">{{ formatNumber(store.detailModul?.ranap?.terkirim) }}</b></div>
               <div>Error: <b class="text-negative">{{ formatNumber(store.detailModul?.ranap?.error) }}</b></div>
             </div>
-            <q-linear-progress
-              :value="getRateValue(store.detailModul?.ranap?.rate)"
-              color="teal-9"
-              track-color="teal-1"
-              size="8px"
-              class="q-mt-sm rounded-borders"
-            />
+            <q-linear-progress :value="getRateValue(store.detailModul?.ranap?.rate)" color="teal-9" track-color="teal-1"
+              size="8px" class="q-mt-sm rounded-borders" />
           </q-card-section>
         </q-card>
       </div>
@@ -293,26 +283,23 @@
           <q-card-section class="q-pa-md">
             <div class="row items-center justify-between no-wrap">
               <div class="row items-center no-wrap">
-                <q-avatar color="deep-orange-1" text-color="deep-orange" icon="icon-mat-emergency" size="36px" class="q-mr-sm" />
+                <q-avatar color="deep-orange-1" text-color="deep-orange" icon="icon-mat-emergency" size="36px"
+                  class="q-mr-sm" />
                 <div>
                   <div class="text-subtitle1 text-weight-bold text-dark">Gawat Darurat (IGD)</div>
                   <div class="text-caption text-grey-6">Instalasi Rawat Darurat</div>
                 </div>
               </div>
-              <q-badge color="deep-orange" class="q-pa-xs text-weight-bold f-12" :label="store.detailModul?.igd?.rate || '0%'" />
+              <q-badge color="deep-orange" class="q-pa-xs text-weight-bold f-12"
+                :label="store.detailModul?.igd?.rate || '0%'" />
             </div>
             <div class="row justify-between q-mt-md text-caption text-grey-8">
               <div>Total: <b>{{ formatNumber(store.detailModul?.igd?.total_kunjungan) }}</b></div>
               <div>Sukses: <b class="text-teal-9">{{ formatNumber(store.detailModul?.igd?.terkirim) }}</b></div>
               <div>Error: <b class="text-negative">{{ formatNumber(store.detailModul?.igd?.error) }}</b></div>
             </div>
-            <q-linear-progress
-              :value="getRateValue(store.detailModul?.igd?.rate)"
-              color="deep-orange"
-              track-color="deep-orange-1"
-              size="8px"
-              class="q-mt-sm rounded-borders"
-            />
+            <q-linear-progress :value="getRateValue(store.detailModul?.igd?.rate)" color="deep-orange"
+              track-color="deep-orange-1" size="8px" class="q-mt-sm rounded-borders" />
           </q-card-section>
         </q-card>
       </div>
@@ -320,19 +307,14 @@
       <!-- Detail Table Container with Tabs -->
       <div class="col-12">
         <q-card flat class="border-radius-15 shadow-sm overflow-hidden">
-          <q-tabs
-            v-model="store.activeTab"
-            dense
-            class="text-grey-7 bg-grey-2 q-pa-xs"
-            active-color="primary"
-            active-bg-color="white"
-            indicator-color="primary"
-            align="left"
-            narrow-indicator
-          >
-            <q-tab name="kunjungan" icon="icon-mat-view_list" label="Tabel Monitoring Kunjungan" no-caps class="rounded-borders q-mr-xs" />
-            <q-tab name="error" icon="icon-mat-warning" label="Laporan Pengiriman Gagal / Error" no-caps class="rounded-borders">
-              <q-badge v-if="store.summary?.total_error > 0" color="negative" floating>{{ store.summary?.total_error }}</q-badge>
+          <q-tabs v-model="store.activeTab" dense class="text-grey-7 bg-grey-2 q-pa-xs" active-color="primary"
+            active-bg-color="white" indicator-color="primary" align="left" narrow-indicator>
+            <q-tab name="kunjungan" icon="icon-mat-view_list" label="Tabel Monitoring Kunjungan" no-caps
+              class="rounded-borders q-mr-xs" />
+            <q-tab name="error" icon="icon-mat-warning" label="Laporan Pengiriman Gagal / Error" no-caps
+              class="rounded-borders">
+              <q-badge v-if="store.summary?.total_error > 0" color="negative" floating>{{ store.summary?.total_error
+              }}</q-badge>
             </q-tab>
           </q-tabs>
 
@@ -344,62 +326,27 @@
               <div class="row items-center justify-between q-mb-md">
                 <!-- Modul Filter Chips -->
                 <div class="row items-center q-gutter-xs">
-                  <q-btn
-                    dense
-                    unelevated
-                    rounded
-                    :color="store.filterJenis === 'all' ? 'primary' : 'grey-3'"
-                    :text-color="store.filterJenis === 'all' ? 'white' : 'dark'"
-                    label="Semua Modul"
-                    no-caps
-                    class="q-px-md"
-                    @click="store.setFilterJenis('all')"
-                  />
-                  <q-btn
-                    dense
-                    unelevated
-                    rounded
-                    :color="store.filterJenis === 'rajal' ? 'primary' : 'grey-3'"
-                    :text-color="store.filterJenis === 'rajal' ? 'white' : 'dark'"
-                    label="Rawat Jalan"
-                    no-caps
-                    class="q-px-md"
-                    @click="store.setFilterJenis('rajal')"
-                  />
-                  <q-btn
-                    dense
-                    unelevated
-                    rounded
-                    :color="store.filterJenis === 'ranap' ? 'teal-9' : 'grey-3'"
-                    :text-color="store.filterJenis === 'ranap' ? 'white' : 'dark'"
-                    label="Rawat Inap"
-                    no-caps
-                    class="q-px-md"
-                    @click="store.setFilterJenis('ranap')"
-                  />
-                  <q-btn
-                    dense
-                    unelevated
-                    rounded
-                    :color="store.filterJenis === 'igd' ? 'deep-orange' : 'grey-3'"
-                    :text-color="store.filterJenis === 'igd' ? 'white' : 'dark'"
-                    label="IGD"
-                    no-caps
-                    class="q-px-md"
-                    @click="store.setFilterJenis('igd')"
-                  />
+                  <q-btn dense unelevated rounded :color="store.filterJenis === 'all' ? 'primary' : 'grey-3'"
+                    :text-color="store.filterJenis === 'all' ? 'white' : 'dark'" label="Semua Modul" no-caps
+                    class="q-px-md" @click="store.setFilterJenis('all')" />
+                  <q-btn dense unelevated rounded :color="store.filterJenis === 'rajal' ? 'primary' : 'grey-3'"
+                    :text-color="store.filterJenis === 'rajal' ? 'white' : 'dark'" label="Rawat Jalan" no-caps
+                    class="q-px-md" @click="store.setFilterJenis('rajal')" />
+                  <q-btn dense unelevated rounded :color="store.filterJenis === 'ranap' ? 'teal-9' : 'grey-3'"
+                    :text-color="store.filterJenis === 'ranap' ? 'white' : 'dark'" label="Rawat Inap" no-caps
+                    class="q-px-md" @click="store.setFilterJenis('ranap')" />
+                  <q-btn dense unelevated rounded :color="store.filterJenis === 'igd' ? 'deep-orange' : 'grey-3'"
+                    :text-color="store.filterJenis === 'igd' ? 'white' : 'dark'" label="IGD" no-caps class="q-px-md"
+                    @click="store.setFilterJenis('igd')" />
+                  <q-btn dense unelevated rounded :color="store.filterJenis === 'hd' ? 'grey-7' : 'grey-3'"
+                    :text-color="store.filterJenis === 'hd' ? 'white' : 'dark'" label="HD" no-caps class="q-px-md"
+                    @click="store.setFilterJenis('hd')" />
                 </div>
 
                 <!-- Search Input -->
-                <q-input
-                  v-model="store.searchQuery"
-                  dense
-                  outlined
-                  rounded
-                  placeholder="Cari No Reg / RM / Pasien / NIK..."
-                  style="width: 320px;"
-                  @keyup.enter="store.getListKunjungan(1)"
-                >
+                <q-input v-model="store.searchQuery" dense outlined rounded
+                  placeholder="Cari No Reg / RM / Pasien / NIK..." style="width: 320px;"
+                  @keyup.enter="store.getListKunjungan(1)">
                   <template #append>
                     <q-icon name="icon-mat-search" class="cursor-pointer" @click="store.getListKunjungan(1)" />
                   </template>
@@ -407,19 +354,9 @@
               </div>
 
               <!-- Tabel Monitoring (q-table) -->
-              <q-table
-                flat
-                bordered
-                dense
-                separator="horizontal"
-                :rows="store.kunjunganList"
-                :columns="columnsKunjungan"
-                row-key="noreg"
-                :loading="store.loadingListKunjungan"
-                :pagination="{ rowsPerPage: store.kunjunganMeta.per_page }"
-                hide-pagination
-                class="border-radius-15"
-              >
+              <q-table flat bordered dense separator="horizontal" :rows="store.kunjunganList"
+                :columns="columnsKunjungan" row-key="noreg" :loading="store.loadingListKunjungan"
+                :pagination="{ rowsPerPage: store.kunjunganMeta.per_page }" hide-pagination class="border-radius-15">
                 <template #body-cell-nomor="props">
                   <q-td :props="props" class="text-grey-7">
                     {{ (store.kunjunganMeta.current_page - 1) * store.kunjunganMeta.per_page + props.rowIndex + 1 }}
@@ -444,8 +381,7 @@
                   <q-td :props="props">
                     <q-badge
                       :color="props.row.modul === 'rajal' ? 'primary' : props.row.modul === 'ranap' ? 'teal-9' : 'deep-orange'"
-                      :label="(props.row.modul || '').toUpperCase()"
-                    />
+                      :label="(props.row.modul || '').toUpperCase()" />
                   </q-td>
                 </template>
 
@@ -460,20 +396,14 @@
                 <template #body-cell-resource="props">
                   <q-td :props="props">
                     <div v-if="props.row.satset?.list_resource?.length" class="row q-gutter-xs">
-                      <q-chip
-                        v-for="(res, rIdx) in props.row.satset.list_resource.slice(0, 4)"
-                        :key="rIdx"
-                        dense
-                        color="blue-1"
-                        text-color="primary"
-                        class="f-10"
-                        :label="res.resource_type"
-                      />
+                      <q-chip v-for="(res, rIdx) in props.row.satset.list_resource.slice(0, 4)" :key="rIdx" dense
+                        color="blue-1" text-color="primary" class="f-10" :label="res.resource_type" />
                       <q-badge v-if="props.row.satset.list_resource.length > 4" color="grey-5" text-color="dark">
                         +{{ props.row.satset.list_resource.length - 4 }}
                       </q-badge>
                     </div>
-                    <div v-else-if="props.row.satset_error" class="text-caption text-negative ellipsis" style="max-width: 250px;">
+                    <div v-else-if="props.row.satset_error" class="text-caption text-negative ellipsis"
+                      style="max-width: 250px;">
                       {{ props.row.satset_error.error_summary }}
                     </div>
                     <span v-else class="text-grey-5">-</span>
@@ -482,10 +412,13 @@
 
                 <template #body-cell-aksi="props">
                   <q-td :props="props" class="text-center">
-                    <q-btn flat round dense color="primary" icon="icon-mat-visibility" @click="store.getDetailKunjungan(props.row.noreg, props.row.modul)">
+                    <q-btn flat round dense color="primary" icon="icon-mat-visibility"
+                      @click="store.getDetailKunjungan(props.row.noreg, props.row.modul)">
                       <q-tooltip>Lihat Detail JSON</q-tooltip>
                     </q-btn>
-                    <q-btn flat round dense color="teal-9" icon="icon-mat-send" :loading="store.loadingRetry && store.retryNoreg === props.row.noreg" @click="store.retrySingle(props.row.noreg, props.row.modul)">
+                    <q-btn flat round dense color="teal-9" icon="icon-mat-send"
+                      :loading="store.loadingRetry && store.retryNoreg === props.row.noreg"
+                      @click="store.retrySingle(props.row.noreg, props.row.modul)">
                       <q-tooltip>Kirim Ulang ke SatuSehat</q-tooltip>
                     </q-btn>
                   </q-td>
@@ -497,16 +430,9 @@
                 <div class="text-caption text-grey-7">
                   Menampilkan {{ store.kunjunganList.length }} dari {{ store.kunjunganMeta.total }} data
                 </div>
-                <q-pagination
-                  v-model="store.kunjunganMeta.current_page"
-                  :max="store.kunjunganMeta.last_page"
-                  :max-pages="6"
-                  direction-links
-                  boundary-links
-                  color="primary"
-                  size="sm"
-                  @update:model-value="(val) => store.getListKunjungan(val)"
-                />
+                <q-pagination v-model="store.kunjunganMeta.current_page" :max="store.kunjunganMeta.last_page"
+                  :max-pages="6" direction-links boundary-links color="primary" size="sm"
+                  @update:model-value="(val) => store.getListKunjungan(val)" />
               </div>
             </q-tab-panel>
 
@@ -517,15 +443,9 @@
                   <q-icon name="icon-mat-error_outline" size="sm" class="q-mr-xs" />
                   Daftar Respon Error SatuSehat
                 </div>
-                <q-input
-                  v-model="store.searchQueryError"
-                  dense
-                  outlined
-                  rounded
-                  placeholder="Cari Error / No Reg / Pasien..."
-                  style="width: 320px;"
-                  @keyup.enter="store.getListError(1)"
-                >
+                <q-input v-model="store.searchQueryError" dense outlined rounded
+                  placeholder="Cari Error / No Reg / Pasien..." style="width: 320px;"
+                  @keyup.enter="store.getListError(1)">
                   <template #append>
                     <q-icon name="icon-mat-search" class="cursor-pointer" @click="store.getListError(1)" />
                   </template>
@@ -533,19 +453,9 @@
               </div>
 
               <!-- Tabel Laporan Error (q-table) -->
-              <q-table
-                flat
-                bordered
-                dense
-                separator="horizontal"
-                :rows="store.errorList"
-                :columns="columnsError"
-                row-key="id"
-                :loading="store.loadingListError"
-                :pagination="{ rowsPerPage: store.errorMeta.per_page }"
-                hide-pagination
-                class="border-radius-15"
-              >
+              <q-table flat bordered dense separator="horizontal" :rows="store.errorList" :columns="columnsError"
+                row-key="id" :loading="store.loadingListError" :pagination="{ rowsPerPage: store.errorMeta.per_page }"
+                hide-pagination class="border-radius-15">
                 <template #body-cell-nomor="props">
                   <q-td :props="props" class="text-grey-7">
                     {{ (store.errorMeta.current_page - 1) * store.errorMeta.per_page + props.rowIndex + 1 }}
@@ -555,7 +465,8 @@
                 <template #body-cell-noreg="props">
                   <q-td :props="props">
                     <div class="text-weight-bold text-primary">{{ props.row.noreg }}</div>
-                    <div class="text-caption text-grey-8">{{ props.row.nama_pasien || '-' }} (RM: {{ props.row.norm || '-' }})</div>
+                    <div class="text-caption text-grey-8">{{ props.row.nama_pasien || '-' }} (RM: {{ props.row.norm ||
+                      '-' }})</div>
                   </q-td>
                 </template>
 
@@ -563,8 +474,7 @@
                   <q-td :props="props">
                     <q-badge
                       :color="props.row.jenis === 'rajal' ? 'primary' : props.row.jenis === 'ranap' ? 'teal-9' : 'deep-orange'"
-                      :label="(props.row.jenis || '').toUpperCase()"
-                    />
+                      :label="(props.row.jenis || '').toUpperCase()" />
                   </q-td>
                 </template>
 
@@ -573,7 +483,8 @@
                     <div class="text-weight-bold text-negative ellipsis" style="max-width: 320px;">
                       {{ props.row.error_summary || 'Error tidak teridentifikasi' }}
                     </div>
-                    <div v-if="props.row.expression" class="text-caption text-grey-7 font-mono ellipsis" style="max-width: 320px;">
+                    <div v-if="props.row.expression" class="text-caption text-grey-7 font-mono ellipsis"
+                      style="max-width: 320px;">
                       Lokasi: {{ props.row.expression }}
                     </div>
                   </q-td>
@@ -588,10 +499,13 @@
 
                 <template #body-cell-aksi="props">
                   <q-td :props="props" class="text-center">
-                    <q-btn flat round dense color="primary" icon="icon-mat-visibility" @click="store.getDetailKunjungan(props.row.noreg, props.row.jenis)">
+                    <q-btn flat round dense color="primary" icon="icon-mat-visibility"
+                      @click="store.getDetailKunjungan(props.row.noreg, props.row.jenis)">
                       <q-tooltip>Lihat Raw Payload & Error</q-tooltip>
                     </q-btn>
-                    <q-btn flat round dense color="teal-9" icon="icon-mat-refresh" :loading="store.loadingRetry && store.retryNoreg === props.row.noreg" @click="store.retrySingle(props.row.noreg, props.row.jenis)">
+                    <q-btn flat round dense color="teal-9" icon="icon-mat-refresh"
+                      :loading="store.loadingRetry && store.retryNoreg === props.row.noreg"
+                      @click="store.retrySingle(props.row.noreg, props.row.jenis)">
                       <q-tooltip>Kirim Ulang</q-tooltip>
                     </q-btn>
                   </q-td>
@@ -603,16 +517,9 @@
                 <div class="text-caption text-grey-7">
                   Menampilkan {{ store.errorList.length }} dari {{ store.errorMeta.total }} error
                 </div>
-                <q-pagination
-                  v-model="store.errorMeta.current_page"
-                  :max="store.errorMeta.last_page"
-                  :max-pages="6"
-                  direction-links
-                  boundary-links
-                  color="negative"
-                  size="sm"
-                  @update:model-value="(val) => store.getListError(val)"
-                />
+                <q-pagination v-model="store.errorMeta.current_page" :max="store.errorMeta.last_page" :max-pages="6"
+                  direction-links boundary-links color="negative" size="sm"
+                  @update:model-value="(val) => store.getListError(val)" />
               </div>
             </q-tab-panel>
           </q-tab-panels>
@@ -641,13 +548,18 @@
             <div class="row q-col-gutter-md q-mb-md">
               <div class="col-12 col-sm-6">
                 <div class="text-caption text-grey-7">Pasien:</div>
-                <div class="text-subtitle1 text-weight-bold">{{ store.selectedKunjunganDetail.nama_pasien }} ({{ store.selectedKunjunganDetail.norm }})</div>
-                <div class="text-caption text-grey-8 font-mono">NIK: {{ store.selectedKunjunganDetail.nik || '-' }}</div>
-                <div class="text-caption text-grey-8 font-mono">IHS Number: {{ store.selectedKunjunganDetail.ihs_number || '-' }}</div>
+                <div class="text-subtitle1 text-weight-bold">{{ store.selectedKunjunganDetail.nama_pasien }} ({{
+                  store.selectedKunjunganDetail.norm }})</div>
+                <div class="text-caption text-grey-8 font-mono">NIK: {{ store.selectedKunjunganDetail.nik || '-' }}
+                </div>
+                <div class="text-caption text-grey-8 font-mono">IHS Number: {{ store.selectedKunjunganDetail.ihs_number
+                  ||
+                  '-' }}</div>
               </div>
               <div class="col-12 col-sm-6">
                 <div class="text-caption text-grey-7">Layanan:</div>
-                <div class="text-weight-bold">{{ store.selectedKunjunganDetail.nama_poli || store.selectedKunjunganDetail.nama_ruangan || '-' }}</div>
+                <div class="text-weight-bold">{{ store.selectedKunjunganDetail.nama_poli ||
+                  store.selectedKunjunganDetail.nama_ruangan || '-' }}</div>
                 <div class="text-caption text-grey-8">DPJP: {{ store.selectedKunjunganDetail.nama_dokter || '-' }}</div>
                 <div class="text-caption text-grey-8">Tgl: {{ store.selectedKunjunganDetail.tgl_kunjungan }}</div>
               </div>
@@ -655,7 +567,8 @@
 
             <!-- List Resource Terkirim -->
             <div v-if="store.selectedKunjunganDetail.satset?.list_resource?.length" class="q-mt-md">
-              <div class="text-subtitle2 text-weight-bold text-teal-9 q-mb-xs">Resource FHIR Terdaftar di SatuSehat:</div>
+              <div class="text-subtitle2 text-weight-bold text-teal-9 q-mb-xs">Resource FHIR Terdaftar di SatuSehat:
+              </div>
               <q-markup-table dense flat bordered separator="horizontal" class="border-radius-15">
                 <thead class="bg-grey-2">
                   <tr>
@@ -680,7 +593,9 @@
               <div class="text-caption text-grey-9 bg-red-1 q-pa-sm rounded-borders q-mb-sm">
                 {{ store.selectedKunjunganDetail.satset_error.error_summary }}
               </div>
-              <pre class="bg-grey-10 text-white q-pa-sm rounded-borders text-caption font-mono" style="overflow-x: auto;">{{ JSON.stringify(store.selectedKunjunganDetail.satset_error.response_raw, null, 2) }}</pre>
+              <pre class="bg-grey-10 text-white q-pa-sm rounded-borders text-caption font-mono"
+                style="overflow-x: auto;">{{
+                  JSON.stringify(store.selectedKunjunganDetail.satset_error.response_raw, null, 2) }}</pre>
             </div>
           </div>
         </q-card-section>

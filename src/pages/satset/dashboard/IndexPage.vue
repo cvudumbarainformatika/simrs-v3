@@ -10,40 +10,18 @@
               <div class="col-12 col-md-7">
                 <div class="text-h4 text-weight-bold q-mb-xs">Dashboard SatuSehat Kemkes 🇮🇩</div>
                 <div class="text-subtitle1 opacity-80">
-                  Ringkasan visual dan analitik kepatuhan pengiriman data Rawat Jalan, Rawat Inap, dan IGD ke platform SatuSehat (Periode {{ currentMonthYear }}).
+                  Ringkasan visual dan analitik kepatuhan pengiriman data Rawat Jalan, Rawat Inap, dan IGD ke platform
+                  SatuSehat (Periode {{ currentMonthYear }}).
                 </div>
                 <div class="q-mt-lg flex q-gutter-sm">
                   <!-- Button Laporan Detail (Identik Radiologi) -->
-                  <q-btn
-                    unelevated
-                    rounded
-                    color="white"
-                    text-color="primary"
-                    label="Laporan Detail"
-                    icon="icon-mat-assessment"
-                    no-caps
-                    to="/satset/kunjungan"
-                  />
+                  <q-btn unelevated rounded color="white" text-color="primary" label="Laporan Detail"
+                    icon="icon-mat-assessment" no-caps to="/satset/kunjungan" />
                   <!-- Button Audit Log & Rekonsiliasi -->
-                  <q-btn
-                    unelevated
-                    rounded
-                    color="teal-8"
-                    text-color="white"
-                    label="Audit Log"
-                    icon="icon-mat-fact_check"
-                    no-caps
-                    to="/satset/audit"
-                  />
+                  <q-btn unelevated rounded color="teal-8" text-color="white" label="Audit Log"
+                    icon="icon-mat-fact_check" no-caps to="/satset/audit" />
                   <!-- Button Filter Periode Header -->
-                  <q-btn
-                    outline
-                    rounded
-                    color="white"
-                    :label="periodeBtnLabel"
-                    icon="icon-mat-event"
-                    no-caps
-                  >
+                  <q-btn outline rounded color="white" :label="periodeBtnLabel" icon="icon-mat-event" no-caps>
                     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
                       <div class="q-pa-md bg-white" style="min-width: 280px;">
                         <div class="text-subtitle2 text-weight-bold text-primary q-mb-sm">Pilih Rentang Tanggal</div>
@@ -52,28 +30,25 @@
                           <q-input v-model="store.tglAkhir" type="date" dense outlined label="Tgl Akhir" />
                         </div>
                         <div class="row q-gutter-xs q-mt-sm">
-                          <q-btn size="xs" color="grey-3" text-color="dark" label="Hari Ini" no-caps @click="setFilterCepat('hari_ini')" />
-                          <q-btn size="xs" color="grey-3" text-color="dark" label="7 Hari" no-caps @click="setFilterCepat('7_hari')" />
-                          <q-btn size="xs" color="grey-3" text-color="dark" label="30 Hari" no-caps @click="setFilterCepat('30_hari')" />
-                          <q-btn size="xs" color="grey-3" text-color="dark" label="Bulan Ini" no-caps @click="setFilterCepat('bulan_ini')" />
+                          <q-btn size="xs" color="grey-3" text-color="dark" label="Hari Ini" no-caps
+                            @click="setFilterCepat('hari_ini')" />
+                          <q-btn size="xs" color="grey-3" text-color="dark" label="7 Hari" no-caps
+                            @click="setFilterCepat('7_hari')" />
+                          <q-btn size="xs" color="grey-3" text-color="dark" label="30 Hari" no-caps
+                            @click="setFilterCepat('30_hari')" />
+                          <q-btn size="xs" color="grey-3" text-color="dark" label="Bulan Ini" no-caps
+                            @click="setFilterCepat('bulan_ini')" />
                         </div>
                         <div class="row justify-end q-mt-md">
-                          <q-btn v-close-popup label="Terapkan" color="primary" dense class="q-px-md" @click="store.initDashboard()" />
+                          <q-btn v-close-popup label="Terapkan" color="primary" dense class="q-px-md"
+                            @click="store.initDashboard()" />
                         </div>
                       </div>
                     </q-popup-proxy>
                   </q-btn>
                   <!-- Button Refresh Data -->
-                  <q-btn
-                    outline
-                    rounded
-                    color="white"
-                    label="Refresh Data"
-                    icon="icon-mat-refresh"
-                    no-caps
-                    :loading="store.loadingSummary || store.loadingResource"
-                    @click="store.initDashboard()"
-                  />
+                  <q-btn outline rounded color="white" label="Refresh Data" icon="icon-mat-refresh" no-caps
+                    :loading="store.loadingSummary || store.loadingResource" @click="store.initDashboard()" />
                 </div>
               </div>
               <div class="col-12 col-md-4 text-right q-mt-md q-mt-md-none">
@@ -83,7 +58,8 @@
                     {{ store.summary?.compliance_rate || '0%' }}
                   </div>
                   <div class="text-caption opacity-80">
-                    {{ formatNumber(store.summary?.total_terkirim) }} dari {{ formatNumber(store.summary?.total_kunjungan) }} Kunjungan
+                    {{ formatNumber(store.summary?.total_terkirim) }} dari {{
+                      formatNumber(store.summary?.total_kunjungan) }} Kunjungan
                   </div>
                 </div>
               </div>
@@ -100,73 +76,43 @@
            ========================================================================= -->
       <div class="col-12">
         <q-card flat class="bg-white border-radius-15 shadow-sm q-pa-lg">
-          
+
           <!-- Header Bar: Title + Badges + Modul Filters + Period Selector -->
           <div class="row items-center justify-between q-col-gutter-md q-mb-md">
-            
+
             <!-- Left Side: Title & Info Badge -->
             <div class="col-12 col-lg-5 row items-center q-gutter-sm">
               <span class="text-h6 text-weight-bolder text-grey-9">Ringkasan transaksi FHIR</span>
-              <q-badge
-                rounded
-                class="q-px-sm q-py-xs cursor-pointer badge-penjelasan"
-                @click="dialogPenjelasan = true"
-              >
+              <q-badge rounded class="q-px-sm q-py-xs cursor-pointer badge-penjelasan" @click="dialogPenjelasan = true">
                 <span class="text-weight-medium">Lihat Penjelasan &rsaquo;</span>
               </q-badge>
             </div>
 
             <!-- Right Side: Filter Modul (Semua, Rajal, Ranap, IGD) + Periode Dropdown + Date Range -->
             <div class="col-12 col-lg-7 row items-center justify-end q-gutter-sm">
-              
+
               <!-- Pilihan Filter Modul (Pill Button Group) -->
-              <q-btn-toggle
-                v-model="store.filterJenis"
-                no-caps
-                rounded
-                unelevated
-                dense
-                toggle-color="teal-8"
-                toggle-text-color="white"
-                color="grey-2"
-                text-color="grey-8"
-                class="q-px-xs text-weight-bold"
-                :options="[
+              <q-btn-toggle v-model="store.filterJenis" no-caps rounded unelevated dense toggle-color="teal-8"
+                toggle-text-color="white" color="grey-2" text-color="grey-8" class="q-px-xs text-weight-bold" :options="[
                   { label: 'Semua', value: 'all' },
                   { label: 'Rawat Jalan', value: 'rajal' },
                   { label: 'Rawat Inap', value: 'ranap' },
-                  { label: 'IGD', value: 'igd' }
-                ]"
-                @update:model-value="store.setFilterJenis($event)"
-              />
+                  { label: 'IGD', value: 'igd' },
+                  { label: 'HD', value: 'hd' }
+                ]" @update:model-value="store.setFilterJenis($event)" />
 
               <!-- Dropdown Periode Cepat -->
-              <q-select
-                v-model="selectedPeriodeCepat"
-                dense
-                outlined
-                rounded
-                options-dense
-                class="bg-white"
-                style="width: 160px;"
-                :options="[
+              <q-select v-model="selectedPeriodeCepat" dense outlined rounded options-dense class="bg-white"
+                style="width: 160px;" :options="[
                   { label: '30 hari ke belakang', value: '30_hari' },
                   { label: '7 hari ke belakang', value: '7_hari' },
                   { label: 'Bulan ini', value: 'bulan_ini' },
                   { label: 'Hari ini', value: 'hari_ini' }
-                ]"
-                @update:model-value="onSelectPeriodeCepat($event)"
-              />
+                ]" @update:model-value="onSelectPeriodeCepat($event)" />
 
               <!-- Date Range Display Box with Calendar Popup -->
-              <q-btn
-                outline
-                rounded
-                dense
-                color="grey-7"
-                class="q-px-md bg-white text-caption text-weight-medium"
-                no-caps
-              >
+              <q-btn outline rounded dense color="grey-7" class="q-px-md bg-white text-caption text-weight-medium"
+                no-caps>
                 <div class="row items-center no-wrap">
                   <span class="q-mr-sm">{{ formattedDateRange }}</span>
                   <q-icon name="icon-mat-event" size="18px" color="grey-7" />
@@ -179,7 +125,8 @@
                       <q-input v-model="store.tglAkhir" type="date" dense outlined label="Tanggal Akhir" />
                     </div>
                     <div class="row justify-end q-mt-md">
-                      <q-btn v-close-popup label="Terapkan" color="teal-8" dense class="q-px-md" @click="store.initDashboard()" />
+                      <q-btn v-close-popup label="Terapkan" color="teal-8" dense class="q-px-md"
+                        @click="store.initDashboard()" />
                     </div>
                   </div>
                 </q-popup-proxy>
@@ -202,11 +149,7 @@
 
           <!-- 19 FHIR Resource Cards Grid (4 Kolom Sesuai Screenshot SatuSehat) -->
           <div class="row q-col-gutter-md">
-            <div
-              v-for="card in fhirCardList"
-              :key="card.key"
-              class="col-12 col-sm-6 col-md-3"
-            >
+            <div v-for="card in fhirCardList" :key="card.key" class="col-12 col-sm-6 col-md-3">
               <q-card flat class="fhir-resource-card full-height">
                 <q-card-section class="q-pa-md column justify-between full-height">
                   <div class="text-body2 text-weight-medium text-grey-8 q-mb-sm">
@@ -231,26 +174,23 @@
           <q-card-section class="q-pa-md">
             <div class="row items-center justify-between no-wrap">
               <div class="row items-center no-wrap">
-                <q-avatar color="blue-1" text-color="primary" icon="icon-mat-airline_seat_recline_normal" size="36px" class="q-mr-sm" />
+                <q-avatar color="blue-1" text-color="primary" icon="icon-mat-airline_seat_recline_normal" size="36px"
+                  class="q-mr-sm" />
                 <div>
                   <div class="text-subtitle1 text-weight-bold text-dark">Rawat Jalan (Rajal)</div>
                   <div class="text-caption text-grey-6">Poliklinik & Spesialis</div>
                 </div>
               </div>
-              <q-badge color="primary" class="q-pa-xs text-weight-bold f-12" :label="store.detailModul?.rajal?.rate || '0%'" />
+              <q-badge color="primary" class="q-pa-xs text-weight-bold f-12"
+                :label="store.detailModul?.rajal?.rate || '0%'" />
             </div>
             <div class="row justify-between q-mt-md text-caption text-grey-8">
               <div>Total: <b>{{ formatNumber(store.detailModul?.rajal?.total_kunjungan) }}</b></div>
               <div>Sukses: <b class="text-teal-9">{{ formatNumber(store.detailModul?.rajal?.terkirim) }}</b></div>
               <div>Error: <b class="text-negative">{{ formatNumber(store.detailModul?.rajal?.error) }}</b></div>
             </div>
-            <q-linear-progress
-              :value="getRateValue(store.detailModul?.rajal?.rate)"
-              color="primary"
-              track-color="blue-1"
-              size="8px"
-              class="q-mt-sm rounded-borders"
-            />
+            <q-linear-progress :value="getRateValue(store.detailModul?.rajal?.rate)" color="primary"
+              track-color="blue-1" size="8px" class="q-mt-sm rounded-borders" />
           </q-card-section>
         </q-card>
       </div>
@@ -266,20 +206,16 @@
                   <div class="text-caption text-grey-6">Ruang Perawatan & Kelas</div>
                 </div>
               </div>
-              <q-badge color="teal-9" class="q-pa-xs text-weight-bold f-12" :label="store.detailModul?.ranap?.rate || '0%'" />
+              <q-badge color="teal-9" class="q-pa-xs text-weight-bold f-12"
+                :label="store.detailModul?.ranap?.rate || '0%'" />
             </div>
             <div class="row justify-between q-mt-md text-caption text-grey-8">
               <div>Total: <b>{{ formatNumber(store.detailModul?.ranap?.total_kunjungan) }}</b></div>
               <div>Sukses: <b class="text-teal-9">{{ formatNumber(store.detailModul?.ranap?.terkirim) }}</b></div>
               <div>Error: <b class="text-negative">{{ formatNumber(store.detailModul?.ranap?.error) }}</b></div>
             </div>
-            <q-linear-progress
-              :value="getRateValue(store.detailModul?.ranap?.rate)"
-              color="teal-9"
-              track-color="teal-1"
-              size="8px"
-              class="q-mt-sm rounded-borders"
-            />
+            <q-linear-progress :value="getRateValue(store.detailModul?.ranap?.rate)" color="teal-9" track-color="teal-1"
+              size="8px" class="q-mt-sm rounded-borders" />
           </q-card-section>
         </q-card>
       </div>
@@ -289,26 +225,23 @@
           <q-card-section class="q-pa-md">
             <div class="row items-center justify-between no-wrap">
               <div class="row items-center no-wrap">
-                <q-avatar color="deep-orange-1" text-color="deep-orange" icon="icon-mat-emergency" size="36px" class="q-mr-sm" />
+                <q-avatar color="deep-orange-1" text-color="deep-orange" icon="icon-mat-emergency" size="36px"
+                  class="q-mr-sm" />
                 <div>
                   <div class="text-subtitle1 text-weight-bold text-dark">Gawat Darurat (IGD)</div>
                   <div class="text-caption text-grey-6">Instalasi Rawat Darurat</div>
                 </div>
               </div>
-              <q-badge color="deep-orange" class="q-pa-xs text-weight-bold f-12" :label="store.detailModul?.igd?.rate || '0%'" />
+              <q-badge color="deep-orange" class="q-pa-xs text-weight-bold f-12"
+                :label="store.detailModul?.igd?.rate || '0%'" />
             </div>
             <div class="row justify-between q-mt-md text-caption text-grey-8">
               <div>Total: <b>{{ formatNumber(store.detailModul?.igd?.total_kunjungan) }}</b></div>
               <div>Sukses: <b class="text-teal-9">{{ formatNumber(store.detailModul?.igd?.terkirim) }}</b></div>
               <div>Error: <b class="text-negative">{{ formatNumber(store.detailModul?.igd?.error) }}</b></div>
             </div>
-            <q-linear-progress
-              :value="getRateValue(store.detailModul?.igd?.rate)"
-              color="deep-orange"
-              track-color="deep-orange-1"
-              size="8px"
-              class="q-mt-sm rounded-borders"
-            />
+            <q-linear-progress :value="getRateValue(store.detailModul?.igd?.rate)" color="deep-orange"
+              track-color="deep-orange-1" size="8px" class="q-mt-sm rounded-borders" />
           </q-card-section>
         </q-card>
       </div>
@@ -329,12 +262,7 @@
               </q-badge>
             </div>
             <div v-if="store.resourceStats && store.resourceStats.length > 0" style="min-height: 280px;">
-              <apexchart
-                type="bar"
-                height="280"
-                :options="chartOptionsResources"
-                :series="seriesResources"
-              />
+              <apexchart type="bar" height="280" :options="chartOptionsResources" :series="seriesResources" />
             </div>
             <div v-else class="text-center text-grey-5 q-py-xl">
               Belum ada data resource FHIR pada periode ini
@@ -385,7 +313,8 @@
         </q-card-section>
         <q-card-section class="q-pa-md text-body2 text-grey-8">
           <p>
-            <b>HL7 FHIR (Fast Healthcare Interoperability Resources)</b> adalah standar pertukaran data kesehatan digital yang digunakan oleh Kementerian Kesehatan Republik Indonesia pada platform <b>SatuSehat</b>.
+            <b>HL7 FHIR (Fast Healthcare Interoperability Resources)</b> adalah standar pertukaran data kesehatan
+            digital yang digunakan oleh Kementerian Kesehatan Republik Indonesia pada platform <b>SatuSehat</b>.
           </p>
           <p>
             Setiap kunjungan medis pasien dipecah menjadi beberapa resource standar, antara lain:
