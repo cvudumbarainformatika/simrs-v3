@@ -13,7 +13,7 @@
                   <div class="text-h5 text-weight-bold">Audit Log & Rekonsiliasi SatuSehat 🇮🇩</div>
                 </div>
                 <div class="text-subtitle2 opacity-85">
-                  Monitoring ketidaksesuaian input demografi pasien (SIMRS vs BPJS/Dukcapil) serta validasi kelengkapan NIK dokter/nakes sebelum bridging SatuSehat.
+                  Monitoring ketidaksesuaian input demografi pasien (SIMRS vs BPJS/Dukcapil) serta status pengiriman SatuSehat Kemenkes.
                 </div>
                 <div class="q-mt-md flex q-gutter-sm">
                   <!-- Button Dashboard Utama -->
@@ -72,16 +72,16 @@
               <!-- Right Stat Box -->
               <div class="col-12 col-md-5 text-right">
                 <div class="header-stat-box text-left inline-block">
-                  <div class="text-caption text-uppercase opacity-80 letter-spacing-1">Status Rekonsiliasi Data</div>
+                  <div class="text-caption text-uppercase opacity-80 letter-spacing-1">Status Koreksi SIMRS</div>
                   <div class="row items-center q-gutter-md q-mt-xs">
                     <div>
                       <div class="text-h4 text-weight-bolder text-warning">{{ store.stats.total_pending }}</div>
-                      <div class="text-caption opacity-80">Pending Perbaikan</div>
+                      <div class="text-caption opacity-80">Pending Koreksi</div>
                     </div>
                     <q-separator vertical dark class="opacity-30" style="height: 38px;" />
                     <div>
                       <div class="text-h4 text-weight-bolder text-green-3">{{ store.stats.total_diperbaiki }}</div>
-                      <div class="text-caption opacity-80">Sudah Selesai</div>
+                      <div class="text-caption opacity-80">Sudah Diperbaiki</div>
                     </div>
                     <q-separator vertical dark class="opacity-30" style="height: 38px;" />
                     <div>
@@ -217,10 +217,10 @@
                   outlined
                   emit-value
                   map-options
-                  label="Status Perbaikan"
+                  label="Koreksi SIMRS"
                   :options="[
                     { label: 'Semua Status', value: 'all' },
-                    { label: 'Pending Perbaikan', value: 'PENDING' },
+                    { label: 'Pending Koreksi', value: 'PENDING' },
                     { label: 'Sudah Diperbaiki', value: 'DIPERBAIKI' },
                     { label: 'Diabaikan', value: 'DIABAIKAN' },
                   ]"
@@ -279,12 +279,12 @@
                 <q-tr :props="props" class="hover-row">
                   
                   <!-- No -->
-                  <q-td key="no" :props="props" class="text-center" style="width: 50px;">
+                  <q-td key="no" :props="props" class="text-center" style="width: 45px;">
                     {{ (store.meta.current_page - 1) * store.meta.per_page + props.rowIndex + 1 }}
                   </q-td>
 
                   <!-- Waktu & Unit -->
-                  <q-td key="waktu" :props="props" style="min-width: 130px;">
+                  <q-td key="waktu" :props="props" style="min-width: 120px;">
                     <div class="text-caption text-weight-bold text-grey-8">{{ formatTgl(props.row.created_at) }}</div>
                     <div class="q-mt-xs">
                       <q-badge
@@ -297,7 +297,7 @@
                   </q-td>
 
                   <!-- Kategori -->
-                  <q-td key="kategori" :props="props" style="min-width: 170px;">
+                  <q-td key="kategori" :props="props" style="min-width: 160px;">
                     <q-badge
                       :color="getKategoriBadgeColor(props.row.kategori)"
                       class="q-pa-xs q-px-sm border-radius-6 text-weight-medium"
@@ -308,7 +308,7 @@
                   </q-td>
 
                   <!-- Identitas (Ref ID & Nama) -->
-                  <q-td key="identitas" :props="props" style="min-width: 200px;">
+                  <q-td key="identitas" :props="props" style="min-width: 180px;">
                     <div class="text-weight-bold text-dark text-subtitle2">{{ props.row.nama || '-' }}</div>
                     <div class="row items-center q-gutter-xs text-caption text-grey-7 q-mt-xs">
                       <span class="text-weight-medium">ID/RM:</span>
@@ -319,10 +319,10 @@
                   </q-td>
 
                   <!-- Perbandingan NIK / Data -->
-                  <q-td key="perbandingan" :props="props" style="min-width: 220px;">
+                  <q-td key="perbandingan" :props="props" style="min-width: 200px;">
                     <div class="column q-gutter-xs">
                       <div class="row items-center no-wrap text-caption">
-                        <span class="text-grey-7 text-weight-medium q-mr-xs" style="width: 50px;">SIMRS:</span>
+                        <span class="text-grey-7 text-weight-medium q-mr-xs" style="width: 48px;">SIMRS:</span>
                         <q-badge
                           :color="isNikDummy(props.row.nik_simrs) ? 'red-2' : 'grey-3'"
                           :text-color="isNikDummy(props.row.nik_simrs) ? 'negative' : 'dark'"
@@ -332,7 +332,7 @@
                         </q-badge>
                       </div>
                       <div v-if="props.row.nik_valid" class="row items-center no-wrap text-caption">
-                        <span class="text-teal-8 text-weight-medium q-mr-xs" style="width: 50px;">BPJS:</span>
+                        <span class="text-teal-8 text-weight-medium q-mr-xs" style="width: 48px;">BPJS:</span>
                         <q-badge color="teal-1" text-color="teal-9" class="font-mono text-weight-bold">
                           {{ props.row.nik_valid }}
                         </q-badge>
@@ -340,21 +340,53 @@
                     </div>
                   </q-td>
 
-                  <!-- Keterangan -->
-                  <q-td key="keterangan" :props="props" style="min-width: 250px; max-width: 320px;" class="white-space-normal">
-                    <div class="text-caption text-grey-9 text-weight-medium">
-                      {{ props.row.keterangan || '-' }}
-                    </div>
+                  <!-- Status SatuSehat (INFO PENGIRIMAN) -->
+                  <q-td key="satset_status" :props="props" class="text-center" style="min-width: 130px;">
+                    <q-badge
+                      v-if="props.row.satset_terkirim"
+                      color="teal-9"
+                      icon="icon-mat-check_circle"
+                      label="Terkirim (Sukses)"
+                      class="q-pa-xs q-px-sm border-radius-6 text-weight-bold"
+                    >
+                      <q-tooltip>Transaksi Bundle SatuSehat Berhasil Terkirim</q-tooltip>
+                    </q-badge>
+                    <q-badge
+                      v-else-if="props.row.satset_ihs_uuid"
+                      color="indigo-8"
+                      icon="icon-mat-verified_user"
+                      label="IHS Terdaftar"
+                      class="q-pa-xs q-px-sm border-radius-6 text-weight-bold"
+                    >
+                      <q-tooltip>IHS ID Terdaftar: {{ props.row.satset_ihs_uuid }}</q-tooltip>
+                    </q-badge>
+                    <q-badge
+                      v-else-if="props.row.satset_error"
+                      color="negative"
+                      icon="icon-mat-error"
+                      label="Error Kirim"
+                      class="q-pa-xs q-px-sm border-radius-6 text-weight-bold"
+                    >
+                      <q-tooltip>Gagal Kirim ke SatuSehat</q-tooltip>
+                    </q-badge>
+                    <q-badge
+                      v-else
+                      color="grey-5"
+                      text-color="dark"
+                      icon="icon-mat-hourglass_empty"
+                      label="Belum Kirim"
+                      class="q-pa-xs q-px-sm border-radius-6 text-weight-medium"
+                    />
                   </q-td>
 
-                  <!-- Status Perbaikan -->
+                  <!-- Status Koreksi SIMRS -->
                   <q-td key="status" :props="props" class="text-center" style="width: 140px;">
                     <q-badge
                       :color="getStatusBadgeColor(props.row.status_perbaikan)"
                       class="q-pa-xs q-px-sm border-radius-6 text-weight-bold"
                     >
                       <q-icon :name="getStatusIcon(props.row.status_perbaikan)" class="q-mr-xs" />
-                      {{ props.row.status_perbaikan }}
+                      {{ props.row.status_perbaikan === 'PENDING' ? 'Pending Koreksi' : (props.row.status_perbaikan === 'DIPERBAIKI' ? 'Sudah Diperbaiki' : 'Diabaikan') }}
                     </q-badge>
                     <div v-if="props.row.user_perbaikan" class="text-caption text-grey-6 text-2xs q-mt-xs">
                       oleh: {{ props.row.user_perbaikan }}
@@ -362,7 +394,7 @@
                   </q-td>
 
                   <!-- Aksi -->
-                  <q-td key="aksi" :props="props" class="text-center" style="width: 120px;">
+                  <q-td key="aksi" :props="props" class="text-center" style="width: 100px;">
                     <div class="row items-center justify-center q-gutter-xs">
                       <!-- Tombol Detail / Komparasi -->
                       <q-btn
@@ -471,6 +503,23 @@
         <!-- Dialog Body -->
         <q-card-section v-if="store.selectedItem" class="q-pa-md">
           
+          <!-- Status SatuSehat Banner di Modal -->
+          <div
+            class="q-pa-sm border-radius-8 q-mb-md row items-center justify-between"
+            :class="store.selectedItem.satset_terkirim ? 'bg-teal-1 text-teal-10 border-teal' : (store.selectedItem.satset_ihs_uuid ? 'bg-indigo-1 text-indigo-10 border-indigo' : 'bg-grey-2 text-dark')"
+          >
+            <div class="row items-center q-gutter-xs text-caption">
+              <q-icon :name="store.selectedItem.satset_terkirim ? 'icon-mat-check_circle' : (store.selectedItem.satset_ihs_uuid ? 'icon-mat-verified_user' : 'icon-mat-info')" size="sm" />
+              <span>
+                <strong>Status Pengiriman SatuSehat:</strong> 
+                {{ store.selectedItem.satset_terkirim ? 'Sudah Berhasil Terkirim ke SatuSehat Kemkes' : (store.selectedItem.satset_ihs_uuid ? 'IHS Patient ID Terdaftar di SatuSehat' : 'Belum Ada Riwayat Sukses Kirim') }}
+              </span>
+            </div>
+            <q-badge v-if="store.selectedItem.satset_ihs_uuid" color="indigo-9" class="font-mono">
+              IHS: {{ store.selectedItem.satset_ihs_uuid }}
+            </q-badge>
+          </div>
+
           <!-- Summary Info Banner -->
           <div class="q-pa-sm bg-grey-2 border-radius-8 q-mb-md">
             <div class="row q-col-gutter-sm text-caption">
@@ -487,9 +536,9 @@
                 <div class="text-weight-bold font-mono">{{ store.selectedItem.ref_id }}</div>
               </div>
               <div class="col-6 col-md-3">
-                <span class="text-grey-7">Status:</span>
+                <span class="text-grey-7">Koreksi SIMRS:</span>
                 <q-badge :color="getStatusBadgeColor(store.selectedItem.status_perbaikan)" class="text-weight-bold">
-                  {{ store.selectedItem.status_perbaikan }}
+                  {{ store.selectedItem.status_perbaikan === 'PENDING' ? 'Pending Koreksi' : (store.selectedItem.status_perbaikan === 'DIPERBAIKI' ? 'Sudah Diperbaiki' : 'Diabaikan') }}
                 </q-badge>
               </div>
             </div>
@@ -629,8 +678,8 @@ const columns = [
   { name: 'kategori', label: 'Kategori', align: 'left' },
   { name: 'identitas', label: 'Identitas (Nama & ID)', align: 'left' },
   { name: 'perbandingan', label: 'Perbandingan NIK', align: 'left' },
-  { name: 'keterangan', label: 'Keterangan Temuan', align: 'left' },
-  { name: 'status', label: 'Status', align: 'center' },
+  { name: 'satset_status', label: 'Status SatuSehat', align: 'center' },
+  { name: 'status', label: 'Koreksi SIMRS', align: 'center' },
   { name: 'aksi', label: 'Aksi', align: 'center' },
 ]
 
@@ -805,6 +854,14 @@ function isDiff(a, b) {
 
 .border-amber-light {
   border: 1px solid rgba(255, 179, 0, 0.3);
+}
+
+.border-teal {
+  border: 1px solid rgba(0, 168, 150, 0.3);
+}
+
+.border-indigo {
+  border: 1px solid rgba(63, 81, 181, 0.3);
 }
 
 .font-mono {
