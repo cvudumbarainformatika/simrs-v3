@@ -124,7 +124,12 @@
       </div>
       <div class="row q-mt-sm q-mb-xl justify-between q-mx-lg">
         <div class="col-4 text-center">
-          {{ store.KaUang?.relasi_jabatan?.jabatan }}
+          <div class="print-hide">
+            <app-input v-model="store.customTtKiriJabatan" label="Jabatan TT Kiri" outlined dense />
+          </div>
+          <div class="print-only">
+            {{ store.customTtKiriJabatan }}
+          </div>
         </div>
         <div class="col-4 text-center">
           {{
@@ -138,7 +143,12 @@
       </div>
       <div class="row q-my-xl justify-between q-mx-lg">
         <div class="col-4 text-center">
-          {{ store.KaUang?.nama }}
+          <div class="print-hide">
+            <app-input v-model="store.customTtKiriNama" label="Nama TT Kiri" outlined dense />
+          </div>
+          <div class="print-only">
+            {{ store.customTtKiriNama || '(................................................)' }}
+          </div>
         </div>
         <div class="col-4 text-center">
           {{ store.KaFarmasi?.nama }}
