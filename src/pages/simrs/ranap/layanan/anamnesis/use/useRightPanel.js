@@ -27,7 +27,7 @@ export default function useRightPanel(pasien) {
       { row: 'keluhanUtama', label: 'Keluhan Utama' },
       { row: 'riwayatpenyakitsekarang', label: 'Riwayat Penyakit Skrg' },
       { row: 'riwayatpenyakit', label: 'Riwayat Penyakit Dhl' },
-      { row: 'riwayatpengobatan', label: 'Riwayat Pengobatan' },
+      { row: 'riwayatpenyakitkeluarga', label: 'Riwayat Penyakit Klrg' },
       { row: 'riwayatpengobatan', label: 'Riwayat Pengobatan' },
       { row: 'riwayat_pekerjaan_yang_berhubungan_dengan_zat_berbahaya', label: 'Rwyt Pkrjaan yg berhubungan dg zat berbahaya' }
     ]
