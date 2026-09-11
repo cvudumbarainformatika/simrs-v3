@@ -269,7 +269,7 @@
                 {{ item.satuan?item.satuan.nama:'-' }}
               </div>
               <div class="col-md-1 col-xs-12 cursor-pointer">
-                {{ formatRp(item.harga) }}
+                {{ formatDouble(item.harga, 2) }}
                 <q-popup-edit
                   v-if="item.qty!==item.qtysblm"
                   v-slot="scope"
@@ -277,7 +277,7 @@
                   :validate="validasiharga"
                   @show="initHarga(item)"
                   @before-hide="hideHarga"
-                  @save="saveHarga"
+                  @save="(val) => saveHarga(val, item)"
                 >
                   <q-input
                     ref="refHarga"
@@ -286,7 +286,8 @@
                     :error-message="errMessageHarga"
                     dense
                     autofocus
-                    type="number"
+                    type="text"
+                    inputmode="decimal"
                     counter
                     :loading="store.loadingJumlah"
                     :disable="store.loadingJumlah"
@@ -363,7 +364,7 @@
                 </div>
               </div>
               <div class="col-md-2 col-xs-12">
-                {{ formatDouble(parseFloat(item.qtyskr) * parseFloat(item.harga)) }}
+                {{ formatDouble(parseFloat(item.qtyskr) * parseFloat(item.harga), 2) }}
               </div>
               <div class="col-md-1 col-xs-12">
                 {{ item.qtysblm }}
@@ -459,13 +460,28 @@ const errMessage = ref('')
 const terimaSebelum = ref(null)
 const pesanan = ref(null)
 // simpan harga
-function saveHarga(val) {
+function saveHarga(val, item) {
   if (!store.form.qty) {
     return notifNegativeCenterVue('Isi Jumlah penerimaan terlebih dahulu')
   }
-  store.setForm('harga', val)
-  store.setForm('total', parseFloat(val) * parseFloat(store.form.qty))
-  store.setForm('sub_total', parseFloat(val) * parseFloat(store.form.qty))
+  let str = String(val).trim()
+  if (str.includes('.') && str.includes(',')) {
+    str = str.replace(/\./g, '').replace(',', '.')
+  } else if (str.includes(',')) {
+    str = str.replace(',', '.')
+  }
+  let num = parseFloat(str)
+  if (isNaN(num) || num < 0) num = 0
+  num = Math.round(num * 100) / 100
+
+  if (item) {
+    item.harga = num
+  }
+  store.setForm('harga', num)
+  const qty = parseFloat(store.form.qty) || 0
+  const subTotal = Math.round(num * qty * 100) / 100
+  store.setForm('total', subTotal)
+  store.setForm('sub_total', subTotal)
   store.setForm('statuspemesanan', 3)
   console.log('masih lanjut coy', store.form)
   const valid = validasi()
@@ -475,8 +491,17 @@ function saveHarga(val) {
 const save = val => {
   // if ((parseFloat(val) + terimaSebelum.value) > pesanan.value) return notifNegativeCenterVue('Jumlah input melebihi jumlah pemesanan')
   store.setForm('qty', val)
-  store.setForm('total', parseFloat(val) * parseFloat(store.form.harga))
-  store.setForm('sub_total', parseFloat(val) * parseFloat(store.form.harga))
+  let str = String(store.form.harga || 0).trim()
+  if (str.includes('.') && str.includes(',')) {
+    str = str.replace(/\./g, '').replace(',', '.')
+  } else if (str.includes(',')) {
+    str = str.replace(',', '.')
+  }
+  let harga = parseFloat(str) || 0
+  harga = Math.round(harga * 100) / 100
+  const subTotal = Math.round(parseFloat(val) * harga * 100) / 100
+  store.setForm('total', subTotal)
+  store.setForm('sub_total', subTotal)
   store.setForm('statuspemesanan', 3)
   const valid = validasi()
   // if ((parseFloat(val) + parseFloat(terimaSebelum.value)) < parseFloat(pesanan.value)) {
@@ -549,13 +574,34 @@ const refNomorFaktur = ref(null)
 const refTanggalFaktur = ref(null)
 // const diterima = ref(false)
 const validasiharga = val => {
-  console.log('jumlah', !store.form.qty)
   if (!store.form.qty) {
     errorHarga.value = true
-    errMessageHarga.value = ('Isi Jumlah penerimaan terlebih dahulu')
+    errMessageHarga.value = 'Isi Jumlah penerimaan terlebih dahulu'
     return false
   }
-  // console.log('if', false)
+  if (val === null || val === undefined || String(val).trim() === '') {
+    errorHarga.value = true
+    errMessageHarga.value = 'Harga tidak boleh kosong'
+    return false
+  }
+  let str = String(val).trim()
+  if (str.includes('.') && str.includes(',')) {
+    str = str.replace(/\./g, '').replace(',', '.')
+  } else if (str.includes(',')) {
+    str = str.replace(',', '.')
+  }
+  const num = parseFloat(str)
+  if (isNaN(num) || num < 0) {
+    errorHarga.value = true
+    errMessageHarga.value = 'Harga harus berupa angka yang valid'
+    return false
+  }
+  const parts = str.split('.')
+  if (parts.length > 2 || (parts.length === 2 && parts[1].length > 2)) {
+    errorHarga.value = true
+    errMessageHarga.value = 'Maksimal 2 angka di belakang koma'
+    return false
+  }
   errorHarga.value = false
   errMessageHarga.value = ''
   return true
@@ -666,10 +712,10 @@ const onSimpan = () => {
     return temp
   }).reduce((s, y) => { return s + y })
   // console.log('ada', ada)
-  const total = store.detailPemesanans.map(data => {
+  const total = Math.round(store.detailPemesanans.map(data => {
     // console.log(data)
-    return parseFloat(data.qtyskr) * parseFloat(data.harga)
-  }).reduce((x, y) => x + y)
+    return (parseFloat(data.qtyskr) || 0) * (parseFloat(data.harga) || 0)
+  }).reduce((x, y) => x + y, 0) * 100) / 100
   // console.log('total', total)
   if (ada === 0) return notifNegativeCenterVue('tidak ada data penerimaan tersimpan, periksa kembali data penerimaan anda')
   const temp = store.detailPemesanans.map(data => {
