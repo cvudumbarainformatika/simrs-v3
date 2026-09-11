@@ -10,8 +10,8 @@
               <q-tabs v-model="innerTab" vertical class="text-dark bg-white shadow-1 bo" active-color="orange-10"
                 active-bg-color="indigo-1" no-caps align="left" inline-label>
                 <q-tab v-for="menu in menus" :key="menu.name" :name="menu?.name"
-                  style="justify-content: left; border-bottom: 1px solid #e0e0e0; padding-left: 10px;">
-                  <div class="text-bold">
+                  style="justify-content: flex-start; border-bottom: 1px solid #e0e0e0; padding: 8px 10px; min-height: 40px; text-align: left; height: auto;">
+                  <div class="text-weight-bold" style="font-size: 11px; line-height: 1.25; white-space: normal; word-break: break-word; text-align: left; width: 100%;">
                     {{ menu?.label }}
                   </div>
                 </q-tab>
@@ -335,5 +335,10 @@ onMounted(() => {
 
 :deep(.q-tabs__arrows) {
   display: none !important;
+}
+
+:deep(.q-tab__content) {
+  width: 100% !important;
+  justify-content: flex-start !important;
 }
 </style>
