@@ -47,13 +47,20 @@
 
     <div class="row q-mt-sm">
       <div class="col-3">
-        Tgl Keluar / meninggal
+        Tgl & Jam Keluar / meninggal
       </div>
-      <div class="col-9 flex q-gutter-xs">
-        <app-input-date :model="store.form.tglKeluar" label="" outlined :disable="store.loading"
+      <div class="col-9 flex q-gutter-xs items-center">
+        <app-input-date :model="store.form.tglKeluar" label="Tanggal" outlined :disable="store.loading"
           :loading="store.loading" :rules="[val => val && val?.length > 0 || 'harap diisi']"
           @set-model="val => store.form.tglKeluar = val" style="width: 20%;" />
-
+        <q-input outlined standout="bg-yellow-3" hide-bottom-space dense v-model="store.form.jamKeluar"
+          mask="##:##" label="Jam Keluar" :rules="[val => val && val?.length > 0 || 'harap diisi']"
+          style="width: 15%;">
+          <template #append>
+            <q-icon name="icon-mat-schedule" />
+          </template>
+        </q-input>
+        <span class="text-caption text-grey-7 q-ml-xs">* Format HH:mm</span>
       </div>
     </div>
     <div v-if="store.form.caraKeluar === 'C003'" class="row q-mt-sm">

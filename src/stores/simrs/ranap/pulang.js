@@ -13,6 +13,7 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
       prognosis: null,
       caraKeluar: null,
       tglKeluar: null,
+      jamKeluar: null,
       noSuratMeninggal: null,
       jamMeninggal: null,
       kddrygmenyatakan: null,
@@ -74,6 +75,10 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
       this.form.dokter = pasien?.dokter
       this.form.kdruang = pasien?.kdruangan
       this.form.noSep = pasien?.sep
+
+      if (this.form.tglKeluar && this.form.jamKeluar) {
+        this.form.tglKeluar = `${this.form.tglKeluar} ${this.form.jamKeluar}:00`
+      }
       // }
       // // this.form.isRanap = isRanap
 
@@ -138,6 +143,7 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
         prognosis: pasien?.prognosis ?? null,
         caraKeluar: pasien?.carakeluar === 'C002' ? 'C010' : (pasien?.carakeluar ?? null),
         tglKeluar: pasien?.tglKeluar ? date.formatDate(pasien?.tglKeluar, 'YYYY-MM-DD') : date.formatDate(Date.now(), 'YYYY-MM-DD'),
+        jamKeluar: pasien?.tglKeluar ? date.formatDate(pasien?.tglKeluar, 'HH:mm') : date.formatDate(Date.now(), 'HH:mm'),
 
         jamMeninggal: pasien?.jamMeninggal ?? null,
         noSuratMeninggal: pasien?.nosrtmeninggal ?? null,
