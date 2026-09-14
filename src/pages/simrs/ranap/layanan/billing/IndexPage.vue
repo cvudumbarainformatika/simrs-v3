@@ -5,11 +5,6 @@
         after-class="overflow-hidden" class="fit">
         <template #before>
           <div class="column fit bg-indigo-1">
-            <!-- <div class="col-auto q-pa-md">
-              <div class="text-h5 text-bold text-center">
-                RKD
-              </div>
-            </div> -->
             <div class="col full-height scroll">
               <q-tabs v-model="innerTab" vertical class="text-dark bg-white shadow-1 bo" active-color="orange-10"
                 active-bg-color="indigo-1" no-caps align="left" inline-label>
@@ -26,12 +21,6 @@
 
         <template #after>
           <div class="column fit">
-            <!-- <div class="col-auto full-width">
-              <q-card class="row justify-between items-center q-pa-sm shadow-2 bg-indigo-1">
-                <div><b>LEMBAR KONSUL</b></div>
-                <q-btn icon="icon-mat-close" flat dense size="sm" color="dark" />
-              </q-card>
-            </div> -->
             <div class="col fit">
               <q-tab-panels v-model="innerTab" animated vertical transition-prev="jump-up"
                 transition-next="jump-up" class="bg-indigo-1 fit">
@@ -61,10 +50,16 @@ const menus = ref([
     nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
     comp: shallowRef(defineAsyncComponent(() => import('./rekap/IndexPage.vue')))
   },
-
-
+  {
+    name: 'faktur-detail',
+    label: 'FAKTUR DETAIL',
+    title: 'FAKTUR DETAIL',
+    desc: 'Faktur Detail Billing Pasien',
+    icon: 'icon-mat-receipt',
+    nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
+    comp: shallowRef(defineAsyncComponent(() => import('./fakturdetail/IndexPage.vue')))
+  }
 ])
-
 
 const dataHeader = ref([
   'PEMERINTAH KOTA PROBOLINGGO',
@@ -91,13 +86,6 @@ const splitterModel = ref(18)
 const innerTab = ref(menus.value[0].name)
 
 onMounted(() => {
-  // console.log('pasien', props?.kasus)
   innerTab.value = menus.value[0].name
-  Promise.all([
-    // pengunjungRanap.getNakes(),
-    // store.getRuangKonsulDokter()
-    // store.initReset()
-  ])
 })
-
 </script>
