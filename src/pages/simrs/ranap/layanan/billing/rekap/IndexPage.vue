@@ -1,22 +1,28 @@
 <template>
   <div class="fit column relative-position bg-grey-4">
     <!-- Header / Toolbar di layar (tidak ikut dicetak) -->
-    <div class="col-auto bg-white q-pa-sm shadow-1 no-print">
-      <div class="row justify-between items-center q-px-md">
-        <div class="row items-center q-gutter-sm">
-          <q-icon name="icon-mat-receipt_long" size="24px" color="teal" />
-          <div class="text-subtitle2 text-bold text-teal">REKAP BILLING PASIEN RAWAT INAP</div>
-          <q-badge color="teal" outline class="q-ml-sm" v-if="store.billingData?.header">
-            {{ store.billingData?.header?.sistembayar }} ({{ store.billingData?.header?.ruangan }})
-          </q-badge>
+    <div class="col-auto full-width bg-white q-py-sm q-px-md shadow-1 no-print">
+      <div class="row justify-between items-center full-width">
+        <!-- KIRI: Judul FAKTUR REKAP dan Badge di bawahnya -->
+        <div class="column">
+          <div class="row items-center q-gutter-xs">
+            <q-icon name="icon-mat-receipt_long" size="20px" color="teal" />
+            <div class="text-subtitle2 text-bold text-teal">FAKTUR REKAP</div>
+          </div>
+          <div v-if="activeBilling?.header" class="q-mt-xs">
+            <q-badge color="teal" outline class="q-py-none text-caption" style="font-size: 11px;">
+              {{ activeBilling?.header?.sistembayar }} ({{ activeBilling?.header?.ruangan }})
+            </q-badge>
+          </div>
         </div>
 
+        <!-- KANAN: Pilihan Ruangan, Pilihan Sistem Bayar, Refresh, Tombol Cetak -->
         <div class="row items-center q-gutter-sm">
-          <!-- Filter Ruangan Pasien jika ada mutasi -->
-          <div v-if="store.billingData?.header?.list_ruangan?.length > 1" style="min-width: 150px;">
+          <!-- Filter Ruangan Pasien (Hanya ruangan yang disinggahi + Semua Ruangan) -->
+          <div v-if="roomOptions?.length > 1" style="min-width: 170px;">
             <q-select
               v-model="selectedRuangan"
-              :options="store.billingData?.header?.list_ruangan"
+              :options="roomOptions"
               option-label="nama_ruangan"
               option-value="kd_ruangan"
               emit-value
@@ -24,15 +30,14 @@
               dense
               outlined
               label="Pilih Ruangan"
-              @update:model-value="onFilterChange"
             />
           </div>
 
-          <!-- Filter Sistem Bayar jika ada mutasi -->
-          <div v-if="store.billingData?.header?.list_sistembayar?.length > 1" style="min-width: 150px;">
+          <!-- Filter Sistem Bayar Pasien (Hanya sistem bayar pasien + Semua Sistem Bayar) -->
+          <div v-if="sistemBayarOptions?.length > 1" style="min-width: 170px;">
             <q-select
               v-model="selectedSistemBayar"
-              :options="store.billingData?.header?.list_sistembayar"
+              :options="sistemBayarOptions"
               option-label="nama_sistembayar"
               option-value="kd_sistembayar"
               emit-value
@@ -40,7 +45,6 @@
               dense
               outlined
               label="Pilih Sistem Bayar"
-              @update:model-value="onFilterChange"
             />
           </div>
 
@@ -57,17 +61,17 @@
             <q-tooltip>Refresh Data</q-tooltip>
           </q-btn>
 
-          <!-- Tombol Cetak -->
+          <!-- Tombol Cetak (Hanya Ikon Print) -->
           <q-btn
             v-if="store.billingData"
             v-print="printObj"
             color="teal"
             icon="icon-mat-print"
-            label="Cetak Faktur Rekap"
-            no-caps
+            round
             dense
-            class="q-px-md"
-          />
+          >
+            <q-tooltip>Cetak Faktur Rekap</q-tooltip>
+          </q-btn>
         </div>
       </div>
     </div>
@@ -80,17 +84,17 @@
       <!-- Loading State (Hanya jika data belum ada) -->
       <div v-if="store.loading && !store.billingData" class="column flex-center q-pa-xl text-teal">
         <q-spinner-dots size="48px" />
-        <div class="q-mt-md text-bold">Memuat Rincian Billing...</div>
+        <div class="q-mt-md text-bold">Memuat Rincian Faktur Rekap...</div>
       </div>
 
       <!-- Empty / Not Found State -->
       <div v-else-if="!store.billingData" class="text-center text-grey-6 q-pa-xl">
         <q-icon name="icon-mat-receipt" size="64px" class="q-mb-sm" />
-        <div class="text-bold">Data Billing Tidak Tersedia</div>
+        <div class="text-bold">Data Faktur Rekap Tidak Tersedia</div>
         <div class="text-caption">Belum ada rincian data billing untuk pasien ini.</div>
       </div>
 
-      <!-- Sheet Dokumen Kertas Cetak A4 / Faktur -->
+      <!-- Sheet Dokumen Kertas Cetak A4 / Faktur Rekap -->
       <div v-else id="print-billing-ranap" class="document-card print-page bg-white q-pa-md shadow-2 text-dark font-billing">
         
         <!-- KOP RUMAH SAKIT -->
@@ -151,14 +155,32 @@
                 <td class="sep-col">:</td>
                 <td class="val-col">Rp. {{ rp(headerData?.ongkos_per_hari) }}</td>
               </tr>
-              <tr>
-                <td class="label-col">Tanggal Masuk</td>
-                <td class="sep-col">:</td>
-                <td class="val-col">{{ headerData?.tglmasuk }}</td>
-                <td class="label-col">Dokter</td>
-                <td class="sep-col">:</td>
-                <td class="val-col">{{ headerData?.dokter }}</td>
-              </tr>
+              <template v-if="headerData?.tglmasuk_igd">
+                <tr>
+                  <td class="label-col">Tanggal Masuk IGD</td>
+                  <td class="sep-col">:</td>
+                  <td class="val-col">{{ headerData?.tglmasuk_igd }}</td>
+                  <td colspan="3"></td>
+                </tr>
+                <tr>
+                  <td class="label-col">Tanggal Masuk Rawat Inap</td>
+                  <td class="sep-col">:</td>
+                  <td class="val-col">{{ headerData?.tglmasuk }}</td>
+                  <td class="label-col">Dokter</td>
+                  <td class="sep-col">:</td>
+                  <td class="val-col">{{ headerData?.dokter }}</td>
+                </tr>
+              </template>
+              <template v-else>
+                <tr>
+                  <td class="label-col">Tanggal Masuk</td>
+                  <td class="sep-col">:</td>
+                  <td class="val-col">{{ headerData?.tglmasuk }}</td>
+                  <td class="label-col">Dokter</td>
+                  <td class="sep-col">:</td>
+                  <td class="val-col">{{ headerData?.dokter }}</td>
+                </tr>
+              </template>
               <tr>
                 <td class="label-col">Tgl. Keluar/Hidup/Mati</td>
                 <td class="sep-col">:</td>
@@ -221,65 +243,73 @@
               <td class="col-val">{{ rp(rincian?.akomodasi?.total) }}</td>
             </tr>
 
-            <!-- 3. Jasa / Tindakan Dokter -->
+            <!-- 3. Biaya Pembuatan Dokumen dan Materai -->
             <tr class="row-item">
               <td class="col-no">3</td>
+              <td class="col-desc" colspan="7">Biaya Pembuatan Dokumen dan Materai</td>
+              <td class="col-curr">Rp.</td>
+              <td class="col-val">{{ rp(rincian?.materai) }}</td>
+            </tr>
+
+            <!-- 4. Jasa / Tindakan Dokter -->
+            <tr class="row-item">
+              <td class="col-no">4</td>
               <td class="col-desc" colspan="7">Jasa / Tindakan Dokter</td>
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.tindakan_dokter) }}</td>
             </tr>
 
-            <!-- 4. Visite / Konsultasi / Oncall Dokter -->
+            <!-- 5. Visite / Konsultasi / Oncall Dokter -->
             <tr class="row-item">
-              <td class="col-no">4</td>
+              <td class="col-no">5</td>
               <td class="col-desc" colspan="7">Visite / Konsultasi / Oncall Dokter</td>
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.visite_dokter) }}</td>
             </tr>
 
-            <!-- 5. Tindakan Keperawatan -->
+            <!-- 6. Tindakan Keperawatan -->
             <tr class="row-item">
-              <td class="col-no">5</td>
+              <td class="col-no">6</td>
               <td class="col-desc" colspan="7">Tindakan Keperawatan</td>
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.tindakan_perawat) }}</td>
             </tr>
 
-            <!-- 6. Asuhan Gizi ( Selama dirawat) -->
+            <!-- 7. Asuhan Gizi -->
             <tr class="row-item">
-              <td class="col-no">6</td>
+              <td class="col-no">7</td>
               <td class="col-desc" colspan="7">Asuhan Gizi ( Selama dirawat)</td>
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.asuhan_gizi) }}</td>
             </tr>
 
-            <!-- 7. Makan Pasien -->
+            <!-- 8. Makan Pasien -->
             <tr class="row-item">
-              <td class="col-no">7</td>
+              <td class="col-no">8</td>
               <td class="col-desc" colspan="7">Makan Pasien</td>
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.makan_pasien) }}</td>
             </tr>
 
-            <!-- 8. Biaya Oksigen -->
+            <!-- 9. Biaya Oksigen -->
             <tr class="row-item">
-              <td class="col-no">8</td>
+              <td class="col-no">9</td>
               <td class="col-desc" colspan="7">Biaya Oksigen</td>
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.oksigen) }}</td>
             </tr>
 
-            <!-- 9. Jasa Keperawatan -->
+            <!-- 10. Jasa Keperawatan -->
             <tr class="row-item">
-              <td class="col-no">9</td>
+              <td class="col-no">10</td>
               <td class="col-desc" colspan="7">Jasa Keperawatan</td>
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.jasa_keperawatan) }}</td>
             </tr>
 
-            <!-- 10. Biaya Pelayanan Penunjang -->
+            <!-- 11. Biaya Pelayanan Penunjang -->
             <tr class="row-item">
-              <td class="col-no">10</td>
+              <td class="col-no">11</td>
               <td class="col-desc" colspan="7">Biaya Pelayanan Penunjang :</td>
               <td class="col-curr">Rp.</td>
               <td class="col-val"></td>
@@ -300,9 +330,21 @@
             </tr>
             <tr class="row-penunjang">
               <td colspan="2"></td>
+              <td class="col-desc" colspan="6">Endoscope</td>
+              <td class="col-curr">Rp.</td>
+              <td class="col-val">{{ rp(rincian?.penunjang?.endoscope) }}</td>
+            </tr>
+            <tr class="row-penunjang">
+              <td colspan="2"></td>
               <td class="col-desc" colspan="6">Operasi</td>
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.penunjang?.operasi) }}</td>
+            </tr>
+            <tr class="row-penunjang">
+              <td colspan="2"></td>
+              <td class="col-desc" colspan="6">Ruang RR</td>
+              <td class="col-curr">Rp.</td>
+              <td class="col-val">{{ rp(rincian?.penunjang?.ruang_rr) }}</td>
             </tr>
             <tr class="row-penunjang">
               <td colspan="2"></td>
@@ -312,7 +354,7 @@
             </tr>
             <tr class="row-penunjang">
               <td colspan="2"></td>
-              <td class="col-desc" colspan="6">Hemodialisa / Cardio / EEG</td>
+              <td class="col-desc" colspan="6">Hemodialisa</td>
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.penunjang?.hemodialisa) }}</td>
             </tr>
@@ -324,22 +366,86 @@
             </tr>
             <tr class="row-penunjang">
               <td colspan="2"></td>
+              <td class="col-desc" colspan="6">Cardio</td>
+              <td class="col-curr">Rp.</td>
+              <td class="col-val">{{ rp(rincian?.penunjang?.cardio) }}</td>
+            </tr>
+            <tr class="row-penunjang">
+              <td colspan="2"></td>
+              <td class="col-desc" colspan="6">EEG</td>
+              <td class="col-curr">Rp.</td>
+              <td class="col-val">{{ rp(rincian?.penunjang?.eeg) }}</td>
+            </tr>
+            <tr class="row-penunjang">
+              <td colspan="2"></td>
+              <td class="col-desc" colspan="6">Psikologi</td>
+              <td class="col-curr">Rp.</td>
+              <td class="col-val">{{ rp(rincian?.penunjang?.psikologi) }}</td>
+            </tr>
+            <tr class="row-penunjang">
+              <td colspan="2"></td>
               <td class="col-desc" colspan="6">Biaya Penggunaan Darah</td>
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.penunjang?.penggunaan_darah) }}</td>
             </tr>
+            <tr class="row-penunjang">
+              <td colspan="2"></td>
+              <td class="col-desc" colspan="6">Perawatan Jenasah</td>
+              <td class="col-curr">Rp.</td>
+              <td class="col-val">{{ rp(rincian?.penunjang?.jenasah) }}</td>
+            </tr>
+            <tr class="row-penunjang">
+              <td colspan="2"></td>
+              <td class="col-desc" colspan="6">Biaya Ambulan</td>
+              <td class="col-curr">Rp.</td>
+              <td class="col-val">{{ rp(rincian?.penunjang?.ambulan) }}</td>
+            </tr>
+            <tr v-if="rincian?.penunjang?.apheresis > 0" class="row-penunjang">
+              <td colspan="2"></td>
+              <td class="col-desc" colspan="6">Biaya Apheresis</td>
+              <td class="col-curr">Rp.</td>
+              <td class="col-val">{{ rp(rincian?.penunjang?.apheresis) }}</td>
+            </tr>
+            <tr v-if="rincian?.penunjang?.cathlab > 0" class="row-penunjang">
+              <td colspan="2"></td>
+              <td class="col-desc" colspan="6">Cathlab</td>
+              <td class="col-curr">Rp.</td>
+              <td class="col-val">{{ rp(rincian?.penunjang?.cathlab) }}</td>
+            </tr>
+            <tr v-if="rincian?.penunjang?.penunjang_keluar > 0" class="row-penunjang">
+              <td colspan="2"></td>
+              <td class="col-desc" colspan="6">Penunjang Keluar</td>
+              <td class="col-curr">Rp.</td>
+              <td class="col-val">{{ rp(rincian?.penunjang?.penunjang_keluar) }}</td>
+            </tr>
 
-            <!-- 11. Biaya Farmasi / Obat (Tidak Termasuk IGD) -->
+            <!-- 13. Biaya Farmasi / Obat -->
             <tr class="row-item">
-              <td class="col-no">11</td>
-              <td class="col-desc" colspan="7">Biaya Farmasi / Obat (Tidak Termasuk IGD)</td>
+              <td class="col-no">13</td>
+              <td class="col-desc" colspan="7">Biaya Farmasi / Obat</td>
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.farmasi) }}</td>
             </tr>
 
-            <!-- 12. IRD -->
+            <!-- 14. Operasi Cito (OK Ranap) -->
+            <tr v-if="rincian?.operasi_cito > 0" class="row-item">
+              <td class="col-no">14</td>
+              <td class="col-desc" colspan="7">Operasi Cito (OK Ranap)</td>
+              <td class="col-curr">Rp.</td>
+              <td class="col-val">{{ rp(rincian?.operasi_cito) }}</td>
+            </tr>
+
+            <!-- 16. Biaya Farmasi / Obat (IRD) -->
             <tr class="row-item">
-              <td class="col-no">12</td>
+              <td class="col-no">16</td>
+              <td class="col-desc" colspan="7">Biaya Farmasi / Obat (IRD)</td>
+              <td class="col-curr">Rp.</td>
+              <td class="col-val">{{ rp(rincian?.farmasi_ird) }}</td>
+            </tr>
+
+            <!-- 18. IRD -->
+            <tr class="row-item">
+              <td class="col-no">18</td>
               <td class="col-desc" colspan="7">IRD</td>
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.ird) }}</td>
@@ -352,9 +458,85 @@
               </td>
               <td class="col-curr text-bold font-large">Rp.</td>
               <td class="col-val text-bold font-large">
-                {{ formatRp(store.billingData?.grand_total) }}
+                {{ formatRp(activeBilling?.grand_total) }}
               </td>
             </tr>
+
+            <!-- PELUNASAN / POTONGAN (Di Bawah TOTAL Sesuai Legacy) -->
+            <template v-if="pembayaran">
+              <!-- Jika Pilihan Sistem Bayar Spesifik (billingbysistembayar.php): hanya RETUR OBAT dan KURANG BAYAR -->
+              <template v-if="selectedSistemBayar && selectedSistemBayar !== 'ALL'">
+                <tr class="row-item">
+                  <td colspan="8" class="text-right text-bold q-pr-md">RETUR OBAT</td>
+                  <td class="col-curr">Rp.</td>
+                  <td class="col-val">{{ rp(pembayaran?.retur_farmasi) }}</td>
+                </tr>
+                <tr class="row-item">
+                  <td colspan="8" class="text-right text-bold q-pr-md">KURANG BAYAR</td>
+                  <td class="col-curr text-bold">Rp.</td>
+                  <td class="col-val text-bold" style="border-top: 2px double #006699; border-bottom: 1px dotted #006699;">{{ formatRp(pembayaran?.kurang_bayar) }}</td>
+                </tr>
+              </template>
+
+              <!-- Jika Semua Sistem Bayar (billing.php) -->
+              <template v-else>
+                <tr class="row-item">
+                  <td colspan="8" class="text-right text-bold q-pr-md">TELAH DI BAYAR</td>
+                  <td class="col-curr">Rp.</td>
+                  <td class="col-val">{{ rp(pembayaran?.telah_dibayar) }}</td>
+                </tr>
+                <tr class="row-item">
+                  <td colspan="8" class="text-right text-bold q-pr-md">POTONGAN JASA</td>
+                  <td class="col-curr">Rp.</td>
+                  <td class="col-val">{{ rp(pembayaran?.potongan_jasa) }}</td>
+                </tr>
+                <tr class="row-item">
+                  <td colspan="8" class="text-right text-bold q-pr-md">FARMASI TELAH DIBAYAR (Rawat Inap)</td>
+                  <td class="col-curr">Rp.</td>
+                  <td class="col-val">{{ rp(pembayaran?.farmasi_telah_dibayar_ranap) }}</td>
+                </tr>
+                <tr class="row-item">
+                  <td colspan="8" class="text-right text-bold q-pr-md">FARMASI TELAH DIBAYAR (IRD)</td>
+                  <td class="col-curr">Rp.</td>
+                  <td class="col-val">{{ rp(pembayaran?.farmasi_telah_dibayar_ird) }}</td>
+                </tr>
+                <tr class="row-item">
+                  <td colspan="8" class="text-right text-bold q-pr-md">RETUR FARMASI</td>
+                  <td class="col-curr">Rp.</td>
+                  <td class="col-val">{{ rp(pembayaran?.retur_farmasi) }}</td>
+                </tr>
+                <tr class="row-item">
+                  <td colspan="8" class="text-right text-bold q-pr-md">IRD TELAH DIBAYAR</td>
+                  <td class="col-curr">Rp.</td>
+                  <td class="col-val">{{ rp(pembayaran?.ird_telah_dibayar) }}</td>
+                </tr>
+                <tr class="row-item">
+                  <td colspan="8" class="text-right text-bold q-pr-md">POTONGAN</td>
+                  <td class="col-curr">Rp.</td>
+                  <td class="col-val">{{ rp(pembayaran?.potongan) }}</td>
+                </tr>
+                <tr v-if="pembayaran?.potongan_jasa_raharja > 0" class="row-item">
+                  <td colspan="8" class="text-right text-bold q-pr-md">POTONGAN JASA RAHARJA</td>
+                  <td class="col-curr">Rp.</td>
+                  <td class="col-val">{{ rp(pembayaran?.potongan_jasa_raharja) }}</td>
+                </tr>
+                <tr class="row-item">
+                  <td colspan="8" class="text-right text-bold q-pr-md">KERINGANAN</td>
+                  <td class="col-curr">Rp.</td>
+                  <td class="col-val">{{ rp(pembayaran?.keringanan) }}</td>
+                </tr>
+                <tr class="row-item">
+                  <td colspan="8" class="text-right text-bold q-pr-md">POTONGAN BPJS</td>
+                  <td class="col-curr">Rp.</td>
+                  <td class="col-val" style="border-bottom: 2px double #006699;">{{ rp(pembayaran?.potongan_bpjs) }}</td>
+                </tr>
+                <tr class="row-item">
+                  <td colspan="8" class="text-right text-bold q-pr-md">KURANG BAYAR</td>
+                  <td class="col-curr text-bold">Rp.</td>
+                  <td class="col-val text-bold">{{ formatRp(pembayaran?.kurang_bayar) }}</td>
+                </tr>
+              </template>
+            </template>
           </tbody>
         </table>
 
@@ -382,12 +564,41 @@ const props = defineProps({
 
 const store = useBillingRanapStore()
 
-const selectedRuangan = ref(null)
-const selectedSistemBayar = ref(null)
+const selectedRuangan = ref('ALL')
+const selectedSistemBayar = ref('ALL')
 
-const headerData = computed(() => store.billingData?.header || {})
-const rincian = computed(() => store.billingData?.rincian || {})
-const pembayaran = computed(() => store.billingData?.pembayaran || {})
+const roomOptions = computed(() => {
+  return store.billingData?.list_ruangan || []
+})
+
+const sistemBayarOptions = computed(() => {
+  return store.billingData?.list_sistembayar || []
+})
+
+const activeBilling = computed(() => {
+  if (!store.billingData) return null
+  const r = selectedRuangan.value || 'ALL'
+  const sb = selectedSistemBayar.value || 'ALL'
+  const key = `${r}__${sb}`
+
+  if (store.billingData.details?.[key]) {
+    return store.billingData.details[key]
+  }
+  if (store.billingData.details?.[`${r}__ALL`]) {
+    return store.billingData.details[`${r}__ALL`]
+  }
+  if (store.billingData.details?.[`ALL__${sb}`]) {
+    return store.billingData.details[`ALL__${sb}`]
+  }
+  if (r !== 'ALL' && store.billingData.per_ruangan?.[r]) {
+    return store.billingData.per_ruangan[r]
+  }
+  return store.billingData.global || null
+})
+
+const headerData = computed(() => activeBilling.value?.header || {})
+const rincian = computed(() => activeBilling.value?.rincian || {})
+const pembayaran = computed(() => activeBilling.value?.pembayaran || null)
 
 const printObj = {
   id: 'print-billing-ranap',
@@ -415,33 +626,15 @@ function onImgError(e) {
 
 function loadData() {
   if (props.pasien?.noreg) {
-    store.getRekapBilling(props.pasien, {
-      flagruangan: selectedRuangan.value,
-      flagsistembayar: selectedSistemBayar.value
-    })
+    store.getRekapBilling(props.pasien)
   }
-}
-
-function onFilterChange() {
-  loadData()
 }
 
 watch(() => props.pasien?.noreg, (newVal) => {
   if (newVal) {
-    selectedRuangan.value = null
-    selectedSistemBayar.value = null
+    selectedRuangan.value = 'ALL'
+    selectedSistemBayar.value = 'ALL'
     loadData()
-  }
-}, { immediate: true })
-
-watch(() => store.billingData?.header, (header) => {
-  if (header?.filter) {
-    if (!selectedRuangan.value && header.filter.flagruangan) {
-      selectedRuangan.value = header.filter.flagruangan
-    }
-    if (!selectedSistemBayar.value && header.filter.flagsistembayar) {
-      selectedSistemBayar.value = header.filter.flagsistembayar
-    }
   }
 }, { immediate: true })
 

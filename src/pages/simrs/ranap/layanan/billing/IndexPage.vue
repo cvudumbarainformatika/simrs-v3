@@ -43,9 +43,9 @@ import { defineAsyncComponent, onMounted, ref, shallowRef } from 'vue'
 const menus = ref([
   {
     name: 'rekap-billing',
-    label: 'REKAP BILING',
-    title: 'REKAP BILING',
-    desc: 'REKAP BILING Pasien',
+    label: 'FAKTUR REKAP',
+    title: 'FAKTUR REKAP',
+    desc: 'Faktur Rekap Pasien',
     icon: 'icon-mat-receipt_long',
     nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
     comp: shallowRef(defineAsyncComponent(() => import('./rekap/IndexPage.vue')))
