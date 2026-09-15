@@ -72,10 +72,13 @@
       </div>
     </div>
 
+    <!-- Progress Bar Halus saat Background Sync / Update Data -->
+    <q-linear-progress v-if="store.loading && store.billingData" indeterminate color="teal" class="absolute-top" style="z-index: 10;" />
+
     <!-- Container Isi Dokumen Billing -->
     <div class="col full-height scroll q-py-lg q-px-md flex flex-center bg-grey-4">
-      <!-- Loading State -->
-      <div v-if="store.loading" class="column flex-center q-pa-xl text-teal">
+      <!-- Loading State (Hanya jika data belum ada) -->
+      <div v-if="store.loading && !store.billingData" class="column flex-center q-pa-xl text-teal">
         <q-spinner-dots size="48px" />
         <div class="q-mt-md text-bold">Memuat Rincian Billing...</div>
       </div>
@@ -127,10 +130,10 @@
               <tr>
                 <td class="label-col">Pekerjaan</td>
                 <td class="sep-col">:</td>
-                <td class="val-col">{{ headerData?.pekerjaan }}</td>
+                <td class="val-col">{{ headerData?.pekerjaan || '-' }}</td>
                 <td class="label-col">Noreg</td>
                 <td class="sep-col">:</td>
-                <td class="val-col">{{ headerData?.noreg }}</td>
+                <td class="val-col text-bold">{{ headerData?.noreg }}</td>
               </tr>
               <tr>
                 <td class="label-col">Umur</td>
@@ -148,16 +151,8 @@
                 <td class="sep-col">:</td>
                 <td class="val-col">Rp. {{ rp(headerData?.ongkos_per_hari) }}</td>
               </tr>
-              <tr v-if="headerData?.tglmasuk_igd">
-                <td class="label-col">Tanggal Masuk IGD</td>
-                <td class="sep-col">:</td>
-                <td class="val-col">{{ headerData?.tglmasuk_igd }}</td>
-                <td class="label-col"></td>
-                <td class="sep-col"></td>
-                <td class="val-col"></td>
-              </tr>
               <tr>
-                <td class="label-col">{{ headerData?.tglmasuk_igd ? 'Tanggal Masuk Rawat Inap' : 'Tanggal Masuk' }}</td>
+                <td class="label-col">Tanggal Masuk</td>
                 <td class="sep-col">:</td>
                 <td class="val-col">{{ headerData?.tglmasuk }}</td>
                 <td class="label-col">Dokter</td>
@@ -194,7 +189,7 @@
             <tr class="row-item">
               <td class="col-no">2</td>
               <td class="col-desc" colspan="7">Akomodasi / Kamar</td>
-              <td class="col-curr"></td>
+              <td class="col-curr">Rp.</td>
               <td></td>
             </tr>
             <tr v-if="rincian?.akomodasi?.items?.length">
@@ -226,77 +221,71 @@
               <td class="col-val">{{ rp(rincian?.akomodasi?.total) }}</td>
             </tr>
 
-            <!-- 3. Biaya Pembuatan Dokumen dan Materai -->
+            <!-- 3. Jasa / Tindakan Dokter -->
             <tr class="row-item">
               <td class="col-no">3</td>
-              <td class="col-desc" colspan="7">Biaya Pembuatan Dokumen dan Materai</td>
-              <td class="col-curr">Rp.</td>
-              <td class="col-val">{{ rp(rincian?.materai) }}</td>
-            </tr>
-
-            <!-- 4. Jasa / Tindakan Dokter -->
-            <tr class="row-item">
-              <td class="col-no">4</td>
               <td class="col-desc" colspan="7">Jasa / Tindakan Dokter</td>
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.tindakan_dokter) }}</td>
             </tr>
 
-            <!-- 5. Visite / Konsultasi / Oncall Dokter -->
+            <!-- 4. Visite / Konsultasi / Oncall Dokter -->
             <tr class="row-item">
-              <td class="col-no">5</td>
+              <td class="col-no">4</td>
               <td class="col-desc" colspan="7">Visite / Konsultasi / Oncall Dokter</td>
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.visite_dokter) }}</td>
             </tr>
 
-            <!-- 6. Tindakan Keperawatan -->
+            <!-- 5. Tindakan Keperawatan -->
             <tr class="row-item">
-              <td class="col-no">6</td>
+              <td class="col-no">5</td>
               <td class="col-desc" colspan="7">Tindakan Keperawatan</td>
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.tindakan_perawat) }}</td>
             </tr>
 
-            <!-- 7. Asuhan Gizi -->
+            <!-- 6. Asuhan Gizi ( Selama dirawat) -->
             <tr class="row-item">
-              <td class="col-no">7</td>
+              <td class="col-no">6</td>
               <td class="col-desc" colspan="7">Asuhan Gizi ( Selama dirawat)</td>
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.asuhan_gizi) }}</td>
             </tr>
 
-            <!-- 8. Makan Pasien -->
+            <!-- 7. Makan Pasien -->
             <tr class="row-item">
-              <td class="col-no">8</td>
+              <td class="col-no">7</td>
               <td class="col-desc" colspan="7">Makan Pasien</td>
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.makan_pasien) }}</td>
             </tr>
 
-            <!-- 9. Biaya Oksigen -->
+            <!-- 8. Biaya Oksigen -->
             <tr class="row-item">
-              <td class="col-no">9</td>
+              <td class="col-no">8</td>
               <td class="col-desc" colspan="7">Biaya Oksigen</td>
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.oksigen) }}</td>
             </tr>
 
-            <!-- 10. Jasa Keperawatan -->
+            <!-- 9. Jasa Keperawatan -->
             <tr class="row-item">
-              <td class="col-no">10</td>
+              <td class="col-no">9</td>
               <td class="col-desc" colspan="7">Jasa Keperawatan</td>
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.jasa_keperawatan) }}</td>
             </tr>
 
-            <!-- 11. Biaya Pelayanan Penunjang -->
+            <!-- 10. Biaya Pelayanan Penunjang -->
             <tr class="row-item">
-              <td class="col-no">11</td>
+              <td class="col-no">10</td>
               <td class="col-desc" colspan="7">Biaya Pelayanan Penunjang :</td>
-              <td class="col-curr"></td>
-              <td></td>
+              <td class="col-curr">Rp.</td>
+              <td class="col-val"></td>
             </tr>
+
+            <!-- Sub-item Penunjang -->
             <tr class="row-penunjang">
               <td colspan="2"></td>
               <td class="col-desc" colspan="6">Laboratorium</td>
@@ -309,23 +298,11 @@
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.penunjang?.radiologi) }}</td>
             </tr>
-            <tr v-if="rincian?.penunjang?.endoscope > 0" class="row-penunjang">
-              <td colspan="2"></td>
-              <td class="col-desc" colspan="6">Endoscope</td>
-              <td class="col-curr">Rp.</td>
-              <td class="col-val">{{ rp(rincian?.penunjang?.endoscope) }}</td>
-            </tr>
             <tr class="row-penunjang">
               <td colspan="2"></td>
               <td class="col-desc" colspan="6">Operasi</td>
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.penunjang?.operasi) }}</td>
-            </tr>
-            <tr v-if="rincian?.penunjang?.ruang_rr > 0" class="row-penunjang">
-              <td colspan="2"></td>
-              <td class="col-desc" colspan="6">Ruang RR</td>
-              <td class="col-curr">Rp.</td>
-              <td class="col-val">{{ rp(rincian?.penunjang?.ruang_rr) }}</td>
             </tr>
             <tr class="row-penunjang">
               <td colspan="2"></td>
@@ -333,36 +310,17 @@
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.penunjang?.fisioterapi) }}</td>
             </tr>
-            <tr v-if="rincian?.penunjang?.hemodialisa > 0" class="row-penunjang">
+            <tr class="row-penunjang">
               <td colspan="2"></td>
-              <td class="col-desc" colspan="6">Hemodialisa</td>
+              <td class="col-desc" colspan="6">Hemodialisa / Cardio / EEG</td>
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.penunjang?.hemodialisa) }}</td>
             </tr>
-            <tr v-if="rincian?.penunjang?.cardio > 0" class="row-penunjang">
+            <tr v-for="pl in rincian?.penunjang?.penunjang_lain || []" :key="pl.kode" class="row-penunjang">
               <td colspan="2"></td>
-              <td class="col-desc" colspan="6">Cardio</td>
+              <td class="col-desc" colspan="6">{{ pl.nama }}</td>
               <td class="col-curr">Rp.</td>
-              <td class="col-val">{{ rp(rincian?.penunjang?.cardio) }}</td>
-            </tr>
-            <tr v-if="rincian?.penunjang?.eeg > 0" class="row-penunjang">
-              <td colspan="2"></td>
-              <td class="col-desc" colspan="6">EEG</td>
-              <td class="col-curr">Rp.</td>
-              <td class="col-val">{{ rp(rincian?.penunjang?.eeg) }}</td>
-            </tr>
-            <tr v-if="rincian?.penunjang?.psikologi > 0" class="row-penunjang">
-              <td colspan="2"></td>
-              <td class="col-desc" colspan="6">Psikologi</td>
-              <td class="col-curr">Rp.</td>
-              <td class="col-val">{{ rp(rincian?.penunjang?.psikologi) }}</td>
-            </tr>
-            <!-- Penunjang Dinamis (seperti Anestesi Di Luar OK & ICU) -->
-            <tr v-for="(pLain, pIdx) in rincian?.penunjang?.penunjang_lain" :key="'pl-'+pIdx" class="row-penunjang">
-              <td colspan="2"></td>
-              <td class="col-desc" colspan="6">{{ pLain.nama }}</td>
-              <td class="col-curr">Rp.</td>
-              <td class="col-val">{{ rp(pLain.subtotal) }}</td>
+              <td class="col-val">{{ rp(pl.subtotal) }}</td>
             </tr>
             <tr class="row-penunjang">
               <td colspan="2"></td>
@@ -370,64 +328,18 @@
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.penunjang?.penggunaan_darah) }}</td>
             </tr>
-            <tr v-if="rincian?.penunjang?.jenasah > 0" class="row-penunjang">
-              <td colspan="2"></td>
-              <td class="col-desc" colspan="6">Perawatan Jenasah</td>
-              <td class="col-curr">Rp.</td>
-              <td class="col-val">{{ rp(rincian?.penunjang?.jenasah) }}</td>
-            </tr>
-            <tr class="row-penunjang">
-              <td colspan="2"></td>
-              <td class="col-desc" colspan="6">Biaya Ambulan</td>
-              <td class="col-curr">Rp.</td>
-              <td class="col-val">{{ rp(rincian?.penunjang?.ambulan) }}</td>
-            </tr>
-            <tr v-if="rincian?.penunjang?.apheresis > 0" class="row-penunjang">
-              <td colspan="2"></td>
-              <td class="col-desc" colspan="6">Biaya Apheresis</td>
-              <td class="col-curr">Rp.</td>
-              <td class="col-val">{{ rp(rincian?.penunjang?.apheresis) }}</td>
-            </tr>
-            <tr v-if="rincian?.penunjang?.cathlab > 0" class="row-penunjang">
-              <td colspan="2"></td>
-              <td class="col-desc" colspan="6">Cathlab</td>
-              <td class="col-curr">Rp.</td>
-              <td class="col-val">{{ rp(rincian?.penunjang?.cathlab) }}</td>
-            </tr>
-            <tr v-if="rincian?.penunjang?.penunjang_keluar > 0" class="row-penunjang">
-              <td colspan="2"></td>
-              <td class="col-desc" colspan="6">Penunjang Keluar</td>
-              <td class="col-curr">Rp.</td>
-              <td class="col-val">{{ rp(rincian?.penunjang?.penunjang_keluar) }}</td>
-            </tr>
 
-            <!-- 13. Biaya Farmasi / Obat -->
+            <!-- 11. Biaya Farmasi / Obat (Tidak Termasuk IGD) -->
             <tr class="row-item">
-              <td class="col-no">13</td>
-              <td class="col-desc" colspan="7">Biaya Farmasi / Obat</td>
+              <td class="col-no">11</td>
+              <td class="col-desc" colspan="7">Biaya Farmasi / Obat (Tidak Termasuk IGD)</td>
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.farmasi) }}</td>
             </tr>
 
-            <!-- 14. Operasi Cito (OK Ranap) -->
-            <tr v-if="rincian?.operasi_cito > 0" class="row-item">
-              <td class="col-no">14</td>
-              <td class="col-desc" colspan="7">Operasi Cito (OK Ranap)</td>
-              <td class="col-curr">Rp.</td>
-              <td class="col-val">{{ rp(rincian?.operasi_cito) }}</td>
-            </tr>
-
-            <!-- 16. Biaya Farmasi / Obat (IRD) -->
+            <!-- 12. IRD -->
             <tr class="row-item">
-              <td class="col-no">16</td>
-              <td class="col-desc" colspan="7">Biaya Farmasi / Obat (IRD)</td>
-              <td class="col-curr">Rp.</td>
-              <td class="col-val">{{ rp(rincian?.farmasi_ird) }}</td>
-            </tr>
-
-            <!-- 18. IRD -->
-            <tr class="row-item">
-              <td class="col-no">18</td>
+              <td class="col-no">12</td>
               <td class="col-desc" colspan="7">IRD</td>
               <td class="col-curr">Rp.</td>
               <td class="col-val">{{ rp(rincian?.ird) }}</td>
@@ -442,63 +354,6 @@
               <td class="col-val text-bold font-large">
                 {{ formatRp(store.billingData?.grand_total) }}
               </td>
-            </tr>
-
-            <!-- PELUNASAN / POTONGAN (Di Bawah TOTAL Sesuai Legacy) -->
-            <tr class="row-item">
-              <td colspan="8" class="text-right text-bold q-pr-md">TELAH DI BAYAR</td>
-              <td class="col-curr">Rp.</td>
-              <td class="col-val">{{ rp(pembayaran?.telah_dibayar) }}</td>
-            </tr>
-            <tr class="row-item">
-              <td colspan="8" class="text-right text-bold q-pr-md">POTONGAN JASA</td>
-              <td class="col-curr">Rp.</td>
-              <td class="col-val">{{ rp(pembayaran?.potongan_jasa) }}</td>
-            </tr>
-            <tr class="row-item">
-              <td colspan="8" class="text-right text-bold q-pr-md">FARMASI TELAH DIBAYAR (Rawat Inap)</td>
-              <td class="col-curr">Rp.</td>
-              <td class="col-val">{{ rp(pembayaran?.farmasi_telah_dibayar_ranap) }}</td>
-            </tr>
-            <tr class="row-item">
-              <td colspan="8" class="text-right text-bold q-pr-md">FARMASI TELAH DIBAYAR (IRD)</td>
-              <td class="col-curr">Rp.</td>
-              <td class="col-val">{{ rp(pembayaran?.farmasi_telah_dibayar_ird) }}</td>
-            </tr>
-            <tr class="row-item">
-              <td colspan="8" class="text-right text-bold q-pr-md">RETUR FARMASI</td>
-              <td class="col-curr">Rp.</td>
-              <td class="col-val">{{ rp(pembayaran?.retur_farmasi) }}</td>
-            </tr>
-            <tr class="row-item">
-              <td colspan="8" class="text-right text-bold q-pr-md">IRD TELAH DIBAYAR</td>
-              <td class="col-curr">Rp.</td>
-              <td class="col-val">{{ rp(pembayaran?.ird_telah_dibayar) }}</td>
-            </tr>
-            <tr class="row-item">
-              <td colspan="8" class="text-right text-bold q-pr-md">POTONGAN</td>
-              <td class="col-curr">Rp.</td>
-              <td class="col-val">{{ rp(pembayaran?.potongan) }}</td>
-            </tr>
-            <tr v-if="pembayaran?.potongan_jasa_raharja > 0" class="row-item">
-              <td colspan="8" class="text-right text-bold q-pr-md">POTONGAN JASA RAHARJA</td>
-              <td class="col-curr">Rp.</td>
-              <td class="col-val">{{ rp(pembayaran?.potongan_jasa_raharja) }}</td>
-            </tr>
-            <tr class="row-item">
-              <td colspan="8" class="text-right text-bold q-pr-md">KERINGANAN</td>
-              <td class="col-curr">Rp.</td>
-              <td class="col-val">{{ rp(pembayaran?.keringanan) }}</td>
-            </tr>
-            <tr class="row-item">
-              <td colspan="8" class="text-right text-bold q-pr-md">POTONGAN BPJS</td>
-              <td class="col-curr">Rp.</td>
-              <td class="col-val" style="border-bottom: 2px double #006699;">{{ rp(pembayaran?.potongan_bpjs) }}</td>
-            </tr>
-            <tr class="row-item">
-              <td colspan="8" class="text-right text-bold q-pr-md">KURANG BAYAR</td>
-              <td class="col-curr text-bold">Rp.</td>
-              <td class="col-val text-bold">{{ formatRp(pembayaran?.kurang_bayar) }}</td>
             </tr>
           </tbody>
         </table>
@@ -579,6 +434,17 @@ watch(() => props.pasien?.noreg, (newVal) => {
   }
 }, { immediate: true })
 
+watch(() => store.billingData?.header, (header) => {
+  if (header?.filter) {
+    if (!selectedRuangan.value && header.filter.flagruangan) {
+      selectedRuangan.value = header.filter.flagruangan
+    }
+    if (!selectedSistemBayar.value && header.filter.flagsistembayar) {
+      selectedSistemBayar.value = header.filter.flagsistembayar
+    }
+  }
+}, { immediate: true })
+
 onMounted(() => {
   if (props.pasien?.noreg && !store.billingData) {
     loadData()
@@ -597,9 +463,10 @@ onMounted(() => {
 }
 
 .font-billing {
-  font-family: 'Tahoma', 'Roboto', 'Segoe UI', Arial, sans-serif;
-  font-size: 14px;
+  font-family: 'Tahoma', 'Segoe UI', Arial, sans-serif;
+  font-size: 11px;
   color: #000;
+  line-height: 1.35;
 }
 
 .logo-kop {
@@ -627,7 +494,8 @@ onMounted(() => {
 .table-identitas {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px;
+  font-size: 11px;
+  line-height: 1.35;
 
   td {
     padding: 1px 2px;
@@ -635,21 +503,26 @@ onMounted(() => {
   }
 
   .label-col {
-    width: 150px;
+    white-space: nowrap;
+    width: 1%;
+    padding-right: 10px;
   }
 
   .sep-col {
     width: 10px;
+    text-align: center;
+    padding-right: 6px;
   }
 
   .val-col {
-    width: 35%;
+    width: 45%;
   }
 }
 
 .table-billing {
   border-collapse: collapse;
-  font-size: 14px;
+  font-size: 11px;
+  line-height: 1.35;
 
   tr {
     vertical-align: top;
@@ -692,13 +565,13 @@ onMounted(() => {
   }
 
   .font-large {
-    font-size: 14px;
+    font-size: 12px;
   }
 }
 
 .sub-table-kamar {
   border-collapse: collapse;
-  font-size: 14px;
+  font-size: 11px;
   td {
     padding: 0 2px;
   }

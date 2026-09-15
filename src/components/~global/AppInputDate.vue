@@ -14,7 +14,7 @@
     :autofocus="autofocus"
     :disable="disable"
     :readonly="readonly"
-    :model-value="modelProp"
+    :model-value="displayValue"
     @click="showDate"
   >
     <template
@@ -28,13 +28,13 @@
       />
     </template>
     <template
-      v-else-if="modelProp"
+      v-else-if="hasValue"
       #append
     >
       <q-icon
         name="icon-mat-cancel"
         class="cursor-pointer"
-        @click.stop.prevent="modelProp = null"
+        @click.stop.prevent="clearValue"
       />
     </template>
     <template #prepend>
@@ -47,10 +47,11 @@
         <!-- <q-menu v-model="showing"> -->
         <q-date
           v-if="typeDate"
-          v-model="modelProp"
+          v-model="qDateModel"
+          :multiple="multiple"
           mask="YYYY-MM-DD"
           today-btn
-          @update:model-value="closeDate()"
+          @update:model-value="onDateUpdate"
         >
           <div class="row items-center justify-end">
             <q-btn
@@ -94,8 +95,12 @@ const props = defineProps({
     default: 'label'
   },
   model: {
-    type: String,
+    type: [String, Array],
     default: ''
+  },
+  multiple: {
+    type: Boolean,
+    default: false
   },
   mask: {
     type: String,
@@ -125,42 +130,77 @@ const props = defineProps({
   errMessage: { type: String, default: 'error, data tidak valid' }
 })
 
+const displayValue = computed(() => {
+  if (Array.isArray(props.model)) {
+    return props.model.join(', ')
+  }
+  return props.model || ''
+})
+
+const hasValue = computed(() => {
+  if (Array.isArray(props.model)) {
+    return props.model.length > 0
+  }
+  return props.model !== null && props.model !== '' && props.model !== undefined
+})
+
+const clearValue = () => {
+  emits('setModel', props.multiple ? [] : null)
+}
+
 const modelProp = computed({
   get () { return props.model },
   set (val) { emits('setModel', val) }
 })
-// const modelProp = toRef(props, 'model')// react to ref
-// watch(modelProp, (value) => {
-//   props.model.value = modelProp.value // OK, textEnvoye is yours
-// })
+
+const qDateModel = computed({
+  get () {
+    if (props.multiple) {
+      if (Array.isArray(props.model)) return props.model
+      if (typeof props.model === 'string' && props.model.trim()) {
+        return props.model.split(',').map(s => s.trim()).filter(Boolean)
+      }
+      return []
+    }
+    return props.model
+  },
+  set (val) {
+    emits('setModel', val)
+  }
+})
 
 const refInputDate = ref(null)
 const refPopup = ref(null)
 defineExpose({ refInputDate })
-// const showing = ref(false)
-// const modelProxy = ref()
 
 onMounted(() => {
-//   console.log(refInputDate.value.modelValue)
-  // modelProxy.value = refInputDate.value.modelValue
 })
 
 function anotherValid (val) {
   if (props.valid) {
     return true
   }
+  if (props.multiple) {
+    if (Array.isArray(props.model)) {
+      return props.model.length > 0 || 'Harap diisi'
+    }
+    return (val !== null && val !== '') || 'Harap diisi'
+  }
   return (val !== null && val !== '') || 'Harap diisi'
 }
 
+function onDateUpdate () {
+  if (!props.multiple) {
+    closeDate()
+  }
+}
+
 function closeDate () {
-  // console.log('hide', refInputDate.value)
-  refPopup.value.hide()
-  refInputDate.value.blur()
+  refPopup.value?.hide()
+  refInputDate.value?.blur()
 }
 function showDate () {
-  // console.log('show', refPopup.value)
-  refPopup.value.show()
-//   showing.value = true
+  refPopup.value?.show()
 }
 
 // function coba (val) {

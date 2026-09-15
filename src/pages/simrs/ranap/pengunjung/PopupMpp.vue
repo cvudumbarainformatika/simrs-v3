@@ -11,7 +11,7 @@
             Pasien ini merupakan PASIEN MPP.
           </div>
           <div class="text-caption text-grey-8 q-mt-xs">
-            Berdasarkan hasil skrining terbaru, pasien memenuhi 3 atau lebih kriteria Manajemen Pelayanan Pasien (MPP).
+            Berdasarkan hasil skrining terbaru, pasien memenuhi lebih dari 3 kriteria Manajemen Pelayanan Pasien (MPP).
           </div>
         </q-card-section>
       </q-card>

@@ -84,6 +84,7 @@ export const useMppRanapStore = defineStore('mpp-ranap-store', {
           asuransi: formData.asuransi,
           asuransi_ket: formData.asuransi_ket,
           pakai_alat_obat: formData.pakai_alat_obat,
+          pakai_alat_obat_ket: formData.pakai_alat_obat_ket,
           riwayat_trauma: formData.riwayat_trauma,
           riwayat_trauma_ket: formData.riwayat_trauma_ket,
           health_literacy: formData.health_literacy,
