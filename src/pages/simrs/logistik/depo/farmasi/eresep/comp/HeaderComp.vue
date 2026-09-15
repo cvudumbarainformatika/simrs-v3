@@ -30,12 +30,18 @@
         <!-- list pengunjung -->
 
         <q-btn v-if="ruang === 'Gd-05010101'" unelevated round size="sm" color="negative" icon="icon-mat-personal_injury"
+          class="q-mr-sm"
           @click="emits('list')">
           <q-tooltip class="primary" :offset="[10, 10]">
             List Pengunjung
           </q-tooltip>
         </q-btn>
         <!-- refresh Ids -->
+        <q-btn unelevated round size="sm" color="green" icon="icon-mat-download" class="q-mr-sm" @click="emits('download')">
+          <q-tooltip class="primary" :offset="[10, 10]">
+            Download List Resep Excel
+          </q-tooltip>
+        </q-btn>
         <q-btn v-if="props.adaRefresh" unelevated round size="sm" icon="icon-mat-refresh" @click="emits('refresh')">
           <q-tooltip class="primary" :offset="[10, 10]">
             Refresh Table
@@ -77,7 +83,7 @@ import { useStyledStore } from 'src/stores/app/styled'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 
 const style = useStyledStore()
-const emits = defineEmits(['cari', 'refresh', 'setPerPage', 'setFlag', 'setPeriode', 'setTipe', 'setSistembayar', 'setListSistembayar', 'terapkan', 'setIterTiming', 'list'])
+const emits = defineEmits(['cari', 'refresh', 'setPerPage', 'setFlag', 'setPeriode', 'setTipe', 'setSistembayar', 'setListSistembayar', 'terapkan', 'setIterTiming', 'list', 'download'])
 const props = defineProps({
   ruang: { type: String, default: '' },
   search: { type: String, default: '' },

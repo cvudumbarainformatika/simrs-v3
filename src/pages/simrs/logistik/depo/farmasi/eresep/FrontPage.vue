@@ -7,7 +7,7 @@
         @set-per-page="store.setPerPage" @set-flag="store.setFlag" @set-tipe="store.setTipe"
         @set-iter-timing="store.setIterTiming" @set-periode="(val) => store.setPeriodik(val)"
         @terapkan="store.getDataTable()" @set-sistembayar="store.setSistembayar"
-        @set-list-sistembayar="store.setListSistembayar" @list="bukaList" />
+        @set-list-sistembayar="store.setListSistembayar" @list="bukaList" @download="openDownload = true" />
     </div>
     <q-card flat no-shadow square class="my-flex-1 scroll">
       <q-scroll-area style="height:calc( 100% - 40px)">
@@ -32,6 +32,7 @@
       </template>
     </app-fullscreen-blue>
     <DialogAlasan v-model="store.isAlasan" @close="alasanClose" />
+    <DownloadListDialog v-model="openDownload" :kddepo="kdruangansim" />
     <!-- List Pengunjung -->
     <ListPengunjung v-model="openList" @close="openList = false" />
     <!-- <app-fullscreen-blue v-model="openList" @close="openList = false">
@@ -58,6 +59,7 @@ const DialogPage = defineAsyncComponent(() => import('./comp/newDialogPage/Dialo
 const InfoPage = defineAsyncComponent(() => import('./comp/InfoPage.vue'))
 const DialogAlasan = defineAsyncComponent(() => import('./comp/DialogAlasan.vue'))
 const ListPengunjung = defineAsyncComponent(() => import('./comp/listPengunjung/ListPengunjungPage.vue'))
+const DownloadListDialog = defineAsyncComponent(() => import('./comp/DownloadListDialog.vue'))
 
 const style = useStyledStore()
 const store = useEResepDepoFarmasiStore()
@@ -173,6 +175,7 @@ function listenForSpeechEvents () {
 
 // list pengunjung
 const openList = ref(false)
+const openDownload = ref(false)
 function bukaList () {
   console.log('buka list')
   openList.value = true
