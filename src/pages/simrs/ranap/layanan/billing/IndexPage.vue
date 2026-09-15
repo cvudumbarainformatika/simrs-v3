@@ -23,7 +23,7 @@
           <div class="column fit">
             <div class="col fit">
               <q-tab-panels v-model="innerTab" animated vertical transition-prev="jump-up"
-                transition-next="jump-up" class="bg-indigo-1 fit">
+                transition-next="jump-up" class="bg-indigo-1 fit" keep-alive>
                 <q-tab-panel v-for="menu in menus" :key="menu.name" :name="menu?.name" class="fit q-pa-none">
                   <component :is="menu?.comp" :pasien="pasien" :menu="menu" :kasus="kasus" :data-header="dataHeader" />
                 </q-tab-panel>

@@ -40,10 +40,13 @@
       </div>
     </div>
 
+    <!-- Progress Bar Halus saat Background Sync / Update Data -->
+    <q-linear-progress v-if="store.loadingFakturDetail && store.fakturDetailData" indeterminate color="teal" class="absolute-top" style="z-index: 10;" />
+
     <!-- Container Isi Dokumen Faktur Detail -->
     <div class="col full-height scroll q-py-lg q-px-md flex flex-center bg-grey-4">
-      <!-- Loading State -->
-      <div v-if="store.loadingFakturDetail" class="column flex-center q-pa-xl text-teal">
+      <!-- Loading State (Hanya jika data belum ada) -->
+      <div v-if="store.loadingFakturDetail && !store.fakturDetailData" class="column flex-center q-pa-xl text-teal">
         <q-spinner-dots size="48px" />
         <div class="q-mt-md text-bold">Memuat Rincian Faktur Detail...</div>
       </div>
@@ -362,9 +365,10 @@ onMounted(() => {
 }
 
 .font-billing {
-  font-family: 'Tahoma', 'Roboto', 'Segoe UI', Arial, sans-serif;
-  font-size: 13px;
+  font-family: 'Tahoma', 'Segoe UI', Arial, sans-serif;
+  font-size: 11px;
   color: #000;
+  line-height: 1.35;
 }
 
 .logo-kop {
@@ -392,7 +396,8 @@ onMounted(() => {
 .table-identitas {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: 11px;
+  line-height: 1.35;
 
   td {
     padding: 1px 2px;
@@ -400,21 +405,26 @@ onMounted(() => {
   }
 
   .label-col {
-    width: 150px;
+    white-space: nowrap;
+    width: 1%;
+    padding-right: 10px;
   }
 
   .sep-col {
     width: 10px;
+    text-align: center;
+    padding-right: 6px;
   }
 
   .val-col {
-    width: 35%;
+    width: 45%;
   }
 }
 
 .table-billing {
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: 11px;
+  line-height: 1.35;
 
   tr {
     vertical-align: top;
