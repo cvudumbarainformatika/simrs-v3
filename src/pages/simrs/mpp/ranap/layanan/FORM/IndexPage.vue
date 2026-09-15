@@ -44,11 +44,11 @@
                     <span>Skrining MPP</span>
                     <q-space />
                     <q-badge
-                      :color="skriningScore >= 3 ? 'positive' : 'white'"
-                      :text-color="skriningScore >= 3 ? 'white' : 'grey-8'"
+                      :color="skriningScore > 3 ? 'positive' : 'white'"
+                      :text-color="skriningScore > 3 ? 'white' : 'grey-8'"
                       class="text-caption"
                     >
-                      {{ skriningScore >= 3 ? 'PASIEN MPP' : 'Bukan MPP' }} (Skor: {{ skriningScore }})
+                      {{ skriningScore > 3 ? 'PASIEN MPP' : 'Bukan MPP' }} (Skor: {{ skriningScore }})
                     </q-badge>
                   </div>
                 </template>
@@ -114,6 +114,7 @@
                         <q-radio v-model="form.skrining.kasus_penyakit" val="Kronis" label="Kronis" dense color="indigo-10" size="sm" />
                         <q-radio v-model="form.skrining.kasus_penyakit" val="Komplek" label="Komplek" dense color="indigo-10" size="sm" />
                         <q-radio v-model="form.skrining.kasus_penyakit" val="Terminal" label="Terminal" dense color="indigo-10" size="sm" />
+                        <q-radio v-model="form.skrining.kasus_penyakit" :val="null" label="None" dense color="indigo-10" size="sm" />
                       </div>
                     </q-item-section>
                   </q-item>
@@ -337,10 +338,14 @@
                     <div class="text-caption text-weight-bold text-indigo-10 q-mb-xs">
                       9. Riwayat penggunaan obat/obat
                     </div>
-                    <div class="row q-gutter-x-md q-py-xs">
+                    <div class="row q-gutter-x-md q-py-xs q-mb-xs">
                       <q-radio v-model="form.pakai_alat_obat" val="Tidak" label="Tidak" dense color="indigo-10" />
-                      <q-radio v-model="form.pakai_alat_obat" val="Ya" label="Ya" dense color="indigo-10" />
+                      <q-radio v-model="form.pakai_alat_obat" val="Ya" label="Ya:" dense color="indigo-10" />
                     </div>
+                    <q-slide-transition>
+                      <q-input v-show="form.pakai_alat_obat === 'Ya'" v-model="form.pakai_alat_obat_ket"
+                        outlined standout="bg-yellow-3" placeholder="Uraikan riwayat penggunaan obat..." class="q-mt-xs" />
+                    </q-slide-transition>
                   </div>
 
                   <!-- 10. Riwayat Trauma / Kekerasan -->
@@ -1014,8 +1019,8 @@
                               <div class="col">
                                 <q-input v-model="form.fasilitasi_ket.dietisen" outlined dense label="Mengedukasi tentang..." />
                               </div>
-                              <div class="col-auto">
-                                <app-input-date :model="form.fasilitasi_tgl.dietisen" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.dietisen = val" style="max-width: 140px;" />
+                              <div class="col-12 col-sm-auto" style="min-width: 260px; max-width: 360px;">
+                                <app-input-date :model="form.fasilitasi_tgl.dietisen" label="Tanggal" outlined multiple @set-model="val => form.fasilitasi_tgl.dietisen = val" />
                               </div>
                             </div>
                           </div>
@@ -1024,8 +1029,8 @@
                           <div class="border-b q-pb-sm">
                             <div class="text-body2 text-grey-9">DPJP : Memberikan informasi tentang pemeriksaan penunjang, diagnosa, penatalaksanaan</div>
                             <div class="q-mt-xs q-pl-md row q-col-gutter-sm items-center">
-                              <div class="col-auto">
-                                <app-input-date :model="form.fasilitasi_tgl.dpjp" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.dpjp = val" style="max-width: 140px;" />
+                              <div class="col-12 col-sm-auto" style="min-width: 260px; max-width: 360px;">
+                                <app-input-date :model="form.fasilitasi_tgl.dpjp" label="Tanggal" outlined multiple @set-model="val => form.fasilitasi_tgl.dpjp = val" />
                               </div>
                             </div>
                           </div>
@@ -1034,8 +1039,8 @@
                           <div class="border-b q-pb-sm">
                             <div class="text-body2 text-grey-9">Farmasi : cara minum obat dan efek samping</div>
                             <div class="q-mt-xs q-pl-md row q-col-gutter-sm items-center">
-                              <div class="col-auto">
-                                <app-input-date :model="form.fasilitasi_tgl.farmasi" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.farmasi = val" style="max-width: 140px;" />
+                              <div class="col-12 col-sm-auto" style="min-width: 260px; max-width: 360px;">
+                                <app-input-date :model="form.fasilitasi_tgl.farmasi" label="Tanggal" outlined multiple @set-model="val => form.fasilitasi_tgl.farmasi = val" />
                               </div>
                             </div>
                           </div>
@@ -1044,8 +1049,8 @@
                           <div class="border-b q-pb-sm">
                             <div class="text-body2 text-grey-9">Fisioterapi : Latihan fisik</div>
                             <div class="q-mt-xs q-pl-md row q-col-gutter-sm items-center">
-                              <div class="col-auto">
-                                <app-input-date :model="form.fasilitasi_tgl.fisioterapi" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.fisioterapi = val" style="max-width: 140px;" />
+                              <div class="col-12 col-sm-auto" style="min-width: 260px; max-width: 360px;">
+                                <app-input-date :model="form.fasilitasi_tgl.fisioterapi" label="Tanggal" outlined multiple @set-model="val => form.fasilitasi_tgl.fisioterapi = val" />
                               </div>
                             </div>
                           </div>
@@ -1057,8 +1062,8 @@
                               <div class="col">
                                 <q-input v-model="form.fasilitasi_ket.perawat" outlined dense label="Edukasi tentang..." />
                               </div>
-                              <div class="col-auto">
-                                <app-input-date :model="form.fasilitasi_tgl.perawat" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.perawat = val" style="max-width: 140px;" />
+                              <div class="col-12 col-sm-auto" style="min-width: 260px; max-width: 360px;">
+                                <app-input-date :model="form.fasilitasi_tgl.perawat" label="Tanggal" outlined multiple @set-model="val => form.fasilitasi_tgl.perawat = val" />
                               </div>
                             </div>
                           </div>
@@ -1076,7 +1081,7 @@
                         <div class="text-body2 text-grey-9">Koordinasi dengan PPA untuk rencana pemulangan pasien dengan pelayanan pasca rawat inap</div>
                         <div class="q-mt-sm row items-center gap-sm">
                           <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                          <app-input-date :model="form.fasilitasi_tgl.pelayanan_pasca_rawat" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.pelayanan_pasca_rawat = val" style="max-width: 150px;" />
+                          <app-input-date :model="form.fasilitasi_tgl.pelayanan_pasca_rawat" label="Tanggal" outlined multiple @set-model="val => form.fasilitasi_tgl.pelayanan_pasca_rawat = val" style="min-width: 260px; max-width: 360px;" />
                         </div>
                       </div>
                     </div>
@@ -1090,7 +1095,7 @@
                         <div class="text-body2 text-grey-9">Koordinasi dengan PPA untuk pelayanan sesuai dengan PPK dan Clinical Pathway</div>
                         <div class="q-mt-sm row items-center gap-sm">
                           <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                          <app-input-date :model="form.fasilitasi_tgl.pelayanan_ppk_cp" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.pelayanan_ppk_cp = val" style="max-width: 150px;" />
+                          <app-input-date :model="form.fasilitasi_tgl.pelayanan_ppk_cp" label="Tanggal" outlined multiple @set-model="val => form.fasilitasi_tgl.pelayanan_ppk_cp = val" style="min-width: 260px; max-width: 360px;" />
                         </div>
                       </div>
                     </div>
@@ -1104,7 +1109,7 @@
                         <div class="text-body2 text-grey-9">Berkomunikasi dengan pasien dan keluarga setiap ada perubahan rencana perawatan</div>
                         <div class="q-mt-sm row items-center gap-sm">
                           <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                          <app-input-date :model="form.fasilitasi_tgl.perubahan_rencana" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.perubahan_rencana = val" style="max-width: 150px;" />
+                          <app-input-date :model="form.fasilitasi_tgl.perubahan_rencana" label="Tanggal" outlined multiple @set-model="val => form.fasilitasi_tgl.perubahan_rencana = val" style="min-width: 260px; max-width: 360px;" />
                         </div>
                       </div>
                     </div>
@@ -1120,7 +1125,7 @@
                           <q-input v-model="form.fasilitasi_ket.pihak_dalam_rs" outlined dense label="Dengan..." />
                           <div class="row items-center gap-sm">
                             <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                            <app-input-date :model="form.fasilitasi_tgl.pihak_dalam_rs" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.pihak_dalam_rs = val" style="max-width: 150px;" />
+                            <app-input-date :model="form.fasilitasi_tgl.pihak_dalam_rs" label="Tanggal" outlined multiple @set-model="val => form.fasilitasi_tgl.pihak_dalam_rs = val" style="min-width: 260px; max-width: 360px;" />
                           </div>
                         </div>
                       </div>
@@ -1137,7 +1142,7 @@
                           <q-input v-model="form.fasilitasi_ket.pihak_luar_rs" outlined dense label="Dengan..." />
                           <div class="row items-center gap-sm">
                             <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                            <app-input-date :model="form.fasilitasi_tgl.pihak_luar_rs" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.pihak_luar_rs = val" style="max-width: 150px;" />
+                            <app-input-date :model="form.fasilitasi_tgl.pihak_luar_rs" label="Tanggal" outlined multiple @set-model="val => form.fasilitasi_tgl.pihak_luar_rs = val" style="min-width: 260px; max-width: 360px;" />
                           </div>
                         </div>
                       </div>
@@ -1152,7 +1157,7 @@
                         <div class="text-body2 text-grey-9">Fasilitasi pasien dalam proses transisi ke fasilitas pelayanan kesehatan lain</div>
                         <div class="q-mt-sm row items-center gap-sm">
                           <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                          <app-input-date :model="form.fasilitasi_tgl.transisi_faskes" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.transisi_faskes = val" style="max-width: 150px;" />
+                          <app-input-date :model="form.fasilitasi_tgl.transisi_faskes" label="Tanggal" outlined multiple @set-model="val => form.fasilitasi_tgl.transisi_faskes = val" style="min-width: 260px; max-width: 360px;" />
                         </div>
                       </div>
                     </div>
@@ -1166,7 +1171,7 @@
                         <div class="text-body2 text-grey-9">Meeting Case</div>
                         <div class="q-mt-sm row items-center gap-sm">
                           <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                          <app-input-date :model="form.fasilitasi_tgl.meeting_case" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.meeting_case = val" style="max-width: 150px;" />
+                          <app-input-date :model="form.fasilitasi_tgl.meeting_case" label="Tanggal" outlined multiple @set-model="val => form.fasilitasi_tgl.meeting_case = val" style="min-width: 260px; max-width: 360px;" />
                         </div>
                       </div>
                     </div>
@@ -1180,7 +1185,7 @@
                         <div class="text-body2 text-grey-9">Koordinasi dengan penjaminan untuk koding pasien</div>
                         <div class="q-mt-sm row items-center gap-sm">
                           <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                          <app-input-date :model="form.fasilitasi_tgl.penjaminan_koding" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.penjaminan_koding = val" style="max-width: 150px;" />
+                          <app-input-date :model="form.fasilitasi_tgl.penjaminan_koding" label="Tanggal" outlined multiple @set-model="val => form.fasilitasi_tgl.penjaminan_koding = val" style="min-width: 260px; max-width: 360px;" />
                         </div>
                       </div>
                     </div>
@@ -1854,6 +1859,7 @@ const formDefault = () => ({
   asuransi: null,
   asuransi_ket: null,
   pakai_alat_obat: null,
+  pakai_alat_obat_ket: null,
   riwayat_trauma: null,
   riwayat_trauma_ket: null,
   health_literacy: null,
@@ -1937,7 +1943,7 @@ const skriningScore = computed(() => {
   if (s.kognitif_rendah) count++
   if (s.resiko_tinggi) count++
   if (s.potensi_komplain) count++
-  if (s.kasus_penyakit) count++
+  if (s.kasus_penyakit && s.kasus_penyakit !== 'None') count++
   if (s.keterbatasan_adl) count++
   if (s.pakai_alat_medis) count++
   if (Array.isArray(s.riwayat_psikologis) && s.riwayat_psikologis.length > 0) count++
@@ -1966,11 +1972,6 @@ const isFieldDirty = (section) => {
     return val
   }
 
-  const isEquivalent = (val1, val2) => {
-    const clean = (v) => (v === null || v === undefined ? '' : v.toString().trim())
-    return clean(val1) === clean(val2)
-  }
-
   const isArrayEquivalent = (arr1, arr2) => {
     const a1 = Array.isArray(arr1) ? arr1 : []
     const a2 = Array.isArray(arr2) ? arr2 : []
@@ -1978,6 +1979,14 @@ const isFieldDirty = (section) => {
     const sorted1 = [...a1].sort()
     const sorted2 = [...a2].sort()
     return sorted1.every((v, i) => v === sorted2[i])
+  }
+
+  const isEquivalent = (val1, val2) => {
+    if (Array.isArray(val1) || Array.isArray(val2)) {
+      return isArrayEquivalent(val1, val2)
+    }
+    const clean = (v) => (v === null || v === undefined ? '' : v.toString().trim())
+    return clean(val1) === clean(val2)
   }
 
   const isObjectEquivalent = (obj1, obj2) => {
@@ -2005,7 +2014,7 @@ const isFieldDirty = (section) => {
     const asesmenKeys = [
       'tgl_kajian', 'fisik_fungsional', 'riwayat_kesehatan', 'psiko_sosio_kultural',
       'kesehatan_mental', 'dukungan_keluarga', 'masalah_finansial', 'asuransi',
-      'asuransi_ket', 'pakai_alat_obat', 'riwayat_trauma', 'riwayat_trauma_ket',
+      'asuransi_ket', 'pakai_alat_obat', 'pakai_alat_obat_ket', 'riwayat_trauma', 'riwayat_trauma_ket',
       'health_literacy', 'health_literacy_ket', 'harapan_asuhan', 'aspek_legal',
       'aspek_legal_ket'
     ]
@@ -2107,7 +2116,10 @@ const displayAsesmenForm = () => {
     const ket = form.asuransi_ket ? ` (${form.asuransi_ket})` : ''
     list.push(`Asuransi: ${form.asuransi}${ket}`)
   }
-  if (form.pakai_alat_obat) list.push(`Penggunaan Alat/Obat: ${form.pakai_alat_obat}`)
+  if (form.pakai_alat_obat) {
+    const ket = form.pakai_alat_obat === 'Ya' && form.pakai_alat_obat_ket ? ` (${form.pakai_alat_obat_ket})` : ''
+    list.push(`Penggunaan Alat/Obat: ${form.pakai_alat_obat}${ket}`)
+  }
   if (form.riwayat_trauma) {
     const ket = form.riwayat_trauma_ket ? ` (${form.riwayat_trauma_ket})` : ''
     list.push(`Riwayat Trauma: ${form.riwayat_trauma}${ket}`)
@@ -2185,13 +2197,14 @@ const displayFasilitasiForm = () => {
     const tgl = form.fasilitasi_tgl?.[key]
     const ket = form.fasilitasi_ket?.[key]
     
-    const hasTgl = tgl && tgl.trim() !== ''
+    const tglStr = Array.isArray(tgl) ? tgl.join(', ') : (tgl || '')
+    const hasTgl = tglStr.trim() !== ''
     const hasKet = ket && ket.trim() !== ''
     
     if (hasTgl || hasKet) {
       const parts = []
       parts.push(labelMap[key])
-      if (hasTgl) parts.push(`(${tgl})`)
+      if (hasTgl) parts.push(`(${tglStr})`)
       if (hasKet) parts.push(`[${ket}]`)
       list.push(parts.join(' '))
     }

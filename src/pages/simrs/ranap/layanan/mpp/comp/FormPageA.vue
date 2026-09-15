@@ -76,6 +76,7 @@
                     <q-radio v-model="form.kasus_penyakit" val="Kronis" label="Kronis" dense color="indigo-10" />
                     <q-radio v-model="form.kasus_penyakit" val="Komplek" label="Komplek" dense color="indigo-10" />
                     <q-radio v-model="form.kasus_penyakit" val="Terminal" label="Terminal" dense color="indigo-10" />
+                    <q-radio v-model="form.kasus_penyakit" :val="null" label="None" dense color="indigo-10" />
                   </div>
                 </q-item-section>
               </q-item>
@@ -211,7 +212,7 @@
             <div class="row items-center q-gutter-x-sm">
               <span class="text-caption text-grey-8 text-bold">Skor Skrining Aktif:</span>
               <q-badge
-                v-if="activeScore >= 3"
+                v-if="activeScore > 3"
                 color="positive"
                 text-color="white"
                 class="q-py-xs q-px-sm text-bold"
@@ -295,7 +296,7 @@
                       <div class="row items-center justify-between q-mt-sm">
                         <div>
                           <q-badge
-                            v-if="calculateMppScore(item.skrining) >= 3"
+                            v-if="calculateMppScore(item.skrining) > 3"
                             color="positive"
                             text-color="white"
                             class="q-py-xs q-px-sm text-bold text-caption"
@@ -415,7 +416,7 @@ const activeScore = computed(() => {
   if (form.kognitif_rendah) count++
   if (form.resiko_tinggi) count++
   if (form.potensi_komplain) count++
-  if (form.kasus_penyakit) count++
+  if (form.kasus_penyakit && form.kasus_penyakit !== 'None') count++
   if (form.keterbatasan_adl) count++
   if (form.pakai_alat_medis) count++
   if (Array.isArray(form.riwayat_psikologis) && form.riwayat_psikologis.length > 0) count++
@@ -439,7 +440,7 @@ const calculateMppScore = (skriningData) => {
   if (data.kognitif_rendah) count++
   if (data.resiko_tinggi) count++
   if (data.potensi_komplain) count++
-  if (data.kasus_penyakit) count++
+  if (data.kasus_penyakit && data.kasus_penyakit !== 'None') count++
   if (data.keterbatasan_adl) count++
   if (data.pakai_alat_medis) count++
   if (Array.isArray(data.riwayat_psikologis) && data.riwayat_psikologis.length > 0) count++
@@ -460,7 +461,7 @@ const formatKriteriaSummary = (skriningData) => {
   
   const activeKriteria = []
   if (data.usia) activeKriteria.push(`Usia: ${data.usia}`)
-  if (data.kasus_penyakit) activeKriteria.push(`Kasus: ${data.kasus_penyakit}`)
+  if (data.kasus_penyakit && data.kasus_penyakit !== 'None') activeKriteria.push(`Kasus: ${data.kasus_penyakit}`)
   
   const flags = [
     { key: 'kognitif_rendah', label: 'Kognitif Rendah' },
