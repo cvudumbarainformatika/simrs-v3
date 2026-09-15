@@ -3,11 +3,11 @@
     <q-card v-for="(item, n) in items" :key="n" flat bordered class="q-mb-sm">
       <q-card-section>
         <q-item-section>
-          <q-item-label>Pasien Telah di Skrining </q-item-label>
+          <q-item-label>{{ getSkriningLabel(n) }}</q-item-label>
         </q-item-section>
         <q-item-section>
           <q-item-label line="5">
-            Oleh : <b>{{ store?.perawats?.find(x => x?.kdpegsimrs === item?.user_input)?.nama }}</b>
+            Oleh : <b>{{store?.perawats?.find(x => x?.kdpegsimrs === item?.user_input)?.nama}}</b>
           </q-item-label>
         </q-item-section>
       </q-card-section>
@@ -35,7 +35,8 @@ const props = defineProps({
     default: null
   }
 })
-
+console.log('items', props?.items)
+console.log('pasien', props?.pasien)
 const $q = useQuasar()
 
 const hapusItem = (item) => {
@@ -47,5 +48,14 @@ const hapusItem = (item) => {
   }).onOk(() => {
     store.hapusdata(props?.pasien, item?.id)
   })
+}
+
+const getSkriningLabel = (index) => {
+  if (index === 0) return 'Pasien Telah di Skrining Pertama'
+  if (index === 1 || index === props.items.length - 1) {
+    return 'Pasien Telah di Skrining Terakhir'
+  }
+
+  return 'Pasien Telah di Skrining'
 }
 </script>
