@@ -66,6 +66,15 @@ export const useBillingRanapStore = defineStore('billing-ranap-store', {
       } finally {
         this.loadingFakturDetail = false
       }
+    },
+
+    async ensureFakturDetail(pasien) {
+      if (!pasien?.noreg) return
+      this.checkAndResetIfDifferentPatient(pasien)
+      if (this.fakturDetailData && this.currentNoreg === pasien.noreg) {
+        return
+      }
+      await this.getFakturDetail(pasien)
     }
   }
 })

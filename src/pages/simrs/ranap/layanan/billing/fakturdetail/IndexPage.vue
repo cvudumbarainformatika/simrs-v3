@@ -1,16 +1,22 @@
 <template>
   <div class="fit column relative-position bg-grey-4">
     <!-- Header / Toolbar di layar (tidak ikut dicetak) -->
-    <div class="col-auto bg-white q-pa-sm shadow-1 no-print">
-      <div class="row justify-between items-center q-px-md">
-        <div class="row items-center q-gutter-sm">
-          <q-icon name="icon-mat-receipt" size="24px" color="teal" />
-          <div class="text-subtitle2 text-bold text-teal">FAKTUR DETAIL PASIEN RAWAT INAP</div>
-          <q-badge color="teal" outline class="q-ml-sm" v-if="store.fakturDetailData?.header">
-            {{ store.fakturDetailData?.header?.ruangan }}
-          </q-badge>
+    <div class="col-auto full-width bg-white q-py-sm q-px-md shadow-1 no-print">
+      <div class="row justify-between items-center full-width">
+        <!-- KIRI: Judul FAKTUR DETAIL dan Badge di bawahnya -->
+        <div class="column">
+          <div class="row items-center q-gutter-xs">
+            <q-icon name="icon-mat-receipt_long" size="20px" color="teal" />
+            <div class="text-subtitle2 text-bold text-teal">FAKTUR DETAIL</div>
+          </div>
+          <div v-if="headerData?.ruangan" class="q-mt-xs">
+            <q-badge color="teal" outline class="q-py-none text-caption" style="font-size: 11px;">
+              {{ headerData?.sistembayar || '-' }} ({{ headerData?.ruangan }})
+            </q-badge>
+          </div>
         </div>
 
+        <!-- KANAN: Refresh, Tombol Cetak Bulat Icon Teal -->
         <div class="row items-center q-gutter-sm">
           <!-- Tombol Refresh -->
           <q-btn
@@ -25,17 +31,17 @@
             <q-tooltip>Refresh Data</q-tooltip>
           </q-btn>
 
-          <!-- Tombol Cetak -->
+          <!-- Tombol Cetak (Hanya Ikon Print) -->
           <q-btn
             v-if="store.fakturDetailData"
             v-print="printObj"
             color="teal"
             icon="icon-mat-print"
-            label="Cetak Faktur Detail"
-            no-caps
+            round
             dense
-            class="q-px-md"
-          />
+          >
+            <q-tooltip>Cetak Faktur Detail</q-tooltip>
+          </q-btn>
         </div>
       </div>
     </div>

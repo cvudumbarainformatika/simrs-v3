@@ -1,16 +1,16 @@
 <template>
   <q-page class="fit absolute column">
     <div class="fit">
-      <q-splitter v-model="splitterModel" :limits="[0, 100]" before-class="overflow-hidden"
+      <q-splitter v-model="splitterModel" :limits="[15, 35]" before-class="overflow-hidden"
         after-class="overflow-hidden" class="fit">
         <template #before>
           <div class="column fit bg-indigo-1">
             <div class="col full-height scroll">
-              <q-tabs v-model="innerTab" vertical class="text-dark bg-white shadow-1 bo" active-color="orange-10"
-                active-bg-color="indigo-1" no-caps align="left" inline-label>
+              <q-tabs v-model="innerTab" vertical class="text-dark bg-white shadow-1" active-color="orange-10"
+                active-bg-color="indigo-1" no-caps align="left">
                 <q-tab v-for="menu in menus" :key="menu.name" :name="menu?.name"
-                  style="justify-content: left; border-bottom: 1px solid #e0e0e0; padding-left: 10px;">
-                  <div class="text-bold">
+                  style="justify-content: left; border-bottom: 1px solid #e0e0e0; padding-left: 10px; min-height: 38px;">
+                  <div class="text-bold" style="font-size: 11px;">
                     {{ menu?.label }}
                   </div>
                 </q-tab>
@@ -37,8 +37,9 @@
 </template>
 
 <script setup>
-// eslint-disable-next-line no-unused-vars
 import { defineAsyncComponent, onMounted, ref, shallowRef } from 'vue'
+
+const fakturLayananComp = shallowRef(defineAsyncComponent(() => import('./fakturlayanan/IndexPage.vue')))
 
 const menus = ref([
   {
@@ -46,7 +47,6 @@ const menus = ref([
     label: 'FAKTUR REKAP',
     title: 'FAKTUR REKAP',
     desc: 'Faktur Rekap Pasien',
-    icon: 'icon-mat-receipt_long',
     nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
     comp: shallowRef(defineAsyncComponent(() => import('./rekap/IndexPage.vue')))
   },
@@ -55,9 +55,136 @@ const menus = ref([
     label: 'FAKTUR DETAIL',
     title: 'FAKTUR DETAIL',
     desc: 'Faktur Detail Billing Pasien',
-    icon: 'icon-mat-receipt',
     nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
     comp: shallowRef(defineAsyncComponent(() => import('./fakturdetail/IndexPage.vue')))
+  },
+  {
+    name: 'tindakan-dokter',
+    label: 'TINDAKAN DOKTER',
+    title: 'Jasa Pelayanan Dokter Umum/Spesialis',
+    desc: 'Rincian Tindakan Dokter',
+    nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
+    comp: fakturLayananComp
+  },
+  {
+    name: 'tindakan-perawat',
+    label: 'TINDAKAN PERAWAT / BIDAN',
+    title: 'Tindakan Keperawatan',
+    desc: 'Rincian Tindakan Keperawatan',
+    nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
+    comp: fakturLayananComp
+  },
+  {
+    name: 'gizi',
+    label: 'GIZI',
+    title: 'Instalasi Gizi',
+    desc: 'Rincian Asuhan Gizi & Makan Pasien',
+    nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
+    comp: fakturLayananComp
+  },
+  {
+    name: 'visite-dokter',
+    label: 'VISITE, KONSULTASI & ONCALL',
+    title: 'Biaya Visite, Konsul & Oncall',
+    desc: 'Rincian Visite, Konsul & Oncall',
+    nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
+    comp: fakturLayananComp
+  },
+  {
+    name: 'laboratorium',
+    label: 'LABORATORIUM',
+    title: 'Laboratorium',
+    desc: 'Rincian Pemeriksaan Laboratorium',
+    nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
+    comp: fakturLayananComp
+  },
+  {
+    name: 'oksigen',
+    label: 'OKSIGEN',
+    title: 'Biaya Oksigen',
+    desc: 'Rincian Penggunaan Oksigen',
+    nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
+    comp: fakturLayananComp
+  },
+  {
+    name: 'radiologi',
+    label: 'RADIOLOGI',
+    title: 'Radiologi',
+    desc: 'Rincian Pemeriksaan Radiologi',
+    nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
+    comp: fakturLayananComp
+  },
+  {
+    name: 'jasa-keperawatan',
+    label: 'JASA KEPERAWATAN',
+    title: 'Jasa Keperawatan',
+    desc: 'Rincian Jasa Keperawatan',
+    nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
+    comp: fakturLayananComp
+  },
+  {
+    name: 'farmasi',
+    label: 'FARMASI',
+    title: 'Biaya Farmasi / Obat',
+    desc: 'Rincian Resep Farmasi',
+    nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
+    comp: fakturLayananComp
+  },
+  {
+    name: 'hemodialisa',
+    label: 'HEMODIALISA',
+    title: 'Hemodialisa',
+    desc: 'Rincian Pelayanan Hemodialisa',
+    nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
+    comp: fakturLayananComp
+  },
+  {
+    name: 'cardio',
+    label: 'CARDIO',
+    title: 'Cardio',
+    desc: 'Rincian Pemeriksaan Cardio',
+    nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
+    comp: fakturLayananComp
+  },
+  {
+    name: 'eeg',
+    label: 'EEG',
+    title: 'EEG',
+    desc: 'Rincian Pemeriksaan EEG',
+    nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
+    comp: fakturLayananComp
+  },
+  {
+    name: 'fisioterapi',
+    label: 'FISIOTERAPI',
+    title: 'Fisioterapi',
+    desc: 'Rincian Pelayanan Fisioterapi',
+    nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
+    comp: fakturLayananComp
+  },
+  {
+    name: 'akomodasi',
+    label: 'AKOMODASI / KAMAR',
+    title: 'Akomodasi / Kamar',
+    desc: 'Rincian Sewa Kamar & Akomodasi',
+    nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
+    comp: fakturLayananComp
+  },
+  {
+    name: 'operasi',
+    label: 'OPERASI',
+    title: 'Kamar Operasi & Ruang RR',
+    desc: 'Rincian Operasi & Ruang Pemulihan',
+    nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
+    comp: fakturLayananComp
+  },
+  {
+    name: 'eresep',
+    label: 'E-RESEP',
+    title: 'Biaya E-Resep (Non Racikan & Racikan)',
+    desc: 'Rincian E-Resep Farmasi',
+    nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
+    comp: fakturLayananComp
   }
 ])
 
