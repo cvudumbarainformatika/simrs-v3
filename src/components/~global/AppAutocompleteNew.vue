@@ -22,7 +22,10 @@
             </div>
           </div>
           <div v-if="typeof (props.optionLabel) === 'string'" class="ellipsis">
-            {{ scope.opt[optionLabel] }}
+            <span> {{ scope.opt[optionLabel] }} </span>
+            <span v-if="props.showAnggaranStatus && scope.opt?.pagu == null" class="text-negative">
+              (Tidak Ada Anggaran)
+            </span>
           </div>
         </q-item-section>
       </q-item>
@@ -65,8 +68,8 @@ const props = defineProps({
   outlined: { type: Boolean, default: false },
   valid: { type: Boolean, default: false },
   model: { type: [String, Number], default: '' },
-  debounce: { type: [String, Number], default: '100' }
-
+  debounce: { type: [String, Number], default: '100' },
+  showAnggaranStatus: { type: Boolean, default: false }
 })
 const optionx = ref([])
 const refAuto = ref(null)
@@ -74,7 +77,7 @@ const diModel = ref(null)
 
 defineExpose({ refAuto })
 
-function fetchData () {
+function fetchData() {
   // console.log(refAuto.value)
   if (props.source?.length > 0) {
     optionx.value = props.source
@@ -82,8 +85,8 @@ function fetchData () {
 }
 
 const modelProp = computed({
-  get () { return props.model },
-  set (val) { emits('set-model', val) }
+  get() { return props.model },
+  set(val) { emits('set-model', val) }
 })
 
 // const oLabel = computed(() => {
@@ -105,7 +108,7 @@ const selected = (val) => {
   emits('on-select', val)
 }
 fetchData()
-function filterFn (val, update) {
+function filterFn(val, update) {
   // console.log('filterFn ', val)
   if (val === '') {
     update(() => {
@@ -165,7 +168,7 @@ function filterFn (val, update) {
 const inputValue = (value) => {
   emits('buang', value)
 }
-function createValue (val, done) {
+function createValue(val, done) {
   const result = new Promise((resolve) => emits('on-enter', val, resolve))
   emits('new-val', val)
 
@@ -174,7 +177,7 @@ function createValue (val, done) {
     done(resp, 'toggle')
   })
 }
-function anotherValid (val) {
+function anotherValid(val) {
   if (props.valid) {
     return true
   }
