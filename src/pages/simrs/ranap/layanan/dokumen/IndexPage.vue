@@ -284,6 +284,15 @@ const menus = ref([
     icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3'],
     comp: shallowRef(defineAsyncComponent(() => import('./asesmenMonitoringRestrain/IndexPage.vue')))
+  },
+  {
+    name: 'pemesanan-ambulance-document',
+    label: 'PEMESANAN AMBULANCE',
+    title: 'FORMULIR PEMESANAN AMBULANCE',
+    desc: 'Dokumen Pemesanan Ambulance & Penilaian Skore Indeks Risiko Pasien',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./ambulance/IndexPage.vue')))
   }
 ])
 
