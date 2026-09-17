@@ -13,22 +13,23 @@
           'PROBOLINGGO – 67219'
         ]" :pasien="pasien" :header="['Persetujuan Penandaan', 'Lokasi Operasi', '']" />
       </div>
-      <!-- Identitas Pemberi Pernyataan -->
+      <!-- Identitas Pemberi Pernyataan (Kondisional: Diri Sendiri vs Mewakili/Keluarga) -->
       <div class="ba-black f-11 q-mt-xs q-pa-sm line-height-normal">
         <div>Yang bertanda tangan di bawah ini saya,</div>
-        <div class="q-mt-xs">
+        
+        <!-- JIKA DIRI SENDIRI (PASIEN SENDIRI) -->
+        <div v-if="item?.hubunganDgPasien === 'Diri Sendiri'" class="q-mt-xs">
           <div class="row q-mt-2">
             <div class="col-3">Nama</div>
-            <div class="col-9">: {{ item?.nama || '-' }}</div>
+            <div class="col-9">: {{ item?.nama || pasien?.nama || '-' }}</div>
           </div>
           <div class="row q-mt-2">
             <div class="col-3">Tanggal lahir</div>
-            <div class="col-9">: {{ item?.tglLahir || '-' }} <span class="q-ml-sm">({{ item?.lp === 'Perempuan' ? 'P' :
-                'L' }})*</span></div>
+            <div class="col-9">: {{ item?.tglLahir || pasien?.tgllahir || '-' }} <span class="q-ml-sm">({{ (item?.lp || pasien?.kelamin) === 'Perempuan' || (item?.lp || pasien?.kelamin) === 'P' ? 'P' : 'L' }})*</span></div>
           </div>
           <div class="row q-mt-2">
             <div class="col-3">Alamat</div>
-            <div class="col-9">: {{ item?.alamat || '-' }}</div>
+            <div class="col-9">: {{ item?.alamat || pasien?.alamat || '-' }}</div>
           </div>
           <div class="row q-mt-sm items-center">
             <div class="col-3">No. RM</div>
@@ -45,6 +46,57 @@
             </div>
           </div>
           <div class="row q-mt-2">
+            <div class="col-3">Ruang</div>
+            <div class="col-9">: {{ pasien?.ruangan || '-' }}</div>
+          </div>
+        </div>
+
+        <!-- JIKA MEWAKILI (KELUARGA / ORANG TUA / WALI) -->
+        <div v-else class="q-mt-xs">
+          <div class="row q-mt-2">
+            <div class="col-3">Nama (Wali/Keluarga)</div>
+            <div class="col-9">: {{ item?.nama || '-' }}</div>
+          </div>
+          <div class="row q-mt-2">
+            <div class="col-3">Jenis Kelamin</div>
+            <div class="col-9">: {{ item?.lp || (item?.lp === 'Perempuan' || item?.lp === 'P' ? 'Perempuan (P)' : 'Laki-Laki (L)') || '-' }}</div>
+          </div>
+          <div class="row q-mt-2">
+            <div class="col-3">Alamat</div>
+            <div class="col-9">: {{ item?.alamat || '-' }}</div>
+          </div>
+          <div class="row q-mt-2">
+            <div class="col-3">Hubungan dg Pasien</div>
+            <div class="col-9">: <span class="text-bold">{{ item?.hubunganDgPasien === 'Keluarga' ? `Keluarga (${item?.keluarga || '...'})` : (item?.hubunganDgPasien || '-') }}</span></div>
+          </div>
+
+          <div class="q-my-xs q-py-xs bg-grey-2 text-bold text-center" style="border-top: 1px dashed #000; border-bottom: 1px dashed #000; margin-top: 6px; margin-bottom: 6px;">
+            Menyatakan persetujuan penandaan lokasi operasi terhadap Pasien:
+          </div>
+
+          <div class="row q-mt-1">
+            <div class="col-3">Nama Pasien</div>
+            <div class="col-9">: {{ pasien?.nama || '-' }}</div>
+          </div>
+          <div class="row q-mt-1">
+            <div class="col-3">Tgl Lahir / Usia / JK</div>
+            <div class="col-9">: {{ pasien?.tgllahir || '-' }} ({{ pasien?.usia || '-' }} / {{ pasien?.kelamin || '-' }})</div>
+          </div>
+          <div class="row q-mt-xs items-center">
+            <div class="col-3">No. RM</div>
+            <div class="col-9 flex items-center">
+              <span class="q-mr-sm">:</span>
+              <div class="flex" style="border: 1px solid #000; width: fit-content; background-color: #fff;">
+                <div v-for="(digit, idx) in getNormDigits(pasien?.norm || item?.norm)" :key="idx"
+                  class="text-center flex flex-center text-bold"
+                  style="width: 25px; height: 25px; border-right: 1px solid #000; font-size: 13px;"
+                  :style="idx === 5 ? 'border-right: none;' : ''">
+                  {{ digit }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row q-mt-1">
             <div class="col-3">Ruang</div>
             <div class="col-9">: {{ pasien?.ruangan || '-' }}</div>
           </div>

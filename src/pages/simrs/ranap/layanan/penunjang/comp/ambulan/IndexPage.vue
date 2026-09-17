@@ -36,8 +36,8 @@ onMounted(() => {
 
 <template>
   <BaseLayout
-    :pasien="props.pasien" :kasus="props.kasus" :nakes="props.nakes" :split="50" nota
-    title-before="PERMINTAAN AMBULAN"
+    :pasien="props.pasien" :kasus="props.kasus" :nakes="props.nakes" :split="65" nota
+    title-before="FORMULIR PEMESANAN AMBULANCE & PENILAIAN SKOR"
     title-after="List Permintaan Ambulan"
   >
     <template #form>
