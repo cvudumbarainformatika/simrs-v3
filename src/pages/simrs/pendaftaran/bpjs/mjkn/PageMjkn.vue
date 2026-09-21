@@ -147,7 +147,7 @@ function kirimPoli (val) {
     if (val.norm === '-') {
       Rm.value = val.nomorkartu
       const form = { noka: val.nomorkartu, tglsep: regis.form.tglsep }
-      pasien.cekPesertaByNoka(form).then(resp => {
+      pasien.cekPesertaByNoka(form, { apply: false }).then(resp => {
         pasien.alert = true
         pasien.alertMsg = resp
       })
@@ -220,7 +220,7 @@ function pilihPasienIni (val, jkn) {
   if (val.noka !== '') {
     // console.log('noka', val.noka === undefined)
     const form = { noka: val.noka, tglsep: regis.form.tglsep }
-    pasien.cekPesertaByNoka(form).then(resp => {
+    pasien.cekPesertaByNoka(form, { apply: false }).then(resp => {
       pasien.alert = true
       pasien.alertMsg = resp
       // console.log('cek noka', resp)
