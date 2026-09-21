@@ -566,6 +566,19 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
             findPasien[0].jawabankonsulbynoreg = responseData?.jawabankonsulbynoreg
             findPasien[0].intradialitik = responseData?.intradialitikhd
 
+            findPasien[0].diagnosamedis = responseData?.diagnosamedis
+            findPasien[0].kamaroperasi = responseData?.kamaroperasi
+            findPasien[0].hasilradiologi = responseData?.hasilradiologi
+            findPasien[0].laporaneswl = responseData?.laporaneswl
+            findPasien[0].bpjssuratkontrol = responseData?.bpjssuratkontrol
+            findPasien[0].suratketerangandokter = responseData?.suratketerangandokter
+            findPasien[0].planningdokter = responseData?.planningdokter
+            findPasien[0].anamnesis_skrining = responseData?.anamnesis_skrining
+            findPasien[0].prmrjflag = responseData?.prmrjflag?.flaging ?? responseData?.prmrjflag
+
+            if (!findPasien[0].nama) findPasien[0].nama = findPasien[0].pasien
+            if (!findPasien[0].nama_panggil) findPasien[0].nama_panggil = findPasien[0].pasien
+            if (!findPasien[0].kddokter) findPasien[0].kddokter = responseData?.rs9 ?? responseData?.datasimpeg?.kdpegsimrs
           }
           this.loadingTerima = false
           this.noreg = null
