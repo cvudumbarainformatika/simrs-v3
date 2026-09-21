@@ -36,10 +36,10 @@
             </div>
             <div class="col-12 text-right">
               <!-- INI DISURUH UBAH SAMA MBAK ANE (DISURUH MANAGEMENT) -->
-              <!-- <div class="text-weight-bold">Probolinggo, {{ humanDate(item?.tgl) }}</div> -->
+              <!-- <div class="text-weight-bold">Probolinggo, {{ printDate }}</div> -->
               <!-- INI DISURUH GANTI LAGI SAMA MAS SUBHAN (DISURUH MANAGEMENT) tgl 6 maret 2026 -->
               <!-- <div class="text-weight-bold">Probolinggo, {{ humanDate(item?.rs3) || humanDate(pasien?.tglentri) }}</div> -->
-              <div class="text-weight-bold">Probolinggo, {{ humanDate(pasien?.permintaan?.trmtgl) }}</div>
+              <div class="text-weight-bold">Probolinggo, {{ printDate }}</div>
             </div>
           </div>
 
@@ -61,11 +61,11 @@
             .
           </div>
           <div class="kanan text-center">
-            <!-- <div><b>Probolinggo, {{ humanDate(item?.tgl) }}</b></div> -->
+            <!-- <div><b>Probolinggo, {{ printDate }}</b></div> -->
             <!-- INI DISURUH UBAH SAMA MBAK ANE (DISURUH MANAGEMENT) -->
-            <!-- <div><b>Probolinggo, {{ humanDate(item?.rs3) }}</b></div> -->
+            <!-- <div><b>Probolinggo, {{ printDate }}</b></div> -->
             <!-- INI DISURUH GANTI LAGI SAMA MAS SUBHAN (DISURUH MANAGEMENT) tgl 6 maret 2026 -->
-            <div><b>Probolinggo, {{ humanDate(pasien?.permintaan?.trmtgl) }}</b></div>
+            <div><b>Probolinggo, {{ printDate }}</b></div>
             <div class="q-mb-sm">Dokter Penanggung Jawab Pelayanan</div>
             <div class="column flex-center">
               <div style="width: 100px;">
@@ -95,6 +95,12 @@
 import { computed } from 'vue'
 import { humanDate } from 'src/modules/formatter'
 import { formatRadiologi } from 'src/modules/formatRadiologi'
+const printDate = computed(() => {
+  const d = props.item?.tgl || props.item?.rs2 || props.item?.rs11 || props.item?.rs3 || props.pasien?.permintaan?.trmtgl || props.pasien?.tglentri || props.pasien?.tgl_kunjungan || props.pasien?.tgl_masuk
+  if (!d) return ''
+  return humanDate(d)
+})
+
 const props = defineProps({
   item: {
     type: Object,
