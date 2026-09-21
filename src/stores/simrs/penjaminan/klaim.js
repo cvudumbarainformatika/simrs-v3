@@ -89,7 +89,8 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
       per_page: 10,
       bulan: new Date().getMonth() + 1,
       tahun: new Date().getFullYear(),
-      pelayanan: 1
+      pelayanan: 1,
+      kodepoli: ''
     }
   }),
   actions: {
