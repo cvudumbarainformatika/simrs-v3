@@ -1025,7 +1025,8 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
         if (kelamin) {
           this.setForm('kelamin', kelamin)
           const masterKelamin = this.kelamins.find(item => item?.kelamin === kelamin)
-          this.setForm('kodekelamin', masterKelamin?.kode ?? peserta.sex)
+          const kodeKelamin = masterKelamin?.kode ?? (peserta.sex === 'L' ? '02' : '03')
+          this.setForm('kodekelamin', kodeKelamin)
         }
       }
 
