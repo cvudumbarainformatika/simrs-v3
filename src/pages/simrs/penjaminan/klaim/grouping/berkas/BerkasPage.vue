@@ -3,7 +3,7 @@
     <div class="container full-height">
       <div class="column full-height ">
         <div class="col-grow">
-          <KumpulanSurat :key="doc" :items="pasien?.kodepoli === 'POL014' ? documents : documentsrajal"
+          <KumpulanSurat :key="doc" :items="pasien?.kodepoli === 'POL014' ? documents : filterDokumenRajal"
             @go-to="(item) => goTo(item)" />
         </div>
       </div>
@@ -18,7 +18,7 @@
 <script setup>
 import KumpulanSurat from './KumpulanSurat.vue'
 import { findWithAttr } from 'src/modules/utils'
-import { ref, defineAsyncComponent } from 'vue'
+import { ref, defineAsyncComponent, computed } from 'vue'
 // eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
@@ -146,6 +146,83 @@ const documentsrajal = ref([
   {
     icon: 'icon-fa-file-regular',
     color: 'primary',
+    jenis: 'SKS',
+    label: 'Surat Ket. Sakit',
+    value: 'Sakit'
+  },
+  {
+    icon: 'icon-fa-file-regular',
+    color: 'primary',
+    jenis: 'SKD',
+    label: 'Surat Ket. Dokter',
+    value: 'Sehat'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'PRB',
+    label: 'Pengantar Rujuk Balik',
+    value: 'prb'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'PR RS L',
+    label: 'Pengantar Rujuk RS Lain',
+    value: 'rslain'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'R P',
+    label: 'Rencana Pasien',
+    value: 'Rencana'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'RM RJ-1a',
+    label: 'Asesmen Awal Keperawatan Rawat Jalan',
+    value: 'AsesmenAwalKeperawatan'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'RM RJ-1c',
+    label: 'Asesmen Awal Medis Rawat Jalan',
+    value: 'AsesmenAwalMedis'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'RM IRJA-2',
+    label: 'Catatan Rawat Jalan',
+    value: 'Catatan'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'orange',
+    jenis: 'PRA-ANES',
+    label: 'Asesmen Pra Anestesia',
+    value: 'AsesmenPraAnestesia'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'orange',
+    jenis: 'PRA-BEDAH',
+    label: 'Asesmen Pra Bedah',
+    value: 'AsesmenPraBedah'
+  },
+  {
+    icon: 'icon-fa-file-regular',
+    color: 'primary',
+    jenis: 'Farmasi',
+    label: 'Farmasi / E-Resep',
+    value: 'Farmasi'
+  },
+  {
+    icon: 'icon-fa-file-regular',
+    color: 'primary',
     jenis: 'Laborat',
     label: 'Laborat',
     value: 'Laborat'
@@ -158,46 +235,46 @@ const documentsrajal = ref([
     value: 'Radiologi'
   },
   {
-    icon: 'icon-fa-file-regular',
-    color: 'primary',
-    jenis: 'Farmasi',
-    label: 'Farmasi',
-    value: 'Farmasi'
-  },
-  {
     icon: 'icon-mat-email',
     color: 'primary',
     jenis: 'LapOperasi',
     label: 'Laporan Operasi',
     value: 'LapOperasi'
   },
-  // {
-  //   icon: 'icon-mat-email',
-  //   color: 'primary',
-  //   jenis: 'SrtKntrl',
-  //   label: 'Surat-Kontrol',
-  //   value: 'SuratKontrol'
-  // },
-  // {
-  //   icon: 'icon-mat-email',
-  //   color: 'primary',
-  //   jenis: 'SrtKnslAnPol',
-  //   label: 'Surat-Konsul-Antar-Poli',
-  //   value: 'SrtKnslAnPol'
-  // },
-  // {
-  //   icon: 'icon-mat-email',
-  //   color: 'primary',
-  //   jenis: 'SrtKnslinternal',
-  //   label: 'Surat-Konsul-Internal',
-  //   value: 'SrtKnslinternal'
-  // },
   {
     icon: 'icon-mat-email',
     color: 'primary',
-    jenis: 'R P',
-    label: 'Rencana Pasien',
-    value: 'Rencana'
+    jenis: 'Skr-Rajal',
+    label: 'Skrining Rajal',
+    value: 'SkrRajal'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'green',
+    jenis: 'PRMRJ',
+    label: 'Profil Ringkasan Medis Rawat Jalan',
+    value: 'PRMRJ'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'green',
+    jenis: 'ESWL',
+    label: 'Laporan Tindakan ESWL',
+    value: 'LaporanEswl'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'SuratKonsul',
+    label: 'Surat-Konsul',
+    value: 'SuratKonsul'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'Edukasi',
+    label: 'Edukasi',
+    value: 'Edukasi'
   },
   {
     icon: 'icon-fa-file-regular',
@@ -214,6 +291,29 @@ const documentsrajal = ref([
     value: 'Intradialitik'
   },
 ])
+
+const filterDokumenRajal = computed(() => {
+  const kodepoli = props.pasien?.kodepoli
+  const flagPrmrj = typeof props.pasien?.prmrjflag === 'object'
+    ? props.pasien?.prmrjflag?.flaging
+    : props.pasien?.prmrjflag
+  let filteredDocuments = documentsrajal.value
+
+  if (flagPrmrj == null || String(flagPrmrj) === '0') {
+    filteredDocuments = filteredDocuments.filter(item => item.value !== 'PRMRJ')
+  }
+
+  if (kodepoli !== 'POL032' && !props.pasien?.laporaneswl?.length) {
+    filteredDocuments = filteredDocuments.filter(item => item.value !== 'LaporanEswl')
+  }
+
+  if (kodepoli !== 'POL022' && kodepoli !== 'POL010') {
+    return filteredDocuments.filter(item => item.jenis !== 'SKD')
+  }
+
+  return filteredDocuments
+})
+
 // eslint-disable-next-line no-unused-vars
 function getLabel(val) {
   const anu = documents.value.filter(a => a.value === val)
@@ -236,19 +336,31 @@ const comp = [
 
 const comprajal = [
   { nama: 'Sep', page: defineAsyncComponent(() => import('../../../../poli/dokumen/Sep/SepPage.vue')) },
+  { nama: 'SEP', page: defineAsyncComponent(() => import('../../../../poli/dokumen/Sep/SepPage.vue')) },
   { nama: 'Resume', page: defineAsyncComponent(() => import('../../../../dokumen/resume/ResumePage.vue')) },
   { nama: 'Billing', page: defineAsyncComponent(() => import('../../../../dokumen/comppoli/BillingPage.vue')) },
+  { nama: 'Sakit', page: defineAsyncComponent(() => import('../../../../dokumen/surat/compsurat/SuratSakitPage.vue')) },
+  { nama: 'Sehat', page: defineAsyncComponent(() => import('../../../../dokumen/surat/compsurat/SuratSehatPage.vue')) },
+  { nama: 'prb', page: defineAsyncComponent(() => import('../../../../dokumen/pengantar/comppengantar/PengantarRujukBalik.vue')) },
+  { nama: 'rslain', page: defineAsyncComponent(() => import('../../../../dokumen/pengantar/comppengantar/PengantarRsLain.vue')) },
+  { nama: 'Rencana', page: defineAsyncComponent(() => import('../../../../dokumen/surat/compsurat/SuratRencanaPage.vue')) },
+  { nama: 'AsesmenAwalKeperawatan', page: defineAsyncComponent(() => import('../../../../dokumen/erm/poli/AsesmenAwalMedisRj.vue')) },
+  { nama: 'AsesmenAwalMedis', page: defineAsyncComponent(() => import('../../../../dokumen/erm/poli/PengkajianAwalMedisRJPage.vue')) },
+  { nama: 'Catatan', page: defineAsyncComponent(() => import('../../../../dokumen/erm/poli/CatatanRawatJalanPage.vue')) },
+  { nama: 'AsesmenPraAnestesia', page: defineAsyncComponent(() => import('../../../../dokumen/erm/poli/AsesmenPraAnestesia.vue')) },
+  { nama: 'AsesmenPraBedah', page: defineAsyncComponent(() => import('../../../../dokumen/erm/poli/AssesmentPraBedah.vue')) },
   { nama: 'Laborat', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/Laborat/LaboratPage.vue')) },
   { nama: 'Radiologi', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/Radiologi/RadiologiPage.vue')) },
   { nama: 'Farmasi', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/Farmasi/FarmasiPage.vue')) },
-  { nama: 'LapOperasi', page: defineAsyncComponent(() => import('../../../../../simrs/poli/dokumen/lapoperasi/LapOperasiPage.vue')) },
-  // { nama: 'SuratKontrol', page: defineAsyncComponent(() => import('../../../../../simrs/poli/dokumen/SuratKontrol/SuratKontrolPage.vue')) },
-  // { nama: 'SrtKnslAnPol', page: defineAsyncComponent(() => import('../../../../../simrs/poli/dokumen/SuratKonsulAntarPoli/SuratKonsulAntarPoli.vue')) },
-  // { nama: 'SrtKnslinternal', page: defineAsyncComponent(() => import('../../../../../simrs/poli/dokumen/KonsulInternal/SuratKonsulInternalPage.vue')) },
-  { nama: 'Rencana', page: defineAsyncComponent(() => import('../../../../dokumen/surat/compsurat/SuratRencanaPage.vue')) },
+  { nama: 'ERESEP', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/Farmasi/FarmasiPage.vue')) },
+  { nama: 'LapOperasi', page: defineAsyncComponent(() => import('../../../../poli/dokumen/lapoperasi/LapOperasiPage.vue')) },
+  { nama: 'SkrRajal', page: defineAsyncComponent(() => import('../../../../dokumen/erm/poli/SkriningRajalPage.vue')) },
+  { nama: 'PRMRJ', page: defineAsyncComponent(() => import('../../../../poli/dokumen/Prmrj/PrmrjPage.vue')) },
+  { nama: 'LaporanEswl', page: defineAsyncComponent(() => import('../../../../poli/dokumen/eswl/LaporanEswlPage.vue')) },
+  { nama: 'SuratKonsul', page: defineAsyncComponent(() => import('../../../../poli/dokumen/SuratKonsul/SuratKonsulPage.vue')) },
+  { nama: 'Edukasi', page: defineAsyncComponent(() => import('../../../../poli/dokumen/edukasi/EdukasiPage.vue')) },
   { nama: 'Berkas_Upload', page: defineAsyncComponent(() => import('./compdokumen/comIgdupload/DokumenUploadPage.vue')) },
   { nama: 'Intradialitik', page: defineAsyncComponent(() => import('../../../../hemodialisa/layanan/dokumen/compdokumen/IntradialitikPage.vue')) },
-
 ]
 // eslint-disable-next-line no-unused-vars
 const cekPanel = (kodepoli) => {

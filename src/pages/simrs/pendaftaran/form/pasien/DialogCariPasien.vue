@@ -213,7 +213,7 @@ function pilihPasienIni (val) {
     console.log('noka', val.noka === undefined)
 
     const form = { noka: val.noka, tglsep: regis.form.tglsep }
-    store.cekPesertaByNoka(form).then(resp => {
+    store.cekPesertaByNoka(form, { apply: false }).then(resp => {
       console.log('noka ', resp)
       store.alert = true
       store.alertMsg = resp

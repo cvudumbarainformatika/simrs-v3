@@ -99,6 +99,21 @@
               label="Ruangan" class="q-ml-sm" emit-value map-options option-value="groups" option-label="groups_nama"
               style="min-width: 150px;" @update:model-value="store.gantiRuangan" />
           </div>
+          <div class="col-auto">
+            <q-select v-model="store.params.kodedokter" dense outlined dark color="white" :options="optionsDokter"
+              label="DPJP" class="q-ml-sm" emit-value map-options option-value="kdpegsimrs" option-label="nama"
+              clearable use-input input-debounce="0" style="min-width: 200px;" @filter="filterDokter"
+              @update:model-value="(val) => {
+                store.params.page = 1
+                store.getData()
+              }">
+              <template #no-option>
+                <q-item>
+                  <q-item-section class="text-grey">Tidak ditemukan</q-item-section>
+                </q-item>
+              </template>
+            </q-select>
+          </div>
         </div>
       </div>
       <div class="col-auto q-mr-sm">
@@ -122,6 +137,21 @@ import { onMounted, ref } from 'vue'
 const store = usePengunjungRanapStore()
 
 const showMenuPeriode = ref(false)
+const optionsDokter = ref([])
+
+function filterDokter(val, update) {
+  const source = store.dokters && store.dokters.length ? store.dokters : store.nakes
+  if (val === '') {
+    update(() => {
+      optionsDokter.value = source
+    })
+    return
+  }
+  update(() => {
+    const needle = val.toLowerCase()
+    optionsDokter.value = (source || []).filter(v => v.nama.toLowerCase().indexOf(needle) > -1)
+  })
+}
 
 function adaInput(val) {
   // console.log('ada input ', val)
@@ -139,6 +169,8 @@ const goTo = () => {
 
 onMounted(() => {
   store.periode = 'Hari ini'
+  store.getNakes()
+  store.getDokters()
   Promise.all([
     // store.initReset(),
     store.getJenisKasus(),

@@ -113,13 +113,19 @@
                     :valid:="{ required: false }" />
                   <app-input-simrs label="Estimasi Waktu" v-model="store.form.estimasi" :valid:="{ required: false }" />
                   <div class="q-pa-sm" style="border: 1px solid #ccc;">
-                    <div class="q-mt-md q-mb-xs">
+                    <div class="q-mt-md q-mb-xs text-weight-bold">
                       TTD PASIEN / KELUARGA :
                     </div>
-                    <TtdWacom uuid="ttd-penerima-edukasi"
-                      :ttd-name="store.form.namaPenerima ?? 'nama pasien / keluarga'" @signature:ttd-penerima-edukasi="(val) => {
-                        store.form.ttdPenerima = val
-                      }" />
+                    <app-signature
+                      :ttd="store.form.ttdPenerima"
+                      label-ttd="TTD Pasien / Keluarga"
+                      uuid="ttd-penerima-edukasi-add"
+                      :width="200"
+                      :height="120"
+                      :pasien="pasien"
+                      @save-ttd="(val) => { store.form.ttdPenerima = val }"
+                      @signature="(val) => { store.form.ttdPenerima = val }"
+                    />
                   </div>
                 </q-card-section>
               </q-card>
@@ -145,9 +151,6 @@ import { computed, defineAsyncComponent } from 'vue';
 
 const store = useImplementasiEdukasiRanapStore()
 const AutocompleteInput = defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/components/AutocompleteInput.vue'))
-const TtdWacom = defineAsyncComponent(() => {
-  return import('src/components/~static/TtdWacomStu540.vue')
-})
 
 const props = defineProps({
   pasien: {

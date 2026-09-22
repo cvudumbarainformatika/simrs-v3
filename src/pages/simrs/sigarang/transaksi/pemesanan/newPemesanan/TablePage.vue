@@ -1,108 +1,71 @@
 <template>
   <q-page class="q-pt-sm">
     <div>
-      <q-btn
-        color="primary"
-        icon="icon-mat-arrow_back"
-        rounded
-        flat
-        size="25px"
-        @click="backToKontrak()"
-      />
+      <q-btn color="primary" icon="icon-mat-arrow_back" rounded flat size="25px" @click="backToKontrak()" />
       <app-card :is-header="false">
         <template #content>
-          <app-table-input
-            title="Input Pemesanan"
-            :columns="table.columns"
-            :column-hide="table.columnHide"
-            :items="table.items"
-            :meta="table.meta"
-            :per-page="table.params.per_page"
-            :order-by="table.params.order_by"
-            :input-col="10"
-            :sort="table.params.sort"
-            :loading="table.loading"
-            :to-search="table.params.q"
-            :add-input="store.isOpen"
-            wrap-cells
-            index-nomor
-            @goto="table.setPage"
-            @set-row="table.setPerPage"
-            @refresh="table.refreshTable"
-            @find="table.setSearch"
-            @set-order="table.setOder"
-            @new-data="store.newData"
-            @edit-data="store.editData"
-            @delete="table.deletesData"
-          >
+          <app-table-input title="Input Pemesanan" :columns="table.columns" :column-hide="table.columnHide"
+            :items="table.items" :meta="table.meta" :per-page="table.params.per_page" :order-by="table.params.order_by"
+            :input-col="10" :sort="table.params.sort" :loading="table.loading" :to-search="table.params.q"
+            :add-input="store.isOpen" wrap-cells index-nomor @goto="table.setPage" @set-row="table.setPerPage"
+            @refresh="table.refreshTable" @find="table.setSearch" @set-order="table.setOder" @new-data="store.newData"
+            @edit-data="store.editData" @delete="table.deletesData">
             <template #col-nomor>
               <div>Nomor Pemesanan</div>
             </template>
             <template #col-kode_108>
               <div>Kode 108</div>
             </template>
-            <template #cell-kode_108="{row}">
+            <template #cell-kode_108="{ row }">
               <!-- <div>{{ row.barang108?row.barang108.uraian:'-' }}</div> -->
               <div style="width:5vw;">
                 <div class="ellipsis">
-                  {{ row.kode_108?row.kode_108:'-' }}
+                  {{ row.kode_108 ? row.kode_108 : '-' }}
                 </div>
-                <q-tooltip
-                  anchor="top middle"
-                  self="center middle"
-                >
-                  {{ row.kode_108?row.kode_108:'-' }}
+                <q-tooltip anchor="top middle" self="center middle">
+                  {{ row.kode_108 ? row.kode_108 : '-' }}
                 </q-tooltip>
               </div>
             </template>
             <template #col-uraian_108>
               <div>Uraian 108</div>
             </template>
-            <template #cell-uraian_108="{row}">
+            <template #cell-uraian_108="{ row }">
               <!-- <div>{{ row.barang108?row.barang108.uraian:'-' }}</div> -->
               <div style="width:5vw;">
                 <div class="ellipsis">
-                  {{ row.uraian_108?row.uraian_108:'-' }}
+                  {{ row.uraian_108 ? row.uraian_108 : '-' }}
                 </div>
-                <q-tooltip
-                  anchor="top middle"
-                  self="center middle"
-                >
-                  {{ row.uraian_108?row.uraian_108:'-' }}
+                <q-tooltip anchor="top middle" self="center middle">
+                  {{ row.uraian_108 ? row.uraian_108 : '-' }}
                 </q-tooltip>
               </div>
             </template>
             <template #col-uraian_50>
               <div>Uraian 50</div>
             </template>
-            <template #cell-uraian_50="{row}">
+            <template #cell-uraian_50="{ row }">
               <!-- <div>{{ row.barang108?row.barang108.uraian:'-' }}</div> -->
               <div style="width:5vw;">
                 <div class="ellipsis">
-                  {{ row.uraian_50?row.uraian_50:'-' }}
+                  {{ row.uraian_50 ? row.uraian_50 : '-' }}
                 </div>
-                <q-tooltip
-                  anchor="top middle"
-                  self="center middle"
-                >
-                  {{ row.uraian_50?row.uraian_50:'-' }}
+                <q-tooltip anchor="top middle" self="center middle">
+                  {{ row.uraian_50 ? row.uraian_50 : '-' }}
                 </q-tooltip>
               </div>
             </template>
             <template #col-kode_50>
               <div>Kode 50</div>
             </template>
-            <template #cell-kode_50="{row}">
+            <template #cell-kode_50="{ row }">
               <!-- <div>{{ row.barang108?row.barang108.uraian:'-' }}</div> -->
               <div style="width:5vw;">
                 <div class="ellipsis">
-                  {{ row.kode_50?row.kode_50:'-' }}
+                  {{ row.kode_50 ? row.kode_50 : '-' }}
                 </div>
-                <q-tooltip
-                  anchor="top middle"
-                  self="center middle"
-                >
-                  {{ row.kode_50?row.kode_50:'-' }}
+                <q-tooltip anchor="top middle" self="center middle">
+                  {{ row.kode_50 ? row.kode_50 : '-' }}
                 </q-tooltip>
               </div>
             </template>
@@ -121,17 +84,14 @@
             <template #col-barang108>
               <div>Uraian 108</div>
             </template>
-            <template #cell-barang108="{row}">
+            <template #cell-barang108="{ row }">
               <!-- <div>{{ row.barang108?row.barang108.uraian:'-' }}</div> -->
               <div style="width:5vw;">
                 <div class="ellipsis">
-                  {{ row.barang108?row.barang108.uraian:'-' }}
+                  {{ row.barang108 ? row.barang108.uraian : '-' }}
                 </div>
-                <q-tooltip
-                  anchor="top middle"
-                  self="center middle"
-                >
-                  {{ row.barang108?row.barang108.uraian:'-' }}
+                <q-tooltip anchor="top middle" self="center middle">
+                  {{ row.barang108 ? row.barang108.uraian : '-' }}
                 </q-tooltip>
               </div>
             </template>
@@ -144,28 +104,28 @@
             <template #col-nama_barang>
               <div>Nama Barang</div>
             </template>
-            <template #cell-barangrs="{row}">
-              <div>{{ row.barangrs?row.barangrs.nama:'-' }}</div>
+            <template #cell-barangrs="{ row }">
+              <div>{{ row.barangrs ? row.barangrs.nama : '-' }}</div>
             </template>
-            <template #cell-satuan_kecil="{row}">
-              <div>{{ row.satuan_kecil?row.satuan_kecil:'-' }}</div>
+            <template #cell-satuan_kecil="{ row }">
+              <div>{{ row.satuan_kecil ? row.satuan_kecil : '-' }}</div>
             </template>
             <template #col-satuan>
               <div>Satuan</div>
             </template>
-            <template #cell-satuan="{row}">
-              <div>{{ row.satuan?row.satuan.nama:'-' }}</div>
+            <template #cell-satuan="{ row }">
+              <div>{{ row.satuan ? row.satuan.nama : '-' }}</div>
             </template>
             <template #col-perusahaan>
               <div>Nama Perusahaan</div>
             </template>
-            <template #cell-perusahaan="{row}">
-              <div>{{ row.perusahaan?row.perusahaan.nama:'-' }}</div>
+            <template #cell-perusahaan="{ row }">
+              <div>{{ row.perusahaan ? row.perusahaan.nama : '-' }}</div>
             </template>
             <template #col-tanggal>
               <div>Tanggal Pemesanan</div>
             </template>
-            <template #cell-tanggal="{row}">
+            <template #cell-tanggal="{ row }">
               <div>{{ dateFullFormat(row.tanggal) }}</div>
             </template>
             <template #col-qty>
@@ -174,19 +134,19 @@
             <template #col-harga>
               <div>Harga Pesanan</div>
             </template>
-            <template #cell-harga="{row}">
+            <template #cell-harga="{ row }">
               <div>{{ formatRpDouble(row.harga) }}</div>
             </template>
             <template #col-sub_total>
               <div>Sub Total Pesanan</div>
             </template>
-            <template #cell-sub_total="{row}">
+            <template #cell-sub_total="{ row }">
               <div> {{ formatRpDouble(row.sub_total) }}</div>
             </template>
             <template #col-kode_perusahaan>
               <div>Kode Perusahaan</div>
             </template>
-            <template #cell-kode_perusahaan="{row}">
+            <template #cell-kode_perusahaan="{ row }">
               <div> {{ row.kode_perusahaan }}</div>
             </template>
 
@@ -202,41 +162,17 @@
                     </div>
                   </div>
                   <div class="row q-col-gutter-md q-mb-sm items-center">
-                    <div
-                      class="col-11"
-                    >
-                      <app-autocomplete-new
-                        :model="store.form.kode_rs"
-                        :valid="kodeRs"
-                        outlined
-                        label="Nama Barang RS"
-                        autocomplete="nama"
-                        option-value="kode"
-                        option-label="nama"
-                        :source="store.mapingBarangs"
-                        :loading="store.mapingLoading"
-                        @on-select="store.barangSelected"
-                        @clear="clearBarangRs"
-                        @set-model="modelSet"
-                        @buang="modelSet"
-                      />
+                    <div class="col-11">
+                      <app-autocomplete-new :model="store.form.kode_rs" :valid="kodeRs" outlined label="Nama Barang RS"
+                        autocomplete="nama" option-value="kode" option-label="nama" :source="store.mapingBarangs"
+                        :loading="store.mapingLoading" @on-select="store.barangSelected" @clear="clearBarangRs"
+                        @set-model="modelSet" @buang="modelSet" :show-anggaran-status="true" />
                       <!-- @buang="buang" -->
                     </div>
                     <div class="col-1">
-                      <q-btn
-                        v-if="role==='root'||role==='gizi'"
-                        class="q-ml-sm"
-                        unelevated
-                        round
-                        color="primary"
-                        size="sm"
-                        icon="icon-mat-add"
-                        @click="addNewBarang"
-                      >
-                        <q-tooltip
-                          class="primary"
-                          :offset="[10, 10]"
-                        >
+                      <q-btn v-if="role === 'root' || role === 'gizi'" class="q-ml-sm" unelevated round color="primary"
+                        size="sm" icon="icon-mat-add" @click="addNewBarang">
+                        <q-tooltip class="primary" :offset="[10, 10]">
                           Tambah Data Master Baru
                         </q-tooltip>
                       </q-btn>
@@ -245,28 +181,14 @@
                   <div v-if="store.form.kode_rs">
                     <div class="row q-mb-sm q-col-gutter-sm">
                       <div class="col-6">
-                        <app-input
-                          v-model="store.form.qty"
-                          input-class="text-right"
-                          :valid="jumlah"
-                          label="Jumlah Pemesanan*"
-                          outlined
-                          type="number"
-                          :disable="store.loadingTambah"
-                          @update:model-value="store.updateHarga"
-                        />
+                        <app-input v-model="store.form.qty" input-class="text-right" :valid="jumlah"
+                          label="Jumlah Pemesanan*" outlined type="number" :disable="store.loadingTambah"
+                          @update:model-value="store.updateHarga" />
                       </div>
                       <div class="col-6">
-                        <app-input
-                          v-model="store.form.harga"
-                          :valid="harga"
-                          type="number"
-                          label="Harga Pembelian*"
-                          outlined
-                          :disable="store.loadingTambah"
-                          @update:model-value="store.updateHarga"
-                          @keyup.enter="onSubmit"
-                        />
+                        <app-input v-model="store.form.harga" :valid="harga" type="number" label="Harga Pembelian*"
+                          outlined :disable="store.loadingTambah" @update:model-value="store.updateHarga"
+                          @keyup.enter="onSubmit" />
                       </div>
                     </div>
                     <div class="row q-mb-sm">
@@ -321,16 +243,9 @@
                         Keterangan / Merk
                       </div>
                       <div class="col-6">
-                        <app-input
-                          v-model="store.form.merk"
-                          input-class="text-right"
-                          valid
-                          label="Keterangan / Merk"
-                          outlined
-                          type="text"
-                          :rules="[ val => val?.length <= 255 || 'maximal 255 karakter']"
-                          :disable="store.loadingTambah"
-                        />
+                        <app-input v-model="store.form.merk" input-class="text-right" valid label="Keterangan / Merk"
+                          outlined type="text" :rules="[val => val?.length <= 255 || 'maximal 255 karakter']"
+                          :disable="store.loadingTambah" />
                       </div>
                     </div>
                     <div class="row q-mb-sm">
@@ -338,7 +253,7 @@
                         Stok Gudang
                       </div>
                       <div class="col-6">
-                        {{ store.stok.sisaStok?store.stok.sisaStok:0 }}
+                        {{ store.stok.sisaStok ? store.stok.sisaStok : 0 }}
                       </div>
                     </div>
                     <div class="row q-mb-sm">
@@ -346,23 +261,14 @@
                         Sub total
                       </div>
                       <div class="col-6 text-weight-bold">
-                        {{ store.form.sub_total ? formatRpDouble(store.form.sub_total,2) : 0 }}
+                        {{ store.form.sub_total ? formatRpDouble(store.form.sub_total, 2) : 0 }}
                       </div>
                     </div>
                     <div class="row q-mt-md q-col-gutter-sm">
-                      <app-btn
-                        class="q-mx-sm"
-                        label="Batal"
-                        color="dark"
-                        :disable="store.loadingTambah"
-                        @click="onCancel"
-                      />
-                      <app-btn
-                        label="Tambah"
-                        :loading="store.loadingTambah"
-                        :disable="store.loadingTambah"
-                        @click="onSubmit"
-                      />
+                      <app-btn class="q-mx-sm" label="Batal" color="dark" :disable="store.loadingTambah"
+                        @click="onCancel" />
+                      <app-btn label="Tambah" :loading="store.loadingTambah" :disable="store.loadingTambah"
+                        @click="onSubmit" />
                     </div>
                   </div>
                 </div>
@@ -377,32 +283,12 @@
                           {{ dateFullFormat(store.form.tanggal) }}
                         </div>
                         <div class="q-ml-sm">
-                          <q-btn
-                            icon="icon-mat-event"
-                            round
-                            dense
-                            color="primary"
-                          >
-                            <q-popup-proxy
-                              cover
-                              transition-show="scale"
-                              transition-hide="scale"
-                              @show="updateProxy"
-                            >
-                              <q-date
-                                ref="refDate"
-                                v-model="store.form.tanggal"
-                                mask="YYYY-MM-DD"
-                                :options="dateOption"
-                                @update:model-value="store.setTanggal"
-                              >
+                          <q-btn icon="icon-mat-event" round dense color="primary">
+                            <q-popup-proxy cover transition-show="scale" transition-hide="scale" @show="updateProxy">
+                              <q-date ref="refDate" v-model="store.form.tanggal" mask="YYYY-MM-DD" :options="dateOption"
+                                @update:model-value="store.setTanggal">
                                 <div class="row items-center justify-end">
-                                  <q-btn
-                                    v-close-popup
-                                    label="Close"
-                                    color="primary"
-                                    flat
-                                  />
+                                  <q-btn v-close-popup label="Close" color="primary" flat />
                                 </div>
                               </q-date>
                             </q-popup-proxy>
@@ -420,34 +306,17 @@
                         {{ store.form.nomor }}
                       </div>
                       <div class="row justify-end q-mb-sm">
-                        <app-input
-                          ref="refNoUrut"
-                          v-model="store.terima.nomer_urut"
-                          label="Nomer Urut"
-                          dense
-                          outlined
-                          @update:model-value="store.setNomorPemesanan"
-                        />
+                        <app-input ref="refNoUrut" v-model="store.terima.nomer_urut" label="Nomer Urut" dense outlined
+                          @update:model-value="store.setNomorPemesanan" />
                       </div>
 
                       <div class="row justify-end q-mb-sm">
-                        <app-input
-                          ref="refBidang"
-                          v-model="store.terima.bidang"
-                          label="Bidang"
-                          dense
-                          outlined
-                          @update:model-value="store.bidang"
-                        />
+                        <app-input ref="refBidang" v-model="store.terima.bidang" label="Bidang" dense outlined
+                          @update:model-value="store.bidang" />
                       </div>
                       <div class="row justify-end q-mb-sm">
-                        <app-input
-                          v-model="store.terima.inputBulan"
-                          label="bulan"
-                          dense
-                          outlined
-                          @update:model-value="store.bulan"
-                        />
+                        <app-input v-model="store.terima.inputBulan" label="bulan" dense outlined
+                          @update:model-value="store.bulan" />
                       </div>
                     </div>
                   </div>
@@ -461,20 +330,12 @@
                   </div>
                   <div class="row q-mb-sm">
                     <div class="col-12 text-right">
-                      <app-btn
-                        v-if="!store.needToEdit"
-                        label="Tutup Pemesanan"
-                        :loading="store.loadingFinish"
+                      <app-btn v-if="!store.needToEdit" label="Tutup Pemesanan" :loading="store.loadingFinish"
                         :disable="store.isOpen || store.loadingFinish || store.loadingTambah || !table.items?.length"
-                        @click="onFisnish"
-                      />
-                      <app-btn
-                        v-if="store.needToEdit"
-                        label="Selesai Edit"
-                        :loading="store.loadingFinish"
+                        @click="onFisnish" />
+                      <app-btn v-if="store.needToEdit" label="Selesai Edit" :loading="store.loadingFinish"
                         :disable="store.isOpen || store.loadingFinish || store.loadingTambah || !table.items?.length"
-                        @click="onFisnishEdit"
-                      />
+                        @click="onFisnishEdit" />
                     </div>
                   </div>
                 </div>

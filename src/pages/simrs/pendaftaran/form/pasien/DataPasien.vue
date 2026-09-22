@@ -115,7 +115,7 @@
                 <app-input ref="refNoRM" v-model="store.form.norm" label="Nomor RM" autofocus outlined
                   :disable="store.form.barulama !== 'baru'" :loading="store.loading || store.loadingNorm" :rules="[
                     val => (!!val) || 'Harap diisi',
-                    val => val ? val?.length > 5 : !val || 'Harus 6 Karakter',
+                    val => val ? val?.length === 6 : !val || 'Harus 6 Karakter',
                     val => regex.test(val) || 'Hanya angka'
                   ]" @keyup.enter="inputNoRmSelesai" @update:model-value="updateValNoRM"
                   @blur="store.cekDulu($event, 'norm')" />
@@ -810,25 +810,25 @@
     <dialogCariPasien v-model="store.cariPasienDialog" :bpjs="bpjs" @hide="cariPasienHide"
       @ganti-pasien="emits('gantiPasien')" />
     <app-dialog-not-full v-model="store.alert"
-      :label="store.alertMsg.kode === '0' ? 'Status Finger Pasien' : 'Data Peserta BPJS'" style="width:500px;"
-      @on-ok="dialogOk" @keyup="store.alert = false">
+      :label="dialogIsBpjs ? 'Konfirmasi Data Peserta BPJS' : (store.alertMsg?.kode === '0' ? 'Status Finger Pasien' : 'Data Peserta BPJS')"
+      :label-btn-ok="dialogIsBpjs ? 'Gunakan Data BPJS' : 'OK'" :label-btn-close="dialogIsBpjs ? 'Batal' : 'Tutup'"
+      style="width:500px;" @on-ok="dialogOk" @on-cancel="dialogCancel" @keyup.esc="dialogCancel">
       <template #default>
         <div v-if="store.alertMsg === 'Tidak ditemukan'">
           <app-no-selected-page color="primary" :text="store.alertMsg" />
         </div>
-        <div v-if="store.alertMsg.peserta" class="q-pa-md">
+        <div v-if="bpjsPeserta" class="q-pa-md">
+          <div v-if="dialogIsBpjs" class="q-mb-md text-weight-medium">
+            Data peserta dari BPJS ditemukan. Gunakan data ini untuk mengisi form pasien?
+          </div>
           <q-card flat class="full-width">
             <q-card-section>
               <div class="row flex-wrap">
                 <div class="foto bg-grey-4 col-3">
-                  <!-- <q-img
-                        :src="foto"
-                        :ratio="1"
-                      /> -->
-                  <app-avatar-pasien :key="pasien" :pasien="pasien" width="150px" />
+                  <app-avatar-pasien :key="bpjsPeserta" :pasien="bpjsAvatar" width="150px" />
                   <div class="text-center">
                     <q-item-label class="f-16 text-weight-bold">
-                      {{ pasien ? pasien.norm : '-' }}
+                      {{ bpjsPeserta.mr?.noMR ?? '-' }}
                     </q-item-label>
                   </div>
                 </div>
@@ -836,44 +836,27 @@
                   <q-list dense separator>
                     <q-item>
                       <q-item-label class="text-weight-bold">
-                        {{ store.alertMsg.peserta.nama }}
+                        {{ bpjsPeserta.nama ?? '-' }}
                       </q-item-label>
                     </q-item>
                     <q-item>
                       <q-item-label class="">
-                        {{ pasien ? pasien.templahir : '-' }}, {{ pasien ? dateFullFormat(pasien.tgllahir) : '-' }}
+                        Tanggal lahir: {{ bpjsPeserta.tglLahir ? dateFullFormat(bpjsPeserta.tglLahir) : '-' }}
                       </q-item-label>
                     </q-item>
                     <q-item>
                       <q-item-label class="">
-                        💳 {{ pasien ? pasien.nik : '-' }}
+                        💳 NIK: {{ bpjsPeserta.nik ?? '-' }}
                       </q-item-label>
                     </q-item>
                     <q-item>
                       <q-item-label class="">
-                        ⚥ {{ pasien ? pasien.kelamin : '-' }} / ✒️ {{ pasien ? pasien.usia : '-' }}
-                      </q-item-label>
-                    </q-item>
-                    <q-item>
-                      <q-item-label class="">
-                        🏠 {{ pasien ? pasien.alamat : '-' }}
-                      </q-item-label>
-                    </q-item>
-                    <q-item>
-                      <q-item-label class="">
-                        ♡ ♥💕 {{ pasien ? pasien.statuspernikahan : '-' }}
+                        ⚥ {{ bpjsPeserta.sex === 'L' ? 'Laki-laki' : (bpjsPeserta.sex === 'P' ? 'Perempuan' : '-') }} /
+                        ✒️ {{ bpjsPeserta.umur?.umurSekarang ?? '-' }}
                       </q-item-label>
                     </q-item>
                   </q-list>
                 </div>
-                <!-- <div class=" absolute-top-right text-right q-pa-md">
-                      <div class="f-12">
-                        NO. REKAM MEDIS
-                      </div>
-                      <div class="f-16 text-weight-bold">
-                        {{ pasien? pasien.norm:'-' }}
-                      </div>
-                    </div> -->
               </div>
             </q-card-section>
             <q-separator />
@@ -884,7 +867,7 @@
                     🃏 Noka JKN / BPJS
                   </q-item-label>
                   <q-item-label class="text-weight-bold">
-                    {{ store.alertMsg.peserta.noKartu }}
+                    {{ bpjsPeserta.noKartu ?? '-' }}
                   </q-item-label>
                 </q-item-section>
               </q-item>
@@ -895,7 +878,25 @@
                     Asal Faskes
                   </q-item-label>
                   <q-item-label class="text-weight-bold">
-                    {{ store.alertMsg.peserta.provUmum.nmProvider }}
+                    {{ bpjsPeserta.provUmum?.nmProvider ?? '-' }}
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-item>
+                <q-item-section>
+                  <q-item-label>No. Telepon dari BPJS</q-item-label>
+                  <q-item-label class="text-weight-bold">
+                    {{ bpjsPeserta.mr?.noTelepon ?? '-' }}
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-item>
+                <q-item-section>
+                  <q-item-label>No. Rekam Medis BPJS</q-item-label>
+                  <q-item-label class="text-weight-bold">
+                    {{ bpjsPeserta.mr?.noMR ?? '-' }}
                   </q-item-label>
                 </q-item-section>
               </q-item>
@@ -906,7 +907,7 @@
                     Hak Kelas
                   </q-item-label>
                   <q-item-label class="text-weight-bold">
-                    {{ store.alertMsg.peserta.hakKelas.keterangan }}
+                    {{ bpjsPeserta.hakKelas?.keterangan ?? '-' }}
                   </q-item-label>
                 </q-item-section>
               </q-item>
@@ -917,8 +918,8 @@
                     Status Peserta
                   </q-item-label>
                   <q-item-label class="text-weight-bold"
-                    :class="store.alertMsg.peserta.statusPeserta.keterangan === 'AKTIF' ? ' text-primary' : ' text-negative'">
-                    {{ store.alertMsg.peserta.statusPeserta.keterangan }}
+                    :class="bpjsPeserta.statusPeserta?.keterangan === 'AKTIF' ? ' text-primary' : ' text-negative'">
+                    {{ bpjsPeserta.statusPeserta?.keterangan ?? '-' }}
                   </q-item-label>
                 </q-item-section>
               </q-item>
@@ -929,25 +930,23 @@
                     Jenis Peserta
                   </q-item-label>
                   <q-item-label class="text-weight-bold">
-                    {{ store.alertMsg.peserta.jenisPeserta.keterangan }}
+                    {{ bpjsPeserta.jenisPeserta?.keterangan ?? '-' }}
                   </q-item-label>
                 </q-item-section>
               </q-item>
 
               <q-item>
                 <q-item-section>
-                  <q-item-label>
-                    🆔 SATU SEHAT
-                  </q-item-label>
+                  <q-item-label>COB</q-item-label>
                   <q-item-label class="text-weight-bold">
-                    -
+                    {{ bpjsPeserta.cob?.nmAsuransi ?? '-' }}
                   </q-item-label>
                 </q-item-section>
               </q-item>
             </q-list>
           </q-card>
         </div>
-        <div v-if="store.alertMsg.kode && (store.alertMsg.kode !== '' && store.alertMsg.status !== '')">
+        <div v-if="store.alertMsg?.kode && (store.alertMsg.kode !== '' && store.alertMsg.status !== '')">
           <app-no-selected-page class="q-mx-md" color="primary"
             :icon="store.alertMsg.kode === '1' ? 'icon-mat-done' : 'icon-mat-report'" :text="store.alertMsg.status" />
         </div>
@@ -1002,9 +1001,12 @@ const regex = /^\d+$/
 const dialog = useDialogCariPasienPendaftaranUmum()
 dialog.getInitialData()
 const store = usePendaftaranPasienStore()
-const pasien = computed(() => {
-  return store.form
-})
+const dialogIsBpjs = computed(() => !!store.pendingPesertaBpjs)
+const bpjsPeserta = computed(() => store.alertMsg?.peserta ?? null)
+const bpjsAvatar = computed(() => ({
+  kelamin: bpjsPeserta.value?.sex === 'L' ? 'Laki-laki' : (bpjsPeserta.value?.sex === 'P' ? 'Perempuan' : '-'),
+  usia: bpjsPeserta.value?.umur?.umurSekarang ?? '0'
+}))
 
 // set noka bpjs
 function setNokaBPJS(val) {
@@ -1014,11 +1016,7 @@ function setNokaBPJS(val) {
 function cekBpjsbyNik() {
   if (refKtp.value.$refs.refInput.validate()) {
     const form = { nik: store.form.nik, tglsep: props.tglsep }
-    store.cekPesertaByNik(form).then(resp => {
-      store.alert = true
-      // store.alertMsg = resp.data.result
-      store.alertMsg = resp
-    })
+    store.cekPesertaByNik(form, { apply: false }).then(openBpjsDialog)
   }
   else {
     notifErrVue('Nomor KTP Kosong')
@@ -1027,11 +1025,7 @@ function cekBpjsbyNik() {
 function cekBpjsByNoka() {
   if (refNoKaBpjs.value.$refs.refInput.validate() && !!store.form.noka) {
     const form = { noka: store.form.noka, tglsep: props.tglsep }
-    store.cekPesertaByNoka(form).then(resp => {
-      store.alert = true
-      // store.alertMsg = resp.data.result
-      store.alertMsg = resp
-    })
+    store.cekPesertaByNoka(form, { apply: false }).then(openBpjsDialog)
   }
   else {
     notifErrVue('Nomor BPJS Kosong')
@@ -1049,7 +1043,17 @@ function cekFinger() {
     notifErrVue('Nomor BPJS Kosong')
   }
 }
+
+function openBpjsDialog(resp) {
+  store.alertMsg = resp
+  store.alert = true
+}
 function dialogOk() {
+  if (dialogIsBpjs.value) store.applyPesertaBpjs()
+  store.alert = false
+}
+function dialogCancel() {
+  if (dialogIsBpjs.value) store.cancelPendingPesertaBpjs()
   store.alert = false
 }
 // -----
@@ -1599,9 +1603,7 @@ function cekBpjs() {
   console.log('Cek bpjs awal')
   if (refNoKaBpjs.value.$refs.refInput.validate() && !!store.form.noka) {
     const form = { noka: store.form.noka, tglsep: props.tglsep }
-    store.cekPesertaByNoka(form).then(() => {
-      console.log('Cek bpjs', store.form)
-    })
+    store.cekPesertaByNoka(form, { apply: false }).then(openBpjsDialog)
   }
   else {
     notifErrVue('Nomor BPJS Kosong')

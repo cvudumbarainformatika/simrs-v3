@@ -1,42 +1,47 @@
 const satset = {
-  path: '/satset',
-  component: () => import('layouts/V2/IndexLayout.vue'),
+  path: "/satset",
+  component: () => import("layouts/V2/IndexLayout.vue"),
   meta: { requireAuth: true },
   children: [
-    { path: '', redirect: '/satset/dashboard' },
+    { path: "", redirect: "/satset/dashboard" },
     {
-      path: '/satset/dashboard',
-      name: 'satset.dashboard',
-      component: () => import('pages/satset/dashboard/IndexPage.vue')
+      path: "/satset/dashboard",
+      name: "satset.dashboard",
+      component: () => import("pages/satset/dashboard/IndexPage.vue")
     },
     {
-      path: '/satset/strukturorganisasi',
-      name: 'satset.strukturorganisasi',
-      component: () => import('pages/satset/strukturorganisasi/IndexPage.vue')
+      path: "/satset/audit",
+      name: "satset.audit",
+      component: () => import("pages/satset/audit/IndexPage.vue")
     },
     {
-      path: '/satset/location',
-      name: 'satset.location',
-      component: () => import('pages/satset/location/IndexPage.vue')
+      path: "/satset/strukturorganisasi",
+      name: "satset.strukturorganisasi",
+      component: () => import("pages/satset/strukturorganisasi/IndexPage.vue")
     },
     {
-      path: '/satset/practitioner',
-      name: 'satset.practitioner',
-      component: () => import('pages/satset/practitioner/IndexPage.vue')
+      path: "/satset/location",
+      name: "satset.location",
+      component: () => import("pages/satset/location/IndexPage.vue")
     },
     {
-      path: '/satset/kunjungan',
-      name: 'satset.kunjungan',
-      component: () => import('pages/satset/kunjungan/IndexPage.vue')
+      path: "/satset/practitioner",
+      name: "satset.practitioner",
+      component: () => import("pages/satset/practitioner/IndexPage.vue")
     },
     {
-      path: '/satset/mapingkfa',
-      name: 'satset.mapingkfa',
-      component: () => import('pages/satset/mapingkfa/IndexPage.vue')
+      path: "/satset/kunjungan",
+      name: "satset.kunjungan",
+      component: () => import("pages/satset/kunjungan/IndexPage.vue")
     },
     {
-      path: '/satset/notfound',
-      component: () => import('pages/MidlewareNotFound.vue')
+      path: "/satset/mapingkfa",
+      name: "satset.mapingkfa",
+      component: () => import("pages/satset/mapingkfa/IndexPage.vue")
+    },
+    {
+      path: "/satset/notfound",
+      component: () => import("pages/MidlewareNotFound.vue")
     }
   ]
 }

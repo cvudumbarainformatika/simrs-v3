@@ -213,7 +213,7 @@
               <div class="col-8">
                 Sudah bisa ditetapkan <span class="q-px-xs text-weight-bold">{{
                   jawabdischargeplanning?.rs20
-                  }}</span>hari; Rencana tanggal pulang : <span class="q-px-xs text-weight-bold">{{
+                }}</span>hari; Rencana tanggal pulang : <span class="q-px-xs text-weight-bold">{{
                     jawabdischargeplanning?.tglRencanaPulang ?? '-' }}</span>
               </div>
               <div class="col-4">
@@ -372,7 +372,7 @@ const dischargeplanning = computed(() => [
 
 ])
 onMounted(() => {
-  const summ = props?.pasien?.summarydischargeplannings?.length ? props?.pasien?.summarydischargeplannings[0] : null
+  const summ = props?.pasien?.summarydischargeplannings?.length ? props?.pasien?.summarydischargeplannings?.at(-1) : null
   ttdPasien.value = summ?.ttdPasien
   // console.log('pasien', props.pasien)
   // initTtd(summ)
@@ -380,7 +380,7 @@ onMounted(() => {
 })
 // console.log('auth', auth.user?.pegawai?.kdpegsimrs);
 const PRMRJ = computed(() => {
-  const xx = props?.pasien?.skriningdischargeplannings?.length ? props?.pasien?.skriningdischargeplannings[0] : null
+  const xx = props?.pasien?.skriningdischargeplannings?.length ? props?.pasien?.skriningdischargeplannings?.at(-1) : null
   const no9 = xx?.rs12 ?? null
   const no10 = xx?.rs13 ?? null
   let ket = 'Tidak'
@@ -391,11 +391,11 @@ const PRMRJ = computed(() => {
 })
 
 const SUMMARY = computed(() => {
-  const diag = props?.pasien?.summarydischargeplannings?.length ? props?.pasien?.summarydischargeplannings[0] : null
+  const diag = props?.pasien?.summarydischargeplannings?.length ? props?.pasien?.summarydischargeplannings?.at(-1) : null
   return diag
 })
 const perawat = computed(() => {
-  const diag = props?.pasien?.summarydischargeplannings?.length ? props?.pasien?.summarydischargeplannings[0] : null
+  const diag = props?.pasien?.summarydischargeplannings?.length ? props?.pasien?.summarydischargeplannings?.at(-1) : null
   const petugas = diag?.user_input ?? null
   // console.log('petugas', petugas, pengunjung?.nakes?.find(x => x?.kdpegsimrs === petugas)?.nama ?? null)
 

@@ -264,12 +264,25 @@
                     <tr>
                       <td class="text-right" colspan="3">
                         <div>
-                          Pajak Daerah (PPh Final)
+                          Pajak Daerah
                         </div>
                       </td>
                       <td class="text-right">
                         <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
                           {{ formattanpaRp(mapPajakBaru().sumpajakdaerah) }}
+                        </div>
+                        <div v-else>{{ formattanpaRp(0) }} </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-right" colspan="3">
+                        <div>
+                          PPh Pasal 4 ayat (2)
+                        </div>
+                      </td>
+                      <td class="text-right">
+                        <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
+                          {{ formattanpaRp(mapPajakBaru().sumpajakfinal) }}
                         </div>
                         <div v-else>{{ formattanpaRp(0) }} </div>
                       </td>
@@ -404,7 +417,7 @@ function mapPajakBaru() {
   const sumppn = parseFloat(ppnlama) + parseFloat(ppnbaru)
 
   const pajakdaerahlama = store.npddatasave?.pajak ? parseFloat(store.npddatasave?.pajak.pajakdaerah) : parseFloat(0)
-  const pajakdaerah = store.npddatasave?.newpajak?.find(x => x.koderekening === '2.1.01.05.05.0001')
+  const pajakdaerah = store.npddatasave?.newpajak?.find(x => x.koderekening === '2.1.01.06.02.0001')
   const pajakdaerahbaru = isNaN(parseFloat(pajakdaerah?.nilai)) ? parseFloat(0) : parseFloat(pajakdaerah?.nilai)
   const sumpajakdaerah = parseFloat(pajakdaerahlama) + parseFloat(pajakdaerahbaru)
 
@@ -428,7 +441,13 @@ function mapPajakBaru() {
   const pph25 = isNaN(parseFloat(arr25?.nilai)) ? parseFloat(0) : parseFloat(arr25?.nilai)
   const sumpph25 = parseFloat(pph25lama) + parseFloat(pph25)
 
-  return { sumppn, sumpajakdaerah, sumpph21, sumpph22, sumpph23, sumpph25 }
+
+  const pajakFinallama = store.npddatasave?.pajak ? parseFloat(store.npddatasave?.pajak.pajakdaerah) : parseFloat(0)
+  const pajakfinal = store.npddatasave?.newpajak?.find(x => x.koderekening === '2.1.01.05.05.0001')
+  const pajakfinalbaru = isNaN(parseFloat(pajakfinal?.nilai)) ? parseFloat(0) : parseFloat(pajakfinal?.nilai)
+  const sumpajakfinal = parseFloat(pajakFinallama) + parseFloat(pajakfinalbaru)
+
+  return { sumppn, sumpajakdaerah, sumpph21, sumpph22, sumpph23, sumpph25, sumpajakfinal }
 }
 </script>
 <style lang="scss" scoped>

@@ -15,7 +15,48 @@
         class="q-ml-sm" emit-value map-options style="min-width: 150px;" @update:model-value="store.getData" />
       <q-select v-model="store.params.pelayanan" dense outlined dark color="white" :options="pelayanan"
         label="Pelayanan" class="q-ml-sm" emit-value map-options style="min-width: 150px;"
-        @update:model-value="store.getData" />
+        @update:model-value="gantiPelayanan" />
+      <q-btn-dropdown
+        v-if="store.params.pelayanan === 2"
+        class="glossy q-ml-sm"
+        color="orange"
+        :label="poli?.polirs ?? 'SEMUA POLI'"
+      >
+        <div class="q-pa-xs bg-grey-2">
+          <q-input
+            v-model="searchPoli"
+            dense
+            outlined
+            autofocus
+            placeholder="Cari Poli..."
+            style="min-width: 250px;"
+          >
+            <template #prepend>
+              <q-icon name="icon-mat-search" size="xs" />
+            </template>
+            <template v-if="searchPoli" #append>
+              <q-icon name="icon-mat-close" size="xs" class="cursor-pointer" @click="searchPoli = ''" />
+            </template>
+          </q-input>
+        </div>
+        <q-separator />
+        <q-list class="scroll" style="max-height: 300px; min-width: 250px;">
+          <q-item
+            v-for="row in filteredPolis"
+            :key="row.kodepoli"
+            v-close-popup
+            clickable
+            @click="gantiPoli(row)"
+          >
+            <q-item-section avatar>
+              <q-avatar icon="icon-mat-medical_information" color="primary" text-color="white" size="sm" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>{{ row?.polirs }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-btn-dropdown>
     </div>
     <div>
       <q-btn class="q-ml-sm" unelevated color="orange" flat size="sm" padding="xs" icon="icon-mat-refresh"
@@ -28,10 +69,55 @@
   </div>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useKlaimPenjaminanStore } from 'src/stores/simrs/penjaminan/klaim'
+import { useSettingsAplikasi } from 'src/stores/simrs/settings'
+
 const store = useKlaimPenjaminanStore()
+const setting = useSettingsAplikasi()
 const tahun = ref([])
+
+const poli = ref({
+  kodepoli: 'SEMUA POLI',
+  polirs: 'SEMUA POLI'
+})
+
+const polis = computed(() => {
+  const arr = setting.polis ? [...setting.polis] : []
+  const adaSemua = arr.some(x => x?.kodepoli === 'SEMUA POLI')
+  if (!adaSemua) {
+    arr.push({
+      kodepoli: 'SEMUA POLI',
+      polirs: 'SEMUA POLI'
+    })
+  }
+  return arr
+})
+
+const searchPoli = ref('')
+const filteredPolis = computed(() => {
+  if (!searchPoli.value) return polis.value
+  const q = searchPoli.value.toLowerCase()
+  return polis.value.filter(x => x?.polirs?.toLowerCase().includes(q))
+})
+
+function gantiPoli(row) {
+  poli.value = row
+  store.params.kodepoli = row?.kodepoli === 'SEMUA POLI' ? '' : row?.kodepoli
+  store.params.page = 1
+  store.getData()
+}
+
+function gantiPelayanan(val) {
+  store.params.pelayanan = val
+  store.params.page = 1
+  if (val === 2) {
+    store.params.kodepoli = poli.value?.kodepoli === 'SEMUA POLI' ? '' : (poli.value?.kodepoli ?? '')
+  } else {
+    store.params.kodepoli = ''
+  }
+  store.getData()
+}
 
 const periods = ref([
   { value: 1, label: 'Januari' },
@@ -56,6 +142,7 @@ const pelayanan = ref([
 
 
 onMounted(() => {
+  setting.getHeaderPoli()
   const tahunSekarang = new Date().getFullYear()
   const tahunMulai = 2024
 

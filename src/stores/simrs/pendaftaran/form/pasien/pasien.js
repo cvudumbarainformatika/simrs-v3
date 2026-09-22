@@ -92,6 +92,7 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
     // cek bpjs
     alert: false,
     alertMsg: {},
+    pendingPesertaBpjs: null,
     loadingNik: false,
     loadingNoka: false,
     loadingFinger: false,
@@ -129,6 +130,7 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
         hari: '01'
       }
       this.edit = true
+      this.pendingPesertaBpjs = null
       this.paramWilayah = {
         kd_negara: '62',
         kd_propinsi: '35',
@@ -970,60 +972,78 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
         })
     },
     // cek bpjs
-    cekPesertaByNik (val) {
+    cekPesertaByNik (val, options = {}) {
       this.loadingNik = true
+      this.pendingPesertaBpjs = null
       return new Promise(resolve => {
         api.post('v1/simrs/bridgingbpjs/pendaftaran/cekpsertabpjsbynik', val)
           .then((resp) => {
             this.loadingNik = false
             console.log('Nik', resp.data)
-            // this.alertMsg = resp.data.result
-            // this.alert = true
-            this.setForm('jenispeserta', resp.data.result.peserta.jenisPeserta.keterangan)
-            this.setForm('hakkelas', resp.data.result.peserta.hakKelas.kode)
-            this.setForm('kelas', resp.data.result.peserta.hakKelas.keterangan)
-            console.log('no telep', this.form.noteleponhp)
-            if (!this.form.noteleponhp) this.setForm('noteleponhp', resp.data.result.peserta.mr.noTelepon)
-            resolve(resp.data.result)
+            const hasil = resp.data.result
+            if (options.apply === false) this.pendingPesertaBpjs = hasil
+            else this.applyPesertaBpjs(hasil)
+            resolve(hasil)
           }).catch(() => {
             this.loadingNik = false
           })
       })
     },
-    cekPesertaByNoka (val) {
+    cekPesertaByNoka (val, options = {}) {
       this.loadingNoka = true
+      this.pendingPesertaBpjs = null
       return new Promise(resolve => {
         api.post('v1/simrs/bridgingbpjs/pendaftaran/cekpsertabpjsbynoka', val)
           .then((resp) => {
             this.loadingNoka = false
             console.log('Noka', resp.data.result)
-            // this.alert = true
-            // this.alertMsg = resp.data.result
             const hasil = resp.data.result
-            this.setForm('jenispeserta', hasil.peserta.jenisPeserta.keterangan)
-            // this.setForm('jnspelayanan', hasil.pelayanan.kode)
-            this.setForm('hakkelas', hasil.peserta.hakKelas.kode)
-            this.setForm('kelas', hasil.peserta.hakKelas.keterangan)
-            console.log('no telep', this.form.noteleponhp)
-            if (!this.form.nik) this.setForm('nik', hasil.peserta.nik)
-            if (!this.form.noteleponhp) this.setForm('noteleponhp', resp.data.result.peserta.mr.noTelepon)
-            console.log('tgl lahir ', this.form.tgllahir)
-            if (!this.form.tgllahir || this.form.tgllahir === '1900-01-01') {
-              const lahir = hasil.peserta.tglLahir.split('-')
-              if (lahir?.length) {
-                this.tanggal.tahun = lahir[0] ? lahir[0] : '1900'
-                this.tanggal.bulan = lahir[1] ? lahir[1] : '01'
-                this.tanggal.hari = lahir[2] ? lahir[2] : '01'
-
-                this.setTanggalLahir()
-              }
-              console.log('lahir', lahir)
-            }
+            if (options.apply === false) this.pendingPesertaBpjs = hasil
+            else this.applyPesertaBpjs(hasil)
             resolve(resp.data.result)
           }).catch(() => {
             this.loadingNoka = false
           })
       })
+    },
+    applyPesertaBpjs (hasil = this.pendingPesertaBpjs) {
+      const peserta = hasil?.peserta
+      if (!peserta) return
+
+      this.setForm('nama', peserta.nama ?? this.form.nama)
+      this.setForm('nik', peserta.nik ?? this.form.nik)
+      this.setForm('noka', peserta.noKartu ?? this.form.noka)
+      this.setForm('nokabpjs', peserta.noKartu ?? this.form.nokabpjs)
+      this.setForm('jenispeserta', peserta.jenisPeserta?.keterangan ?? this.form.jenispeserta)
+      this.setForm('hakkelas', peserta.hakKelas?.kode ?? this.form.hakkelas)
+      this.setForm('kelas', peserta.hakKelas?.keterangan ?? this.form.kelas)
+
+      if (peserta.mr?.noTelepon) this.setForm('noteleponhp', peserta.mr.noTelepon)
+
+      if (peserta.sex) {
+        const kelamin = peserta.sex === 'L' ? 'Laki-laki' : (peserta.sex === 'P' ? 'Perempuan' : null)
+        if (kelamin) {
+          this.setForm('kelamin', kelamin)
+          const masterKelamin = this.kelamins.find(item => item?.kelamin === kelamin)
+          const kodeKelamin = masterKelamin?.kode ?? (peserta.sex === 'L' ? '02' : '03')
+          this.setForm('kodekelamin', kodeKelamin)
+        }
+      }
+
+      if (peserta.tglLahir) {
+        const lahir = String(peserta.tglLahir).trim().split('-')
+        if (lahir.length === 3 && /^\d{4}$/.test(lahir[0])) {
+          this.tanggal.tahun = lahir[0]
+          this.tanggal.bulan = lahir[1].padStart(2, '0')
+          this.tanggal.hari = lahir[2].padStart(2, '0')
+          this.setTanggalLahir()
+        }
+      }
+
+      this.pendingPesertaBpjs = null
+    },
+    cancelPendingPesertaBpjs () {
+      this.pendingPesertaBpjs = null
     },
     cekPesertaFinger (val) {
       this.loadingFinger = true

@@ -16,7 +16,8 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
       from: dateDbFormat(new Date()),
       to: dateDbFormat(new Date()),
       per_page: 100,
-      koderuangan: null
+      koderuangan: null,
+      kodedokter: null
     },
     periods: ['Hari ini', 'Minggu ini', 'Bulan ini', 'Custom'],
     periode: 'Hari Ini',
@@ -330,6 +331,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
       this.ruangan = this.aksesRuangan()
       this.params.page = 1
       this.params.koderuangan = this.ruangan
+      this.params.kodedokter = null
       this.params.q = ''
       this.params.status = 'Belum Pulang'
       this.params.to = dateDbFormat(new Date())
@@ -537,10 +539,14 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
 
     async getNakes() {
       const resp = await api.get('/v1/simrs/master/pegawai/listnakes')
-      // console.log('nakes', resp)
-
       if (resp.status === 200) {
         this.nakes = resp.data
+      }
+    },
+    async getDokters() {
+      const resp = await api.get('/v1/simrs/master/pegawai/listdokters')
+      if (resp.status === 200) {
+        this.dokters = resp.data
       }
     },
     async getNonNakes() {

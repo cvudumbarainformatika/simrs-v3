@@ -5,11 +5,11 @@
       <div class="row justify-between items-center q-px-md">
         <div class="row items-center q-gutter-sm">
           <div class="text-subtitle2 text-bold text-indigo-10">DOKUMEN MANAJEMEN PELAYANAN PASIEN (MPP)</div>
-          <q-badge color="indigo-10" outline class="q-ml-sm" v-if="items.length">
-            Formulir A & B Terbuat
+          <q-badge color="positive" class="q-ml-sm text-bold" v-if="isMppQualified">
+            Formulir A & B Terbuat (Skor: {{ latestScore }})
           </q-badge>
         </div>
-        <div class="row q-gutter-sm" v-if="items.length">
+        <div class="row q-gutter-sm" v-if="isMppQualified">
           <q-btn
             v-print="printObj"
             color="indigo-10"
@@ -30,14 +30,25 @@
         <div class="q-mt-sm">Memuat dokumen...</div>
       </div>
 
-      <div v-else-if="!items.length" class="text-center text-grey-6 q-pa-xl">
-        <q-icon name="icon-my-file_sign" size="64px" class="q-mb-sm" />
-        <div class="text-bold">Bukan Pasien MPP</div>
-        <div class="text-caption">Belum Ada Skrining Dari Perawat / Bidan / Karu.</div>
+      <div v-else-if="!items.length" class="text-center text-grey-6 q-pa-xl bg-white rounded-borders shadow-1" style="max-width: 520px; margin: 40px auto;">
+        <q-icon name="icon-my-file_sign" size="64px" class="q-mb-sm text-grey-5" />
+        <div class="text-bold text-h6 text-grey-8">Bukan Pasien MPP</div>
+        <div class="text-caption text-grey-6 q-mt-xs">Belum ada data skrining MPP yang diisi untuk pasien ini.</div>
+      </div>
+
+      <div v-else-if="!isMppQualified" class="text-center text-grey-8 q-pa-xl bg-white rounded-borders shadow-2" style="max-width: 540px; margin: 40px auto; border-top: 4px solid #f57c00;">
+        <q-icon name="icon-mat-warning" size="56px" class="q-mb-sm text-orange-8" />
+        <div class="text-bold text-h6 text-grey-9">Bukan Pasien MPP</div>
+        <div class="text-body2 text-grey-8 q-mt-sm">
+          Berdasarkan hasil skrining, skor pasien adalah <strong class="text-primary text-h6">{{ latestScore }}</strong>.
+        </div>
+        <div class="text-caption text-grey-7 q-mt-sm bg-orange-1 q-pa-sm rounded-borders">
+          Dokumen Manajemen Pelayanan Pasien (Formulir A & B) hanya dimunculkan dan dicetak untuk pasien dengan hasil skrining <strong>lebih dari 3 kriteria (Skor > 3)</strong>.
+        </div>
       </div>
 
       <div v-else id="print-mpp-document" class="column items-center q-gutter-y-md full-width">
-        <div v-for="(item, idx) in items" :key="item.id" class="document-container">
+        <div v-for="(item, idx) in mppQualifiedItems" :key="item.id" class="document-container">
           
           <!-- ── HALAMAN 1: FORMULIR A ── -->
           <div class="print-page page-1 q-mb-md">
@@ -54,8 +65,9 @@
                 <div class="col-4 text-right">Noreg: <strong>{{ pasien?.noreg || '-' }}</strong></div>
               </div>
               <div class="row items-center justify-between q-mt-xs" style="font-size: 10px;">
-                <div class="col-6">Tgl. Lahir / Usia: <strong>{{ pasien?.tgllahir || '-' }} / {{ formatUsiaTahun(pasien?.usia) }}</strong></div>
-                <div class="col-6 text-right">Jenis Kelamin: <strong>{{ pasien?.kelamin || '-' }}</strong></div>
+                <div class="col-4">Tgl. Lahir / Usia: <strong>{{ pasien?.tgllahir || '-' }} / {{ formatUsiaTahun(pasien?.usia) }}</strong></div>
+                <div class="col-4 text-center">Jenis Kelamin: <strong>{{ pasien?.kelamin || '-' }}</strong></div>
+                <div class="col-4 text-right">Tgl. Skrining: <strong>{{ getTglSkrining(item) }}</strong></div>
               </div>
             </div>
 
@@ -136,29 +148,29 @@
                   <div class="q-mb-xs">
                     <span class="text-weight-bold">8. Riwayat Psikologis:</span>
                     <div class="q-pl-xs">
-                      <div :class="hasPsikologis(item, 'Riwayat gangguan mental') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                        {{ hasPsikologis(item, 'Riwayat gangguan mental') ? '☑' : '☐' }} Riwayat gangguan mental
+                      <div :class="hasPsikologis(item, 'gangguan_mental') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                        {{ hasPsikologis(item, 'gangguan_mental') ? '☑' : '☐' }} Riwayat gangguan mental
                       </div>
-                      <div :class="hasPsikologis(item, 'Upaya bunuh diri') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                        {{ hasPsikologis(item, 'Upaya bunuh diri') ? '☑' : '☐' }} Upaya bunuh diri
+                      <div :class="hasPsikologis(item, 'bunuh_diri') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                        {{ hasPsikologis(item, 'bunuh_diri') ? '☑' : '☐' }} Upaya bunuh diri
                       </div>
-                      <div :class="hasPsikologis(item, 'Krisis keluarga') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                        {{ hasPsikologis(item, 'Krisis keluarga') ? '☑' : '☐' }} Krisis keluarga
+                      <div :class="hasPsikologis(item, 'krisis_keluarga') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                        {{ hasPsikologis(item, 'krisis_keluarga') ? '☑' : '☐' }} Krisis keluarga
                       </div>
-                      <div :class="hasPsikologis(item, 'Isu sosial') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                        {{ hasPsikologis(item, 'Isu sosial') ? '☑' : '☐' }} Isu sosial
+                      <div :class="hasPsikologis(item, 'isu_sosial') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                        {{ hasPsikologis(item, 'isu_sosial') ? '☑' : '☐' }} Isu sosial
                       </div>
-                      <div :class="hasPsikologis(item, 'Pasien terlantar') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                        {{ hasPsikologis(item, 'Pasien terlantar') ? '☑' : '☐' }} Pasien terlantar
+                      <div :class="hasPsikologis(item, 'pasien_terlantar') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                        {{ hasPsikologis(item, 'pasien_terlantar') ? '☑' : '☐' }} Pasien terlantar
                       </div>
-                      <div :class="hasPsikologis(item, 'Pasien tinggal sendiri') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                        {{ hasPsikologis(item, 'Pasien tinggal sendiri') ? '☑' : '☐' }} Pasien tinggal sendiri
+                      <div :class="hasPsikologis(item, 'tinggal_sendiri') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                        {{ hasPsikologis(item, 'tinggal_sendiri') ? '☑' : '☐' }} Pasien tinggal sendiri
                       </div>
-                      <div :class="hasPsikologis(item, 'Penggunaan narkoba & minuman keras') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                        {{ hasPsikologis(item, 'Penggunaan narkoba & minuman keras') ? '☑' : '☐' }} Penggunaan narkoba & minuman keras
+                      <div :class="hasPsikologis(item, 'narkoba_miras') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                        {{ hasPsikologis(item, 'narkoba_miras') ? '☑' : '☐' }} Penggunaan narkoba & minuman keras
                       </div>
-                      <div :class="hasPsikologis(item, 'Narapidana') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                        {{ hasPsikologis(item, 'Narapidana') ? '☑' : '☐' }} Narapidana
+                      <div :class="hasPsikologis(item, 'narapidana') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                        {{ hasPsikologis(item, 'narapidana') ? '☑' : '☐' }} Narapidana
                       </div>
                     </div>
                   </div>
@@ -260,6 +272,7 @@
                     <span :class="getAsesmen(item).pakai_alat_obat ? 'mpp-item-checked' : 'mpp-item-unchecked'">9. Riwayat penggunaan obat/obat:</span>
                     <div class="text-justify q-pl-xs">
                       {{ getAsesmen(item).pakai_alat_obat || 'Belum diisi / Tidak ada' }}
+                      <span v-if="getAsesmen(item).pakai_alat_obat_ket">({{ getAsesmen(item).pakai_alat_obat_ket }})</span>
                     </div>
                   </div>
 
@@ -346,9 +359,9 @@
                     {{ hasMasalah(item, 'pemulangan_ditunda') ? '☑' : '☐' }} 8. Pemulangan/ rujukan yang belum memenuhi kriteria/ditunda
                   </div>
 
-                  <div class="border-t q-pt-xs text-caption q-mt-sm" v-if="getMasalah(item).masalah_ket">
-                    <span class="text-weight-bold">Keterangan:</span>
-                    <div class="text-justify text-grey-9">{{ getMasalah(item).masalah_ket }}</div>
+                  <div class="mpp-keterangan-box" v-if="getMasalah(item).masalah_ket">
+                    <span class="keterangan-title">Keterangan:</span>
+                    <div class="text-justify keterangan-content">{{ getMasalah(item).masalah_ket }}</div>
                   </div>
 
                 </div>
@@ -414,9 +427,9 @@
                     {{ hasSasaran(item, 'kemandirian_pulang') ? '☑' : '☐' }} 10. Pasien dan keluarga menunjukkan kemandirian dalam melakukan perawatan untuk persiapan pulang
                   </div>
 
-                  <div class="border-t q-pt-xs text-caption q-mt-sm" v-if="getSasaran(item).sasaran_ket">
-                    <span class="text-weight-bold">Keterangan:</span>
-                    <div class="text-justify text-grey-9">{{ getSasaran(item).sasaran_ket }}</div>
+                  <div class="mpp-keterangan-box" v-if="getSasaran(item).sasaran_ket">
+                    <span class="keterangan-title">Keterangan:</span>
+                    <div class="text-justify keterangan-content">{{ getSasaran(item).sasaran_ket }}</div>
                   </div>
 
                 </div>
@@ -511,9 +524,9 @@
                     </div>
                   </div>
 
-                  <div class="border-t q-pt-xs text-caption q-mt-sm" v-if="getPerencanaan(item).perencanaan_ket">
-                    <span class="text-weight-bold">Keterangan:</span>
-                    <div class="text-justify text-grey-9">{{ getPerencanaan(item).perencanaan_ket }}</div>
+                  <div class="mpp-keterangan-box" v-if="getPerencanaan(item).perencanaan_ket">
+                    <span class="keterangan-title">Keterangan:</span>
+                    <div class="text-justify keterangan-content">{{ getPerencanaan(item).perencanaan_ket }}</div>
                   </div>
 
                 </div>
@@ -555,8 +568,8 @@
                   
                   <!-- 1. KIE Dimengerti -->
                   <div class="q-mb-sm">
-                    <div :class="getMonTgl(item, 'kie_dimengerti') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                      {{ getMonTgl(item, 'kie_dimengerti') ? '☑' : '☐' }} 1. PPA dalam melakukan KIE terhadap rencana asuhan dimengerti oleh pasien dan keluarga
+                    <div :class="hasMonitoring(item, 'kie_dimengerti') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                      {{ hasMonitoring(item, 'kie_dimengerti') ? '☑' : '☐' }} 1. PPA dalam melakukan KIE terhadap rencana asuhan dimengerti oleh pasien dan keluarga
                     </div>
                     <div class="q-pl-sm">
                       Tanggal : <strong>{{ getMonTgl(item, 'kie_dimengerti') || '..............................................' }}</strong>
@@ -565,8 +578,8 @@
 
                   <!-- 2. Pertemuan PPA -->
                   <div class="q-mb-sm">
-                    <div :class="getMonTgl(item, 'pertemuan_ppa') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                      {{ getMonTgl(item, 'pertemuan_ppa') ? '☑' : '☐' }} 2. Pertemuan pasien dan keluarga dengan PPA untuk rencana asuhan, persetujuan tindakan dan kemungkinan perubahan rencana asuhan
+                    <div :class="hasMonitoring(item, 'pertemuan_ppa') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                      {{ hasMonitoring(item, 'pertemuan_ppa') ? '☑' : '☐' }} 2. Pertemuan pasien dan keluarga dengan PPA untuk rencana asuhan, persetujuan tindakan dan kemungkinan perubahan rencana asuhan
                     </div>
                     <div class="q-pl-sm">
                       Tanggal : <strong>{{ getMonTgl(item, 'pertemuan_ppa') || '..............................................' }}</strong>
@@ -575,8 +588,8 @@
 
                   <!-- 3. Perkembangan Kondisi -->
                   <div class="q-mb-sm">
-                    <div :class="getMonTgl(item, 'perkembangan_kondisi') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                      {{ getMonTgl(item, 'perkembangan_kondisi') ? '☑' : '☐' }} 3. Perkembangan kondisi pasien respon keluarga
+                    <div :class="hasMonitoring(item, 'perkembangan_kondisi') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                      {{ hasMonitoring(item, 'perkembangan_kondisi') ? '☑' : '☐' }} 3. Perkembangan kondisi pasien respon keluarga
                     </div>
                     <div class="q-pl-sm">
                       Tanggal : <strong>{{ getMonTgl(item, 'perkembangan_kondisi') || '..............................................' }}</strong>
@@ -606,8 +619,8 @@
 
                   <!-- 5. Billing Melebihi -->
                   <div class="q-mb-sm">
-                    <div :class="getMonTgl(item, 'billing_melebihi') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                      {{ getMonTgl(item, 'billing_melebihi') ? '☑' : '☐' }} 5. Billing RS pasien melebihi tarif INA CBGs (Bila pasien BPJS)
+                    <div :class="hasMonitoring(item, 'billing_melebihi') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                      {{ hasMonitoring(item, 'billing_melebihi') ? '☑' : '☐' }} 5. Billing RS pasien melebihi tarif INA CBGs (Bila pasien BPJS)
                     </div>
                     <div class="q-pl-sm">
                       Tanggal : <strong>{{ getMonTgl(item, 'billing_melebihi') || '..............................................' }}</strong>
@@ -616,8 +629,8 @@
 
                   <!-- 6. Koding Diagnosa -->
                   <div class="q-mb-sm">
-                    <div :class="getMonitoring(item).monitoring_koding ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                      {{ getMonitoring(item).monitoring_koding ? '☑' : '☐' }} 6. Koding diagnosa sesuai dengan INA CBGs
+                    <div :class="(getMonitoring(item).monitoring_koding || hasMonitoring(item, 'koding_diagnosa')) ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                      {{ (getMonitoring(item).monitoring_koding || hasMonitoring(item, 'koding_diagnosa')) ? '☑' : '☐' }} 6. Koding diagnosa sesuai dengan INA CBGs
                     </div>
                     <div class="q-pl-md">
                       <div :class="getMonitoring(item).monitoring_koding === 'sesuai' ? 'mpp-item-checked' : 'mpp-item-unchecked'">
@@ -634,8 +647,8 @@
 
                   <!-- 7. Kendala Pembiayaan -->
                   <div class="q-mb-sm">
-                    <div :class="getMonTgl(item, 'kendala_pembiayaan') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                      {{ getMonTgl(item, 'kendala_pembiayaan') ? '☑' : '☐' }} 7. Kendala pembiayaan
+                    <div :class="hasMonitoring(item, 'kendala_pembiayaan') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                      {{ hasMonitoring(item, 'kendala_pembiayaan') ? '☑' : '☐' }} 7. Kendala pembiayaan
                     </div>
                     <div class="q-pl-sm">
                       Tanggal : <strong>{{ getMonTgl(item, 'kendala_pembiayaan') || '..............................................' }}</strong>
@@ -644,8 +657,8 @@
 
                   <!-- 8. Pulang Administrasi -->
                   <div class="q-mb-sm">
-                    <div :class="getMonTgl(item, 'pulang_administrasi') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                      {{ getMonTgl(item, 'pulang_administrasi') ? '☑' : '☐' }} 8. Pulang secara administrasi
+                    <div :class="hasMonitoring(item, 'pulang_administrasi') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                      {{ hasMonitoring(item, 'pulang_administrasi') ? '☑' : '☐' }} 8. Pulang secara administrasi
                     </div>
                     <div class="q-pl-sm">
                       Tanggal : <strong>{{ getMonTgl(item, 'pulang_administrasi') || '..............................................' }}</strong>
@@ -667,8 +680,8 @@
                       
                       <!-- Dietisen -->
                       <div>
-                        <div :class="getFasTgl(item, 'dietisen') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                          {{ getFasTgl(item, 'dietisen') ? '☑' : '☐' }} Dietisen : Mengedukasi tentang <strong>{{ getFasKet(item, 'dietisen') || '..............................................' }}</strong>
+                        <div :class="hasFasilitasi(item, 'dietisen') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                          {{ hasFasilitasi(item, 'dietisen') ? '☑' : '☐' }} Dietisen : Mengedukasi tentang <strong>{{ getFasKet(item, 'dietisen') || '..............................................' }}</strong>
                         </div>
                         <div class="q-pl-md">
                           Tanggal : <strong>{{ getFasTgl(item, 'dietisen') || '..............................................' }}</strong>
@@ -677,8 +690,8 @@
 
                       <!-- DPJP -->
                       <div>
-                        <div :class="getFasTgl(item, 'dpjp') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                          {{ getFasTgl(item, 'dpjp') ? '☑' : '☐' }} DPJP : Memberikan informasi tentang pemeriksaan penunjang, diagnosa, penatalaksanaan
+                        <div :class="hasFasilitasi(item, 'dpjp') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                          {{ hasFasilitasi(item, 'dpjp') ? '☑' : '☐' }} DPJP : Memberikan informasi tentang pemeriksaan penunjang, diagnosa, penatalaksanaan
                         </div>
                         <div class="q-pl-md">
                           Tanggal : <strong>{{ getFasTgl(item, 'dpjp') || '..............................................' }}</strong>
@@ -687,8 +700,8 @@
 
                       <!-- Farmasi -->
                       <div>
-                        <div :class="getFasTgl(item, 'farmasi') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                          {{ getFasTgl(item, 'farmasi') ? '☑' : '☐' }} Farmasi : cara minum obat dan efek samping
+                        <div :class="hasFasilitasi(item, 'farmasi') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                          {{ hasFasilitasi(item, 'farmasi') ? '☑' : '☐' }} Farmasi : cara minum obat dan efek samping
                         </div>
                         <div class="q-pl-md">
                           Tanggal : <strong>{{ getFasTgl(item, 'farmasi') || '..............................................' }}</strong>
@@ -697,8 +710,8 @@
 
                       <!-- Fisioterapi -->
                       <div>
-                        <div :class="getFasTgl(item, 'fisioterapi') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                          {{ getFasTgl(item, 'fisioterapi') ? '☑' : '☐' }} Fisioterapi : Latihan fisik
+                        <div :class="hasFasilitasi(item, 'fisioterapi') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                          {{ hasFasilitasi(item, 'fisioterapi') ? '☑' : '☐' }} Fisioterapi : Latihan fisik
                         </div>
                         <div class="q-pl-md">
                           Tanggal : <strong>{{ getFasTgl(item, 'fisioterapi') || '..............................................' }}</strong>
@@ -707,8 +720,8 @@
 
                       <!-- Perawat -->
                       <div>
-                        <div :class="getFasTgl(item, 'perawat') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                          {{ getFasTgl(item, 'perawat') ? '☑' : '☐' }} Perawat : Edukasi tentang <strong>{{ getFasKet(item, 'perawat') || '..............................................' }}</strong>
+                        <div :class="hasFasilitasi(item, 'perawat') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                          {{ hasFasilitasi(item, 'perawat') ? '☑' : '☐' }} Perawat : Edukasi tentang <strong>{{ getFasKet(item, 'perawat') || '..............................................' }}</strong>
                         </div>
                         <div class="q-pl-md">
                           Tanggal : <strong>{{ getFasTgl(item, 'perawat') || '..............................................' }}</strong>
@@ -720,8 +733,8 @@
 
                   <!-- 2. Pasca Rawat Inap -->
                   <div class="q-mb-sm border-t q-pt-xs">
-                    <div :class="getFasTgl(item, 'pelayanan_pasca_rawat') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                      {{ getFasTgl(item, 'pelayanan_pasca_rawat') ? '☑' : '☐' }} 2. Koordinasi dengan PPA untuk rencana dengan pasien dengan pelayanan pasca rawat inap
+                    <div :class="hasFasilitasi(item, 'pelayanan_pasca_rawat') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                      {{ hasFasilitasi(item, 'pelayanan_pasca_rawat') ? '☑' : '☐' }} 2. Koordinasi dengan PPA untuk rencana dengan pasien dengan pelayanan pasca rawat inap
                     </div>
                     <div class="q-pl-sm">
                       Tanggal : <strong>{{ getFasTgl(item, 'pelayanan_pasca_rawat') || '..............................................' }}</strong>
@@ -730,8 +743,8 @@
 
                   <!-- 3. Sesuai PPK & CP -->
                   <div class="q-mb-sm border-t q-pt-xs">
-                    <div :class="getFasTgl(item, 'pelayanan_ppk_cp') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                      {{ getFasTgl(item, 'pelayanan_ppk_cp') ? '☑' : '☐' }} 3. Koordinasi dengan PPA untuk pelayanan sesuai dengan PPK dan Clinical Pathway
+                    <div :class="hasFasilitasi(item, 'pelayanan_ppk_cp') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                      {{ hasFasilitasi(item, 'pelayanan_ppk_cp') ? '☑' : '☐' }} 3. Koordinasi dengan PPA untuk pelayanan sesuai dengan PPK dan Clinical Pathway
                     </div>
                     <div class="q-pl-sm">
                       Tanggal : <strong>{{ getFasTgl(item, 'pelayanan_ppk_cp') || '..............................................' }}</strong>
@@ -740,8 +753,8 @@
 
                   <!-- 4. Perubahan Rencana -->
                   <div class="q-mb-sm border-t q-pt-xs">
-                    <div :class="getFasTgl(item, 'perubahan_rencana') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                      {{ getFasTgl(item, 'perubahan_rencana') ? '☑' : '☐' }} 4. Berkomunikasi dengan pasien dan keluarga setiap ada perubahan rencana perawatan
+                    <div :class="hasFasilitasi(item, 'perubahan_rencana') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                      {{ hasFasilitasi(item, 'perubahan_rencana') ? '☑' : '☐' }} 4. Berkomunikasi dengan pasien dan keluarga setiap ada perubahan rencana perawatan
                     </div>
                     <div class="q-pl-sm">
                       Tanggal : <strong>{{ getFasTgl(item, 'perubahan_rencana') || '..............................................' }}</strong>
@@ -750,8 +763,8 @@
 
                   <!-- 5. Pihak Dalam RS -->
                   <div class="q-mb-sm border-t q-pt-xs">
-                    <div :class="getFasTgl(item, 'pihak_dalam_rs') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                      {{ getFasTgl(item, 'pihak_dalam_rs') ? '☑' : '☐' }} 5. Koordinasi dengan pihak dalam RS
+                    <div :class="hasFasilitasi(item, 'pihak_dalam_rs') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                      {{ hasFasilitasi(item, 'pihak_dalam_rs') ? '☑' : '☐' }} 5. Koordinasi dengan pihak dalam RS
                     </div>
                     <div class="q-pl-sm">
                       Dengan : <strong>{{ getFasKet(item, 'pihak_dalam_rs') || '..............................................' }}</strong>
@@ -763,8 +776,8 @@
 
                   <!-- 6. Pihak Luar RS -->
                   <div class="q-mb-sm border-t q-pt-xs">
-                    <div :class="getFasTgl(item, 'pihak_luar_rs') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                      {{ getFasTgl(item, 'pihak_luar_rs') ? '☑' : '☐' }} 6. Koordinasi dengan pihak luar RS
+                    <div :class="hasFasilitasi(item, 'pihak_luar_rs') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                      {{ hasFasilitasi(item, 'pihak_luar_rs') ? '☑' : '☐' }} 6. Koordinasi dengan pihak luar RS
                     </div>
                     <div class="q-pl-sm">
                       Dengan : <strong>{{ getFasKet(item, 'pihak_luar_rs') || '..............................................' }}</strong>
@@ -776,8 +789,8 @@
 
                   <!-- 7. Transisi Pelayanan -->
                   <div class="q-mb-sm border-t q-pt-xs">
-                    <div :class="getFasTgl(item, 'transisi_faskes') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                      {{ getFasTgl(item, 'transisi_faskes') ? '☑' : '☐' }} 7. Fasilitasi pasien dalam proses transisi ke faskes pelayanan kesehatan lain
+                    <div :class="hasFasilitasi(item, 'transisi_faskes') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                      {{ hasFasilitasi(item, 'transisi_faskes') ? '☑' : '☐' }} 7. Fasilitasi pasien dalam proses transisi ke faskes pelayanan kesehatan lain
                     </div>
                     <div class="q-pl-sm">
                       Tanggal : <strong>{{ getFasTgl(item, 'transisi_faskes') || '..............................................' }}</strong>
@@ -786,8 +799,8 @@
 
                   <!-- 8. Case Meeting -->
                   <div class="q-mb-sm border-t q-pt-xs">
-                    <div :class="getFasTgl(item, 'meeting_case') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                      {{ getFasTgl(item, 'meeting_case') ? '☑' : '☐' }} 8. Meeting Case
+                    <div :class="hasFasilitasi(item, 'meeting_case') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                      {{ hasFasilitasi(item, 'meeting_case') ? '☑' : '☐' }} 8. Meeting Case
                     </div>
                     <div class="q-pl-sm">
                       Tanggal : <strong>{{ getFasTgl(item, 'meeting_case') || '..............................................' }}</strong>
@@ -796,8 +809,8 @@
 
                   <!-- 9. Penjaminan Koding -->
                   <div class="q-mb-sm border-t q-pt-xs">
-                    <div :class="getFasTgl(item, 'penjaminan_koding') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                      {{ getFasTgl(item, 'penjaminan_koding') ? '☑' : '☐' }} 9. Koordinasi dengan penjaminan untuk koding pasien
+                    <div :class="hasFasilitasi(item, 'penjaminan_koding') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                      {{ hasFasilitasi(item, 'penjaminan_koding') ? '☑' : '☐' }} 9. Koordinasi dengan penjaminan untuk koding pasien
                     </div>
                     <div class="q-pl-sm">
                       Tanggal : <strong>{{ getFasTgl(item, 'penjaminan_koding') || '..............................................' }}</strong>
@@ -814,8 +827,8 @@
                   
                   <!-- 1. Peran Aktif -->
                   <div class="q-mb-sm">
-                    <div :class="getAdvTgl(item, 'peran_aktif') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                      {{ getAdvTgl(item, 'peran_aktif') ? '☑' : '☐' }} 1. Pasien dan keluarga sudah berperan serta secara aktif dalam proses perawatan dan pasca rawat inap
+                    <div :class="hasAdvokasi(item, 'peran_aktif') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                      {{ hasAdvokasi(item, 'peran_aktif') ? '☑' : '☐' }} 1. Pasien dan keluarga sudah berperan serta secara aktif dalam proses perawatan dan pasca rawat inap
                     </div>
                     <div class="q-pl-sm">
                       Tanggal : <strong>{{ getAdvTgl(item, 'peran_aktif') || '..............................................' }}</strong>
@@ -824,29 +837,29 @@
 
                   <!-- 2. Kebutuhan ke DPJP -->
                   <div class="q-mb-sm">
-                    <div :class="(getAdvTgl(item, 'dpjp_discharge') || getAdvTgl(item, 'dpjp_konsultasi') || getAdvTgl(item, 'dpjp_pembiayaan')) ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                      {{ (getAdvTgl(item, 'dpjp_discharge') || getAdvTgl(item, 'dpjp_konsultasi') || getAdvTgl(item, 'dpjp_pembiayaan')) ? '☑' : '☐' }} 2. Menyampaikan kebutuhan pasien kepada DPJP untuk :
+                    <div :class="(hasAdvokasi(item, 'dpjp_discharge') || hasAdvokasi(item, 'dpjp_konsultasi') || hasAdvokasi(item, 'dpjp_pembiayaan')) ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                      {{ (hasAdvokasi(item, 'dpjp_discharge') || hasAdvokasi(item, 'dpjp_konsultasi') || hasAdvokasi(item, 'dpjp_pembiayaan')) ? '☑' : '☐' }} 2. Menyampaikan kebutuhan pasien kepada DPJP untuk :
                     </div>
                     <div class="q-pl-md q-gutter-y-xs">
                       <div>
-                        <div :class="getAdvTgl(item, 'dpjp_discharge') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                          {{ getAdvTgl(item, 'dpjp_discharge') ? '☑' : '☐' }} Discharge Planning
+                        <div :class="hasAdvokasi(item, 'dpjp_discharge') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                          {{ hasAdvokasi(item, 'dpjp_discharge') ? '☑' : '☐' }} Discharge Planning
                         </div>
                         <div class="q-pl-sm">
                           Tanggal : <strong>{{ getAdvTgl(item, 'dpjp_discharge') || '..............................................' }}</strong>
                         </div>
                       </div>
                       <div>
-                        <div :class="getAdvTgl(item, 'dpjp_konsultasi') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                          {{ getAdvTgl(item, 'dpjp_konsultasi') ? '☑' : '☐' }} Konsultasi
+                        <div :class="hasAdvokasi(item, 'dpjp_konsultasi') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                          {{ hasAdvokasi(item, 'dpjp_konsultasi') ? '☑' : '☐' }} Konsultasi
                         </div>
                         <div class="q-pl-sm">
                           Tanggal : <strong>{{ getAdvTgl(item, 'dpjp_konsultasi') || '..............................................' }}</strong>
                         </div>
                       </div>
                       <div>
-                        <div :class="getAdvTgl(item, 'dpjp_pembiayaan') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                          {{ getAdvTgl(item, 'dpjp_pembiayaan') ? '☑' : '☐' }} Pembiayaan
+                        <div :class="hasAdvokasi(item, 'dpjp_pembiayaan') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                          {{ hasAdvokasi(item, 'dpjp_pembiayaan') ? '☑' : '☐' }} Pembiayaan
                         </div>
                         <div class="q-pl-sm">
                           Tanggal : <strong>{{ getAdvTgl(item, 'dpjp_pembiayaan') || '..............................................' }}</strong>
@@ -857,8 +870,8 @@
 
                   <!-- 3. Hubungi RS Rujukan -->
                   <div class="q-mb-sm">
-                    <div :class="getAdvTgl(item, 'rs_rujukan') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                      {{ getAdvTgl(item, 'rs_rujukan') ? '☑' : '☐' }} 3. Menghubungi rumah sakit rujukan bila diperlukan
+                    <div :class="hasAdvokasi(item, 'rs_rujukan') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                      {{ hasAdvokasi(item, 'rs_rujukan') ? '☑' : '☐' }} 3. Menghubungi rumah sakit rujukan bila diperlukan
                     </div>
                     <div class="q-pl-sm">
                       Tanggal : <strong>{{ getAdvTgl(item, 'rs_rujukan') || '..............................................' }}</strong>
@@ -867,45 +880,45 @@
 
                   <!-- 4. Pemeriksaan Penunjang -->
                   <div class="q-mb-sm">
-                    <div :class="(getAdvTgl(item, 'pemeriksaan_lab') || getAdvTgl(item, 'pemeriksaan_rad') || getAdvTgl(item, 'pemeriksaan_eeg') || getAdvTgl(item, 'pemeriksaan_endo') || getAdvTgl(item, 'pemeriksaan_lain')) ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                      {{ (getAdvTgl(item, 'pemeriksaan_lab') || getAdvTgl(item, 'pemeriksaan_rad') || getAdvTgl(item, 'pemeriksaan_eeg') || getAdvTgl(item, 'pemeriksaan_endo') || getAdvTgl(item, 'pemeriksaan_lain')) ? '☑' : '☐' }} 4. Memastikan pemeriksaan penunjang yang sesuai :
+                    <div :class="(hasAdvokasi(item, 'pemeriksaan_lab') || hasAdvokasi(item, 'pemeriksaan_rad') || hasAdvokasi(item, 'pemeriksaan_eeg') || hasAdvokasi(item, 'pemeriksaan_endo') || hasAdvokasi(item, 'pemeriksaan_lain')) ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                      {{ (hasAdvokasi(item, 'pemeriksaan_lab') || hasAdvokasi(item, 'pemeriksaan_rad') || hasAdvokasi(item, 'pemeriksaan_eeg') || hasAdvokasi(item, 'pemeriksaan_endo') || hasAdvokasi(item, 'pemeriksaan_lain')) ? '☑' : '☐' }} 4. Memastikan pemeriksaan penunjang yang sesuai :
                     </div>
                     <div class="q-pl-md q-gutter-y-xs">
                       <div>
-                        <div :class="getAdvTgl(item, 'pemeriksaan_lab') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                          {{ getAdvTgl(item, 'pemeriksaan_lab') ? '☑' : '☐' }} Laboratorium
+                        <div :class="hasAdvokasi(item, 'pemeriksaan_lab') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                          {{ hasAdvokasi(item, 'pemeriksaan_lab') ? '☑' : '☐' }} Laboratorium
                         </div>
                         <div class="q-pl-sm">
                           Tanggal : <strong>{{ getAdvTgl(item, 'pemeriksaan_lab') || '..............................................' }}</strong>
                         </div>
                       </div>
                       <div>
-                        <div :class="getAdvTgl(item, 'pemeriksaan_rad') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                          {{ getAdvTgl(item, 'pemeriksaan_rad') ? '☑' : '☐' }} Radiologi
+                        <div :class="hasAdvokasi(item, 'pemeriksaan_rad') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                          {{ hasAdvokasi(item, 'pemeriksaan_rad') ? '☑' : '☐' }} Radiologi
                         </div>
                         <div class="q-pl-sm">
                           Tanggal : <strong>{{ getAdvTgl(item, 'pemeriksaan_rad') || '..............................................' }}</strong>
                         </div>
                       </div>
                       <div>
-                        <div :class="getAdvTgl(item, 'pemeriksaan_eeg') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                          {{ getAdvTgl(item, 'pemeriksaan_eeg') ? '☑' : '☐' }} EEG
+                        <div :class="hasAdvokasi(item, 'pemeriksaan_eeg') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                          {{ hasAdvokasi(item, 'pemeriksaan_eeg') ? '☑' : '☐' }} EEG
                         </div>
                         <div class="q-pl-sm">
                           Tanggal : <strong>{{ getAdvTgl(item, 'pemeriksaan_eeg') || '..............................................' }}</strong>
                         </div>
                       </div>
                       <div>
-                        <div :class="getAdvTgl(item, 'pemeriksaan_endo') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                          {{ getAdvTgl(item, 'pemeriksaan_endo') ? '☑' : '☐' }} Endoscopi/Kolonoscopi
+                        <div :class="hasAdvokasi(item, 'pemeriksaan_endo') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                          {{ hasAdvokasi(item, 'pemeriksaan_endo') ? '☑' : '☐' }} Endoscopi/Kolonoscopi
                         </div>
                         <div class="q-pl-sm">
                           Tanggal : <strong>{{ getAdvTgl(item, 'pemeriksaan_endo') || '..............................................' }}</strong>
                         </div>
                       </div>
                       <div>
-                        <div :class="getAdvTgl(item, 'pemeriksaan_lain') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                          {{ getAdvTgl(item, 'pemeriksaan_lain') ? '☑' : '☐' }} Lain-lain
+                        <div :class="hasAdvokasi(item, 'pemeriksaan_lain') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                          {{ hasAdvokasi(item, 'pemeriksaan_lain') ? '☑' : '☐' }} Lain-lain
                         </div>
                         <div class="q-pl-sm">
                           Tanggal : <strong>{{ getAdvTgl(item, 'pemeriksaan_lain') || '..............................................' }}</strong>
@@ -973,9 +986,9 @@
                     {{ hasHasil(item, 'tidak_ada_komplain') ? '☑' : '☐' }} 6. Tidak ada komplain
                   </div>
 
-                  <div class="border-t q-pt-xs text-caption q-mt-sm" v-if="getHasil(item).hasil_ket?.hasil_ket">
-                    <span class="text-weight-bold">Keterangan:</span>
-                    <div class="text-justify text-grey-9">{{ getHasil(item).hasil_ket.hasil_ket }}</div>
+                  <div class="mpp-keterangan-box" v-if="getHasil(item).hasil_ket?.hasil_ket">
+                    <span class="keterangan-title">Keterangan:</span>
+                    <div class="text-justify keterangan-content">{{ getHasil(item).hasil_ket.hasil_ket }}</div>
                   </div>
 
                 </div>
@@ -988,8 +1001,8 @@
                   
                   <!-- 1. Telah tercapainya sasaran -->
                   <div class="q-mb-sm">
-                    <div :class="getTermTgl(item, 'tujuan_tercapai') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                      {{ getTermTgl(item, 'tujuan_tercapai') ? '☑' : '☐' }} 1. Telah tercapainya sasaran manajemen pelayanan pasien
+                    <div :class="hasTerminasi(item, 'tujuan_tercapai') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                      {{ hasTerminasi(item, 'tujuan_tercapai') ? '☑' : '☐' }} 1. Telah tercapainya sasaran manajemen pelayanan pasien
                     </div>
                     <div class="q-pl-sm">
                       Tanggal : <strong>{{ getTermTgl(item, 'tujuan_tercapai') || '..............................................' }}</strong>
@@ -998,8 +1011,8 @@
 
                   <!-- 2. Telah terlaksananya transisi -->
                   <div class="q-mb-sm">
-                    <div :class="getTermTgl(item, 'transisi_faskes_terlaksana') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                      {{ getTermTgl(item, 'transisi_faskes_terlaksana') ? '☑' : '☐' }} 2. Telah terlaksananya transisi ke fasilitas pelayanan kesehatan lain
+                    <div :class="hasTerminasi(item, 'transisi_faskes_terlaksana') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                      {{ hasTerminasi(item, 'transisi_faskes_terlaksana') ? '☑' : '☐' }} 2. Telah terlaksananya transisi ke fasilitas pelayanan kesehatan lain
                     </div>
                     <div class="q-pl-sm">
                       Tanggal : <strong>{{ getTermTgl(item, 'transisi_faskes_terlaksana') || '..............................................' }}</strong>
@@ -1008,8 +1021,8 @@
 
                   <!-- 3. Pasien menolak -->
                   <div class="q-mb-sm">
-                    <div :class="getTermTgl(item, 'pasien_menolak') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
-                      {{ getTermTgl(item, 'pasien_menolak') ? '☑' : '☐' }} 3. Pasien menolak manajemen pelayanan pasien
+                    <div :class="hasTerminasi(item, 'pasien_menolak') ? 'mpp-item-checked' : 'mpp-item-unchecked'">
+                      {{ hasTerminasi(item, 'pasien_menolak') ? '☑' : '☐' }} 3. Pasien menolak manajemen pelayanan pasien
                     </div>
                     <div class="q-pl-sm">
                       Tanggal : <strong>{{ getTermTgl(item, 'pasien_menolak') || '..............................................' }}</strong>
@@ -1203,37 +1216,136 @@ const getAdvokasi = (item) => parseVal(item.advokasi)
 const getHasil = (item) => parseVal(item.hasil_pelayanan)
 const getTerminasi = (item) => parseVal(item.terminasi)
 
-// Checkers
-const hasPsikologis = (item, val) => {
-  const p = getSkrining(item).riwayat_psikologis
-  return Array.isArray(p) && p.includes(val)
+// ── Kalkulasi Skor Skrining MPP ─────────────────────
+const calculateMppScore = (skriningData) => {
+  const data = typeof skriningData === 'string' ? parseVal(skriningData) : (skriningData || {})
+  let count = 0
+  if (data.usia) count++
+  if (data.kognitif_rendah) count++
+  if (data.resiko_tinggi) count++
+  if (data.potensi_komplain) count++
+  if (data.kasus_penyakit && data.kasus_penyakit !== 'None') count++
+  if (data.keterbatasan_adl) count++
+  if (data.pakai_alat_medis) count++
+  if (Array.isArray(data.riwayat_psikologis) && data.riwayat_psikologis.length > 0) count++
+  if (data.readmisi) count++
+  if (data.biaya_tinggi) count++
+  if (data.pembiayaan_komplek) count++
+  if (data.melebihi_los) count++
+  if (data.transfer_rujukan) count++
+  if (data.kerjasama_sektor) count++
+  if (data.kontinuitas_pelayanan) count++
+  return count
 }
+
+const mppQualifiedItems = computed(() => {
+  return items.value.filter(item => {
+    return calculateMppScore(item.skrining) > 3
+  })
+})
+
+const isMppQualified = computed(() => {
+  return mppQualifiedItems.value.length > 0
+})
+
+const latestItem = computed(() => {
+  return items.value[0] || null
+})
+
+const latestScore = computed(() => {
+  return latestItem.value ? calculateMppScore(latestItem.value.skrining) : 0
+})
+
+// ── Checkers ───────────────────────────────────────
+const mapPsikologis = {
+  gangguan_mental: ['gangguan_mental', 'Riwayat gangguan mental'],
+  bunuh_diri: ['bunuh_diri', 'Upaya bunuh diri'],
+  krisis_keluarga: ['krisis_keluarga', 'Krisis keluarga'],
+  isu_sosial: ['isu_sosial', 'Isu sosial'],
+  pasien_terlantar: ['pasien_terlantar', 'Pasien terlantar'],
+  tinggal_sendiri: ['tinggal_sendiri', 'Pasien tinggal sendiri'],
+  narkoba_miras: ['narkoba_miras', 'Penggunaan narkoba & miras', 'Penggunaan narkoba & minuman keras'],
+  narapidana: ['narapidana', 'Status Narapidana', 'Narapidana']
+}
+
+const hasPsikologis = (item, key) => {
+  const p = getSkrining(item).riwayat_psikologis
+  if (!Array.isArray(p)) return false
+  const matchKeys = mapPsikologis[key] || [key]
+  return matchKeys.some(v => p.includes(v))
+}
+
 const hasMasalah = (item, val) => {
   const m = getMasalah(item).masalah
   return Array.isArray(m) && m.includes(val)
 }
+
 const hasSasaran = (item, val) => {
   const s = getSasaran(item).sasaran
   return Array.isArray(s) && s.includes(val)
 }
+
 const hasPerencanaan = (item, val) => {
   const p = getPerencanaan(item).perencanaan
   return Array.isArray(p) && p.includes(val)
 }
+
+const hasMonitoring = (item, val) => {
+  const m = getMonitoring(item)
+  const isArr = Array.isArray(m.monitoring) && m.monitoring.includes(val)
+  const hasTgl = !!m.monitoring_tgl?.[val]
+  return isArr || hasTgl
+}
+
+const hasFasilitasi = (item, val) => {
+  const f = getFasilitasi(item)
+  const isArr = Array.isArray(f.fasilitasi) && f.fasilitasi.includes(val)
+  const tglVal = f.fasilitasi_tgl?.[val]
+  const hasTgl = Array.isArray(tglVal) ? tglVal.length > 0 : !!tglVal
+  const hasKet = !!f.fasilitasi_ket?.[val]
+  return isArr || hasTgl || hasKet
+}
+
+const hasAdvokasi = (item, val) => {
+  const a = getAdvokasi(item)
+  const isArr = Array.isArray(a.advokasi) && a.advokasi.includes(val)
+  const hasTgl = !!a.advokasi_tgl?.[val]
+  return isArr || hasTgl
+}
+
 const hasHasil = (item, val) => {
   const h = getHasil(item).hasil
   return Array.isArray(h) && h.includes(val)
 }
 
+const hasTerminasi = (item, val) => {
+  const t = getTerminasi(item)
+  const isArr = Array.isArray(t.terminasi) && t.terminasi.includes(val)
+  const hasTgl = !!t.terminasi_tgl?.[val]
+  return isArr || hasTgl
+}
+
 // Get Object Values
 const getMonTgl = (item, key) => getMonitoring(item).monitoring_tgl?.[key]
-const getFasTgl = (item, key) => getFasilitasi(item).fasilitasi_tgl?.[key]
+const getFasTgl = (item, key) => {
+  const val = getFasilitasi(item).fasilitasi_tgl?.[key]
+  if (Array.isArray(val)) return val.join(', ')
+  return val
+}
 const getFasKet = (item, key) => getFasilitasi(item).fasilitasi_ket?.[key]
 const getAdvTgl = (item, key) => getAdvokasi(item).advokasi_tgl?.[key]
 const getTermTgl = (item, key) => getTerminasi(item).terminasi_tgl?.[key]
 
 const getCaraPulangTgl = (item, key) => getTerminasi(item).cara_pulang_tgl?.[key]
 const getCaraPulangKet = (item, key) => getTerminasi(item).cara_pulang_ket?.[key]
+
+const getTglSkrining = (item) => {
+  const skrining = getSkrining(item)
+  const asesmen = getAsesmen(item)
+  const rawDate = skrining?.tgl_skrining || skrining?.tgl || asesmen?.tgl_kajian || item?.tgl_skrining || item?.tgl || item?.created_at
+  if (!rawDate) return '-'
+  return humanDate(rawDate) || rawDate
+}
 </script>
 
 <style lang="scss" scoped>
@@ -1339,6 +1451,27 @@ const getCaraPulangKet = (item, key) => getTerminasi(item).cara_pulang_ket?.[key
   border-top: 1px solid #000;
   margin-top: 2px !important;
   padding-top: 2px !important;
+}
+
+.mpp-keterangan-box {
+  border-top: 1px solid #000;
+  margin-top: 4px !important;
+  padding-top: 2px !important;
+  font-size: 8px !important;
+  line-height: 1.25 !important;
+
+  .keterangan-title {
+    font-weight: bold;
+    font-size: 8px !important;
+    display: block;
+    margin-bottom: 1px;
+  }
+
+  .keterangan-content {
+    font-size: 8px !important;
+    line-height: 1.25 !important;
+    color: #222;
+  }
 }
 
 .text-underline {

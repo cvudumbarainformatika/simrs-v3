@@ -243,9 +243,9 @@
             </td>
           </tr>
           <tr style="border: none !important; padding: 0px !important;">
-            <td style="border: none !important; padding: 0px !important; width: 20%;">- Riwayat Penyakit Keluarga</td>
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Riwayat Pengobatan</td>
             <td style="border: none !important; padding: 0px !important;"> : {{
-              anamnesisAwal?.riwayatpenyakitkeluarga || '-' }}</td>
+              anamnesisAwal?.riwayatpengobatan || '-' }}</td>
           </tr>
           <tr>
             <td style="border: none !important; padding: 0px !important; width: 20%;">- Riwayat Alergi Obat</td>

@@ -79,7 +79,9 @@ export const useSPJOPNameStore = defineStore('spjopname', {
     gudangModel: null,
     gudangSelected: null,
     KaUang: {},
-    KaFarmasi: {}
+    KaFarmasi: {},
+    customTtKiriJabatan: '',
+    customTtKiriNama: ''
   }),
   actions: {
     setParams (key, val) {
