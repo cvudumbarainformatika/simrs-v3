@@ -2,7 +2,7 @@
   <div>
     <DataPasien ref="refDataPasien" :tglsep="register.paramDpjp.tglsep" :full="style.componentfull"
       :pelayanan="pelayanan" :sistembayar="register.sistembayars" :poli="POL014" @ganti-pasien="clearFormRegistrasi"
-      @full-screen="style.setComponentFull" />
+      @full-screen="style.setComponentFull" @desil="dialogDesil = true" />
     <!-- @bisa-simpan="bisaSimpan" -->
     <FormRegistrasi ref="refRegistrasi" :pelayanan="pelayanan" />
     <!-- @bisa-simpan="simpanRegistrasi" -->
@@ -15,9 +15,11 @@
     </q-card>
   </div>
   <gelang-pasien-page v-model="cetakdialog" :patien="patien" />
+  <DialogDesil v-model="dialogDesil" :pasien="pasien.form" />
 </template>
 <script setup>
 import DataPasien from 'src/pages/simrs/pendaftaran/form/pasien/DataPasien.vue'
+import DialogDesil from 'src/pages/simrs/pendaftaran/form/pasien/DialogDesil.vue'
 import FormRegistrasi from './FormRegistrasi.vue'
 import { ref } from 'vue'
 import { usePendaftaranPasienStore } from 'src/stores/simrs/pendaftaran/form/pasien/pasien'
@@ -27,6 +29,7 @@ import { useStyledStore } from 'src/stores/app/styled'
 import GelangPasienPage from '../../cetak/GelangPasienPage.vue'
 
 const cetakdialog = ref(false)
+const dialogDesil = ref(false)
 const pasien = usePendaftaranPasienStore()
 const register = useRegistrasiPasienIgdStore()
 const pelayanan = 'igd'
