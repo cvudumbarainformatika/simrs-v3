@@ -1018,19 +1018,23 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
       this.setForm('hakkelas', peserta.hakKelas?.kode ?? this.form.hakkelas)
       this.setForm('kelas', peserta.hakKelas?.keterangan ?? this.form.kelas)
 
-      if (peserta.mr?.noMR) this.setForm('norm', peserta.mr.noMR)
       if (peserta.mr?.noTelepon) this.setForm('noteleponhp', peserta.mr.noTelepon)
 
       if (peserta.sex) {
-        this.setForm('kelamin', peserta.sex === 'L' ? 'Laki-laki' : 'Perempuan')
+        const kelamin = peserta.sex === 'L' ? 'Laki-laki' : (peserta.sex === 'P' ? 'Perempuan' : null)
+        if (kelamin) {
+          this.setForm('kelamin', kelamin)
+          const masterKelamin = this.kelamins.find(item => item?.kelamin === kelamin)
+          this.setForm('kodekelamin', masterKelamin?.kode ?? peserta.sex)
+        }
       }
 
       if (peserta.tglLahir) {
-        const lahir = peserta.tglLahir.split('-')
-        if (lahir.length === 3) {
+        const lahir = String(peserta.tglLahir).trim().split('-')
+        if (lahir.length === 3 && /^\d{4}$/.test(lahir[0])) {
           this.tanggal.tahun = lahir[0]
-          this.tanggal.bulan = lahir[1]
-          this.tanggal.hari = lahir[2]
+          this.tanggal.bulan = lahir[1].padStart(2, '0')
+          this.tanggal.hari = lahir[2].padStart(2, '0')
           this.setTanggalLahir()
         }
       }

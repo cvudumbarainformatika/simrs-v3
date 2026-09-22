@@ -112,10 +112,10 @@
             <!-- no rm -->
             <div class="row q-col-gutter-sm items-center q-mb-xs">
               <div class="col-12">
-                <app-input ref="refNoRM" v-model="store.form.norm" label="Nomor RM" autofocus outlined
-                  :disable="store.form.barulama !== 'baru'" :loading="store.loading || store.loadingNorm" :rules="[
+                  <app-input ref="refNoRM" v-model="store.form.norm" label="Nomor RM" autofocus outlined
+                    :disable="store.form.barulama !== 'baru'" :loading="store.loading || store.loadingNorm" :rules="[
                     val => (!!val) || 'Harap diisi',
-                    val => val ? val?.length > 5 : !val || 'Harus 6 Karakter',
+                    val => val ? val?.length === 6 : !val || 'Harus 6 Karakter',
                     val => regex.test(val) || 'Hanya angka'
                   ]" @keyup.enter="inputNoRmSelesai" @update:model-value="updateValNoRM"
                   @blur="store.cekDulu($event, 'norm')" />
