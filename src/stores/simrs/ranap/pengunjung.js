@@ -538,9 +538,15 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
     },
 
     async getNakes() {
-      const resp = await api.get('/v1/simrs/master/pegawai/listdokters')
+      const resp = await api.get('/v1/simrs/master/pegawai/listnakes')
       if (resp.status === 200) {
         this.nakes = resp.data
+      }
+    },
+    async getDokters() {
+      const resp = await api.get('/v1/simrs/master/pegawai/listdokters')
+      if (resp.status === 200) {
+        this.dokters = resp.data
       }
     },
     async getNonNakes() {

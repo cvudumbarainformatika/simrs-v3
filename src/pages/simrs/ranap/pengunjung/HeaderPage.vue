@@ -140,15 +140,16 @@ const showMenuPeriode = ref(false)
 const optionsDokter = ref([])
 
 function filterDokter(val, update) {
+  const source = store.dokters && store.dokters.length ? store.dokters : store.nakes
   if (val === '') {
     update(() => {
-      optionsDokter.value = store.nakes
+      optionsDokter.value = source
     })
     return
   }
   update(() => {
     const needle = val.toLowerCase()
-    optionsDokter.value = (store.nakes || []).filter(v => v.nama.toLowerCase().indexOf(needle) > -1)
+    optionsDokter.value = (source || []).filter(v => v.nama.toLowerCase().indexOf(needle) > -1)
   })
 }
 
@@ -169,6 +170,7 @@ const goTo = () => {
 onMounted(() => {
   store.periode = 'Hari ini'
   store.getNakes()
+  store.getDokters()
   Promise.all([
     // store.initReset(),
     store.getJenisKasus(),
