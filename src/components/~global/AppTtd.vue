@@ -6,13 +6,13 @@
         v-show="imgTtd === null"
         ref="canvasRef"
         class="ttd-pad"
-        :height="height"
-        :width="width"
+        :height="canvasHeight"
+        :width="canvasWidth"
         @pointerdown="handlePointerDown"
         @pointermove="handlePointerMove"
         @pointerup="handlePointerUp"
       />
-      <q-img v-show="imgTtd !== null" :src="imgTtd" :height="height" :width="width" />
+      <q-img v-if="imgTtd !== null" :src="imgTtd" :height="imgHeight" :width="imgWidth" />
     </div>
 
     <!-- Actions Area (Dipisah dari dalam canvas!) -->
@@ -73,6 +73,21 @@ const props = defineProps({
 const emits = defineEmits(['save-ttd', 'signature'])
 
 const imgTtd = computed(() => props.ttd)
+
+const canvasWidth = computed(() => parseInt(props.width, 10) || 320)
+const canvasHeight = computed(() => parseInt(props.height, 10) || 200)
+
+const imgHeight = computed(() => {
+  if (!props.height) return undefined
+  const str = String(props.height)
+  return str.endsWith('px') || str.endsWith('%') ? str : `${str}px`
+})
+
+const imgWidth = computed(() => {
+  if (!props.width) return undefined
+  const str = String(props.width)
+  return str.endsWith('px') || str.endsWith('%') ? str : `${str}px`
+})
 
 onMounted(() => {
   ctx.value = canvasRef.value.getContext('2d')
