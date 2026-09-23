@@ -301,13 +301,28 @@ export const useListRadiologiLuarStore = defineStore('list-radiologi-luar', {
       }
 
 
-      // console.log('payload simpan', payload);
       await api.post('/v1/simrs/radiologi/radiologi/simpanHasilRadiologiLuar', payload)
-        .then(resp => {
+        .then(async resp => {
           console.log('simpan hasil', resp);
           if (resp.status === 200) {
+            const resData = resp.data?.data || resp.data?.result || resp.data
+            if (resData && typeof resData === 'object') {
+              Object.assign(item, resData)
+            }
+            const tglHasil = resp.data?.tgl || resData?.tgl || resData?.rs7 || resData?.rs2
+            if (tglHasil) {
+              item.tgl = tglHasil
+            }
+
             notifSuccessVue(resp?.data?.message || 'Data berhasil disimpan')
-            this.getDataTable()
+            await this.getDataTable()
+
+            // Update pasien aktif dan inisialisasi ulang permintaan agar tgl database langsung masuk tanpa tutup layanan
+            const updatedPasien = this.items?.find(x => (x.rs1 && x.rs1 === (pasien?.rs1 || item?.rs1)) || (x.notrans && x.notrans === (pasien?.notrans || item?.rs1)))
+            if (updatedPasien) {
+              this.pasien = updatedPasien
+              this.initPermintaan(updatedPasien)
+            }
           }
         })
         .catch(err => {
