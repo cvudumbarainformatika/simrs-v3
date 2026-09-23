@@ -51,7 +51,7 @@
               </div>
               <div class="col-12 col-md-4 text-right q-mt-md-none q-mt-lg">
                 <div class="header-stat-box">
-                  <div class="text-overline">Kepatuhan Pengiriman</div>
+                  <div class="text-overline">Keberhasilan Pengiriman</div>
                   <div class="text-h3 text-weight-bolder">{{ store.summary?.compliance_rate || '0%' }}</div>
                   <div class="text-caption text-weight-bold">Update: {{ currentTime }}</div>
                 </div>

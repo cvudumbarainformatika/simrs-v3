@@ -55,13 +55,13 @@
               </div>
               <div class="col-12 col-md-4 text-right q-mt-md q-mt-md-none">
                 <div class="header-stat-box text-center">
-                  <div class="text-h6 text-weight-medium">Kepatuhan Total</div>
+                  <div class="text-h6 text-weight-medium">Keberhasilan Pengiriman</div>
                   <div class="text-h2 text-weight-bolder q-my-xs text-white">
                     {{ store.summary?.compliance_rate || '0%' }}
                   </div>
                   <div class="text-caption opacity-80">
                     {{ formatNumber(store.summary?.total_terkirim) }} dari {{
-                      formatNumber(store.summary?.total_kunjungan) }} Kunjungan
+                      formatNumber(store.summary?.total_diproses || store.summary?.total_terkirim) }} Data Diproses
                   </div>
                 </div>
               </div>
