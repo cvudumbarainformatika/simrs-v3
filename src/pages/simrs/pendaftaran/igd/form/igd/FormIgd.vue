@@ -1,6 +1,6 @@
 <template>
   <div>
-    <DataPasien ref="refDataPasien" :tglsep="register.paramDpjp.tglsep" :full="style.componentfull"
+    <DataPasien ref="refDataPasien" bpjs :tglsep="register.paramDpjp.tglsep" :full="style.componentfull"
       :pelayanan="pelayanan" :sistembayar="register.sistembayars" :poli="POL014" @ganti-pasien="clearFormRegistrasi"
       @full-screen="style.setComponentFull" @desil="dialogDesil = true" />
     <!-- @bisa-simpan="bisaSimpan" -->
