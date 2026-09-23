@@ -28,8 +28,12 @@
                         <div class="row q-gutter-xs q-mt-sm">
                           <q-btn size="xs" color="grey-3" text-color="dark" label="Hari Ini" no-caps
                             @click="setFilterCepat('hari_ini')" />
+                          <q-btn size="xs" color="grey-3" text-color="dark" label="2 Hari" no-caps
+                            @click="setFilterCepat('2_hari')" />
                           <q-btn size="xs" color="grey-3" text-color="dark" label="7 Hari" no-caps
                             @click="setFilterCepat('7_hari')" />
+                          <q-btn size="xs" color="grey-3" text-color="dark" label="30 Hari" no-caps
+                            @click="setFilterCepat('30_hari')" />
                           <q-btn size="xs" color="grey-3" text-color="dark" label="Bulan Ini" no-caps
                             @click="setFilterCepat('bulan_ini')" />
                         </div>
@@ -47,7 +51,7 @@
               </div>
               <div class="col-12 col-md-4 text-right q-mt-md-none q-mt-lg">
                 <div class="header-stat-box">
-                  <div class="text-overline">Kepatuhan Pengiriman</div>
+                  <div class="text-overline">Keberhasilan Pengiriman</div>
                   <div class="text-h3 text-weight-bolder">{{ store.summary?.compliance_rate || '0%' }}</div>
                   <div class="text-caption text-weight-bold">Update: {{ currentTime }}</div>
                 </div>
@@ -683,6 +687,10 @@ function setFilterCepat(tipe) {
   if (tipe === 'hari_ini') {
     const today = date.formatDate(now, 'YYYY-MM-DD')
     store.setPeriode(today, today)
+  } else if (tipe === '2_hari') {
+    const duaHariLalu = date.formatDate(date.subtractFromDate(now, { days: 2 }), 'YYYY-MM-DD')
+    const today = date.formatDate(now, 'YYYY-MM-DD')
+    store.setPeriode(duaHariLalu, today)
   } else if (tipe === '7_hari') {
     const tujuhHariLalu = date.formatDate(date.subtractFromDate(now, { days: 7 }), 'YYYY-MM-DD')
     const today = date.formatDate(now, 'YYYY-MM-DD')
