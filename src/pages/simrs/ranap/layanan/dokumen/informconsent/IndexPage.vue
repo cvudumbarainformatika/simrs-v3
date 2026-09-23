@@ -99,7 +99,8 @@ const mapJenis = {
   TransfusiDarah: 'Tindakan Transfusi Darah',
   PenandaanLokasiOperasi: 'Penandaan Lokasi Operasi',
   Resusitasi: 'Penolakan Resusitasi (DNR)',
-  Restrain: 'Persetujuan Pemasangan Restrain'
+  Restrain: 'Persetujuan Pemasangan Restrain',
+  Hemodialisis: 'Hemodialisis'
 }
 
 const asyncComponentPreviews = {
@@ -109,7 +110,8 @@ const asyncComponentPreviews = {
   TransfusiDarah: defineAsyncComponent(() => import('../../informconsent/comp/transfusi/PreviewTransfusi.vue')),
   PenandaanLokasiOperasi: defineAsyncComponent(() => import('../../informconsent/comp/penandaan/PreviewPenandaan.vue')),
   Resusitasi: defineAsyncComponent(() => import('../../informconsent/comp/resusitasi/PreviewResusitasi.vue')),
-  Restrain: defineAsyncComponent(() => import('../../informconsent/comp/restrain/PreviewRestrain.vue'))
+  Restrain: defineAsyncComponent(() => import('../../informconsent/comp/restrain/PreviewRestrain.vue')),
+  Hemodialisis: defineAsyncComponent(() => import('../../informconsent/comp/hemodialisis/PreviewHemodialisis.vue'))
 }
 </script>
 

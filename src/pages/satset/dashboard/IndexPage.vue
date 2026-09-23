@@ -32,6 +32,8 @@
                         <div class="row q-gutter-xs q-mt-sm">
                           <q-btn size="xs" color="grey-3" text-color="dark" label="Hari Ini" no-caps
                             @click="setFilterCepat('hari_ini')" />
+                          <q-btn size="xs" color="grey-3" text-color="dark" label="2 Hari" no-caps
+                            @click="setFilterCepat('2_hari')" />
                           <q-btn size="xs" color="grey-3" text-color="dark" label="7 Hari" no-caps
                             @click="setFilterCepat('7_hari')" />
                           <q-btn size="xs" color="grey-3" text-color="dark" label="30 Hari" no-caps
@@ -53,13 +55,13 @@
               </div>
               <div class="col-12 col-md-4 text-right q-mt-md q-mt-md-none">
                 <div class="header-stat-box text-center">
-                  <div class="text-h6 text-weight-medium">Kepatuhan Total</div>
+                  <div class="text-h6 text-weight-medium">Keberhasilan Pengiriman</div>
                   <div class="text-h2 text-weight-bolder q-my-xs text-white">
                     {{ store.summary?.compliance_rate || '0%' }}
                   </div>
                   <div class="text-caption opacity-80">
                     {{ formatNumber(store.summary?.total_terkirim) }} dari {{
-                      formatNumber(store.summary?.total_kunjungan) }} Kunjungan
+                      formatNumber(store.summary?.total_diproses || store.summary?.total_terkirim) }} Data Diproses
                   </div>
                 </div>
               </div>
@@ -103,11 +105,12 @@
 
               <!-- Dropdown Periode Cepat -->
               <q-select v-model="selectedPeriodeCepat" dense outlined rounded options-dense class="bg-white"
-                style="width: 160px;" :options="[
-                  { label: '30 hari ke belakang', value: '30_hari' },
+                style="width: 170px;" :options="[
+                  { label: '2 hari ke belakang', value: '2_hari' },
+                  { label: 'Hari ini', value: 'hari_ini' },
                   { label: '7 hari ke belakang', value: '7_hari' },
-                  { label: 'Bulan ini', value: 'bulan_ini' },
-                  { label: 'Hari ini', value: 'hari_ini' }
+                  { label: '30 hari ke belakang', value: '30_hari' },
+                  { label: 'Bulan ini', value: 'bulan_ini' }
                 ]" @update:model-value="onSelectPeriodeCepat($event)" />
 
               <!-- Date Range Display Box with Calendar Popup -->
@@ -345,7 +348,7 @@ import { date } from 'quasar'
 const store = useSatsetDashboardStore()
 
 const dialogPenjelasan = ref(false)
-const selectedPeriodeCepat = ref({ label: '30 hari ke belakang', value: '30_hari' })
+const selectedPeriodeCepat = ref({ label: '2 hari ke belakang', value: '2_hari' })
 
 /* 19 Standard FHIR Resource Cards List (Urutan Persis Screenshot Kemenkes) */
 const fhirCardList = [
@@ -421,7 +424,7 @@ function getRateValue(rateStr) {
 }
 
 function onSelectPeriodeCepat(opt) {
-  setFilterCepat(opt?.value || '30_hari')
+  setFilterCepat(opt?.value || '2_hari')
 }
 
 function setFilterCepat(tipe) {
@@ -429,6 +432,10 @@ function setFilterCepat(tipe) {
   if (tipe === 'hari_ini') {
     const today = date.formatDate(now, 'YYYY-MM-DD')
     store.setPeriode(today, today)
+  } else if (tipe === '2_hari') {
+    const duaHariLalu = date.formatDate(date.subtractFromDate(now, { days: 2 }), 'YYYY-MM-DD')
+    const today = date.formatDate(now, 'YYYY-MM-DD')
+    store.setPeriode(duaHariLalu, today)
   } else if (tipe === '7_hari') {
     const tujuhHariLalu = date.formatDate(date.subtractFromDate(now, { days: 7 }), 'YYYY-MM-DD')
     const today = date.formatDate(now, 'YYYY-MM-DD')

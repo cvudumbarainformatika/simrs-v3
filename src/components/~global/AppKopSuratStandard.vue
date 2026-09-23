@@ -49,8 +49,12 @@ defineProps({
   dataHeader: {
     type: Array,
     default: () => [
-      'RSUD CIREMAI',
-      'Jl. Ciremai No. 1, Ciremai, Kec. Cimahi Utara, Kota Cimahi, Jawa Barat 40511',
+      'PEMERINTAH KOTA PROBOLINGGO',
+      'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
+      'UOBK RSUD DOKTER MOHAMAD SALEH',
+      'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
+      'email: rsudprob@probolinggokota.go.id',
+      'PROBOLINGGO – 67219'
     ]
   },
   header: {

@@ -351,6 +351,18 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
         this.form.komplikasi = 'Penyulit pasca RJP, nyeri dada, cedera jalan nafas'
         this.form.prognosis = ['Buruk']
       }
+      else if (this.menuTab === 'Hemodialisis') {
+        this.form.setuju = 'Iya'
+        this.form.dasarDiagnosis = 'Penyakit Ginjal Kronik (PGK/CKD) Stadium V, Akut Kidney Injury (AKI)'
+        this.form.indikasi = 'Anamnesa, Pemeriksaan Fisik, Laboratorium, USG'
+        this.form.tindakanMedis = 'Hemodialisis'
+        this.form.tujuanLain = 'Hiperkalemia, Enselopati, Uremikum, Asidosis Metabolik, Edema Paru, Overhidrasi, Azotemia'
+        this.form.tatacara = 'Darah dikeluarkan dari tubuh dan diedarkan oleh mesin diluar tubuh, proses pencucian oleh tabung (dialyzer) diluar mesin, selama penyaringan darah terjadi Difusi dan Ultrafiltrasi'
+        this.form.resikoLain = 'Mengeluarkan Toksin uremik dan mengatur cairan akibat penurunan Laju Filtrasi Glomerulus'
+        this.form.komplikasi = 'Hipotensi, Hipoglikemi, Kram otot, mual, muntah, sakit kepala, kejang, perdarahan, emboli udara, gatal, kematian'
+        this.form.golonganDarah = 'Dubia ad Bonam'
+        this.form.alternatif = 'Peritoneal Dialisis ( CAPD ), Transplantasi Ginjal'
+      }
       else if (this.menuTab === 'Restrain') {
         this.form.setuju = 'Iya'
         this.form.tindakanMedis = 'Pemasangan Restrain'

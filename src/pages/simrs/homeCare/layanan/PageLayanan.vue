@@ -24,7 +24,7 @@
           <q-page class="contain bg-grey-3">
             <Suspense :key="menu.comp" timeout="0">
               <template #default>
-                <component :is="menu.comp" :key="pasien" :pasien="pasien" :loading="loading" depo="rnp" />
+                <component :is="menu.comp" :key="pasien" :pasien="pasien" :loading="loading" depo="rjl" />
               </template>
               <template #fallback>
                 <AppLoader />

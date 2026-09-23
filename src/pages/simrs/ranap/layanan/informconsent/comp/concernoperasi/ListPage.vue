@@ -51,7 +51,8 @@ const mapJenis = {
   TransfusiDarah: 'Transfusi Darah',
   PenandaanLokasiOperasi: 'Penandaan Lokasi Operasi',
   Resusitasi: 'Penolakan Resusitasi (DNR)',
-  Restrain: 'Persetujuan Pemasangan Restrain'
+  Restrain: 'Persetujuan Pemasangan Restrain',
+  Hemodialisis: 'Hemodialisis'
 }
 
 const emits = defineEmits(['preview', 'delete', 'edit'])

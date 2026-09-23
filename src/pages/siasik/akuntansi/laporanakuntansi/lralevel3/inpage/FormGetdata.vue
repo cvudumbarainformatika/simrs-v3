@@ -111,7 +111,7 @@ function exportToExcel() {
   }
 
   // Siapkan data untuk Excel
-  const data = [];
+  // const data = [];
 
   // Header tabel
   const headers = [
@@ -124,7 +124,13 @@ function exportToExcel() {
     'SISA ANGGARAN (Rp.)',
     'PERSENTASE (%)',
   ];
-  data.push(headers);
+  // data.push(headers);
+  const data = [
+    ['LAPORAN REALISASI ANGGARAN', '', '', '', '', '', '', ''],
+    [`Periode ${store.display.dari} - ${store.display.sampai}`, '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', ''],
+    headers
+  ]
 
   // Data Pendapatan
   store.hasilpendapatan.forEach((item) => {
@@ -230,11 +236,15 @@ function exportToExcel() {
 
   // Buat workbook dan worksheet
   const worksheet = XLSX.utils.aoa_to_sheet(data);
+  worksheet['!merges'] = [
+    { s: { r: 0, c: 0 }, e: { r: 0, c: 7 } },
+    { s: { r: 1, c: 0 }, e: { r: 1, c: 7 } },
+  ]
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, 'LRA');
 
   // Atur lebar kolom (opsional)
-  const colWidths = data[0].map((_, colIndex) => {
+  const colWidths = headers.map((_, colIndex) => {
     return Math.max(
       ...data.map((row) => (row[colIndex] ? row[colIndex].toString()?.length : 0)),
       10

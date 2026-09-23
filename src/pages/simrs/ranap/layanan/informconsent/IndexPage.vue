@@ -184,6 +184,15 @@ const menus = ref([
     icon: 'icon-fa-file-regular',
     nakes: ['1', '2', '3'],
     comp: shallowRef(defineAsyncComponent(() => import('./comp/restrain/FormRestrain.vue')))
+  },
+  {
+    name: 'Hemodialisis',
+    label: 'IC Hemodialisis',
+    title: 'TINDAKAN KEDOKTERAN HEMODIALISIS',
+    desc: 'Surat Persetujuan Tindakan Kedokteran Hemodialisis',
+    icon: 'icon-fa-file-regular',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./comp/hemodialisis/FormHemodialisis.vue')))
   }
 ])
 
@@ -198,7 +207,8 @@ const asyncComponentPreviews = {
   TransfusiDarah: defineAsyncComponent(() => import('./comp/transfusi/PreviewTransfusi.vue')),
   PenandaanLokasiOperasi: defineAsyncComponent(() => import('./comp/penandaan/PreviewPenandaan.vue')),
   Resusitasi: defineAsyncComponent(() => import('./comp/resusitasi/PreviewResusitasi.vue')),
-  Restrain: defineAsyncComponent(() => import('./comp/restrain/PreviewRestrain.vue'))
+  Restrain: defineAsyncComponent(() => import('./comp/restrain/PreviewRestrain.vue')),
+  Hemodialisis: defineAsyncComponent(() => import('./comp/hemodialisis/PreviewHemodialisis.vue'))
 }
 
 const activeMenu = computed(() => {

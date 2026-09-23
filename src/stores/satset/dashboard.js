@@ -16,7 +16,7 @@ export const useSatsetDashboardStore = defineStore('satset_dashboard_store', {
     activeTab: 'kunjungan', // 'kunjungan' | 'error' | 'resources'
     filterJenis: 'all', // 'all' | 'rajal' | 'ranap' | 'igd'
 
-    tglAwal: date.formatDate(date.subtractFromDate(Date.now(), { days: 30 }), 'YYYY-MM-DD'),
+    tglAwal: date.formatDate(date.subtractFromDate(Date.now(), { days: 2 }), 'YYYY-MM-DD'),
     tglAkhir: date.formatDate(Date.now(), 'YYYY-MM-DD'),
     searchQuery: '',
     searchQueryError: '',
