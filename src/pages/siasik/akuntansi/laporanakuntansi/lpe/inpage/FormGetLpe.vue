@@ -83,7 +83,7 @@ async function exportToExcel() {
   }
 
   // Siapkan data untuk Excel
-  const data = [];
+  // const data = [];
 
   // Header tabel
   const headers = [
@@ -91,7 +91,13 @@ async function exportToExcel() {
     `NILAI TAHUN ${tahunsekarang()} (Rp) `,
     `NILAI TAHUN ${tahunsekarang() - 1} (Rp) `,
   ];
-  data.push(headers);
+  // data.push(headers);
+  const data = [
+    ['LAPORAN PERUBAHAN EKUITAS', '', ''],
+    [`Periode ${store.display.dari} - ${store.display.sampai}`, '', ''],
+    ['', '', ''],
+    headers
+  ]
 
 
   // Data Pendapatan
@@ -148,11 +154,15 @@ async function exportToExcel() {
 
 
   const worksheet = XLSX.utils.aoa_to_sheet(data);
+  worksheet['!merges'] = [
+    { s: { r: 0, c: 0 }, e: { r: 0, c: 3 } },
+    { s: { r: 1, c: 0 }, e: { r: 1, c: 3 } },
+  ]
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, 'LPE');
 
   // Atur lebar kolom (opsional)
-  const colWidths = data[0].map((_, colIndex) => {
+  const colWidths = headers.map((_, colIndex) => {
     return Math.max(
       ...data.map((row) => (row[colIndex] ? row[colIndex].toString()?.length : 0)),
       10
