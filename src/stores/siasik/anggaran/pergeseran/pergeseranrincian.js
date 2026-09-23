@@ -385,6 +385,28 @@ export const usePergeseranAnggaranStore = defineStore('pergeseran-anggaran-store
       }
     },
 
+
+    async penetapan(payload) {
+      this.loadingSave = true
+      try {
+        const resp = await api.post('/v1/anggaran/pergeseran/rincian/penetapanrka', payload)
+
+        if (resp.status === 200) {
+          notifSuccess(resp)
+          await this.getData()
+        }
+
+        return resp // 🔥 penting
+
+      } catch (error) {
+        notifErr(error)
+        throw error // 🔥 penting biar bisa ditangkap di component
+
+      } finally {
+        this.loadingSave = false // 🔥 paling aman
+      }
+    },
+
     dataCetak() {
       waitLoad('show')
       const params = { params: this.params }
