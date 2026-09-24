@@ -1,0 +1,62 @@
+<template>
+  <q-list
+    separator
+    no-padding
+  >
+    <q-item
+      v-for="item in 10"
+      :key="item"
+    >
+      <q-item-section avatar>
+        <q-skeleton
+          size="90px"
+          square
+          animation="fade"
+        />
+      </q-item-section>
+
+      <q-item-section>
+        <q-skeleton
+          type="text"
+          square
+          height="16px"
+          width="25vw"
+          animation="fade"
+        />
+        <q-skeleton
+          type="text"
+          square
+          height="16px"
+          width="35vw"
+          animation="fade"
+        />
+        <q-skeleton
+          type="text"
+          square
+          height="16px"
+          width="45vw"
+          animation="fade"
+        />
+        <q-skeleton
+          type="text"
+          square
+          height="16px"
+          width="30vw"
+          animation="fade"
+        />
+      </q-item-section>
+
+      <q-item-section
+        side
+        top
+      >
+        <q-skeleton
+          animation="blink"
+          type="text"
+          width="110px"
+          height="40px"
+        />
+      </q-item-section>
+    </q-item>
+  </q-list>
+</template>
