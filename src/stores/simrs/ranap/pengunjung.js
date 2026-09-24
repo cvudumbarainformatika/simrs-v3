@@ -2,6 +2,7 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
+import { notifErrVue, notifSuccess } from 'src/modules/utils'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { markRaw } from 'vue'
 
@@ -555,6 +556,41 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
 
       if (resp.status === 200) {
         this.nonNakes = resp.data
+      }
+    },
+
+    async kirimpenjaminan(val) {
+      if (val?.groups !== '1') {
+        notifErrVue('Hanya pasien BPJS yang dapat dikirim ke Casemix')
+        return
+      }
+
+      val.loadingcesmix = true
+
+      const params = {
+        noreg: val?.noreg,
+        norm: val?.norm,
+        noka: val?.noka,
+        nosep: val?.sep,
+        kdruangan: val?.kdruangan,
+        kdsistembayar: val?.kdsistembayar || val?.kodesistembayar,
+        kddpjp: val?.kddokter || val?.kodedokter,
+        tgl_masuk: val?.tglmasuk,
+        tgl_pulang: val?.tglkeluar,
+        flaging: '1'
+      }
+
+      try {
+        const resp = await api.post('v1/simrs/penjaminan/klaimranap/kirimpenjaminan', params)
+        if (resp.status === 200) {
+          val.kunjungancesmix = '1'
+          notifSuccess(resp?.data?.message || 'Data berhasil dikirim ke Penjaminan/Casemix')
+        }
+      } catch (err) {
+        console.error('kirimpenjaminan ranap error:', err)
+        notifErrVue(err?.response?.data?.message || 'Gagal mengirim data ke Penjaminan')
+      } finally {
+        val.loadingcesmix = false
       }
     }
   }

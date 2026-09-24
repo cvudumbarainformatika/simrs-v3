@@ -112,12 +112,54 @@
               :kriteria-kekerasan="item?.kriteria_kekerasan || []" />
 
           </q-item-section>
-          <q-item-section side>
+          <q-item-section side class="items-end">
             <q-btn v-if="item?.status !== '1'" dense outline size="sm" no-caps color="primary" label="LIHAT LAYANAN"
               class="q-mb-sm" icon-right="icon-mat-eye" style="min-width: 120px;" @click="bukaLayananPage(item)" />
 
             <q-btn v-else-if="item?.status === '1'" dense size="sm" no-caps color="dark" label="TERIMA PASIEN"
               class="q-mb-sm" icon-right="icon-mat-eye" style="min-width: 120px;" @click="bukaLayananPage(item)" />
+
+            <!-- Tombol Kirim Casemix untuk Pasien yang Sudah Pulang Khusus Group BPJS -->
+            <template v-if="(item?.status === '2' || item?.status === '3') && item?.groups === '1'">
+              <q-btn
+                v-if="!item?.kunjungancesmix || item?.kunjungancesmix === ''"
+                dense
+                size="sm"
+                no-caps
+                color="orange-10"
+                label="KIRIM CASEMIX"
+                class="q-mb-sm"
+                icon-right="icon-mat-send"
+                style="min-width: 120px;"
+                :loading="item?.loadingcesmix"
+                @click="store.kirimpenjaminan(item)"
+              >
+                <q-tooltip class="bg-dark text-white">
+                  Kirim data kunjungan pasien ke antrean penjaminan/casemix ranap
+                </q-tooltip>
+              </q-btn>
+              <div v-else class="column items-end q-gutter-xs">
+                <q-badge color="positive" class="q-py-xs q-px-sm">
+                  <q-icon name="icon-mat-check_circle" size="14px" class="q-mr-xs" />
+                  TERKIRIM KE CASEMIX
+                </q-badge>
+                <q-badge
+                  v-if="item?.flag_verif_rm === '1'"
+                  color="teal"
+                  class="q-py-xs q-px-sm"
+                >
+                  <q-icon name="icon-mat-verified" size="14px" class="q-mr-xs" />
+                  VERIF RM
+                </q-badge>
+                <q-badge
+                  v-else
+                  color="grey-8"
+                  class="q-py-xs q-px-sm"
+                >
+                  BELUM VERIF RM
+                </q-badge>
+              </div>
+            </template>
           </q-item-section>
         </q-item>
       </q-list>
