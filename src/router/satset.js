@@ -15,6 +15,11 @@ const satset = {
       component: () => import("pages/satset/audit/IndexPage.vue")
     },
     {
+      path: "/satset/audit-ganda",
+      name: "satset.auditganda",
+      component: () => import("pages/satset/auditganda/IndexPage.vue")
+    },
+    {
       path: "/satset/strukturorganisasi",
       name: "satset.strukturorganisasi",
       component: () => import("pages/satset/strukturorganisasi/IndexPage.vue")

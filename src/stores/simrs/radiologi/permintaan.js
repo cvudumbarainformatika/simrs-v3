@@ -79,11 +79,22 @@ export const usePermintaanRadiologiStore = defineStore('permintaan-radiologi', {
         const resp = await api.post('v1/simrs/radiologi/radiologi/simpanHasilByKode', item)
         console.log('simpan hasil', resp);
         if (resp.status === 200) {
+          const resData = resp.data?.data || resp.data?.result || resp.data
+          if (resData && typeof resData === 'object') {
+            Object.assign(item, resData)
+          }
+          const tglHasil = resp.data?.tgl || resData?.tgl || resData?.rs2
+          if (tglHasil) {
+            item.tgl = tglHasil
+          }
 
-          // this.initPermintaan(pasien)
+          notifSuccessVue(resp?.data?.message || resp?.message || 'Data berhasil disimpan')
 
-          notifSuccessVue(resp?.message)
-          // this.initPermintaan(this.pasien)
+          // Reload data pasien radiologi dari backend agar rincians memuat tgl database secara langsung tanpa tutup layanan
+          const storePasienRadiologi = useListPasienRadiologiStore()
+          if (pasien?.nota_permintaan) {
+            await storePasienRadiologi.getDataPasienRadiologiByNota(pasien)
+          }
         }
       } catch (error) {
         console.log('error', error);
