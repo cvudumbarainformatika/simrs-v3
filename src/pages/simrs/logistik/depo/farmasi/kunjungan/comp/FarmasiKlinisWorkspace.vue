@@ -223,6 +223,7 @@
                   <app-signature
                     :ttd="formEdukasi.tanda_tangan"
                     @save-ttd="(val) => formEdukasi.tanda_tangan = val"
+                    @signature="(val) => formEdukasi.tanda_tangan = val"
                     :pasien="store.selectedPasien"
                     uuid="edukasifarmasi"
                     label-ttd="Tanda Tangan Penerima / Pengambil Obat"
