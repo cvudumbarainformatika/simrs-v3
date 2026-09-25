@@ -27,6 +27,17 @@
                     no-caps
                     to="/satset/dashboard"
                   />
+                  <!-- Button Audit Pasien Ganda -->
+                  <q-btn
+                    unelevated
+                    rounded
+                    color="indigo-9"
+                    text-color="white"
+                    label="Audit Pasien Ganda"
+                    icon="icon-mat-people_alt"
+                    no-caps
+                    to="/satset/audit-ganda"
+                  />
                   <!-- Button Filter Periode Header -->
                   <q-btn
                     outline
