@@ -174,7 +174,7 @@ import { pathImg } from 'src/boot/axios'
 import { dateFull, dateFullFormat, formatDouble, getNewLine } from 'src/modules/formatter'
 import { useLaporanOperasiStore } from 'src/stores/simrs/kamaroperasi/laporanOperasi'
 import { useSurgicalSafetyStore } from 'src/stores/simrs/kamaroperasi/surgicalSafety'
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 
 
 const props = defineProps({
@@ -214,6 +214,11 @@ function lamaOperasi (data) {
   return `${jam} jam ${menit} menit`
 }
 const store = useLaporanOperasiStore()
+onMounted(() => {
+  if (!store.nakes?.length) {
+    store.getNakes()
+  }
+})
 function assignForm (data) {
   store.assignForm(data)
 }
@@ -237,18 +242,25 @@ const getFile = (val) => {
   return file
 }
 function cariNakes (val, w) {
-  let tindakan = props?.pasien?.manytindakanop?.find(x => x.rs2 === val?.rs2)
-  if (!tindakan) {
-    tindakan = props?.pasien?.tindakan?.find(x => x.rs2 === val?.rs2)
+  const tindakanOp = props?.pasien?.manytindakanop?.find(x => x.rs2 === val?.rs2)
+  if (tindakanOp) {
+    if (w === 'operator') return nakesnya(tindakanOp?.rs9) || '-'
+    else if (w === 'asisten op') return nakesnya(tindakanOp?.rs11) || '-'
+    else if (w === 'anastesi') return nakesnya(tindakanOp?.rs12) || '-'
+    else if (w === 'asisten an') return nakesnya(tindakanOp?.rs13) || '-'
+    else return '-'
   }
-  
-  if (tindakan) {
-    if (w == 'operator') return nakesnya(tindakan?.rs9)
-    else if (w == 'asisten op') return nakesnya(tindakan?.rs11 || tindakan?.rs8)
-    else if (w == 'anastesi') return nakesnya(tindakan?.rs12)
-    else if (w == 'asisten an') return nakesnya(tindakan?.rs13 || tindakan?.rs23)
-    else return 'nakes tidak ditemukan'
-  } else return 'nakes tidak ditemukan'
+
+  const tindakanNonOp = props?.pasien?.tindakan?.find(x => x.rs2 === val?.rs2)
+  if (tindakanNonOp) {
+    if (w === 'operator') return nakesnya(tindakanNonOp?.rs8) || '-' // Pelaksana 1
+    else if (w === 'asisten op') return nakesnya(tindakanNonOp?.rs23) || '-' // Pelaksana 2
+    else if (w === 'anastesi') return '-'
+    else if (w === 'asisten an') return '-'
+    else return '-'
+  }
+
+  return 'nakes tidak ditemukan'
 }
 function nakesnya (val) {
   if (!val) return ''
@@ -257,9 +269,10 @@ function nakesnya (val) {
   const nakes = []
   dat.forEach(x => {
     const nak = store.nakes?.find(y => y.kdpegsimrs === x)
-    if (nak) nakes.push(nak)
+    if (nak) nakes.push(nak.nama)
+    else nakes.push(x)
   })
-  return nakes.length > 0 ? nakes.map(x => x.nama).join(', ') : ''
+  return nakes.length > 0 ? nakes.join(', ') : ''
 }
 function cariTindakan (val) {
   let tindakan = props?.pasien?.manytindakanop?.find(x => x.rs2 === val?.rs2)
