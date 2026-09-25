@@ -49,7 +49,8 @@
 </template>
 <script setup>
 import { useRkaStore } from 'src/stores/siasik/anggaran/storerka';
-import FormGet from './inpage/FormgetRka.vue'
+// import FormGet from './inpage/FormgetRka.vue'
+import FormGet from './inpage/New_Form_get_Rka.vue'
 import listData from './inpage/ListDataRKA.vue'
 import listDatapergeseran from './inpage/ListDataRKApergeseran.vue'
 

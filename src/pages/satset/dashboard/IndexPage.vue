@@ -20,6 +20,9 @@
                   <!-- Button Audit Log & Rekonsiliasi -->
                   <q-btn unelevated rounded color="teal-8" text-color="white" label="Audit Log"
                     icon="icon-mat-fact_check" no-caps to="/satset/audit" />
+                  <!-- Button Audit Pasien Ganda -->
+                  <q-btn unelevated rounded color="indigo-8" text-color="white" label="Audit Pasien Ganda"
+                    icon="icon-mat-people_alt" no-caps to="/satset/audit-ganda" />
                   <!-- Button Filter Periode Header -->
                   <q-btn outline rounded color="white" :label="periodeBtnLabel" icon="icon-mat-event" no-caps>
                     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
