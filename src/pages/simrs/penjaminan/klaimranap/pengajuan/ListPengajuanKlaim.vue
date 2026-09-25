@@ -16,7 +16,18 @@
             <q-item-label>
               <span class="text-weight-bold">{{ item.noreg }}</span> |
               <span v-if="item?.noka">Noka: <span class="text-cyan text-weight-bold">{{ item?.noka }}</span> | </span>
-              <span v-if="item?.nosep">SEP: <span class="text-deep-orange text-weight-bold">{{ item?.nosep }}</span></span>
+              <span v-if="item?.nosep">
+                SEP: <span class="text-deep-orange text-weight-bold">{{ item?.nosep }}</span>
+                <q-badge
+                  :color="item?.jenis_sep === 'RANAP' ? 'green' : (item?.jenis_sep === 'IGD' ? 'blue' : 'primary')"
+                  class="q-ml-xs text-white"
+                >
+                  {{ item?.jenis_sep === 'RANAP' ? 'SEP RANAP' : (item?.jenis_sep === 'IGD' ? 'SEP IGD' : 'SEP') }}
+                </q-badge>
+              </span>
+              <span v-else class="text-negative text-weight-bold">
+                SEP RANAP BELUM TERBIT
+              </span>
             </q-item-label>
             <q-item-label>
               NIK: <span class="text-negative text-weight-bold">{{ item?.nktp ?? '-' }}</span> | Telp: <span class="text-teal text-weight-bold">{{ item?.nohp ?? '-' }}</span>
