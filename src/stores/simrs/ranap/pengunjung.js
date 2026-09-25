@@ -560,7 +560,12 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
     },
 
     async kirimpenjaminan(val) {
-      if (val?.groups !== '1') {
+      const isBpjs = val?.groups === '1' ||
+        (val?.sistembayar || '').toUpperCase().includes('BPJS') ||
+        (val?.kdsistembayar || val?.kodesistembayar || '').toUpperCase().startsWith('BPJS') ||
+        (val?.kdsistembayar || val?.kodesistembayar || '').toUpperCase() === 'AR49'
+
+      if (!isBpjs) {
         notifErrVue('Hanya pasien BPJS yang dapat dikirim ke Casemix')
         return
       }

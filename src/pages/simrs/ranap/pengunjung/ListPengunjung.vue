@@ -119,10 +119,32 @@
             <q-btn v-else-if="item?.status === '1'" dense size="sm" no-caps color="dark" label="TERIMA PASIEN"
               class="q-mb-sm" icon-right="icon-mat-eye" style="min-width: 120px;" @click="bukaLayananPage(item)" />
 
-            <!-- Tombol Kirim Casemix untuk Pasien yang Sudah Pulang Khusus Group BPJS -->
-            <template v-if="(item?.status === '2' || item?.status === '3') && item?.groups === '1'">
+            <!-- Status Terkirim ke Casemix -->
+            <div v-if="item?.kunjungancesmix === '1' || item?.kunjungancesmix === 1" class="column items-end q-gutter-xs">
+              <q-badge color="positive" class="q-py-xs q-px-sm">
+                <q-icon name="icon-mat-check_circle" size="14px" class="q-mr-xs" />
+                TERKIRIM KE CASEMIX
+              </q-badge>
+              <q-badge
+                v-if="item?.flag_verif_rm === '1' || item?.flag_verif_rm === 1"
+                color="teal"
+                class="q-py-xs q-px-sm"
+              >
+                <q-icon name="icon-mat-verified" size="14px" class="q-mr-xs" />
+                VERIF RM
+              </q-badge>
+              <q-badge
+                v-else
+                color="grey-8"
+                class="q-py-xs q-px-sm"
+              >
+                BELUM VERIF RM
+              </q-badge>
+            </div>
+
+            <!-- Tombol Kirim Casemix untuk Pasien yang Sudah Pulang Khusus Penjamin BPJS -->
+            <template v-else-if="isPasienPulang(item) && isBpjs(item)">
               <q-btn
-                v-if="!item?.kunjungancesmix || item?.kunjungancesmix === ''"
                 dense
                 size="sm"
                 no-caps
@@ -138,27 +160,6 @@
                   Kirim data kunjungan pasien ke antrean penjaminan/casemix ranap
                 </q-tooltip>
               </q-btn>
-              <div v-else class="column items-end q-gutter-xs">
-                <q-badge color="positive" class="q-py-xs q-px-sm">
-                  <q-icon name="icon-mat-check_circle" size="14px" class="q-mr-xs" />
-                  TERKIRIM KE CASEMIX
-                </q-badge>
-                <q-badge
-                  v-if="item?.flag_verif_rm === '1'"
-                  color="teal"
-                  class="q-py-xs q-px-sm"
-                >
-                  <q-icon name="icon-mat-verified" size="14px" class="q-mr-xs" />
-                  VERIF RM
-                </q-badge>
-                <q-badge
-                  v-else
-                  color="grey-8"
-                  class="q-py-xs q-px-sm"
-                >
-                  BELUM VERIF RM
-                </q-badge>
-              </div>
             </template>
           </q-item-section>
         </q-item>
@@ -189,6 +190,23 @@ const store = usePengunjungRanapStore()
 
 const currTime = ref(new Date())
 const pasien = ref(null)
+
+function isBpjs(item) {
+  if (!item) return false
+  if (item?.groups === '1') return true
+  const sb = (item?.sistembayar || '').toUpperCase()
+  if (sb.includes('BPJS')) return true
+  const kdsb = (item?.kdsistembayar || item?.kodesistembayar || '').toUpperCase()
+  return kdsb.startsWith('BPJS') || kdsb === 'AR49'
+}
+
+function isPasienPulang(item) {
+  if (!item) return false
+  if (store?.params?.status === 'Pulang') return true
+  if (item?.status === '2' || item?.status === '3') return true
+  if (item?.tglkeluar && item?.tglkeluar !== '0000-00-00 00:00:00') return true
+  return false
+}
 
 const cekReadmisi = (last_visit, tglmasuk) => {
   // console.log('tgl', tgl);
