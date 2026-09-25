@@ -20,6 +20,11 @@ const kasir = {
       component: () => import('pages/simrs/kasir/rajal/listkunjungan/comp/PrintKwitansiPage.vue')
     },
     {
+      path: '/kasir/homecare',
+      name: 'kasir.homecare',
+      component: () => import('pages/simrs/kasir/homecare/IndexPage.vue')
+    },
+    {
       path: '/kasir/tbp',
       name: 'kasir.tbp',
       component: () => import('pages/simrs/kasir/rajal/tbp/IndexPage.vue')
