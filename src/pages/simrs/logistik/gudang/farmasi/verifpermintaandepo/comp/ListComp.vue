@@ -595,6 +595,10 @@ const color = val => {
       return 'grey'
       // eslint-disable-next-line no-unreachable
       break
+    case '5':
+      return 'negative'
+      // eslint-disable-next-line no-unreachable
+      break
 
     default:
       return 'red'
@@ -623,6 +627,10 @@ const label = (status) => {
       break
     case '4':
       return 'Telah di distribusikan'
+      // eslint-disable-next-line no-unreachable
+      break
+    case '5':
+      return 'Permintaan Ditolak'
       // eslint-disable-next-line no-unreachable
       break
     case 99:

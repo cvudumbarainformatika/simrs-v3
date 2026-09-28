@@ -1,6 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { notifSuccess } from 'src/modules/utils'
+import { dateDbFormat } from 'src/modules/formatter'
 
 export const useDistribusiPermintaanDepoStore = defineStore('distribusi_permintaan_depo', {
   state: () => ({
@@ -11,13 +12,20 @@ export const useDistribusiPermintaanDepoStore = defineStore('distribusi_perminta
     loadingKunci: false,
     items: [],
     meta: {},
+    header: {
+      periode: 'Semua'
+    },
+    periods: ['Semua', 'Hari ini', 'Minggu ini', 'Bulan ini', 'Custom'],
     params: {
       page: 1,
       q: '',
       per_page: 10,
       no_permintaan: '',
       kdgudang: '',
+      dari: '',
       flag: '',
+      from: '',
+      to: '',
       jenisdistribusi: 'non-konsinyasi'
     },
     form: {
@@ -36,6 +44,7 @@ export const useDistribusiPermintaanDepoStore = defineStore('distribusi_perminta
       { nama: 'Gudang Farmasi (Floor Stok)', value: 'Gd-03010100' }
     ],
     depos: [
+      { nama: 'Semua Depo', value: '' },
       { nama: 'Floor Stock 1 (AKHP)', value: 'Gd-03010101' },
       { nama: 'Floor Stock 2 (Obat)', value: 'Gd-04010101' },
       { nama: 'Depo Rawat inap', value: 'Gd-04010102' },
@@ -44,12 +53,14 @@ export const useDistribusiPermintaanDepoStore = defineStore('distribusi_perminta
       { nama: 'Depo IGD', value: 'Gd-02010104' }
     ],
     statuses: [
-      { nama: 'Tampilkan semua', value: '', color: 'grey' },
+      { nama: 'Semua Status', value: '', color: 'grey' },
       { nama: 'Menunggu verifikasi', value: '1', color: 'cyan' },
-      { nama: 'Telah di verifikasi', value: '2', color: 'blue' }
+      { nama: 'Telah di verifikasi', value: '2', color: 'blue' },
+      { nama: 'Sudah Didistribusikan', value: '3', color: 'orange' },
+      { nama: 'Diterima Depo', value: '4', color: 'purple' }
     ],
     paramStatus: {
-      nama: 'Belum di filter', value: 99, color: 'cyan'
+      nama: 'Semua Status', value: '', color: 'grey'
     },
     dataToPrint: null
   }),
@@ -61,6 +72,7 @@ export const useDistribusiPermintaanDepoStore = defineStore('distribusi_perminta
       this.params[key] = val
     },
     setSearch (val) {
+      this.setParams('q', val)
       this.setParams('no_permintaan', val)
       this.setParams('page', 1)
       this.getPermintaanDepo()
@@ -78,19 +90,54 @@ export const useDistribusiPermintaanDepoStore = defineStore('distribusi_perminta
       this.setParams('page', 1)
       this.getPermintaanDepo()
     },
+    setDari (val) {
+      this.setParams('dari', val ?? '')
+      this.setParams('page', 1)
+      this.getPermintaanDepo()
+    },
+    setPeriode (val) {
+      this.header.periode = val
+      if (val === 'Semua') {
+        this.params.from = ''
+        this.params.to = ''
+      } else if (val === 'Hari ini') {
+        this.hariIni()
+      } else if (val === 'Minggu ini') {
+        this.mingguIni()
+      } else if (val === 'Bulan ini') {
+        this.bulanIni()
+      }
+      if (val !== 'Custom') {
+        this.setParams('page', 1)
+        this.getPermintaanDepo()
+      }
+    },
+    hariIni () {
+      const cDate = new Date()
+      this.params.to = dateDbFormat(cDate)
+      this.params.from = dateDbFormat(cDate)
+    },
+    mingguIni () {
+      const curr = new Date()
+      const first = curr.getDate() - curr.getDay() + 1
+      const last = first + 6
+      const firstday = new Date(curr.setDate(first))
+      const lastday = new Date(curr.setDate(last))
+      this.params.from = dateDbFormat(firstday)
+      this.params.to = dateDbFormat(lastday)
+    },
+    bulanIni () {
+      const curr = new Date(), y = curr.getFullYear(), m = curr.getMonth()
+      const firstday = new Date(y, m, 1)
+      const lastday = new Date(y, m + 1, 0)
+      this.params.from = dateDbFormat(firstday)
+      this.params.to = dateDbFormat(lastday)
+    },
     setParamStatus (val) {
-      console.log('status ', val)
-      if (val.value === 99) {
-        this.paramStatus = val
-        delete this.params.status
-        this.setParams('flag', '')
-        this.getPermintaanDepo()
-      }
-      else {
-        this.paramStatus = val
-        this.setParams('flag', val.value)
-        this.getPermintaanDepo()
-      }
+      this.paramStatus = val
+      this.setParams('flag', val?.value ?? '')
+      this.setParams('page', 1)
+      this.getPermintaanDepo()
     },
     setClose () {
       this.isOpen = false
