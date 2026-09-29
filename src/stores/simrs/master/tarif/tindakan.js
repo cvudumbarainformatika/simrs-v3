@@ -13,7 +13,9 @@ export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
     params: {
       nmtindakan: '',
       per_page: 10,
-      page: 1
+      page: 1,
+      status: 'aktif',
+      ruangan: ''
     },
     form: {},
     disp: {},
@@ -114,6 +116,16 @@ export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
     },
     setSearch (payload) {
       this.params.nmtindakan = payload
+      this.params.page = 1
+      this.getDataTable()
+    },
+    setStatus (payload) {
+      this.params.status = payload
+      this.params.page = 1
+      this.getDataTable()
+    },
+    setRuangan (payload) {
+      this.params.ruangan = payload
       this.params.page = 1
       this.getDataTable()
     },
