@@ -1,185 +1,211 @@
 <template>
-  <!-- {{ loading }} -->
-  <table style="width: calc(100vw - 70px); margin-right: 7px; margin-left: 5px;">
-    <thead class="my-sticky-header-table">
-      <tr class="baris-1">
-        <th rowspan="2" width="5%" class="q-px-sm">
-          No
-        </th>
-        <th rowspan="2" class="q-px-sm">
-          Kode
-        </th>
-        <th rowspan="2" class="q-px-sm">
-          Nama
-        </th>
-        <th rowspan="2" class="q-px-sm">
-          Tipe
-        </th>
-        <th colspan="3" class="q-px-sm">
-          Non Privat
-        </th>
-        <th colspan="3" class="q-px-sm">
-          Privat
-        </th>
-        <th colspan="3" class="q-px-sm">
-          Presidensial
-        </th>
-        <th rowspan="2" class="q-px-sm">
-          Tgl Update Tarif
-        </th>
-        <th rowspan="2" class="q-px-sm">
-          Tgl Hapus
-        </th>
-        <th rowspan="2" class="q-px-sm">
-          Dasar Perubahan
-        </th>
-        <th rowspan="2" class="q-px-sm">
-          #
-        </th>
-      </tr>
-      <tr class="baris-2">
-        <th>JS</th>
-        <th>JP</th>
-        <th>Tarif</th>
-        <th>JS</th>
-        <th>JP</th>
-        <th>Tarif</th>
-        <th>JS</th>
-        <th>JP</th>
-        <th>Tarif</th>
-      </tr>
-    </thead>
-    <tbody>
-      <template v-if="loading">
-        <tr v-for="n in params.per_page" :key="n">
-          <td v-for="i in 18" :key="i">
-            <q-skeleton type="text" width="100%" height="14px" />
-          </td>
-
-        </tr>
-      </template>
-      <template v-else-if="!items?.length">
+  <div class="table-container q-px-sm">
+    <table class="tabel-tarif full-width">
+      <thead>
         <tr>
-          <td colspan="17">
-            <app-no-data />
-          </td>
+          <th style="width: 45px;" class="text-center">
+            No
+          </th>
+          <th class="text-left" style="min-width: 250px;">
+            Pemeriksaan & Tipe
+          </th>
+          <th class="text-right" style="min-width: 170px;">
+            Tarif Acuan (Non-Privat & Privat)
+          </th>
+          <th class="text-left" style="min-width: 180px;">
+            Status & Masa Berlaku
+          </th>
+          <th class="text-center" style="width: 160px;">
+            Aksi
+          </th>
         </tr>
-      </template>
-      <template v-else>
-        <template v-for="(item, n) in items" :key="n">
-          <tr :class="n % 2 === 0 ? 'even' : 'odd'">
-            <td width="5%">
-              <div class="row items-center justify-center">
-                {{ n + 1 }}
-              </div>
+      </thead>
+      <tbody>
+        <!-- SKELETON LOADING -->
+        <template v-if="loading">
+          <tr v-for="n in (params.per_page || 10)" :key="n">
+            <td class="text-center">
+              <q-skeleton type="text" width="20px" class="q-mx-auto" />
             </td>
             <td>
-              {{ item?.rs1 }}
+              <q-skeleton type="text" width="60px" height="18px" />
+              <q-skeleton type="text" width="80%" height="20px" />
+              <q-skeleton type="text" width="40%" height="14px" />
+            </td>
+            <td class="text-right">
+              <q-skeleton type="text" width="80px" class="q-ml-auto" />
+              <q-skeleton type="text" width="60px" class="q-ml-auto" />
             </td>
             <td>
-              {{ item?.rs2 }}
+              <q-skeleton type="text" width="60px" height="18px" />
+              <q-skeleton type="text" width="100px" height="16px" />
             </td>
-            <td>
-              {{ item?.rs3 }}
-            </td>
-
-            <td class="text-end">
-              <div v-if="item?.rs4">
-                {{ formatRp(item?.rs4 ?? 0) }}
+            <td class="text-center">
+              <div class="row no-wrap justify-center q-gutter-x-xs">
+                <q-skeleton type="QBtn" size="sm" width="60px" />
+                <q-skeleton type="QAvatar" size="28px" />
               </div>
             </td>
-            <td class="text-end">
-              <div v-if="item?.rs5">
-                {{ formatRp(item?.rs5 ?? 0) }}
-              </div>
-            </td>
-            <td class="text-end">
-              <div>
-                {{ formatRp(((item?.rs4 ?? 0) + (item?.rs5 ?? 0)) ?? 0) }}
-              </div>
-            </td>
-
-            <td class="text-end">
-              <div v-if="item?.rs6">
-                {{ formatRp(item?.rs6 ?? 0) }}
-              </div>
-            </td>
-            <td class="text-end">
-              <div v-if="item?.rs7">
-                {{ formatRp(item?.rs7 ?? 0) }}
-              </div>
-            </td>
-            <td class="text-end">
-              <div>
-                {{ formatRp(((item?.rs6 ?? 0) + (item?.rs7 ?? 0)) ?? 0) }}
-              </div>
-            </td>
-
-            <td class="text-end">
-              <div v-if="item?.pss">
-                {{ formatRp(item?.pss ?? 0) }}
-              </div>
-            </td>
-            <td class="text-end">
-              <div v-if="item?.psp">
-                {{ formatRp(item?.psp ?? 0) }}
-              </div>
-            </td>
-            <td class="text-end">
-              <div>
-                {{ formatRp(((item?.pss ?? 0) + (item?.psp ?? 0)) ?? 0) }}
-              </div>
-            </td>
-
-            <td class="text-end">
-              <div v-if="item?.tgl_mulai_berlaku">
-                {{ dateFullFormat(item?.tgl_mulai_berlaku) }}
-              </div>
-            </td>
-            <td class="text-end">
-              <div v-if="item?.tgl_hapus">
-                {{ dateFullFormat(item?.tgl_hapus) }}
-              </div>
-            </td>
-            <td class="text-end">
-              <div>
-                {{ item?.dasar_perubahan }}
-              </div>
-            </td>
-            <td class="text-end">
-              <div class="row no-wrap q-col-gutter-x-xs justify-end">
-                <q-btn v-if="sudahDiHapus(item)" flat class="" size="sm" round color="grey" icon="icon-mat-edit"
-                  @click="emits('editData', item)">
-                  <q-tooltip anchor="top middle" self="center middle">
-                    Edit Data
-                  </q-tooltip>
-                </q-btn>
-                <q-btn v-if="sudahDiHapus(item) && lewatBerlaku(item)" flat class="" size=" sm" round color="grey"
-                  icon="icon-mat-delete_sweep" @click="deleteOne(item)">
-                  <q-tooltip anchor="top middle" self="center middle">
-                    Delete Data
-                  </q-tooltip>
-                </q-btn>
-                <q-btn v-if="!sudahDiHapus(item)" flat class="" size=" sm" round color="grey" icon="icon-mat-check"
-                  @click="undeleteOne(item)">
-                  <q-tooltip anchor="top middle" self="center middle">
-                    Tampilkan lagi
-                  </q-tooltip>
-                </q-btn>
-
-              </div>
-            </td>
-
           </tr>
         </template>
-      </template>
-    </tbody>
-  </table>
+
+        <!-- DATA KOSONG -->
+        <template v-else-if="!items || items.length === 0">
+          <tr>
+            <td colspan="5" class="text-center q-pa-lg text-grey-7">
+              <q-icon name="icon-mat-sentiment_dissatisfied" size="36px" color="grey-5" class="q-mb-xs" />
+              <div>Tidak ada data pemeriksaan radiologi yang ditemukan</div>
+            </td>
+          </tr>
+        </template>
+
+        <!-- DATA ITEMS -->
+        <template v-else>
+          <tr
+            v-for="(item, index) in items"
+            :key="item?.id1 || index"
+            :class="{
+              'row-deleted': !sudahDiHapus(item),
+              'even': index % 2 === 1,
+              'odd': index % 2 === 0
+            }"
+          >
+            <!-- NO -->
+            <td class="text-center text-weight-medium text-grey-8">
+              {{ ((params.page - 1) * params.per_page) + index + 1 }}
+            </td>
+
+            <!-- PEMERIKSAAN & TIPE -->
+            <td class="q-py-sm">
+              <div class="row items-center q-gutter-x-xs q-mb-xs">
+                <span class="badge-kode">
+                  {{ item?.rs1 }}
+                </span>
+                <span v-if="item?.rs3" class="text-caption text-primary bg-blue-1 q-px-xs rounded-borders text-weight-medium">
+                  {{ item.rs3 }}
+                </span>
+              </div>
+              <div class="text-weight-bold text-dark text-subtitle2 leading-tight">
+                {{ item?.rs2 }}
+              </div>
+            </td>
+
+            <!-- TARIF ACUAN -->
+            <td class="text-right q-py-sm">
+              <div class="text-caption text-grey-7">Non Privat:</div>
+              <div class="text-weight-bolder text-primary text-subtitle2">
+                {{ formatNominal(item?.tarif_non_privat || (Number(item?.rs4 || 0) + Number(item?.rs5 || 0))) }}
+              </div>
+              <div class="text-caption text-grey-6 q-mt-xs">
+                <span>Privat: {{ formatNominal(item?.tarif_privat || (Number(item?.rs6 || 0) + Number(item?.rs7 || 0))) }}</span>
+              </div>
+            </td>
+
+            <!-- STATUS & MASA BERLAKU -->
+            <td class="q-py-sm">
+              <div class="q-mb-xs">
+                <q-badge
+                  :color="getStatusInfo(item).color"
+                  :text-color="getStatusInfo(item).textColor"
+                  class="q-px-xs q-py-none text-caption text-weight-medium"
+                >
+                  {{ getStatusInfo(item).label }}
+                </q-badge>
+              </div>
+              <div class="text-caption text-grey-9 text-weight-medium">
+                {{ item?.tgl_mulai_berlaku ? dateFullFormat(item.tgl_mulai_berlaku) : '-' }}
+              </div>
+              <div v-if="item?.dasar_perubahan" class="text-caption text-grey-7 text-italic ellipsis" style="max-width: 250px;">
+                {{ item?.dasar_perubahan }}
+                <q-tooltip v-if="item?.dasar_perubahan?.length > 30">
+                  {{ item?.dasar_perubahan }}
+                </q-tooltip>
+              </div>
+            </td>
+
+            <!-- AKSI -->
+            <td class="text-center q-py-sm">
+              <div class="row no-wrap items-center justify-center q-gutter-x-xs">
+                <!-- Tombol Rincian -->
+                <q-btn
+                  unelevated
+                  size="sm"
+                  color="teal"
+                  icon="icon-mat-visibility"
+                  label="Rincian"
+                  class="q-px-xs"
+                  @click="openDetail(item)"
+                >
+                  <q-tooltip anchor="top middle" self="center middle">
+                    Lihat Rincian Tarif Semua Kategori
+                  </q-tooltip>
+                </q-btn>
+
+                <!-- Tombol Edit -->
+                <q-btn
+                  v-if="sudahDiHapus(item)"
+                  flat
+                  round
+                  size="sm"
+                  color="primary"
+                  icon="icon-mat-edit"
+                  @click="emits('editData', item)"
+                >
+                  <q-tooltip anchor="top middle" self="center middle">
+                    Edit Tarif
+                  </q-tooltip>
+                </q-btn>
+
+                <!-- Tombol Hapus / Arsip -->
+                <q-btn
+                  v-if="sudahDiHapus(item) && lewatBerlaku(item)"
+                  flat
+                  round
+                  size="sm"
+                  color="negative"
+                  icon="icon-mat-delete_sweep"
+                  @click="deleteOne(item)"
+                >
+                  <q-tooltip anchor="top middle" self="center middle">
+                    Hapus / Arsipkan Data
+                  </q-tooltip>
+                </q-btn>
+
+                <!-- Tombol Tampilkan Lagi -->
+                <q-btn
+                  v-if="!sudahDiHapus(item)"
+                  flat
+                  round
+                  size="sm"
+                  color="positive"
+                  icon="icon-mat-settings_backup_restore"
+                  @click="undeleteOne(item)"
+                >
+                  <q-tooltip anchor="top middle" self="center middle">
+                    Tampilkan Kembali
+                  </q-tooltip>
+                </q-btn>
+              </div>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+
+    <!-- MODAL RINCIAN TARIF -->
+    <DialogRincianTarif
+      v-model="isDetailOpen"
+      :item="selectedItem"
+      @edit="(it) => emits('editData', it)"
+    />
+  </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { date, Dialog } from 'quasar'
 import { dateFullFormat, formatRp } from 'src/modules/formatter'
+import DialogRincianTarif from './DialogRincianTarif.vue'
 
 const props = defineProps({
   items: {
@@ -188,228 +214,177 @@ const props = defineProps({
   },
   polis: {
     type: Array,
-    default: () => { }
+    default: () => []
   },
   ruangRanap: {
     type: Array,
-    default: () => { }
+    default: () => []
   },
   params: {
     type: Object,
-    default: () => { }
+    default: () => ({ per_page: 10, page: 1 })
   },
   loading: {
     type: Boolean,
     default: false
   }
 })
+
 const emits = defineEmits(['editData', 'delete', 'undelete'])
+
+const today = date.formatDate(new Date(), 'YYYY-MM-DD')
+
+const isDetailOpen = ref(false)
+const selectedItem = ref({})
+
+function openDetail (item) {
+  selectedItem.value = item
+  isDetailOpen.value = true
+}
+
+function sudahDiHapus (item) {
+  return item?.tgl_hapus === null || item?.tgl_hapus === '' || item?.hidden !== '1'
+}
+
+function lewatBerlaku (item) {
+  if (!item?.tgl_mulai_berlaku) return true
+  const itemDate = date.formatDate(new Date(item.tgl_mulai_berlaku), 'YYYY-MM-DD')
+  return itemDate > today
+}
+
+function getStatusInfo (item) {
+  if (item?.tgl_hapus || item?.hidden === '1') {
+    return {
+      label: 'DIHAPUS / NON-AKTIF',
+      color: 'red-1',
+      textColor: 'negative'
+    }
+  }
+
+  if (item?.tgl_mulai_berlaku) {
+    const itemDate = date.formatDate(new Date(item.tgl_mulai_berlaku), 'YYYY-MM-DD')
+    if (itemDate > today) {
+      return {
+        label: 'DRAFT (AKAN BERLAKU)',
+        color: 'amber-1',
+        textColor: 'orange-10'
+      }
+    }
+  }
+
+  return {
+    label: 'AKTIF',
+    color: 'green-1',
+    textColor: 'positive'
+  }
+}
+
+function formatNominal (val) {
+  const num = Number(val)
+  if (isNaN(num) || num === 0) return 'Rp 0'
+  return formatRp(num)
+}
 
 function deleteOne (item) {
   Dialog.create({
-    title: 'Peringatan',
-    message: 'Apakah Data ini akan dihapus?',
+    title: 'Konfirmasi Penghapusan',
+    message: `Pilih aksi penghapusan untuk pemeriksaan "${item.rs2}":`,
     options: {
       type: 'radio',
       model: 'delete',
       items: [
-        { label: 'Hapus Data perubahan (Data Ini akan dihapus)', value: 'delete' },
-        { label: 'Set Hapus (Data Ini akan menjadi dasar penghapusan tarif)', value: 'archive' }
+        { label: 'Hapus Data Perubahan (Data draf/perubahan ini akan dihapus)', value: 'delete' },
+        { label: 'Arsipkan Tarif (Jadikan data ini sebagai dasar penghapusan tarif)', value: 'archive' }
       ]
     },
     cancel: true
-    // persistent: true
   }).onOk((val) => {
     emits('delete', item, val)
-  }).onCancel(() => {
-    console.log('Cancel')
-    selected.value = []
-  }).onDismiss(() => {
-    // console.log('I am triggered on both OK and Cancel')
   })
 }
+
 function undeleteOne (item) {
   Dialog.create({
-    title: 'Peringatan',
-    message: 'Apakah Data ini akan di tampilkan kembali?',
+    title: 'Konfirmasi Pengaktifan Kembali',
+    message: `Apakah Anda yakin ingin mengaktifkan kembali tarif pemeriksaan "${item.rs2}"?`,
     cancel: true
-    // persistent: true
   }).onOk(() => {
     emits('undelete', item)
-  }).onCancel(() => {
-    console.log('Cancel')
-    selected.value = []
-  }).onDismiss(() => {
-    // console.log('I am triggered on both OK and Cancel')
   })
-}
-function sudahDiHapus (item) {
-  let tampil = true
-  if (item?.tgl_hapus) {
-    const hariIni = new Date()
-    const tglHapus = new Date(item?.tgl_hapus)
-    const diff = date.getDateDiff(tglHapus, hariIni, 'days')
-    // console.log('diff', diff, tglHapus, item?.tgl_hapus)
-    if (diff < 0) tampil = false
-  }
-  return tampil
-}
-function lewatBerlaku (item) {
-  let tampil = true
-  if (item?.tgl_mulai_berlaku) {
-    const hariIni = new Date()
-    const tglBErlaku = new Date(item?.tgl_mulai_berlaku)
-    const diff = date.getDateDiff(tglBErlaku, hariIni, 'days')
-    // console.log('diff', diff, tglHapus, item?.tgl_hapus)
-    if (diff <= 0) tampil = false
-  }
-  return tampil
 }
 </script>
 
 <style lang="scss" scoped>
-.hv:hover {
-  background-color: #0D5A86;
-  color: #fff
+.table-container {
+  width: calc(100vw - 70px);
+  margin-right: 7px;
+  margin-left: 5px;
+  overflow-x: auto;
 }
 
-.gt {
-  border-top: 1px solid black;
-}
-
-.gka {
-  border-right: 1px solid black;
-}
-
-.gki {
-  border-left: 1px solid black;
-}
-
-.gb {
-  border-bottom: 1px solid black;
-}
-
-//
-.head {
-  border: 1px solid rgb(44, 43, 43);
-  padding-left: 10px;
-  background-color: rgba(0, 0, 0, 0.9);
-  color: white;
-}
-
-.child {
-  border-bottom: 1px solid rgb(44, 43, 43);
-  border-left: 1px solid rgb(44, 43, 43);
-  border-right: 1px solid rgb(44, 43, 43);
-  padding-left: 10px;
-}
-
-.text-end {
-  text-align: end;
-  padding-left: 2px;
-  padding-right: 2px;
-}
-
-
-table {
+.tabel-tarif {
   border-collapse: collapse;
-  border: 1px solid #d6d6d6;
-  width: 100%;
-  margin-bottom: 50px;
-}
+  font-size: 13px;
+  background: #ffffff;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 
-thead {
-  border: 1px solid black;
+  thead tr {
+    background-color: #215e66;
+    color: white;
 
-  tr {
     th {
-      border: 1px solid black;
-      vertical-align: center !important;
-      background-color: white;
-      color: black;
+      padding: 10px 12px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      border: none;
+      white-space: nowrap;
+    }
+  }
+
+  tbody {
+    tr {
+      transition: background-color 0.15s ease;
+      border-bottom: 1px solid #f0f0f0;
+
+      &.even {
+        background-color: #ffffff;
+      }
+
+      &.odd {
+        background-color: #fbfbfb;
+      }
+
+      &:hover {
+        background-color: #f0f7f7;
+      }
+
+      &.row-deleted {
+        background-color: #fff2f2 !important;
+        opacity: 0.75;
+      }
+
+      td {
+        padding: 8px 12px;
+        vertical-align: middle;
+      }
     }
   }
 }
 
-.odd {
-  background-color: rgba(255, 255, 255, 0.05);
+.badge-kode {
+  display: inline-block;
+  padding: 1px 6px;
+  background-color: #e0f2f1;
+  color: #00695c;
+  font-weight: 700;
+  font-size: 11px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
 }
 
-.even {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-td {
-
-  text-align: left;
-  text-indent: 2px;
-  border: 1px solid black;
-  vertical-align: center;
-  border: 1px solid black;
-}
-
-tr:nth-child(even) th[scope=row] {
-  background-color: #f2f2f2;
-}
-
-tr:nth-child(odd) th[scope=row] {
-  background-color: #fff;
-}
-
-
-th {
-  position: -webkit-sticky;
-  position: sticky;
-  // top: 100px;
-  z-index: 5;
-  border: inherit;
-}
-
-thead tr.row-1 th {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 100px;
-  z-index: 5;
-  border: inherit;
-}
-
-thead tr.row-2 th {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 180px;
-  z-index: 5;
-  border: inherit;
-}
-
-th[scope=row] {
-  position: -webkit-sticky;
-  position: sticky;
-  left: 0;
-  z-index: 1;
-  border: inherit;
-}
-
-th[scope=row] {
-  vertical-align: top;
-  color: inherit;
-  background-color: inherit;
-  background: linear-gradient(90deg, transparent 0%, transparent calc(100% - .05em), #d6d6d6 calc(100% - .05em), #d6d6d6 100%);
-  border: inherit;
-}
-
-table:nth-of-type(2) th:not([scope=row]):first-child {
-  left: 0;
-  z-index: 3;
-  background: linear-gradient(90deg, #666 0%, #666 calc(100% - .05em), #ccc calc(100% - .05em), #ccc 100%);
-}
-
-/* Strictly for making the scrolling happen. */
-
-th[scope=row]+td {
-  min-width: 24em;
-}
-
-th[scope=row] {
-  min-width: 20em;
+.leading-tight {
+  line-height: 1.25;
 }
 </style>
