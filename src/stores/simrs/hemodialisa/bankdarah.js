@@ -87,13 +87,18 @@ export const usePermintaanBankDarahHDStore = defineStore('permintaan-bank-darah-
     // },
 
     async saveOrder (pasien) {
-      if (!pasien?.kodedokter) {
+      const dokter = (pasien?.kodedokter && pasien.kodedokter !== '')
+        ? pasien.kodedokter
+        : (pasien?.kddokter && pasien.kddokter !== '')
+          ? pasien.kddokter
+          : pasien?.pegsimhd?.kdpegsimrs || pasien?.pegsim?.kdpegsimrs || pasien?.kdpeghd || pasien?.kdpeg || pasien?.kddpjp || ''
+      if (!dokter) {
         return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
       }
       this.loadingOrder = true
       this.form.noreg = pasien?.noreg
       this.form.kodepoli = pasien?.kodepoli
-      this.form.kodedokter = pasien?.kodedokter
+      this.form.kodedokter = dokter
       this.form.kodesistembayar = pasien?.kodesistembayar
       this.form.kdgroup_ruangan = pasien?.kdgroup_ruangan
       this.form.nota = (this.form.nota === 'BARU' || this.form.nota === 'SEMUA' || this.form.nota === '' || this.form.nota === null) ? null : this.form.nota

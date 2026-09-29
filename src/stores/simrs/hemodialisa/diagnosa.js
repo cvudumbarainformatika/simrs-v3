@@ -128,7 +128,11 @@ export const useDiagnosaHDStore = defineStore('diagnosa-hd-store', {
     },
 
     async simpanDiagnosa (pasien) {
-      const dokter = pasien?.kodedokter || pasien?.kddokter || pasien?.kddpjp
+      const dokter = (pasien?.kodedokter && pasien.kodedokter !== '')
+        ? pasien.kodedokter
+        : (pasien?.kddokter && pasien.kddokter !== '')
+          ? pasien.kddokter
+          : pasien?.pegsimhd?.kdpegsimrs || pasien?.pegsim?.kdpegsimrs || pasien?.kdpeghd || pasien?.kdpeg || pasien?.kddpjp || ''
       if (!dokter) {
         return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
       }
