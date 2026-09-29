@@ -107,18 +107,20 @@ export const useTindakanHemodialisaStore = defineStore('tindakan-hemodialisa-sto
 
         this.formtindakan.tindakan = target[0]?.tindakan || ''
 
+        const qty = parseInt(this.formtindakan.jmltindakan) || 1
+
         if (pasien?.kelas_ruangan === 'PS') { // jika presiden suite
           this.formtindakan.tarif = target[0]?.tarifps || 0
           this.formtindakan.hargasarana = target[0]?.pss || 0
           this.formtindakan.hargapelayanan = target[0]?.psp || 0
-          this.formtindakan.biaya = (parseInt(target[0]?.psp) + parseInt(target[0]?.pss)) || 0
-          this.formtindakan.subtotal = parseInt(this.formtindakan.biaya) * this.formtindakan.jumlah || 0
+          this.formtindakan.biaya = (parseInt(target[0]?.psp || 0) + parseInt(target[0]?.pss || 0)) || 0
+          this.formtindakan.subtotal = parseInt(this.formtindakan.biaya) * qty
         } else {
           this.formtindakan.tarif = target[0]?.tarif || 0
           this.formtindakan.hargasarana = target[0]?.sarana || 0
           this.formtindakan.hargapelayanan = target[0]?.pelayanan || 0
-          this.formtindakan.biaya = (parseInt(target[0]?.pelayanan) + parseInt(target[0]?.sarana)) || 0
-          this.formtindakan.subtotal = parseInt(this.formtindakan.biaya) * this.formtindakan.jumlah || 0
+          this.formtindakan.biaya = (parseInt(target[0]?.pelayanan || 0) + parseInt(target[0]?.sarana || 0)) || 0
+          this.formtindakan.subtotal = parseInt(this.formtindakan.biaya) * qty
         }
 
 
@@ -150,7 +152,8 @@ export const useTindakanHemodialisaStore = defineStore('tindakan-hemodialisa-sto
       }
     },
     async saveTindakan (pasien) {
-      if (!pasien?.kddokter) {
+      const dokter = pasien?.kodedokter || pasien?.kddokter || pasien?.kddpjp
+      if (!dokter) {
         return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
       }
 
@@ -162,13 +165,13 @@ export const useTindakanHemodialisaStore = defineStore('tindakan-hemodialisa-sto
       const form = this.formtindakan
       form.noreg = pasien.noreg
       form.norm = pasien.norm
-      form.kdpoli = pasien?.kodepoli
-      form.kdgroup_ruangan = pasien?.kdgroup_ruangan
-      form.kodedokter = pasien?.kddokter
+      form.kdpoli = pasien?.kodepoli || 'PEN005'
+      form.kdgroup_ruangan = pasien?.kdgroup_ruangan || 'PEN005'
+      form.kodedokter = dokter
       form.kdsistembayar = pasien?.kodesistembayar
       form.pelaksanaSatu = pelaksanaSatu
       form.pelaksanaDua = pelaksanaDua
-      form.kddpjp = pasien?.kddokter
+      form.kddpjp = dokter
       form.nota = (this.notaTindakan === 'BARU' || this.notaTindakan === '' ||
         this.notaTindakan === 'SEMUA' || this.notaTindakan === null
       )

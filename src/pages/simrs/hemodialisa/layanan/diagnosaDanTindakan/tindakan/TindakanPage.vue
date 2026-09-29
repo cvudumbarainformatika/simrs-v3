@@ -26,7 +26,9 @@ const store = useTindakanHemodialisaStore()
 onMounted(() => {
   Promise.all([
     store.getNota(props?.pasien),
-    store.getTindakan(props?.pasien)
+    store.getTindakan(props?.pasien),
+    store.getTindakanDropdown(),
+    store.getAllPetugas()
   ])
 })
 
