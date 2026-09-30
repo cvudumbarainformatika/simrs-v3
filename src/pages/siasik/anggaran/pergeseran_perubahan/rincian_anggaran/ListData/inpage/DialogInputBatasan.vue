@@ -66,7 +66,7 @@
 <script setup>
 import { formattanpaRp } from 'src/modules/formatter'
 import { notifErrVue } from 'src/modules/utils'
-import { usePergeseranAnggaranStore } from 'src/stores/siasik/anggaran/pergeseran/pergeseranrincian'
+import { usePergeseran_PerubahanAnggaranStore } from 'src/stores/siasik/anggaran/perubahan_pergeseran/geserperubahan_anggaran'
 import { onMounted, ref } from 'vue'
 
 const props = defineProps({
@@ -80,7 +80,7 @@ const props = defineProps({
   }
 })
 
-const store = usePergeseranAnggaranStore()
+const store = usePergeseran_PerubahanAnggaranStore()
 const emits = defineEmits(['update:modelValue'])
 
 const close = () => emits('update:modelValue', false)
