@@ -37,6 +37,10 @@
                   store.getData()
                 }" />
             </div>
+
+            <div class="row q-pl-sm">
+              <q-btn class="text-black text-bold" label="PENETAPAN RKA" size="sm" color="yellow-9" @click="Penetapan" />
+            </div>
           </div>
         </template>
         <template #body="props">
@@ -329,6 +333,35 @@ function kunciData(row) {
     }).onDismiss(() => {
     })
   }
+}
+
+
+function Penetapan() {
+  const notrans = store.items
+    ?.map(item => item.notrans)
+    .filter(Boolean)
+
+  console.log('notrans penetapan:', notrans)
+
+  $q.dialog({
+    dark: true,
+    title: 'Peringatan',
+    message: `Apakah Anda yakin akan melakukan Penetapan ${notrans.length} data?`,
+    cancel: true,
+    persistent: true
+  }).onOk(async () => {
+
+    try {
+      await store.penetapanRka({
+        notrans
+      })
+    } catch (error) {
+      console.error(error)
+    }
+
+  }).onCancel(() => {
+    console.log('Cancel')
+  })
 }
 </script>
 
