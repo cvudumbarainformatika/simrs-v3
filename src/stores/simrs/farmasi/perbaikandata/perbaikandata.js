@@ -5,6 +5,15 @@ import { date } from 'quasar'
 
 const lastMonth = date.subtractFromDate(new Date(), { months: 1 })
 
+function normalizeMonth (value) {
+  const raw = String(value ?? '').trim()
+  if (!/^\d+$/.test(raw)) return null
+  const month = Number(raw)
+  return Number.isInteger(month) && month >= 1 && month <= 12
+    ? String(month).padStart(2, '0')
+    : null
+}
+
 export const usePerbaikanDataFarmasiStore = defineStore('perbaikan_data_farmasi', {
   state: () => ({
     loading: false,
@@ -66,6 +75,12 @@ export const usePerbaikanDataFarmasiStore = defineStore('perbaikan_data_farmasi'
       this.form[key] = val
     },
     async getLists () {
+      const bulan = normalizeMonth(this.params.bulan)
+      if (!bulan) {
+        notifErrVue('Bulan harus diisi angka 1 sampai 12')
+        return
+      }
+      this.params.bulan = bulan
       this.loading = true
       this.items = []
       this.params.perbaiki = 'tidak'
@@ -150,7 +165,7 @@ export const usePerbaikanDataFarmasiStore = defineStore('perbaikan_data_farmasi'
       params.kdobat = data
       params.perbaiki = 'tidak'
       console.log('data', params, data)
-      this.getData(params).then(resp => {
+      return this.getData(params).then(resp => {
         console.log('resp ambil ulang', resp)
       })
     },
@@ -198,6 +213,12 @@ export const usePerbaikanDataFarmasiStore = defineStore('perbaikan_data_farmasi'
       })
     },
     getData (data) {
+      const bulan = normalizeMonth(data.bulan)
+      if (!bulan) {
+        notifErrVue('Bulan harus diisi angka 1 sampai 12')
+        return Promise.reject(new Error('Bulan tidak valid'))
+      }
+      data = { ...data, bulan }
       this.loadingGetData = true
       return new Promise((resolve, reject) => {
         // OLD ENDPOINT: /v1/simrs/farmasinew/stok/fr-perbaikan-data
@@ -231,28 +252,40 @@ export const usePerbaikanDataFarmasiStore = defineStore('perbaikan_data_farmasi'
           })
       })
     },
-    perbaikanDataOpname (kode) {
+    async perbaikanDataOpname (kode) {
       const item = this.items.find(f => f.kd_obat === kode)
       const opname = item?.data?.data?.cekOpname?.opname
-      if (opname?.length <= 0) return notifErrVue('Data opname kosong')
-      const payload = opname
-      if (!payload) return notifErrVue('Data opname kosong gagal ditemukan, di list obat silahkan cek di halaman depan')
-      console.log('resp opname', payload)
+      if (!opname?.length || (opname.every(row => !row.id) && !opname.some(row => Number(row.jumlah) > 0))) {
+        notifErrVue('Tidak ada sisa stok untuk disimpan sebagai opname')
+        return false
+      }
+      const now = new Date()
+      const tahun = Number(this.params.tahun)
+      const bulanNormal = normalizeMonth(this.params.bulan)
+      const bulan = Number(bulanNormal)
+      if (!Number.isInteger(tahun) || !bulanNormal ||
+        tahun > now.getFullYear() || (tahun === now.getFullYear() && bulan >= now.getMonth() + 1)) {
+        notifErrVue('Perbaikan opname hanya untuk bulan yang sudah lewat')
+        return false
+      }
+
       this.loadingFixOpname = true
-      return new Promise(resolve => {
-        // OLD ENDPOINT: /v1/simrs/farmasinew/stok/fr-perbaikan-data-opname
-        // Redirected to V2 to support Smart Greedy & Minimum Split calculations
-        api.post('/v1/simrs/farmasinew/stok/fr-perbaikan-data-opname', payload).then(resp => {
-          this.loadingFixOpname = false
-          console.log('resp opname', resp?.data)
-          item.data.data.cekOpname.opname = resp?.data?.data
-          this.ambilUlangData(kode)
-          resolve(resp)
-        })
-          .catch(() => {
-            this.loadingFixOpname = false
-          })
-      })
+      try {
+        const payload = {
+          tahun: this.params.tahun,
+          bulan: bulanNormal,
+          kdruang: this.params.kdruang,
+          kdobat: kode,
+          opname
+        }
+        await api.post('/v1/simrs/farmasinew/stok/fr-perbaikan-data-opname', payload)
+        await this.ambilUlangData(kode)
+        return true
+      } catch (err) {
+        return false
+      } finally {
+        this.loadingFixOpname = false
+      }
     },
     getPerbaikanHarga (payload) {
       console.log('get perbaikan harga', payload)

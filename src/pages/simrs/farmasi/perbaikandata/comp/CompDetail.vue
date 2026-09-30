@@ -99,13 +99,19 @@
           </div>
           <div class="col-2">
             <q-btn
-              v-if="!editOpname"
+              v-if="!editOpname && bisaEditOpname"
               no-caps
               dense
               label="Edit Opname"
               color="primary"
               @click="editOpname=true"
             />
+            <span v-if="!periodeSelesai" class="text-grey-7">
+              Perbaikan bulan berjalan melalui menu stok
+            </span>
+            <span v-else-if="!bisaEditOpname" class="text-grey-7">
+              Tidak ada sisa stok untuk diopname
+            </span>
             <q-btn
               v-if="editOpname"
               no-caps
@@ -131,7 +137,7 @@
           <div v-if="editOpname" class="col-9">
             <div class="row bg-dark text-white">
               <div class="col-1">
-                Opname
+                Target
               </div>
               <div class="col-2">
                 Jumlah Sekarang
@@ -145,13 +151,13 @@
             </div>
             <div class="row items-center">
               <div class="col-1">
-                {{ data?.data?.data?.tts }}
+                {{ targetOpname }}
               </div>
               <div class="col-2">
                 {{ data?.data?.data?.cekOpname?.opname?.reduce((total, item) => total + parseFloat(item.jumlah), 0) }}
               </div>
               <div class="col-2">
-                {{ parseFloat(data?.data?.data?.tts) - data?.data?.data?.cekOpname?.opname?.reduce((total, item) => total + parseFloat(item.jumlah), 0) }}
+                {{ targetOpname - data?.data?.data?.cekOpname?.opname?.reduce((total, item) => total + parseFloat(item.jumlah), 0) }}
               </div>
               <div class="col-2">
                 <q-btn
@@ -636,7 +642,7 @@
 import { dateFull, formatDouble } from 'src/modules/formatter'
 import { notifErrVue } from 'src/modules/utils'
 import { usePerbaikanDataFarmasiStore } from 'src/stores/simrs/farmasi/perbaikandata/perbaikandata'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 const store = usePerbaikanDataFarmasiStore()
 const emits = defineEmits(['close', 'fixMutasi', 'fixResep'])
 // eslint-disable-next-line no-unused-vars
@@ -649,154 +655,104 @@ const props = defineProps({
  */
 
 const editOpname = ref(false)
-function simpanOpname () {
-  editOpname.value = false
-  store.perbaikanDataOpname(props.data.kd_obat)
+const periodeSelesai = computed(() => {
+  const tahun = Number(store.params.tahun)
+  const bulan = Number(store.params.bulan)
+  const sekarang = new Date()
+  return Number.isInteger(tahun) && Number.isInteger(bulan) && bulan >= 1 && bulan <= 12 &&
+    (tahun < sekarang.getFullYear() || (tahun === sekarang.getFullYear() && bulan < sekarang.getMonth() + 1))
+})
+const targetOpname = computed(() => {
+  const data = props.data?.data?.data
+  return Number(data?.cekOpname?.opname?.length ? data?.cekOpname?.jmlOp : data?.sisa)
+})
+const bisaEditOpname = computed(() => periodeSelesai.value &&
+  ((props.data?.data?.data?.cekOpname?.opname?.length ?? 0) > 0 || targetOpname.value > 0))
+
+async function simpanOpname () {
+  const berhasil = await store.perbaikanDataOpname(props.data.kd_obat)
+  if (berhasil) editOpname.value = false
 }
+
 function autoFix () {
   const cekOpname = props?.data?.data?.data?.cekOpname
-  const salAw = props.data?.data?.data?.saldoAwalRinci
-  const dataToProceess = []
-  cekOpname.penerimaan.forEach((item) => {
-    dataToProceess.push({
-      harga_netto_kecil: item?.harga_netto_kecil,
-      jml_terima_k: item?.jml_terima_k,
-      no_batch: item?.no_batch,
-      nopenerimaan: item?.nopenerimaan,
-      tglpenerimaan: item?.tglpenerimaan,
-      tgl_exp: item?.tgl_exp,
-      kd_obat: item?.kd_obat
-    })
-  })
-  salAw.forEach((item) => {
-    dataToProceess.push({
-      harga_netto_kecil: item?.harga,
-      jml_terima_k: item?.total,
-      no_batch: item?.nobatch,
-      nopenerimaan: item?.nopenerimaan,
-      tglpenerimaan: item?.tglpenerimaan,
-      tgl_exp: item?.tglexp,
-      kd_obat: item?.kdobat
-    })
-  })
-  dataToProceess.sort((a, b) => new Date(b.tglpenerimaan) - new Date(a.tglpenerimaan))
-  let opname = cekOpname?.jmlOp
-  cekOpname.opname.forEach((item) => {
-    item.jumlah = 0
-  })
-  const tglopname = cekOpname?.opname[0]?.tglopname
-  const kdobat = cekOpname?.opname[0]?.kdobat
-  const kdruang = store.params.kdruang
-  dataToProceess?.forEach((item, i) => {
-    const index = i
-    if (opname > 0) {
-      const jumlah = opname > item?.jml_terima_k ? item?.jml_terima_k : opname
-      if (jumlah > 0) {
-        if (cekOpname.opname[index] !== undefined) {
-          cekOpname.opname[index].nopenerimaan = item?.nopenerimaan
-          cekOpname.opname[index].jumlah = jumlah
-          cekOpname.opname[index].tglexp = item?.tgl_exp
-          cekOpname.opname[index].nobatch = item?.no_batch
-          cekOpname.opname[index].tglpenerimaan = item?.tglpenerimaan
-          cekOpname.opname[index].harga = item?.harga_netto_kecil
-        // console.log('if', cekOpname.opname[index])
-        }
-        else {
-          const cari = store.items.find(x => x.kdobat === item?.kdobat)
-          if (cari?.data?.data?.cekOpname?.opname) {
-            const temp = {
-              id: null,
-              nopenerimaan: item?.nopenerimaan,
-              jumlah,
-              tglexp: item?.tgl_exp,
-              nobatch: item?.no_batch,
-              tglpenerimaan: item?.tglpenerimaan,
-              tglopname,
-              kdobat,
-              kdruang,
-              harga: item?.harga_netto_kecil
-            }
-            cari.data.data.cekOpname.opname.push(temp)
-          }
-          // console.log('else', cari?.data?.data?.cekOpname)
+  if (!cekOpname || !periodeSelesai.value) return
 
-        // props.data.data.data.cekOpname.opname.push(temp)
-        }
-        opname = opname - jumlah
-      }
+  const opnameLama = cekOpname.opname ?? []
+  const target = targetOpname.value
+  if (!Number.isFinite(target) || target <= 0) {
+    notifErrVue('Tidak ada sisa stok untuk dibuatkan opname')
+    return
+  }
+
+  const sumber = [
+    ...(cekOpname.penerimaan ?? []).map(item => ({
+      harga: item?.harga_netto_kecil,
+      kapasitas: item?.jml_terima_k,
+      nobatch: item?.no_batch,
+      nopenerimaan: item?.nopenerimaan,
+      tglpenerimaan: item?.tglpenerimaan,
+      tglexp: item?.tgl_exp
+    })),
+    ...(props.data?.data?.data?.saldoAwalRinci ?? []).map(item => ({
+      harga: item?.harga,
+      kapasitas: item?.total,
+      nobatch: item?.nobatch,
+      nopenerimaan: item?.nopenerimaan,
+      tglpenerimaan: item?.tglpenerimaan,
+      tglexp: item?.tglexp
+    }))
+  ]
+  const gabungan = new Map()
+  for (const item of sumber) {
+    const kapasitas = Number(item.kapasitas)
+    if (!Number.isFinite(kapasitas) || kapasitas <= 0) continue
+    const key = JSON.stringify([String(item.nopenerimaan), String(item.nobatch ?? ''), String(item.tglpenerimaan), String(item.harga)])
+    const sebelumnya = gabungan.get(key)
+    if (sebelumnya) sebelumnya.kapasitas += kapasitas
+    else gabungan.set(key, { ...item, kapasitas })
+  }
+  const rincianSumber = [...gabungan.values()].sort((a, b) => new Date(b.tglpenerimaan) - new Date(a.tglpenerimaan))
+
+  const tahun = Number(store.params.tahun)
+  const bulan = Number(store.params.bulan)
+  const hariTerakhir = String(new Date(tahun, bulan, 0).getDate()).padStart(2, '0')
+  const akhirBulan = `${tahun}-${String(bulan).padStart(2, '0')}-${hariTerakhir} 23:59:58`
+  const tglopname = opnameLama[0]?.tglopname ?? akhirBulan
+  const hasil = opnameLama.map(item => ({ ...item, jumlah: 0 }))
+  let sisa = Math.round(target * 100) / 100
+  let index = 0
+
+  for (const item of rincianSumber) {
+    if (sisa <= 0) break
+    if (!item.nopenerimaan || !item.tglpenerimaan || item.harga == null || item.harga === '' || !Number.isFinite(Number(item.harga))) {
+      notifErrVue('Informasi penerimaan tidak lengkap; opname belum diubah')
+      return
     }
-    console.log('item', item, cekOpname?.opname[index], opname)
-  })
-  console.log('autofix', dataToProceess, salAw)
-  // const jmlPenerimaan = cekOpname?.penerimaan.reduce((prev, curr) => prev + parseFloat(curr.jml_terima_k), 0)
-  // const jmlSalAwal = salAw.reduce((prev, curr) => prev + parseFloat(curr.total), 0)
-  // const sisaSaldoAwal = cekOpname?.jmlOp - jmlPenerimaan
-  // console.log('autofix', jmlPenerimaan, sisaSaldoAwal, jmlSalAwal, props?.data?.data?.data?.cekOpname, salAw)
+    const jumlah = Math.round(Math.min(sisa, item.kapasitas) * 100) / 100
+    if (jumlah <= 0) continue
+    const rincian = {
+      nopenerimaan: item.nopenerimaan,
+      jumlah,
+      tglexp: item.tglexp,
+      nobatch: item.nobatch ?? '',
+      tglpenerimaan: item.tglpenerimaan,
+      tglopname,
+      kdobat: props.data.kd_obat,
+      kdruang: store.params.kdruang,
+      harga: item.harga
+    }
+    if (index < hasil.length) hasil[index] = { ...hasil[index], ...rincian }
+    else hasil.push({ id: null, ...rincian })
+    index++
+    sisa = Math.round((sisa - jumlah) * 100) / 100
+  }
 
-  // let opname = sisaSaldoAwal > 0 ? jmlPenerimaan : cekOpname?.jmlOp
-  // // nol kan semua opname
-
-  // cekOpname.opname.forEach((item) => {
-  //   item.jumlah = 0
-  // })
-  // let indexTambahan = 0
-  // const jumsalAw = sisaSaldoAwal
-  // if (sisaSaldoAwal > 0) {
-  //   salAw?.forEach((item, i) => {
-  //     if (jumsalAw > 0) {
-  //       const jumlah = jumsalAw > item?.total ? item?.total : jumsalAw
-  //       cekOpname.opname[i].nopenerimaan = item?.nopenerimaan
-  //       cekOpname.opname[i].jumlah = jumlah
-  //       cekOpname.opname[i].tglexp = item?.tglexp
-  //       cekOpname.opname[i].nobatch = item?.nobatch
-  //       cekOpname.opname[i].tglpenerimaan = item?.tglpenerimaan
-  //       cekOpname.opname[i].harga = item?.harga
-  //       indexTambahan = i + 1
-  //     }
-  //   })
-  // }
-  // const tglopname = cekOpname?.opname[0]?.tglopname
-  // const kdobat = cekOpname?.opname[0]?.kdobat
-  // const kdruang = store.params.kdruang
-  // cekOpname?.penerimaan?.forEach((item, i) => {
-  //   const index = sisaSaldoAwal > 0 ? i + indexTambahan : i
-  //   if (opname > 0) {
-  //     const jumlah = opname > item?.jml_terima_k ? item?.jml_terima_k : opname
-  //     if (cekOpname.opname[index] !== undefined) {
-  //       cekOpname.opname[index].nopenerimaan = item?.nopenerimaan
-  //       cekOpname.opname[index].jumlah = jumlah
-  //       cekOpname.opname[index].tglexp = item?.tgl_exp
-  //       cekOpname.opname[index].nobatch = item?.no_batch
-  //       cekOpname.opname[index].tglpenerimaan = item?.tglpenerimaan
-  //       cekOpname.opname[index].harga = item?.harga_netto_kecil
-  //       console.log('if', cekOpname.opname[index])
-  //     }
-  //     else {
-  //       const cari = store.items.find(x => x.kdobat === item?.kdobat)
-  //       if (cari?.data?.data?.cekOpname?.opname) {
-  //         const temp = {
-  //           id: null,
-  //           nopenerimaan: item?.nopenerimaan,
-  //           jumlah,
-  //           tglexp: item?.tgl_exp,
-  //           nobatch: item?.no_batch,
-  //           tglpenerimaan: item?.tglpenerimaan,
-  //           tglopname,
-  //           kdobat,
-  //           kdruang,
-  //           harga: item?.harga_netto_kecil
-  //         }
-  //         cari.data.data.cekOpname.opname.push(temp)
-  //       }
-  //       // console.log('else', cari?.data?.data?.cekOpname)
-
-  //       // props.data.data.data.cekOpname.opname.push(temp)
-  //     }
-
-  //     opname = opname - jumlah
-  //   }
-  //   console.log('item', item, cekOpname?.opname[index], opname)
-  // })
+  if (sisa > 0) {
+    notifErrVue(`Rincian penerimaan kurang ${sisa}; opname belum diubah`)
+    return
+  }
+  cekOpname.opname = hasil
 }
 /**
  * opname section end
