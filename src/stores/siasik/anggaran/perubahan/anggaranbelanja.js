@@ -296,13 +296,10 @@ export const usePerubahanAnggaranBelanja_PAK = defineStore('perubahan-anggaran-b
                     tahun: this.params.tahun,
                     q: this.params.q
                 }
-                const resp = await api.get(
-                    '/v1/anggaran/perubahan/belanja/index',
-                    { params }
-                )
+                const resp = await api.get('/v1/anggaran/perubahan/belanja/index', { params })
                 console.log('data Pengusulan', resp)
                 if (resp.status === 200) {
-                    this.items = resp?.data
+                    this.items = resp?.data?.data
                 }
             } finally {
                 this.loading = false
