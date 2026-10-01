@@ -31,7 +31,12 @@ export const useKonsulHDtore = defineStore('konsul-hd-store', {
   actions: {
 
     async saveData (pasien) {
-      if (!pasien?.kodedokter) {
+      const dokter = (pasien?.kodedokter && pasien.kodedokter !== '')
+        ? pasien.kodedokter
+        : (pasien?.kddokter && pasien.kddokter !== '')
+          ? pasien.kddokter
+          : pasien?.pegsimhd?.kdpegsimrs || pasien?.pegsim?.kdpegsimrs || pasien?.kdpeghd || pasien?.kdpeg || ''
+      if (!dokter) {
         return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
       }
       this.loadingOrder = true

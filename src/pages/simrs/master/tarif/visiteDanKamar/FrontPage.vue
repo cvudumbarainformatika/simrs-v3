@@ -250,10 +250,20 @@
 -->
   <div class="column">
     <div class="col-auto fixed-top" style="z-index:1; margin-top: 50px; margin-left: 55px; ">
-      <HeaderComp :search="store.params.q" :per-page="store.params.per_page" :params="store.params"
-        :loading-bpjs="store.loading" @set-tanggal="(val) => store.setDate(val)" @set-search="store.setSearch"
-        @set-row="store.setPerPage" @refresh="store.refreshTable" @get-data="store.getDataTable"
-        @new-data="store.newData" />
+      <HeaderComp
+        :search="store.params.q"
+        :status="store.params.status"
+        :per-page="store.params.per_page"
+        :params="store.params"
+        :loading-bpjs="store.loading"
+        @set-tanggal="(val) => store.setDate(val)"
+        @set-search="store.setSearch"
+        @set-status="store.setStatus"
+        @set-row="store.setPerPage"
+        @refresh="store.refreshTable"
+        @get-data="store.getDataTable"
+        @new-data="store.newData"
+      />
     </div>
     <div class="col" style="margin-bottom: 60px; margin-top:60px; ">
       <TableComp :key="store.items" :items="store.items" :loading="store.loading" :params="store.params"

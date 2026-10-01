@@ -10,6 +10,11 @@ const penjaminan = {
       component: () => import('pages/simrs/penjaminan/klaim/IndexPage.vue')
     },
     {
+      path: '/penjaminan/klaimranap',
+      name: 'penjaminan.klaimranap',
+      component: () => import('pages/simrs/penjaminan/klaimranap/IndexPage.vue')
+    },
+    {
       path: '/penjaminan/notfound',
       component: () => import('pages/MidlewareNotFound.vue')
     }

@@ -257,7 +257,9 @@ export const usePerencanaanHDStore = defineStore('perencanaan-hemodialisa', {
       this.formKonsul.tgl_kunjungan = pasien?.tgl_kunjungan
       this.formKonsul.kdpoli_asal = pasien?.kodepoli
       this.formKonsul.kodepoli = pasien?.kodepoli
-      this.formKonsul.kddokter_asal = pasien?.kodedokter
+      this.formKonsul.kddokter_asal = (pasien?.kodedokter && pasien.kodedokter !== '')
+        ? pasien.kodedokter
+        : pasien?.pegsimhd?.kdpegsimrs || pasien?.pegsim?.kdpegsimrs || pasien?.kdpeghd || pasien?.kdpeg || ''
       this.formKonsul.kodesistembayar = pasien?.kodesistembayar
       this.formKonsul.planing = 'Konsultasi'
       this.formKonsul.pertanyaan = this.konsulText?.diagnosa
@@ -423,7 +425,9 @@ export const usePerencanaanHDStore = defineStore('perencanaan-hemodialisa', {
       form.noreg = pasien?.noreg
       form.tgl_kunjungan = pasien?.tgl_kunjungan
       form.kdpoli_asal = pasien?.kodepoli
-      form.kddokter_asal = pasien?.kodedokter
+      form.kddokter_asal = (pasien?.kodedokter && pasien.kodedokter !== '')
+        ? pasien.kodedokter
+        : pasien?.pegsimhd?.kdpegsimrs || pasien?.pegsim?.kdpegsimrs || pasien?.kdpeghd || pasien?.kdpeg || ''
       form.kodesistembayar = pasien?.kodesistembayar
       form.planing = 'Selesai'
 

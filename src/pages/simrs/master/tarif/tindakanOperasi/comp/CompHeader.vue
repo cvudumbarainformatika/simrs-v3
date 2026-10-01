@@ -1,18 +1,44 @@
 <template>
   <div class="row items-center justify-between q-pa-sm" :class="`${color} text-${textColor}`">
-    <div class="row">
-      <q-input v-model="q" outlined dark color="white" dense placeholder="Nama Tindakan ..." debounce="500" />
+    <div class="row items-center q-gutter-x-sm">
+      <q-input
+        v-model="q"
+        outlined
+        dark
+        color="white"
+        dense
+        placeholder="Nama / Kode Tindakan Operasi..."
+        debounce="500"
+        style="min-width: 230px;"
+        clearable
+      >
+        <template #prepend>
+          <q-icon name="icon-mat-search" size="xs" />
+        </template>
+      </q-input>
 
-
+      <!-- Filter Status Tarif -->
+      <q-select
+        v-model="selectStatus"
+        :options="statusOptions"
+        outlined
+        dark
+        dense
+        emit-value
+        map-options
+        color="white"
+        label="Status Tarif"
+        style="min-width: 230px;"
+      >
+        <template #selected-item="scope">
+          <div class="ellipsis">
+            {{ scope.opt.label }}
+          </div>
+        </template>
+      </q-select>
     </div>
-    <div>
 
-      <!-- per_page -->
-      <!-- <q-btn flat :color="textColor" icon="icon-mat-dashboard" size="xs" padding="xs" @click="emits('filter')">
-        <q-tooltip class="primary" :offset="[10, 10]">
-          Filter
-        </q-tooltip>
-      </q-btn> -->
+    <div class="row items-center">
       <q-btn flat color="orange" icon="icon-mat-refresh" size="xs" padding="xs" @click="emits('refresh')">
         <q-tooltip class="primary" :offset="[10, 10]">
           Refresh
@@ -25,18 +51,15 @@
         <q-menu transition-show="flip-left" transition-hide="flip-right" anchor="top left" self="top right">
           <q-list dense>
             <q-item v-for="(opt, i) in options" :key="i" v-ripple tag="label">
-              <!-- <q-item-section> -->
               <q-radio v-model="selectPerPage" size="xs" :val="opt" :label="opt + ' Baris'" color="primary" />
-              <!-- </q-item-section> -->
-              <!-- <q-item-label /> -->
             </q-item>
           </q-list>
         </q-menu>
       </q-btn>
       <!-- data baru -->
-      <q-btn class="q-ml-sm" unelevated round color="primary" size="sm" icon="icon-mat-add" @click="emits('newData')">
+      <q-btn class="q-ml-sm" unelevated round color="white" text-color="primary" size="sm" icon="icon-mat-add" @click="emits('newData')">
         <q-tooltip class="primary" :offset="[10, 10]">
-          Data Baru
+          Tambah Tindakan Operasi Baru
         </q-tooltip>
       </q-btn>
     </div>
@@ -44,13 +67,7 @@
 </template>
 
 <script setup>
-import { dateDbFormat } from 'src/modules/formatter'
-import { date } from 'quasar'
-import { computed, onMounted, ref } from 'vue'
-
-const emits = defineEmits(['newData', 'setSearch', 'setRow', 'setPeriode', 'refresh', 'filter', 'flag', 'status', 'getData'])
-const options = ref([5, 10, 20, 50, 100])
-
+import { computed, ref } from 'vue'
 
 const props = defineProps({
   color: {
@@ -65,50 +82,60 @@ const props = defineProps({
     type: String,
     default: ''
   },
-  perPage: { type: Number, default: 10 },
-  tanggal: {
+  status: {
     type: String,
-    default: dateDbFormat(new Date())
+    default: 'aktif'
   },
-  fullscreen: { type: Boolean, default: false },
-  loadingBpjs: { type: Boolean, default: false },
-  params: { type: Object, default: () => { } }
+  perPage: {
+    type: Number,
+    default: 10
+  }
 })
 
-function getData () {
+const emits = defineEmits([
+  'newData',
+  'setSearch',
+  'setStatus',
+  'setRow',
+  'refresh',
+  'getData'
+])
 
-  emits('getData')
-}
+const options = ref([5, 10, 20, 50, 100])
 
-const selectPerPage = computed({
-  get () { return props.perPage },
-  set (val) { emits('setRow', val) }
-})
-onMounted(() => {
-  // hariIni()
-})
+const statusOptions = ref([
+  { label: '🟢 Aktif Saat Ini', value: 'aktif' },
+  { label: '🟢🟡 Aktif & Draft (Untuk Edit)', value: 'aktif_draft' },
+  { label: '🟡 Akan Berlaku (Draft)', value: 'draft' },
+  { label: '⚪ Riwayat / Usang', value: 'history' },
+  { label: '🔴 Dihapus / Non-Aktif', value: 'dihapus' },
+  { label: '📑 Semua Data', value: 'semua' }
+])
 
-// function lihatRef() {
-//   popup.value.hide()
-// }
-// const selectPerPage = computed({
-//   get () { return props.perPage },
-//   set (val) { emits('setRow', val) }
-// })
-// const dateX = computed({
-//   get() {
-//     return props.tanggal
-//   },
-//   set(newVal) {
-//     emits('setTanggal', newVal)
-//   }
-// })
 const q = computed({
   get () {
     return props.search
   },
   set (newVal) {
-    emits('setSearch', newVal)
+    emits('setSearch', newVal ?? '')
+  }
+})
+
+const selectStatus = computed({
+  get () {
+    return props.status
+  },
+  set (val) {
+    emits('setStatus', val)
+  }
+})
+
+const selectPerPage = computed({
+  get () {
+    return props.perPage
+  },
+  set (val) {
+    emits('setRow', val)
   }
 })
 </script>

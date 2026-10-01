@@ -1,13 +1,12 @@
 import { useQuasar } from 'quasar'
 // import { api } from 'src/boot/axios'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
-import { useDiagnosaStore } from 'src/stores/simrs/ranap/diagnosa'
-// import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
+import { useDiagnosaHDStore } from 'src/stores/simrs/hemodialisa/diagnosa'
 // eslint-disable-next-line no-unused-vars
 import { onMounted, reactive, ref } from 'vue'
 
 export default function useRightPanel (pasien) {
-  const store = useDiagnosaStore()
+  const store = useDiagnosaHDStore()
   // const pengunjung = usePengunjungRanapStore()
   const auth = useAplikasiStore()
 

@@ -118,7 +118,7 @@ import { date, useQuasar } from 'quasar'
 import { formatRpDouble, formattanpaRp } from 'src/modules/formatter'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useAuthStore } from 'src/stores/auth'
-import { usePergeseranAnggaranStore } from 'src/stores/siasik/anggaran/pergeseran/pergeseranrincian'
+import { usePergeseran_PerubahanAnggaranStore } from 'src/stores/siasik/anggaran/perubahan_pergeseran/geserperubahan_anggaran.js'
 import { dataBastFarmasiStore } from 'src/stores/siasik/transaksi/ls/newnpdls/bastfarmasi'
 import { formInputNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formnpdls'
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
@@ -126,7 +126,7 @@ import { useRouter } from 'vue-router'
 
 
 const DialogPrintData = defineAsyncComponent(() => import('./DialogPrintData.vue'))
-const store = usePergeseranAnggaranStore()
+const store = usePergeseran_PerubahanAnggaranStore()
 const form = formInputNpdlsStore()
 const router = useRouter()
 const carisrt = dataBastFarmasiStore()

@@ -16,7 +16,7 @@
 
         <!-- RIGHT DRAWER ======================================================================================-->
         <q-drawer v-model="drawerRight" side="right" show-if-above overlay bordered :width="845" :breakpoint="500">
-          <RightDrawer :key="pasien?.noreg" :pasien="pasien" @close="drawerRight = false" />
+          <RightDrawer :key="`${pasien?.noreg}-${drawerRight}`" :pasien="pasien" @close="drawerRight = false" />
         </q-drawer>
 
         <!-- LOG ACTIVITY DRAWER ===============================================================================-->

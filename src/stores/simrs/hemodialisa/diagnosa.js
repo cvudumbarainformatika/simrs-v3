@@ -128,14 +128,22 @@ export const useDiagnosaHDStore = defineStore('diagnosa-hd-store', {
     },
 
     async simpanDiagnosa (pasien) {
-      if (pasien?.kddokter === null || pasien?.kddokter === '') {
+      const dokter = (pasien?.kodedokter && pasien.kodedokter !== '')
+        ? pasien.kodedokter
+        : (pasien?.kddokter && pasien.kddokter !== '')
+          ? pasien.kddokter
+          : pasien?.pegsimhd?.kdpegsimrs || pasien?.pegsim?.kdpegsimrs || pasien?.kdpeghd || pasien?.kdpeg || pasien?.kddpjp || ''
+      if (!dokter) {
         return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
       }
+      if (!this.formdiagnosa.kddiagnosa) {
+        return notifErrVue('Kode Diagnosa belum dipilih')
+      }
       const form = this.formdiagnosa
-      form.noreg = pasien?.nota_permintaan ?? (pasien?.noreg ?? null)
+      form.noreg = pasien?.noreg ?? null
       form.norm = pasien?.norm
-      form.kodedokter = pasien?.kodedokter ?? (pasien?.kddokter ?? null)
-      form.ruangan = pasien?.kodepoli
+      form.kodedokter = dokter
+      form.ruangan = pasien?.kodepoli || 'PEN005'
 
       // console.log('sdiag', form)
 

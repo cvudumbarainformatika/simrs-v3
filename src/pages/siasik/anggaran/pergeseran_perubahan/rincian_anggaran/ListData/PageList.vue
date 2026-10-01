@@ -17,10 +17,10 @@
 <script setup>
 import ListData from './inpage/ListData.vue'
 import { onBeforeMount, onMounted } from 'vue';
-import { usePergeseranAnggaranStore } from 'src/stores/siasik/anggaran/pergeseran/pergeseranrincian';
+import { usePergeseran_PerubahanAnggaranStore } from 'src/stores/siasik/anggaran/perubahan_pergeseran/geserperubahan_anggaran.js';
 // import listRegjurnal from './inpage/ListRegjurnal.vue'
 
-const store = usePergeseranAnggaranStore()
+const store = usePergeseran_PerubahanAnggaranStore()
 
 onBeforeMount(() => {
   store.getData()

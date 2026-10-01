@@ -323,6 +323,31 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
               objectName?.forEach((key) => {
                 findPasien[key] = datanya[key]
               })
+
+              const kdDokter = (datanya?.pegsimhd?.kdpegsimrs && datanya.pegsimhd.kdpegsimrs !== '')
+                ? datanya.pegsimhd.kdpegsimrs
+                : (datanya?.pegsim?.kdpegsimrs && datanya.pegsim.kdpegsimrs !== '')
+                  ? datanya.pegsim.kdpegsimrs
+                  : (datanya?.kdpeghd && datanya.kdpeghd !== '')
+                    ? datanya.kdpeghd
+                    : (datanya?.kdpeg && datanya.kdpeg !== '')
+                      ? datanya.kdpeg
+                      : (findPasien?.kodedokter && findPasien.kodedokter !== '')
+                        ? findPasien.kodedokter
+                        : (findPasien?.kddokter && findPasien.kddokter !== '')
+                          ? findPasien.kddokter
+                          : ''
+
+              if (kdDokter) {
+                findPasien.kodedokter = kdDokter
+                findPasien.kddokter = kdDokter
+              }
+
+              const namaDokter = datanya?.pegsimhd?.nama || datanya?.pegsim?.nama || findPasien?.dokter || ''
+              if (namaDokter && (!findPasien.dokter || findPasien.dokter === '')) {
+                findPasien.dokter = namaDokter
+              }
+
               this.pasien = findPasien
             }
             const jnsKasus = resp?.data?.kd_jeniskasus

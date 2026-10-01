@@ -13,7 +13,8 @@ export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operas
     params: {
       q: '',
       per_page: 10,
-      page: 1
+      page: 1,
+      status: 'aktif'
     },
     form: {},
     disp: {},
@@ -58,6 +59,11 @@ export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operas
     },
     setParams(key, val) {
       this.params[key] = val
+    },
+    setStatus(payload) {
+      this.params.status = payload
+      this.params.page = 1
+      this.getDataTable()
     },
     setPage(payload) {
       this.params.page = payload

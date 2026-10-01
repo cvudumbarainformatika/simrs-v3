@@ -15,7 +15,7 @@
         <footer-page :meta="store.meta" @go-to="store.goToPage" />
       </div>
     </q-card>
-    <page-grouping-klaim :key="pasien?.noreg" v-model="store.pageLayanan" :pasien="pasien"
+    <page-grouping-klaim :key="(store.pasien || pasien)?.noreg" v-model="store.pageLayanan" :pasien="store.pasien || pasien"
       :loading-aja="store.loadingbuka" />
   </q-page>
 </template>
@@ -36,14 +36,17 @@ const store = useKlaimPenjaminanStore()
 const style = useStyledStore()
 const pasien = ref(null)
 
-function bukaTindakan(val) {
+async function bukaTindakan(val) {
   pasien.value = val
+  let target = null
   if (val?.kodepoli === 'POL014') {
-    store.bukaLayanan(val)
+    target = await store.bukaLayanan(val)
   } else {
-    store.bukaLayananrajal(val)
+    target = await store.bukaLayananrajal(val)
   }
-
+  if (target) {
+    pasien.value = target
+  }
 }
 
 onMounted(() => {

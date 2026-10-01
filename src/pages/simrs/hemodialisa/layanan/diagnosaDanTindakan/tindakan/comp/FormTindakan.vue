@@ -1,7 +1,7 @@
 <script setup>
 
 // eslint-disable-next-line no-unused-vars
-import { defineAsyncComponent, onMounted, ref } from 'vue'
+import { defineAsyncComponent, onMounted, ref, watch } from 'vue'
 
 // const AutocompleteNakesMulti = defineAsyncComponent(() => import('./AutocompleteNakesMulti.vue')) // lazy-loaded
 // const AutocompleteNakesMulti = import('./AutocompleteNakesMulti.vue')
@@ -30,22 +30,42 @@ const props = defineProps({
   }
 })
 
-onMounted(() => {
-  // console.log('pasien', props.pasien)
+const isTindakanAllowed = (tindakan, pasien) => {
+  if (!tindakan || !tindakan.kdpoli) return false
+  const kdpoli = String(tindakan.kdpoli)
+
+  // 1. Selalu izinkan seluruh tindakan untuk pelayanan Hemodialisa (PEN005)
+  if (kdpoli.includes('PEN005')) {
+    return true
+  }
+
+  // 2. Izinkan juga jika tindakan berlaku di ruangan / poli asal pasien
+  const kdRuangan = pasien?.kdruangan || pasien?.kodepoli || pasien?.kdgroup_ruangan || ''
+  if (kdRuangan && kdpoli.includes(kdRuangan)) {
+    return true
+  }
+
+  return false
+}
+
+const filterArrayTindakan = (arr, pasien) => {
+  if (!arr?.length) return []
+  return arr.filter(x => isTindakanAllowed(x, pasien))
+}
+
+onMounted(async () => {
+  if (!store.listTindakan?.length) {
+    await store.getTindakanDropdown()
+  }
+  if (!store.listPetugas?.length) {
+    await store.getAllPetugas()
+  }
   options.value = filterArrayTindakan(store.listTindakan, props.pasien)
 })
 
-const filterArrayTindakan = (arr, pasien) => {
-  console.log('filterArrayTindakan', arr, pasien)
-
-  const val = arr?.filter(x => x.kdpoli?.includes(pasien?.kdruangan))
-  // let val = arr
-  // if (pasien?.kodepoli === 'POL041') val = arr
-  // else val = arr?.filter(x => x.kdpoli?.includes(pasien?.kdgroup_ruangan))
-  // console.log('onMounted formTindakan', val)
-  // return val
-  return val
-}
+watch(() => store.listTindakan, (newList) => {
+  options.value = filterArrayTindakan(newList, props.pasien)
+}, { immediate: true })
 
 const onSubmit = () => {
   // console.log('formtindakan', props.pasien)
@@ -57,8 +77,8 @@ const onSubmit = () => {
       formmRef.value?.reset()
       formmRef.value?.resetValidation()
 
-      pelaksanaSatuRef?.value?.refAutocomplete.reset()
-      pelaksanaDuaRef?.value?.refAutocomplete.reset()
+      pelaksanaSatuRef?.value?.refAutocomplete?.reset()
+      pelaksanaDuaRef?.value?.refAutocomplete?.reset()
 
       // console.log('autocomplete', pelaksanaSatuRef.value.refAutocomplete)
     })
@@ -66,32 +86,32 @@ const onSubmit = () => {
 
 function updateSearchTindakan (val) {
   store.setKdTindakan(val, props.pasien).then(() => {
-    inpQtyRef.value.focus()
+    inpQtyRef.value?.focus()
   })
 }
 
-function filterFn (val, update, abort) {
-  if (val?.length < 1) {
-    abort()
+function filterFn (val, update) {
+  const baseList = filterArrayTindakan(store.listTindakan, props.pasien)
+
+  if (!val || val === '') {
+    update(() => {
+      options.value = baseList
+    })
     return
   }
 
   update(() => {
     const needle = val.toLowerCase()
-    // const arr = props.pasien.kodepoli === 'POL041' ? store.listTindakan : store.listTindakan?.filter(x => x?.kdpoli?.includes(props.pasien?.kdgroup_ruangan))
-    const arr = store.listTindakan?.filter(x => x?.kdpoli?.includes(props.pasien?.kdruangan))
-    // console.log('arr', arr)
-    const filter = ['kdtindakan', 'tindakan', 'icd9']
+    const filterKeys = ['kdtindakan', 'tindakan', 'icd9']
     const multiFilter = (data = [], filterKeys = [], value = '') =>
       data.filter((item) => filterKeys.some(
         (key) =>
-          item[key]?.toString()?.toLowerCase()?.includes(value.toLowerCase()) &&
+          item[key]?.toString()?.toLowerCase()?.includes(value) &&
           item[key]
       )
       )
-    const filteredData = multiFilter(arr, filter, needle)
+    const filteredData = multiFilter(baseList, filterKeys, needle)
     options.value = filteredData
-    // console.log('filteredData', filteredData)
   })
 }
 
@@ -115,7 +135,7 @@ function filterFn (val, update, abort) {
             <div class="col-12 q-mb-sm">
               <q-select v-model="store.searchtindakan" use-input hide-selected fill-input outlined
                 standout="bg-yellow-3" dense emit-value map-options option-value="kdtindakan"
-                :option-label="opt => Object(opt) === opt && 'tindakan' in opt ? opt.kdtindakan + ' ~ ' + opt.tindakan + ' -- ICD9 -- ' + opt.icd9 : ' Cari Tindakan '"
+                :option-label="opt => Object(opt) === opt && 'tindakan' in opt ? opt.kdtindakan + ' ~ ' + opt.tindakan + (opt.icd9 ? ' -- ICD9 -- ' + opt.icd9 : '') : ' Cari Tindakan '"
                 input-debounce="0" :options="options" label="Cari Tindakan" @filter="filterFn" @update:model-value="(val) => {
                   // console.log('updateSearchTindakan', val);
 
@@ -161,7 +181,7 @@ function filterFn (val, update, abort) {
                 ]" hide-bottom-space />
             </div>
             <div class="col-12">
-              <q-input v-model="store.formtindakan.keterangan" label="Keterangan" autogrow outlined
+              <q-input v-model="store.formtindakan.keterangan" label="Keterangan" autogrow rows="2" outlined
                 standout="bg-yellow-3" hide-bottom-space />
             </div>
             <div class="col-12">

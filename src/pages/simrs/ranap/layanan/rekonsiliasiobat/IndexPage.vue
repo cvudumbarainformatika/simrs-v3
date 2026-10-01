@@ -128,6 +128,7 @@
                         <app-signature
                           :ttd="store.formPersetujuan.ttd_yang_menyatakan"
                           @save-ttd="(val) => store.formPersetujuan.ttd_yang_menyatakan = val"
+                          @signature="(val) => store.formPersetujuan.ttd_yang_menyatakan = val"
                           :pasien="pasien"
                           uuid="yang_menyatakan"
                           label-ttd="TTD Yang Menyatakan"
@@ -140,6 +141,7 @@
                         <app-signature
                           :ttd="store.formPersetujuan.ttd_saksi"
                           @save-ttd="(val) => store.formPersetujuan.ttd_saksi = val"
+                          @signature="(val) => store.formPersetujuan.ttd_saksi = val"
                           :pasien="pasien"
                           uuid="saksi_petugas"
                           label-ttd="TTD Saksi I"
@@ -152,6 +154,7 @@
                         <app-signature
                           :ttd="store.formPersetujuan.ttd_saksi_2"
                           @save-ttd="(val) => store.formPersetujuan.ttd_saksi_2 = val"
+                          @signature="(val) => store.formPersetujuan.ttd_saksi_2 = val"
                           :pasien="pasien"
                           uuid="saksi_2"
                           label-ttd="TTD Saksi II"

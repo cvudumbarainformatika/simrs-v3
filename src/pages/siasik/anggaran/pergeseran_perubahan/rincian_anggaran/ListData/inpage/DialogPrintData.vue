@@ -456,8 +456,8 @@ import { onMounted, ref, defineAsyncComponent, computed } from 'vue'
 
 // eslint-disable-next-line no-unused-vars
 import { formatDenganRp, formatRpDouble, formattanpaRp } from 'src/modules/formatter'
-import { usePergeseranAnggaranStore } from 'src/stores/siasik/anggaran/pergeseran/pergeseranrincian'
 import { useAplikasiStore } from 'src/stores/app/aplikasi.js'
+import { usePergeseran_PerubahanAnggaranStore } from 'src/stores/siasik/anggaran/perubahan_pergeseran/geserperubahan_anggaran.js'
 
 const InputBatasan = defineAsyncComponent(() => import('./DialogInputBatasan.vue'))
 // import listDatapergeseran from '../inpage/ListDataRKApergeseran.vue'
@@ -477,7 +477,7 @@ const props = defineProps({
 })
 const emit = defineEmits(['update:modelValue'])
 const tt = useBukubesarStore()
-const store = usePergeseranAnggaranStore()
+const store = usePergeseran_PerubahanAnggaranStore()
 onMounted(() => {
   tt.getTtd()
   // store.getDataBukubesar()

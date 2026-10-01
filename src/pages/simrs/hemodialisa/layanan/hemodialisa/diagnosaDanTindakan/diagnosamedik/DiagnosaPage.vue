@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import { useDiagnosaStore } from 'src/stores/simrs/ranap/diagnosa'
+import { useDiagnosaHDStore } from 'src/stores/simrs/hemodialisa/diagnosa'
 import { defineAsyncComponent, ref } from 'vue'
 
 const BarComp = defineAsyncComponent(() => import('src/pages/simrs/hemodialisa/layanan/components/BarComp.vue'))
@@ -53,7 +53,7 @@ const props = defineProps({
 })
 
 const full = ref(false)
-const store = useDiagnosaStore()
+const store = useDiagnosaHDStore()
 const simpanDiagnosa = () => {
   store.simpanDiagnosa(props?.pasien)
     .then(() => {

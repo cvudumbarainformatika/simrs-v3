@@ -264,10 +264,10 @@ const tindakanAktif = computed(() => {
   if (!nota) return null
   
   let found = props.pasien?.manytindakanop?.find((x) => x.rs2 === nota)
-  if (found) return found
+  if (found) return { ...found, isOperasi: true }
   
   found = props.pasien?.tindakan?.find((x) => x.rs2 === nota)
-  if (found) return found
+  if (found) return { ...found, isOperasi: false }
   
   return null
 })
@@ -339,15 +339,24 @@ const imgUrlImplan = computed(() => {
 
 // MAPPING NAKES
 const dokterOperator = computed(() => {
-  const code = tindakanAktif.value?.rs9?.split(';').filter((x) => !!x)[0]
-  if (!code) return null
-  return store.nakes.find((x) => x.kdpegsimrs === code) || { nama: code, nip: '-', kdpegsimrs: code }
+  if (!tindakanAktif.value) return null
+  const sourceCode = tindakanAktif.value.isOperasi ? tindakanAktif.value.rs9 : tindakanAktif.value.rs8
+  const codes = sourceCode?.split(';').filter((x) => !!x) || []
+  if (codes.length === 0) return null
+  const list = codes.map((code) => store.nakes?.find((x) => x.kdpegsimrs === code) || { nama: code, nip: '-', kdpegsimrs: code })
+  return {
+    nama: list.map((x) => x.nama).join(', '),
+    nip: list[0]?.nip || '-',
+    kdpegsimrs: codes[0]
+  }
 })
 
 const asistenOperator = computed(() => {
-  const codes = tindakanAktif.value?.rs11?.split(';').filter((x) => !!x) || []
+  if (!tindakanAktif.value) return null
+  const sourceCodes = tindakanAktif.value.isOperasi ? tindakanAktif.value.rs11 : tindakanAktif.value.rs23
+  const codes = sourceCodes?.split(';').filter((x) => !!x) || []
   if (codes.length === 0) return null
-  const list = codes.map((code) => store.nakes.find((x) => x.kdpegsimrs === code) || { nama: code, nip: '-', kdpegsimrs: code })
+  const list = codes.map((code) => store.nakes?.find((x) => x.kdpegsimrs === code) || { nama: code, nip: '-', kdpegsimrs: code })
   return {
     nama: list.map((x) => x.nama).join(', '),
     nip: list.map((x) => x.nip).join(', '),
@@ -356,15 +365,17 @@ const asistenOperator = computed(() => {
 })
 
 const dokterAnestesi = computed(() => {
+  if (!tindakanAktif.value || !tindakanAktif.value.isOperasi) return null
   const code = tindakanAktif.value?.rs12?.split(';').filter((x) => !!x)[0]
   if (!code) return null
-  return store.nakes.find((x) => x.kdpegsimrs === code) || { nama: code, nip: '-', kdpegsimrs: code }
+  return store.nakes?.find((x) => x.kdpegsimrs === code) || { nama: code, nip: '-', kdpegsimrs: code }
 })
 
 const asistenAnestesi = computed(() => {
+  if (!tindakanAktif.value || !tindakanAktif.value.isOperasi) return null
   const codes = tindakanAktif.value?.rs13?.split(';').filter((x) => !!x) || []
   if (codes.length === 0) return null
-  const list = codes.map((code) => store.nakes.find((x) => x.kdpegsimrs === code) || { nama: code, nip: '-', kdpegsimrs: code })
+  const list = codes.map((code) => store.nakes?.find((x) => x.kdpegsimrs === code) || { nama: code, nip: '-', kdpegsimrs: code })
   return {
     nama: list.map((x) => x.nama).join(', '),
     nip: list.map((x) => x.nip).join(', '),

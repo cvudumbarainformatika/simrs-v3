@@ -31,3 +31,9 @@
 ## 💅 Aturan Desain & Layout UI (Quasar)
 * **JANGAN PERNAH menggunakan prop `dense` pada input bertipe `textarea` (atau autogrow)**. Penggunaan `dense` pada `textarea` membuat baris input sangat sempit dan tidak estetis. Sebagai gantinya, hilangkan prop `dense` dan batasi baris input menggunakan atribut `rows="..."` (misal: `rows="2"` atau `rows="3"`).
 * **JANGAN PERNAH menggunakan raw `<q-input type="date">`**. Selalu gunakan komponen kustom global **`<app-input-date>`** untuk seluruh input tanggal (dengan format `:model="..."` dan `@set-model="... = $event"`).
+
+## 🛡️ Aturan Integritas Kode & Lingkup Pekerjaan (SANGAT PENTING)
+* **TIDAK BOLEH / DILARANG KERAS membatalkan, mereset, menimpa, atau menghapus pekerjaan/kode lain yang tidak sedang dikerjakan!**
+* Seluruh AI / agent (baik di frontend maupun backend) **HANYA BERHAK** mengubah kode pada berkas dan modul yang relevan dengan tugas spesifik yang diinstruksikan oleh user.
+* Jangan pernah memodifikasi atau mengembalikan (revert) pekerjaan pihak lain atau commit lain yang berada di luar lingkup tugas aktif.
+

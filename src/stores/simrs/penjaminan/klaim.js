@@ -34,6 +34,7 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
     newClaimResponse: null,
     meta: {},
     pageLayanan: false,
+    pasien: null,
     formpasien: {
       jaminan: '3;JKN',
       noPeserta: '',
@@ -446,149 +447,158 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
     },
     async bukaLayanan(pasien) {
       this.loadingTerima = true
-
       const form = { noreg: pasien?.noreg }
       this.noreg = pasien?.noreg
-      this.togglePageTindakan()
+
       try {
         const resp = await api.post('v1/simrs/pelayanan/igd/terimapasien', form)
         if (resp.status === 200) {
-          const findPasien = this.items.filter(x => x?.noreg === pasien?.noreg)
-          console.log('findPasien', findPasien)
-          if (findPasien?.length) {
-            // findPasien[0].status = findPasien[0].status === '' ? '2' : findPasien[0].status
+          const findPasien = this.items.find(x => x?.noreg === pasien?.noreg)
+          const target = findPasien || pasien
 
-            // BARU
-            findPasien[0].triage = resp?.data?.triage
-            findPasien[0].anamnesis = resp?.data?.anamnesis
-            findPasien[0].penilaiananamnesis = resp?.data?.penilaiananamnesis
-            findPasien[0].datasimpeg = resp?.data?.datasimpeg
-            findPasien[0].diagnosa = resp?.data?.diagnosa
-            findPasien[0].permintaanperawatanjenazah = resp?.data?.permintaanperawatanjenazah
-            findPasien[0].historyperkawinan = resp?.data?.historyperkawinan
-            findPasien[0].historykehamilan = resp?.data?.historykehamilan
-            findPasien[0].anamnesekebidanan = resp?.data?.anamnesekebidanan
-            findPasien[0].fisio = resp?.data?.fisio
-            findPasien[0].diagnosakeperawatan = resp?.data?.diagnosakeperawatan
-            findPasien[0].laborats = resp?.data?.laborats
-            findPasien[0].newapotekrajal = resp?.data?.newapotekrajal
-            findPasien[0].newapotekrajalretur = resp?.data?.newapotekrajalretur
-            findPasien[0].ok = resp?.data?.ok
-            findPasien[0].diagnosakebidanan = resp?.data?.diagnosakebidanan
-            findPasien[0].penunjanglain = resp?.data?.penunjanglain
-            findPasien[0].ambulan = resp?.data?.ambulan
-            findPasien[0].radiologi = resp?.data?.radiologi
-            findPasien[0].bankdarah = resp?.data?.bankdarah
-            findPasien[0].planheder = resp?.data?.planheder
-            findPasien[0].tindakan = resp?.data?.tindakan
-            findPasien[0].laboratold = resp?.data?.laboratold
-            findPasien[0].pemeriksaanfisikpsikologidll = resp?.data?.pemeriksaanfisikpsikologidll
-            findPasien[0].konsultasi = resp?.data?.konsuldokterspesialis
-            findPasien[0].tinjauanulang = resp?.data?.tinjauanulang
-            findPasien[0].skalatransfer = resp?.data?.skalatransfer
-            findPasien[0].pemberianobat = resp?.data?.pemberianobat
-            findPasien[0].rencanaterapidokter = resp?.data?.rencanaterapidokter
-            findPasien[0].dokumenluar = resp?.data?.dokumenluar
-            findPasien[0].hasilradiologi = resp?.data?.hasilradiologi
-            findPasien[0].rs35x = resp?.data?.rs35x
-            findPasien[0].transradiologi = resp?.data?.transradiologi
-            findPasien[0].bankdarahtrans = resp?.data?.bankdarahtrans
-            findPasien[0].oktrans = resp?.data?.oktrans
-            findPasien[0].kamarjenazah = resp?.data?.kamarjenazah
-            findPasien[0].ambulantrans = resp?.data?.ambulantrans
-            findPasien[0].jawabankonsulbynoreg = resp?.data?.jawabankonsulbynoreg
-            // BARU
-            // findPasien[0].laporantindakan = resp?.data?.laporantindakan
-            // findPasien[0].psikiatri = resp?.data?.psikiatri
-            // findPasien[0].neonatusmedis = resp?.data?.neonatusmedis
-            // findPasien[0].neonatuskeperawatan = resp?.data?.neonatuskeperawatan
-            // findPasien[0].pediatri = resp?.data?.pediatri
-            // findPasien[0].kandungan = resp?.data?.kandungan
-            // findPasien[0].dokumenluar = resp?.data?.dokumenluar
-          }
-          this.loadingTerima = false
-          console.log('items', this.items)
-          this.noreg = null
+          target.triage = resp?.data?.triage
+          target.anamnesis = resp?.data?.anamnesis
+          target.penilaiananamnesis = resp?.data?.penilaiananamnesis
+          target.datasimpeg = resp?.data?.datasimpeg
+          target.diagnosa = resp?.data?.diagnosa
+          target.diagnosamedis = resp?.data?.diagnosamedis ?? resp?.data?.diagnosa
+          target.permintaanperawatanjenazah = resp?.data?.permintaanperawatanjenazah
+          target.historyperkawinan = resp?.data?.historyperkawinan
+          target.historykehamilan = resp?.data?.historykehamilan
+          target.anamnesekebidanan = resp?.data?.anamnesekebidanan
+          target.fisio = resp?.data?.fisio
+          target.diagnosakeperawatan = resp?.data?.diagnosakeperawatan
+          target.laborats = resp?.data?.laborats
+          target.laboratold = resp?.data?.laboratold
+          target.newapotekrajal = resp?.data?.newapotekrajal
+          target.newapotekrajalretur = resp?.data?.newapotekrajalretur
+          target.ok = resp?.data?.ok
+          target.diagnosakebidanan = resp?.data?.diagnosakebidanan
+          target.penunjanglain = resp?.data?.penunjanglain
+          target.ambulan = resp?.data?.ambulan
+          target.radiologi = resp?.data?.radiologi
+          target.bankdarah = resp?.data?.bankdarah
+          target.planheder = resp?.data?.planheder
+          target.tindakan = resp?.data?.tindakan
+          target.pemeriksaanfisikpsikologidll = resp?.data?.pemeriksaanfisikpsikologidll
+          target.pemeriksaanfisik = resp?.data?.pemeriksaanfisik
+          target.konsultasi = resp?.data?.konsuldokterspesialis
+          target.tinjauanulang = resp?.data?.tinjauanulang
+          target.skalatransfer = resp?.data?.skalatransfer
+          target.pemberianobat = resp?.data?.pemberianobat
+          target.rencanaterapidokter = resp?.data?.rencanaterapidokter
+          target.dokumenluar = resp?.data?.dokumenluar
+          target.ttd_dokumen_igd = resp?.data?.ttd_dokumen_igd ?? []
+          target.memodiagnosa = resp?.data?.memodiagnosa
+          target.edukasi = resp?.data?.edukasi
+          target.informconcern = resp?.data?.informconcern ?? []
+          target.hasilradiologi = resp?.data?.hasilradiologi
+          target.rs35x = resp?.data?.rs35x
+          target.transradiologi = resp?.data?.transradiologi
+          target.bankdarahtrans = resp?.data?.bankdarahtrans
+          target.oktrans = resp?.data?.oktrans
+          target.kamarjenazah = resp?.data?.kamarjenazah
+          target.ambulantrans = resp?.data?.ambulantrans
+          target.jawabankonsulbynoreg = resp?.data?.jawabankonsulbynoreg
+
+          target.kdpoli = target.kodepoli || target.kdpoli || 'POL014'
+          target.kodepoli = target.kodepoli || target.kdpoli || 'POL014'
+          target.poli = target.poli || 'IGD'
+          if (!target.nama) target.nama = target.pasien
+          if (!target.nama_panggil) target.nama_panggil = target.pasien
+          if (!target.dokter) target.dokter = target.dpjp || resp?.data?.datasimpeg?.nama
+          if (!target.kddokter) target.kddokter = resp?.data?.datasimpeg?.kdpegsimrs
+
+          this.pasien = target
+          this.pageLayanan = true
+          return target
         }
       }
       catch (error) {
-        console.log(error)
+        console.error('Error bukaLayanan IGD:', error)
+        this.notifikasiError('Maaf.. Harap ulangi, Ada Kesalahan ')
+      }
+      finally {
         this.loadingTerima = false
         this.noreg = null
-        this.notifikasiError('Maaf.. Harap ulangi, Ada Kesalahan ')
       }
     },
     async bukaLayananrajal(pasien) {
       this.loadingTerima = true
       const form = { noreg: pasien?.noreg }
       this.noreg = pasien?.noreg
-      this.togglePageTindakan()
+
       try {
         const resp = await api.post('v1/simrs/rajal/poli/terimapasien', form)
-        // console.log('terima', resp)
         if (resp.status === 200) {
-          const findPasien = this.items.filter(x => x?.noreg === pasien?.noreg)
-          if (findPasien?.length) {
-            findPasien[0].status = findPasien[0].status === '' ? '2' : findPasien[0].status
-            const responseData = resp?.data?.result ?? null
-            // BARU
-            findPasien[0].anamnesis = responseData?.anamnesis
-            findPasien[0].datasimpeg = responseData?.datasimpeg
-            findPasien[0].diagnosa = responseData?.diagnosa
-            findPasien[0].diagnosakeperawatan = responseData?.diagnosakeperawatan
-            findPasien[0].diagnosakebidanan = responseData?.diagnosakebidanan
-            findPasien[0].diet = responseData?.diet
-            findPasien[0].edukasi = responseData?.edukasi
-            findPasien[0].fisio = responseData?.fisio
-            findPasien[0].gambars = responseData?.gambars
-            findPasien[0].laborats = responseData?.laborats
-            findPasien[0].laboratold = responseData?.laboratold
-            findPasien[0].newapotekrajal = responseData?.newapotekrajal
-            findPasien[0].ok = responseData?.ok
-            findPasien[0].pemeriksaanfisik = responseData?.pemeriksaanfisik
-            findPasien[0].penunjanglain = responseData?.penunjanglain
-            findPasien[0].planning = responseData?.planning
-            findPasien[0].radiologi = responseData?.radiologi
-            findPasien[0].sharing = responseData?.sharing
-            findPasien[0].taskid = responseData?.taskid
-            findPasien[0].tindakan = responseData?.tindakan
-            // BARU
-            findPasien[0].laporantindakan = responseData?.laporantindakan
-            findPasien[0].psikiatri = responseData?.psikiatri
-            findPasien[0].neonatusmedis = responseData?.neonatusmedis
-            findPasien[0].neonatuskeperawatan = responseData?.neonatuskeperawatan
-            findPasien[0].pediatri = responseData?.pediatri
-            findPasien[0].kandungan = responseData?.kandungan
-            findPasien[0].dokumenluar = responseData?.dokumenluar
-            findPasien[0].rs19 = responseData?.rs19
-            // jawabn konsul
-            findPasien[0].jawabankonsul = responseData?.jawabankonsul
-            findPasien[0].jawabankonsulbynoreg = responseData?.jawabankonsulbynoreg
-            findPasien[0].intradialitik = responseData?.intradialitikhd
+          const findPasien = this.items.find(x => x?.noreg === pasien?.noreg)
+          const target = findPasien || pasien
 
-            findPasien[0].diagnosamedis = responseData?.diagnosamedis
-            findPasien[0].kamaroperasi = responseData?.kamaroperasi
-            findPasien[0].hasilradiologi = responseData?.hasilradiologi
-            findPasien[0].laporaneswl = responseData?.laporaneswl
-            findPasien[0].bpjssuratkontrol = responseData?.bpjssuratkontrol
-            findPasien[0].suratketerangandokter = responseData?.suratketerangandokter
-            findPasien[0].planningdokter = responseData?.planningdokter
-            findPasien[0].anamnesis_skrining = responseData?.anamnesis_skrining
-            findPasien[0].prmrjflag = responseData?.prmrjflag?.flaging ?? responseData?.prmrjflag
+          target.status = target.status === '' ? '2' : target.status
+          const responseData = resp?.data?.result ?? null
 
-            if (!findPasien[0].nama) findPasien[0].nama = findPasien[0].pasien
-            if (!findPasien[0].nama_panggil) findPasien[0].nama_panggil = findPasien[0].pasien
-            if (!findPasien[0].kddokter) findPasien[0].kddokter = responseData?.rs9 ?? responseData?.datasimpeg?.kdpegsimrs
-          }
-          this.loadingTerima = false
-          this.noreg = null
+          target.anamnesis = responseData?.anamnesis
+          target.datasimpeg = responseData?.datasimpeg
+          target.diagnosa = responseData?.diagnosa
+          target.diagnosakeperawatan = responseData?.diagnosakeperawatan
+          target.diagnosakebidanan = responseData?.diagnosakebidanan
+          target.diet = responseData?.diet
+          target.edukasi = responseData?.edukasi
+          target.fisio = responseData?.fisio
+          target.gambars = responseData?.gambars
+          target.laborats = responseData?.laborats
+          target.laboratold = responseData?.laboratold
+          target.newapotekrajal = responseData?.newapotekrajal
+          target.ok = responseData?.ok
+          target.pemeriksaanfisik = responseData?.pemeriksaanfisik
+          target.penunjanglain = responseData?.penunjanglain
+          target.planning = responseData?.planning
+          target.radiologi = responseData?.radiologi
+          target.sharing = responseData?.sharing
+          target.taskid = responseData?.taskid
+          target.tindakan = responseData?.tindakan
+          target.laporantindakan = responseData?.laporantindakan
+          target.psikiatri = responseData?.psikiatri
+          target.neonatusmedis = responseData?.neonatusmedis
+          target.neonatuskeperawatan = responseData?.neonatuskeperawatan
+          target.pediatri = responseData?.pediatri
+          target.kandungan = responseData?.kandungan
+          target.dokumenluar = responseData?.dokumenluar
+          target.rs19 = responseData?.rs19
+          target.jawabankonsul = responseData?.jawabankonsul
+          target.jawabankonsulbynoreg = responseData?.jawabankonsulbynoreg
+          target.intradialitik = responseData?.intradialitikhd
+
+          target.diagnosamedis = responseData?.diagnosamedis
+          target.kamaroperasi = responseData?.kamaroperasi
+          target.hasilradiologi = responseData?.hasilradiologi
+          target.laporaneswl = responseData?.laporaneswl
+          target.bpjssuratkontrol = responseData?.bpjssuratkontrol
+          target.suratketerangandokter = responseData?.suratketerangandokter
+          target.planningdokter = responseData?.planningdokter
+          target.anamnesis_skrining = responseData?.anamnesis_skrining
+          target.prmrjflag = responseData?.prmrjflag?.flaging ?? responseData?.prmrjflag
+
+          target.kdpoli = target.kodepoli || target.kdpoli
+          target.kodepoli = target.kodepoli || target.kdpoli
+          if (!target.nama) target.nama = target.pasien
+          if (!target.nama_panggil) target.nama_panggil = target.pasien
+          if (!target.kddokter) target.kddokter = responseData?.rs9 ?? responseData?.datasimpeg?.kdpegsimrs
+          if (!target.dokter) target.dokter = responseData?.datasimpeg?.nama
+          if (!target.poli) target.poli = target.ruangan
+
+          this.pasien = target
+          this.pageLayanan = true
+          return target
         }
       }
       catch (error) {
-        console.log(error)
+        console.error('Error bukaLayananrajal:', error)
+        this.notifikasiError('Maaf.. Harap ulangi, Ada Kesalahan ')
+      }
+      finally {
         this.loadingTerima = false
         this.noreg = null
-        this.notifikasiError('Maaf.. Harap ulangi, Ada Kesalahan ')
       }
     },
     togglePageTindakan() {

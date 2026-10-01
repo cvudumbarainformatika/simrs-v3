@@ -466,5 +466,28 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
       })
     },
 
+
+
+
+    async penetapanRka(payload) {
+      this.loadingSave = true
+      try {
+        const resp = await api.post('/v1/anggaran/penyusunan/prioritas/penetapanrka', payload)
+
+        if (resp.status === 200) {
+          notifSuccess(resp)
+          await this.getData()
+        }
+
+        return resp // 🔥 penting
+
+      } catch (error) {
+        notifErr(error)
+        throw error // 🔥 penting biar bisa ditangkap di component
+
+      } finally {
+        this.loadingSave = false // 🔥 paling aman
+      }
+    },
   }
 })

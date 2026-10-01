@@ -33,54 +33,88 @@ const props = defineProps({
 
 const localPasien = ref({ ...props.pasien })
 
+const operationArrayKeys = [
+  'manymemo',
+  'permintaanobatoperasi',
+  'newapotekrajal',
+  'manytindakanop',
+  'surgical',
+  'laporanop',
+  'implant',
+  'implant_seri',
+  'inventaris_kasa',
+  'inventaris_instrumen',
+  'tindakan',
+  'laborats',
+  'laboratold',
+  'bankdarah',
+  'radiologi',
+  'hasilradiologi',
+  'cppt',
+  'konsultasi',
+  'pra_bedah'
+]
+
+const operationObjectKeys = ['tindakanop', 'pra_induksi']
+
+const mergeRelationItems = (current, incoming) => {
+  const result = [...(current || [])]
+  incoming.forEach(item => {
+    const itemKey = item?.id ?? item?.rs2 ?? item?.nota
+    const index = itemKey == null
+      ? -1
+      : result.findIndex(existing => (existing?.id ?? existing?.rs2 ?? existing?.nota) === itemKey)
+
+    if (index === -1) result.push(item)
+    else result[index] = item
+  })
+  return result
+}
+
 watch(() => props.pasien, (newVal) => {
   localPasien.value = { ...newVal }
   fetchOkData()
 }, { deep: true })
 
 const fetchOkData = async () => {
-  if (!props.pasien?.noreg) return
+  const noreg = props.pasien?.noreg
+  if (!noreg) return
+
   try {
-    const respList = await api.get(`v1/simrs/penunjang/ok/listkamaroperasi?q=${props.pasien.noreg}`)
-    const items = respList.data?.data || respList.data || []
-    if (items.length > 0) {
-      for (const item of items) {
-        const nota = item.rs2
-        const respDetail = await api.post('v1/simrs/penunjang/ok/buka-layanan', {
-          noreg: props.pasien.noreg,
-          nota: nota
-        })
-        const detail = respDetail.data || {}
-        
-        // Merge detail arrays into localPasien
-        if (detail.laporanop) {
-          localPasien.value.laporanop = localPasien.value.laporanop || []
-          detail.laporanop.forEach(lap => {
-            if (!localPasien.value.laporanop.some(x => x.id === lap.id)) {
-              localPasien.value.laporanop.push(lap)
-            }
-          })
+    const respList = await api.get('v1/simrs/penunjang/ok/listkamaroperasi', {
+      params: { q: noreg, history: '1', status: 'all', per_page: 100 }
+    })
+    const items = Array.isArray(respList.data?.data)
+      ? respList.data.data
+      : (Array.isArray(respList.data) ? respList.data : [])
+
+    const responses = await Promise.allSettled(items
+      .filter(item => item?.rs2)
+      .map(item => api.post('v1/simrs/penunjang/ok/buka-layanan', {
+        noreg,
+        nota: item.rs2
+      })))
+    const details = responses
+      .filter(result => result.status === 'fulfilled')
+      .map(result => result.value?.data?.data ?? result.value?.data)
+      .filter(detail => detail && typeof detail === 'object')
+
+    const freshPasien = { ...props.pasien }
+    operationArrayKeys.forEach(key => { freshPasien[key] = [] })
+    operationObjectKeys.forEach(key => { freshPasien[key] = null })
+
+    details.forEach(detail => {
+      operationArrayKeys.forEach(key => {
+        if (Array.isArray(detail[key])) {
+          freshPasien[key] = mergeRelationItems(freshPasien[key], detail[key])
         }
-        if (detail.pra_bedah) {
-          localPasien.value.pra_bedah = detail.pra_bedah
-        }
-        if (detail.pra_induksi) {
-          localPasien.value.pra_induksi = detail.pra_induksi
-        }
-        if (detail.surgical) {
-          localPasien.value.surgical = detail.surgical
-        }
-        if (detail.manytindakanop) {
-          localPasien.value.manytindakanop = detail.manytindakanop
-        }
-        if (detail.implant) {
-          localPasien.value.implant = detail.implant
-        }
-        if (detail.implant_seri) {
-          localPasien.value.implant_seri = detail.implant_seri
-        }
-      }
-    }
+      })
+      operationObjectKeys.forEach(key => {
+        if (detail[key] !== undefined && detail[key] !== null) freshPasien[key] = detail[key]
+      })
+    })
+
+    localPasien.value = freshPasien
   } catch (err) {
     console.error('Error fetching OK patient details for documents:', err)
   }

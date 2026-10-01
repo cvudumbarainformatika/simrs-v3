@@ -13,7 +13,9 @@ export const useMasterTarifLaboratoriumStore = defineStore('master_tarif_laborat
     params: {
       q: '',
       per_page: 10,
-      page: 1
+      page: 1,
+      status: 'aktif',
+      kelompok: ''
     },
     form: {},
     disp: {},
@@ -65,6 +67,16 @@ export const useMasterTarifLaboratoriumStore = defineStore('master_tarif_laborat
     },
     setParams (key, val) {
       this.params[key] = val
+    },
+    setStatus (payload) {
+      this.params.status = payload
+      this.params.page = 1
+      this.getDataTable()
+    },
+    setKelompok (payload) {
+      this.params.kelompok = payload ?? ''
+      this.params.page = 1
+      this.getDataTable()
     },
     setPage (payload) {
       this.params.page = payload

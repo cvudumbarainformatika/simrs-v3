@@ -11,14 +11,14 @@
       :meta="store.meta"
       :per-page="store.params.per_page"
       :loading="store.loading"
-      :to-search="store.params.no_permintaan"
+      :to-search="store.params.q"
       :click-able="true"
       :default-btn="false"
       :ada-tambah="false"
       :ada-filter="false"
       row-no
       use-full
-      text-cari="Cari ..."
+      text-cari="Cari No. Permintaan / Nama Obat..."
       @find="store.setSearch"
       @goto="store.setPage"
       @set-row="store.setPerPage"
@@ -32,38 +32,124 @@
             -->
 
       <template #header-left-after-search>
-        <div class="q-ml-md text-white">
-          <!-- <div class="row q-mb-xs q-ml-xs items-center">
-            <div class="q-mr-sm">
-              Status :
-            </div>
-            <div class="q-mr-sm">
-              <q-radio
-                v-model="store.params.jenisdistribusi"
-                checked-icon="icon-mat-task_alt"
-                unchecked-icon="icon-mat-panorama_fish_eye"
-                val="non-konsinyasi"
-                label="Non-Konsinyasi"
-                keep-color
-                color="white"
-                :disable="store.loading"
-                @update:model-value="store.gantiJenisDistribusi"
-              />
-            </div>
-            <div class="q-mr-sm">
-              <q-radio
-                v-model="store.params.jenisdistribusi"
-                checked-icon="icon-mat-task_alt"
-                unchecked-icon="icon-mat-panorama_fish_eye"
-                val="konsinyasi"
-                label="Konsinyasi"
-                keep-color
-                color="white"
-                :disable="store.loading"
-                @update:model-value="store.gantiJenisDistribusi"
-              />
-            </div>
-          </div> -->
+        <div class="row q-col-gutter-sm items-center q-ml-sm">
+          <!-- Filter Ruangan Peminta -->
+          <div class="col-auto" style="min-width: 200px;">
+            <q-select
+              v-model="store.params.dari"
+              :options="opsiRuangans"
+              option-label="uraian"
+              option-value="kode"
+              emit-value
+              map-options
+              dense
+              outlined
+              dark
+              color="white"
+              label="Ruangan Peminta"
+              clearable
+              use-input
+              @filter="filterRuangan"
+              @update:model-value="store.setDari"
+            />
+          </div>
+
+          <!-- Filter Status -->
+          <div class="col-auto">
+            <q-btn outline color="white" class="bg-primary text-white" no-caps dense>
+              <div class="flex items-center q-mx-xs">
+                <div class="f-12 q-mr-xs">
+                  {{ store.paramStatus?.nama || 'Semua Status' }}
+                </div>
+                <q-icon name="icon-mat-keyboard_arrow_down" size="16px" />
+              </div>
+              <q-menu>
+                <q-list style="min-width: 200px">
+                  <q-item
+                    v-for="(st, i) in store.statuses"
+                    :key="i"
+                    clickable
+                    v-close-popup
+                    :active="store.params.flag === st.value"
+                    active-class="bg-primary text-white"
+                    @click="store.setParamStatus(st)"
+                  >
+                    <q-item-section>{{ st.nama }}</q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
+          </div>
+
+          <!-- Filter Periode Tanggal -->
+          <div class="col-auto">
+            <q-btn outline color="white" class="bg-primary text-white" no-caps dense>
+              <div class="flex items-center q-mx-xs">
+                <div class="f-12 q-mr-xs">
+                  Periode: {{ store.header?.periode || 'Semua' }}
+                </div>
+                <q-icon name="icon-mat-keyboard_arrow_down" size="16px" />
+              </div>
+              <q-menu>
+                <div class="row no-wrap q-pa-sm">
+                  <q-list style="min-width: 110px">
+                    <q-item
+                      v-for="item in store.periods"
+                      :key="item"
+                      clickable
+                      v-close-popup="item !== 'Custom'"
+                      :active="item === store.header?.periode"
+                      active-class="bg-primary text-white"
+                      @click="store.setPeriode(item)"
+                    >
+                      <q-item-section>{{ item }}</q-item-section>
+                    </q-item>
+                  </q-list>
+                  <q-separator vertical inset />
+                  <div class="column q-pa-xs">
+                    <div class="row q-col-gutter-xs">
+                      <div class="col">
+                        <q-date
+                          v-model="store.params.from"
+                          minimal
+                          bordered
+                          flat
+                          mask="YYYY-MM-DD"
+                          @update:model-value="store.setPeriode('Custom')"
+                        />
+                        <div class="f-10 text-grey-8 q-mt-xs">
+                          Dari: <b>{{ store.params.from || '-' }}</b>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <q-date
+                          v-model="store.params.to"
+                          minimal
+                          bordered
+                          flat
+                          mask="YYYY-MM-DD"
+                          @update:model-value="store.setPeriode('Custom')"
+                        />
+                        <div class="f-10 text-grey-8 q-mt-xs">
+                          Sampai: <b>{{ store.params.to || '-' }}</b>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row q-mt-xs justify-end">
+                      <q-btn
+                        label="Terapkan"
+                        color="primary"
+                        dense
+                        size="sm"
+                        v-close-popup
+                        @click="store.getPermintaanDepo"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </q-menu>
+            </q-btn>
+          </div>
         </div>
       </template>
       <template #col-no_permintaan>
@@ -376,6 +462,24 @@ import { useDistribusiPermintaanRuanganStore } from 'src/stores/simrs/farmasi/di
 import { ref, onMounted, watch, defineAsyncComponent } from 'vue'
 const store = useDistribusiPermintaanRuanganStore()
 const apps = useAplikasiStore()
+
+const opsiRuangans = ref([])
+function filterRuangan (val, update) {
+  if (!apps.ruangs?.length) {
+    update(() => { opsiRuangans.value = [{ kode: '', uraian: 'Semua Ruangan' }] })
+    return
+  }
+  if (!val || val === '') {
+    update(() => {
+      opsiRuangans.value = [{ kode: '', uraian: 'Semua Ruangan' }, ...apps.ruangs]
+    })
+    return
+  }
+  update(() => {
+    const needle = val.toLowerCase()
+    opsiRuangans.value = apps.ruangs.filter(v => v.uraian?.toLowerCase().includes(needle) || v.kode?.toLowerCase().includes(needle))
+  })
+}
 
 const depos = ['Gd-03010101', 'Gd-04010102', 'Gd-04010103', 'Gd-05010101', 'Gd-02010104']
 

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { notifSuccess } from 'src/modules/utils'
+import { dateDbFormat } from 'src/modules/formatter'
 
 export const useListPermintaanRuanganStore = defineStore('list_permintaan_ruangan_store', {
   state: () => ({
@@ -9,11 +10,29 @@ export const useListPermintaanRuanganStore = defineStore('list_permintaan_ruanga
     loading: false,
     items: [],
     meta: {},
+    header: {
+      periode: 'Semua'
+    },
+    periods: ['Semua', 'Hari ini', 'Minggu ini', 'Bulan ini', 'Custom'],
     param: {
       cari: '',
+      no_permintaan: '',
       per_page: 10,
       page: 1,
-      tanggal: date.formatDate(Date.now(), 'YYYY-MM-DD')
+      from: '',
+      to: '',
+      tanggal: '',
+      flag: ['1', '2', '3', '4']
+    },
+    statuses: [
+      { nama: 'Semua Status', value: '', color: 'grey' },
+      { nama: 'Dikirim ke Depo', value: '1', color: 'cyan' },
+      { nama: 'Diterima Depo', value: '2', color: 'blue' },
+      { nama: 'Telah didistribusikan', value: '3', color: 'orange' },
+      { nama: 'Diterima Ruangan', value: '4', color: 'grey' }
+    ],
+    paramStatus: {
+      nama: 'Semua Status', value: '', color: 'grey'
     },
     columns: [
       'no_permintaan',
@@ -31,6 +50,7 @@ export const useListPermintaanRuanganStore = defineStore('list_permintaan_ruanga
     },
     setSearch(payload) {
       this.setParam('cari', payload)
+      this.setParam('no_permintaan', payload)
       this.setParam('page', 1)
       this.ambilPermintaan()
     },
@@ -46,6 +66,58 @@ export const useListPermintaanRuanganStore = defineStore('list_permintaan_ruanga
     refreshTable() {
       this.setParam('page', 1)
       this.ambilPermintaan()
+    },
+    setParamStatus(val) {
+      this.paramStatus = val
+      if (!val || val.value === '') {
+        this.setParam('flag', ['1', '2', '3', '4'])
+      } else {
+        this.setParam('flag', [val.value])
+      }
+      this.setParam('page', 1)
+      this.ambilPermintaan()
+    },
+    setPeriode(val) {
+      this.header.periode = val
+      if (val === 'Semua') {
+        this.param.from = ''
+        this.param.to = ''
+        this.param.tanggal = ''
+      } else if (val === 'Hari ini') {
+        this.hariIni()
+      } else if (val === 'Minggu ini') {
+        this.mingguIni()
+      } else if (val === 'Bulan ini') {
+        this.bulanIni()
+      }
+      if (val !== 'Custom') {
+        this.setParam('page', 1)
+        this.ambilPermintaan()
+      }
+    },
+    hariIni() {
+      const cDate = new Date()
+      this.param.to = dateDbFormat(cDate)
+      this.param.from = dateDbFormat(cDate)
+      this.param.tanggal = dateDbFormat(cDate)
+    },
+    mingguIni() {
+      const curr = new Date()
+      const first = curr.getDate() - curr.getDay() + 1
+      const last = first + 6
+      const firstday = new Date(curr.setDate(first))
+      const lastday = new Date(curr.setDate(last))
+      this.param.from = dateDbFormat(firstday)
+      this.param.to = dateDbFormat(lastday)
+      this.param.tanggal = ''
+    },
+    bulanIni() {
+      const curr = new Date(), y = curr.getFullYear(), m = curr.getMonth()
+      const firstday = new Date(y, m, 1)
+      const lastday = new Date(y, m + 1, 0)
+      this.param.from = dateDbFormat(firstday)
+      this.param.to = dateDbFormat(lastday)
+      this.param.tanggal = ''
     },
     getInitialData() {
       this.ambilPermintaan()
