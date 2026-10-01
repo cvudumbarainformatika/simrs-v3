@@ -13,11 +13,22 @@ export const useKasirIgdStore = defineStore('kasir_igd_store', {
       sort: 'DESC',
       page: 1,
       order_by: 'id',
-      tgl: dateDbFormat(new Date())
+      from: dateDbFormat(new Date()),
+      to: dateDbFormat(new Date())
     },
     golongan: '',
     loading: false,
     rekapBill: {},
+    rincianPembayaran: [],
+    riwayatPembayaran: [],
+    totalTerbayar: 0,
+    totalSisa: 0,
+    riwayatKwitansi: [],
+    totalKwitansiAktif: 0,
+    savingPembayaran: false,
+    printingKwitansi: false,
+    membatalkanKwitansi: false,
+    deletingPembayaran: false,
     notas: {},
     qris: 'asd',
     form: {
@@ -34,9 +45,10 @@ export const useKasirIgdStore = defineStore('kasir_igd_store', {
   // },
   actions: {
 
-    setDate(payload) {
+    setDateRange(from, to) {
       this.params.page = 1
-      this.params.tgl = payload
+      this.params.from = from
+      this.params.to = to
       this.getLists()
     },
     setQ(payload) {
@@ -60,7 +72,7 @@ export const useKasirIgdStore = defineStore('kasir_igd_store', {
       this.loading = true
       const params = { params: this.params }
       // const resp = await api.get('/v1/simrs/pendaftaran/umum/kunjunganpasienumum', params)
-      const resp = await api.get('/v1/simrs/kasir/rajal/kunjunganpoli', params)
+      const resp = await api.get('/v1/simrs/kasir/igd/pasien-pulang', params)
       if (resp.status === 200) {
         // console.log('kunjungan', resp)
         this.items = resp.data.data
@@ -85,6 +97,45 @@ export const useKasirIgdStore = defineStore('kasir_igd_store', {
           this.loading = false
         })
       })
+    },
+    async getRincianPembayaran (noreg) {
+      this.loading = true
+      try {
+        const response = await api.get('/v1/simrs/kasir/igd/rincian-pembayaran', { params: { noreg } })
+        this.rincianPembayaran = response.data?.data || []
+        this.riwayatPembayaran = response.data?.riwayat_pembayaran || []
+        this.totalTerbayar = Number(response.data?.total_terbayar || 0)
+        this.totalSisa = Number(response.data?.total_sisa || 0)
+        return response
+      } finally {
+        this.loading = false
+      }
+    },
+    async getRiwayatKwitansiIgd (noreg) {
+      const response = await api.get('/v1/simrs/kasir/igd/riwayat-kwitansi', { params: { noreg } })
+      this.riwayatKwitansi = response.data?.data || []
+      this.totalKwitansiAktif = Number(response.data?.total_terbayar || 0)
+      return response
+    },
+    async hapusPembayaranIgd (payload) {
+      this.deletingPembayaran = true
+      try { return await api.post('/v1/simrs/kasir/igd/hapus-pembayaran', payload) } finally { this.deletingPembayaran = false }
+    },    async batalKwitansiIgd (payload) {
+      this.membatalkanKwitansi = true
+      try { return await api.post('/v1/simrs/kasir/igd/batal-kwitansi', payload) } finally { this.membatalkanKwitansi = false }
+    },    async cekKwitansiPembayaranIgd (noreg, noPembayaran) {
+      return api.get('/v1/simrs/kasir/igd/cek-kwitansi-pembayaran', { params: { noreg, no_pembayaran: noPembayaran } })
+    },    async cetakKwitansiIgd (payload) {
+      this.printingKwitansi = true
+      try { return await api.post('/v1/simrs/kasir/igd/cetak-kwitansi', payload) } finally { this.printingKwitansi = false }
+    },
+    async simpanPembayaranIgd (payload) {
+      this.savingPembayaran = true
+      try {
+        return await api.post('/v1/simrs/kasir/igd/simpan-pembayaran', payload)
+      } finally {
+        this.savingPembayaran = false
+      }
     },
     async getNotas(val) {
       this.notas = {}

@@ -24,6 +24,11 @@ const kasir = {
       name: 'kasir.homecare',
       component: () => import('pages/simrs/kasir/homecare/IndexPage.vue')
     },
+{
+      path: '/kasir/igd',
+      name: 'kasir.igd',
+      component: () => import('pages/simrs/kasir/igd/IndexPage.vue')
+    },
     {
       path: '/kasir/tbp',
       name: 'kasir.tbp',

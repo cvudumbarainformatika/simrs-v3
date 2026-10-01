@@ -96,8 +96,7 @@
             </div>
           </q-item-section>
           <q-item-section side top class="status-area">
-            <q-badge rounded :color="item.tgl_lunas ? 'positive' : 'negative'" :label="item.tgl_lunas ? 'Sudah Lunas' : 'Belum Lunas'" />
-            <q-badge outline class="q-mt-xs" :color="item.tgl_selesai ? 'positive' : 'grey-7'" :label="item.tgl_selesai ? 'Selesai' : 'Proses'" />
+            <q-badge rounded :color="item.kwitansi_aktif ? 'positive' : 'negative'" :label="item.kwitansi_aktif ? 'Lunas' : 'Belum Lunas'" />
           </q-item-section>
         </q-item>
       </q-list>
@@ -133,8 +132,8 @@ const stats = computed(() => {
   const items = store.items || []
   return [
     { label: 'Total pasien', value: store.meta?.total || items.length, color: 'primary', icon: 'icon-mat-groups' },
-    { label: 'Belum lunas', value: items.filter(item => !item.tgl_lunas).length, color: 'negative', icon: 'icon-mat-pending_actions' },
-    { label: 'Sudah lunas', value: items.filter(item => item.tgl_lunas).length, color: 'positive', icon: 'icon-mat-verified' },
+    { label: 'Belum lunas', value: items.filter(item => !item.kwitansi_aktif).length, color: 'negative', icon: 'icon-mat-pending_actions' },
+    { label: 'Sudah lunas', value: items.filter(item => item.kwitansi_aktif).length, color: 'positive', icon: 'icon-mat-verified' },
     { label: 'Selesai layanan', value: items.filter(item => item.tgl_selesai).length, color: 'teal', icon: 'icon-mat-task_alt' }
   ]
 })
