@@ -56,16 +56,22 @@
       </div>
 
       <!-- TTD -->
-      <div class="row justify-between">
+      <div class="row justify-between q-mt-md">
         <div class="col-6">
-          <div class="q-mt-md q-mb-xs">
-            TTD PASIEN / KELUARGA :
+          <div class="column full-height flex-center relative-position q-pa-sm">
+            <div>
+              <app-signature
+                :ttd="store.form.ttdPasien"
+                :width="250"
+                :height="150"
+                label-ttd="TTD Pasien / Keluarga"
+                @save-ttd="(val) => store.form.ttdPasien = val"
+                :pasien="pasien"
+                uuid="ttdPasienDischargeSummary"
+                @signature="(val) => { store.form.ttdPasien = val }"
+              />
+            </div>
           </div>
-          <TtdWacom uuid="ttd-pasien-summary-discharge" :ttd-name="store.form.nama ?? 'nama pasien / keluarga'"
-            @signature:ttd-pasien-summary-discharge="(val) => {
-              // console.log('ttd-saksi-rs',val);
-              store.form.ttdPasien = val
-            }" />
         </div>
         <div class="col-6">
           <div v-if="store.ttdFromServer" class="q-pa-lg">
@@ -85,9 +91,9 @@
 </template>
 
 <script setup>
-import { pathImg } from 'src/boot/axios';
+import { pathImg } from 'src/boot/axios'
 import { useSummaryDischargePlanningRanapStore } from 'src/stores/simrs/ranap/summarydischargeplanning'
-import { defineAsyncComponent, onMounted } from 'vue'
+import { onMounted } from 'vue'
 
 const props = defineProps({
   pasien: {
@@ -96,21 +102,15 @@ const props = defineProps({
   }
 })
 
-const TtdWacom = defineAsyncComponent(() => {
-  return import('src/components/~static/TtdWacomStu540.vue')
-})
-
 const store = useSummaryDischargePlanningRanapStore()
 
 onMounted(() => {
   Promise.all([
-    // store.getmasterprognosis(),
     store.initReset()
   ])
 })
 
 function onSubmit() {
-  // console.log('onSubmit')
   store.simpandata(props.pasien)
 }
 </script>

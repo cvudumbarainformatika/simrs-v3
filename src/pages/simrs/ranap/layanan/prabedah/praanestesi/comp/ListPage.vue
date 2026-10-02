@@ -227,7 +227,7 @@
                       <td>
                         <div class="flex">
                           <div> <b>Puasa Mulai Jam</b> </div>
-                          <div> : {{ item.puasaMulaiJam }}</div>
+                          <div> : {{ item.mulaiPuasajam || item.puasaMulaiJam }}</div>
                           <div> <b>Tanggal</b> : {{ item.puasaMulaiTgl }}</div>
                         </div>
                         <div class="flex">
