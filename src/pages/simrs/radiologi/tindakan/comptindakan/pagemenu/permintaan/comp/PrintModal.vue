@@ -11,11 +11,11 @@
       </div>
 
       <q-card-section style="max-height: 90vh;" class="fit scroll">
-        <DataPrint id="printMe" :item="props.item" :pasien="props.pasien" :key="`${props.item?.id || props.item?.rs1 || props.item?.rs3 || 'item'}_${props.item?.tgl || props.item?.hasil || 'print'}`" />
+        <DataPrint :id="printId" :item="props.item" :pasien="props.pasien" :key="`${props.item?.id || props.item?.rs1 || props.item?.rs3 || 'item'}_${props.item?.tgl || props.item?.hasil || 'print'}`" />
       </q-card-section>
       <q-card-section class="q-pa-none bg-primary text-white absolute-bottom full-width">
         <div class="q-pa-md row justify-between items-center">
-          <div><q-btn label="Tutup" color="dark" text-color="white" @click="" /></div>
+          <div><q-btn label="Tutup" color="dark" text-color="white" v-close-popup /></div>
           <div>
             <q-btn v-print="printObj" label="Print" color="yellow-3" text-color="dark" />
           </div>
@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent, ref } from 'vue'
+import { defineAsyncComponent, ref, computed } from 'vue'
 import DataPrint from './DataPrint.vue'
 
 const props = defineProps({
@@ -40,6 +40,11 @@ const props = defineProps({
   }
 })
 
+const printId = computed(() => {
+  const raw = props.item?.id || props.item?.kode || props.item?.rs4 || props.item?.rs2 || 'item'
+  return `printMe-${String(raw).replace(/[^a-zA-Z0-9_-]/g, '_')}`
+})
+
 const lihatData = () => {
   console.log('lihat data', props.item);
   console.log('lihat data', props.pasien);
@@ -47,8 +52,8 @@ const lihatData = () => {
 }
 
 const printed = ref(false)
-const printObj = {
-  id: 'printMe',
+const printObj = computed(() => ({
+  id: printId.value,
   popTitle: 'CETAK RADIOLOGI',
   beforeOpenCallback(vue) {
     printed.value = true
@@ -61,5 +66,5 @@ const printObj = {
     printed.value = false
     console.log('closePrint')
   }
-}
+}))
 </script>

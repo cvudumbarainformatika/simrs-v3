@@ -135,9 +135,8 @@ export const useRadiologiPoli = defineStore('poli-radiologi', {
     },
     setNotas (array) {
       const arr = array.map(x => x.nota)
-      this.notas = arr?.length ? arr : []
-      this.notas.push('BARU')
-      this.form.nota = this.notas[0]
+      this.notas = ['SEMUA', ...(arr?.length ? arr : []), 'BARU']
+      this.form.nota = 'SEMUA'
     },
 
     async hapusRadiologi (pasien, id) {
