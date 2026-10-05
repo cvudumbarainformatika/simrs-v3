@@ -74,12 +74,11 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useSlideup } from 'src/composable/gsap/slideup'
-import { useAnamnesis } from 'src/stores/simrs/pelayanan/poli/anamnesis'
+import { useAnamnesisHomeCare } from 'src/stores/simrs/homeCare/anamnesis'
 import { humanDate } from 'src/modules/formatter'
 const { enter, leave } = useSlideup()
 
-const store = useAnamnesis()
+const store = useAnamnesisHomeCare()
 defineProps({
   seamless: {
     type: Boolean,

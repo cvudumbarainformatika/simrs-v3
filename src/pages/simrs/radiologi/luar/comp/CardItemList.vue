@@ -42,7 +42,7 @@
               {{ item?.sistembayar }}
             </div>
           </div>
-          <div class="col full-width flex wrap ellipsis">
+          <div class="col-4 flex wrap ellipsis">
             <div class="f-10">
               {{ item.dari }}
             </div>
@@ -53,18 +53,19 @@
               <span class="text-primary">{{ item?.perusahaan || '-' }}</span>
             </div>
           </div>
-          <div class="col-2 flex justify-end relative-position">
-            <div class="" style="margin-top: -30px;">
-              <div class="text-grey-8 f-12">
-                {{ date.formatDate(item?.tglentri, 'MMM DD, YYYY') }}
+          <div class="col-5 flex justify-end relative-position">
+            <div class="f-10" style="margin-top: -24px; min-width: 215px;">
+              <div class="row no-wrap items-center justify-between q-mb-xs">
+                <span class="text-grey-7">Diterima</span>
+                <span class="text-grey-6 q-px-xs">:</span>
+                <span class="text-weight-bold" :class="item?.trmtgl ? 'text-grey-9' : 'text-grey-5'">{{ formatDateTime(item?.trmtgl) }}</span>
               </div>
-              <div class="text-grey-6 f-10">
-                Jam : <b> {{ date.formatDate(item?.tglentri, 'HH:mm') }}</b>
+              <div v-if="item?.flag === '1' && item?.updateststgl" class="row no-wrap items-center justify-between">
+                <span class="text-grey-7">Diselesaikan</span>
+                <span class="text-grey-6 q-px-xs">:</span>
+                <span class="text-weight-bold text-teal-9">{{ formatDateTime(item?.updateststgl) }}</span>
               </div>
             </div>
-
-
-
           </div>
 
           <div class="absolute-bottom-right q-pa-sm">
@@ -124,7 +125,10 @@ function bataalkanPasien(item) {
   emits('batal', item)
 }
 
-
+function formatDateTime(dateStr) {
+  if (!dateStr) return '-'
+  return date.formatDate(dateStr, 'DD MMMM YYYY HH:mm')
+}
 </script>
 
 <style lang="scss" scoped></style>

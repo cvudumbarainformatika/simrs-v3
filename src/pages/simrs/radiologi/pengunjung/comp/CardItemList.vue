@@ -69,7 +69,7 @@
             </div>
 
           </div>
-          <div class="col full-width flex wrap ellipsis">
+          <div class="col-4 flex wrap ellipsis">
 
             <div class="full-width ellipsis f-10 ">
               {{ item.nota_permintaan ? 'Permintaan dari' : 'Pendaftaran' }}
@@ -90,13 +90,17 @@
               </q-badge>
             </div>
           </div>
-          <div class="col-2 flex justify-end">
-            <div class="" style="margin-top: -30px;">
-              <div class="text-grey-8 f-12">
-                {{ date.formatDate(item?.tgl_kunjungan, 'MMM DD, YYYY') }}
+          <div class="col-5 flex justify-end">
+            <div class="f-10" style="margin-top: -24px; min-width: 215px;">
+              <div class="row no-wrap items-center justify-between q-mb-xs">
+                <span class="text-grey-7">Diterima</span>
+                <span class="text-grey-6 q-px-xs">:</span>
+                <span class="text-weight-bold" :class="item?.trmtgl ? 'text-grey-9' : 'text-grey-5'">{{ formatDateTime(item?.trmtgl) }}</span>
               </div>
-              <div class="text-grey-6 f-10">
-                Jam : <b> {{ date.formatDate(item?.tgl_kunjungan, 'HH:mm') }}</b>
+              <div v-if="item?.status === '1' && item?.updateststgl" class="row no-wrap items-center justify-between">
+                <span class="text-grey-7">Diselesaikan</span>
+                <span class="text-grey-6 q-px-xs">:</span>
+                <span class="text-weight-bold text-teal-9">{{ formatDateTime(item?.updateststgl) }}</span>
               </div>
             </div>
           </div>
@@ -168,6 +172,11 @@ function detailPermintaan(item) {
   // console.log('emit detailItem', item);
 
   emits('detailItem', item)
+}
+
+function formatDateTime(dateStr) {
+  if (!dateStr) return '-'
+  return date.formatDate(dateStr, 'DD MMMM YYYY HH:mm')
 }
 </script>
 

@@ -1,7 +1,7 @@
 <template>
   <q-dialog maximized persistent transition-show="slide-up" transition-hide="slide-down">
-    <q-card class="bg-black">
-      <q-bar class="bg-dark text-white">
+    <q-card class="bg-black column no-wrap" style="height: 100vh; max-height: 100vh; overflow: hidden;">
+      <q-bar class="col-auto bg-dark text-white">
         <div>Viewer Radiologi</div>
 
         <q-space />
@@ -9,18 +9,22 @@
         <q-btn dense flat icon="close" v-close-popup />
       </q-bar>
 
-      <q-card-section class="q-pa-none fit">
-        <iframe :src="viewerUrl" style="
-              width: 100%;
-              height: calc(100vh - 32px);
-              border: none;
-            " allowfullscreen frameborder="0">
-
-
-        </iframe>
+      <q-card-section class="col q-pa-none relative-position overflow-hidden full-width">
+        <iframe
+          :src="viewerUrl"
+          style="
+            width: 100%;
+            height: 100%;
+            border: none;
+          "
+          allowfullscreen
+          frameborder="0"
+        />
 
         <!-- overlay -->
-        <div class="absolute" style="
+        <div
+          class="absolute"
+          style="
             top: 5px;
             left: 5px;
             width: 38px;
@@ -28,7 +32,8 @@
             background: #091b3a;
             z-index: 9999;
             border-radius: 8px;
-          " />
+          "
+        />
       </q-card-section>
     </q-card>
   </q-dialog>

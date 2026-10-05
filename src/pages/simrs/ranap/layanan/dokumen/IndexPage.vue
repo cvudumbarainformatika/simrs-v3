@@ -293,6 +293,15 @@ const menus = ref([
     icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3'],
     comp: shallowRef(defineAsyncComponent(() => import('./ambulance/IndexPage.vue')))
+  },
+  {
+    name: 'indikasi-intensif-document',
+    label: 'INDIKASI RUANG INTENSIF',
+    title: 'INDIKASI KELUAR / MASUK RUANG INTENSIF',
+    desc: 'Dokumen Indikasi Pasien Masuk & Keluar Ruang Intensif (ICCU, ICU, NICU, Intermediate)',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./indikasiIntensif/IndexPage.vue')))
   }
 ])
 

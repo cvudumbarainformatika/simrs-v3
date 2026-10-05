@@ -65,13 +65,16 @@
                   <span class="">Riwayat Penyakit </span> : <span class="text-weight-bold">{{ item?.riwayatpenyakit }}</span>
                 </q-item-label>
                 <q-item-label>
-                  <span class="">Riwayat Alergi </span> : <span class="text-weight-bold">{{ item?.riwayatalergi }}</span>
+                  <span class="">Riwayat Alergi </span> : <span class="text-weight-bold">{{ Array.isArray(item?.riwayatalergi) ? item?.riwayatalergi.join(', ') : item?.riwayatalergi }}</span>
                 </q-item-label>
                 <q-item-label>
                   <span class="">Reaksi berupa </span> : <span class="text-weight-bold">{{ item?.keteranganalergi }}</span>
                 </q-item-label>
                 <q-item-label>
                   <span class="">Riwayat Pengobatan</span> : <span class="text-weight-bold">{{ item?.riwayatpengobatan }}</span>
+                </q-item-label>
+                <q-item-label v-if="item?.riwayat_pekerjaan_yang_berhubungan_dengan_zat_berbahaya || item?.riwayatpekerjaan">
+                  <span class="">Riwayat Pekerjaan (Zat Berbahaya) </span> : <span class="text-weight-bold">{{ item?.riwayat_pekerjaan_yang_berhubungan_dengan_zat_berbahaya || item?.riwayatpekerjaan }}</span>
                 </q-item-label>
                 <q-separator class="q-my-md" />
                 <q-item-label>
@@ -137,9 +140,9 @@
 
 <script setup>
 import { useQuasar } from 'quasar'
-import { useAnamnesis } from 'src/stores/simrs/pelayanan/poli/anamnesis'
+import { useAnamnesisHomeCare } from 'src/stores/simrs/homeCare/anamnesis'
 import { computed } from 'vue'
-const store = useAnamnesis()
+const store = useAnamnesisHomeCare()
 const $q = useQuasar()
 const props = defineProps({
   pasien: {

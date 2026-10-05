@@ -24,7 +24,7 @@
           <q-page class="contain bg-grey-3">
             <Suspense :key="menu.comp" timeout="0">
               <template #default>
-                <component :is="menu.comp" :key="pasien" :pasien="pasien" :loading="loading" depo="rjl" />
+                <component :is="menu.comp" :key="pasien" :pasien="pasien" :loading="loading" depo="rnp" />
               </template>
               <template #fallback>
                 <AppLoader />
@@ -72,13 +72,13 @@ const menus = ref([
     route: ['homecare'],
     comp: shallowRef(defineAsyncComponent(() => import('../layanan/anamnesis/AnamnesisPage.vue')))
   },
-  // {
-  //   name: 'PemeriksaanFisikPage',
-  //   label: 'Pemeriksaan Umum & Fisik',
-  //   icon: 'icon-my-stethoscope',
-  //   route: ['homecare'],
-  //   comp: shallowRef(defineAsyncComponent(() => import('../layanan/pemeriksaanfisik/PemeriksaanfisikPage.vue')))
-  // },
+  {
+    name: 'PemeriksaanFisikPage',
+    label: 'Pemeriksaan Umum & Fisik',
+    icon: 'icon-my-stethoscope',
+    route: ['homecare'],
+    comp: shallowRef(defineAsyncComponent(() => import('../layanan/pemeriksaanfisik/PemeriksaanfisikPage.vue')))
+  },
   {
     name: 'AssesmentPage',
     label: 'Diagnosa dan Tindakan',
@@ -142,7 +142,7 @@ const menus = ref([
     label: 'Dokumen',
     icon: 'icon-mat-print',
     route: ['homecare', 'mpp', 'rekammedik'],
-    // comp: shallowRef(defineAsyncComponent(() => import('../../homecare/layanan/dokumen/DokumenPage.vue')))
+    comp: shallowRef(defineAsyncComponent(() => import('../layanan/dokumen/IndexPage.vue')))
   }
 ])
 

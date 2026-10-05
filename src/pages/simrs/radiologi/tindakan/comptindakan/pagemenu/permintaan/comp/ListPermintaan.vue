@@ -106,7 +106,7 @@
             </div>
           </div>
 
-          <div v-if="permintaan?.rincians?.length" class="q-my-sm flex justify-end">
+          <div v-if="hasAlatPacs && permintaan?.rincians?.length" class="q-my-sm flex justify-end">
             <!-- {{ permintaan?.rincians[0] }} -->
             <q-btn v-if="permintaan?.rincians[0]?.view_url" label="Lihat View PACS" color="dark" @click="() => {
               viewUrl = permintaan?.rincians[0]?.view_url
@@ -233,7 +233,7 @@
                     <!-- <div>
                       <q-btn label="Batalkan Permintaan" color="negative" @click="batalkan(item)" />
                     </div> -->
-                    <div class="row q-col-gutter-sm ">
+                    <div class="row q-col-gutter-sm items-center">
                       <div class="col-auto">
                         <q-btn label="Reset" color="bg-dark" flat @click="storePermintaan.reset(item)" />
                       </div>
@@ -242,9 +242,17 @@
                           @click="storePermintaan.simpan(item, pasien)" />
                       </div>
                     </div>
-                    <div>
-                      <!-- <q-btn v-if="item?.hasil?.length > 1" icon="icon-mat-print" color="dark"
-                        @click="isPrint = true" /> -->
+                    <div class="row q-col-gutter-sm items-center">
+                      <div class="col-auto" v-if="(item?.hasil && item.hasil.length > 1) || (item?.hasilhtml && item.hasilhtml.length > 1)">
+                        <q-btn
+                          icon="icon-mat-print"
+                          color="dark"
+                          label="Cetak Hasil"
+                          unelevated
+                          size="sm"
+                          @click="bukaPrint(item)"
+                        />
+                      </div>
                     </div>
                   </div>
                 </q-card-section>
@@ -252,11 +260,11 @@
             </q-expansion-item>
 
             <q-separator />
-
-
-            <PrintModal v-model="isPrint" :item="item" :pasien="pasien" />
           </template>
         </q-list>
+
+        <!-- Print modal dipasang di luar loop agar tidak duplikat -->
+        <PrintModal v-model="isPrint" :item="selectedItemPrint" :pasien="pasien" />
 
         <div class="q-pa-md text-right">
           <div class="flex justify-between" v-if="pasien.status === '2'">
@@ -268,8 +276,8 @@
 
 
           <div v-else-if="pasien.status === '1'">
-            <q-btn v-if="listPermintaans[0]?.hasil?.length > 1" icon="icon-mat-print" color="dark"
-              @click="isPrint = true" />
+            <q-btn v-if="listPermintaans?.length" icon="icon-mat-print" color="dark" label="Cetak Semua / Pertama"
+              @click="bukaPrint(listPermintaans[0])" />
           </div>
         </div>
 
@@ -336,8 +344,20 @@ const { permintaan, listPermintaans, ukurans, } = storeToRefs(storePermintaan)
 const refDialogPrint = ref(null)
 const isActive = ref(null)
 const isPrint = ref(false)
+const selectedItemPrint = ref(null)
 const isView = ref(false)
 const viewUrl = ref(null)
+
+const hasAlatPacs = computed(() => {
+  const fromPasien = props.pasien?.rinciansementara?.some(r => !!r?.relmasterpemeriksaan?.alat)
+  const fromRinci = permintaan.value?.rincians?.some(r => !!r?.alat)
+  return fromPasien || fromRinci || false
+})
+
+function bukaPrint(item) {
+  selectedItemPrint.value = item
+  isPrint.value = true
+}
 
 
 function formatDate(dateStr) {

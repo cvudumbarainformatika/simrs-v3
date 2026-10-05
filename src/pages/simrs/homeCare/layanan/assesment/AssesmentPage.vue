@@ -74,6 +74,7 @@ onMounted(() => {
   // store.getNota(props.pasien)
   storetindakan.getNota(props.pasien)
   storetindakan.getTindakanDropdown()
+  storetindakan.getAllPetugas()
   store.getTipeDiagnosa()
 })
 

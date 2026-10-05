@@ -59,6 +59,24 @@
                   </div>
                 </div>
                 <div class="row">
+                  <div class="col-3">Diterima Tgl </div>
+                  <div class="col-9">
+                    <div class="row">
+                      <div class="col-auto" style="min-width:10px"> : </div>
+                      <div class="col">{{ formatDateTime(pasien?.trmtgl) }}</div>
+                    </div>
+                  </div>
+                </div>
+                <div v-if="pasien?.flag === '1' && pasien?.updateststgl" class="row">
+                  <div class="col-3">Diselesaikan Tgl </div>
+                  <div class="col-9">
+                    <div class="row">
+                      <div class="col-auto" style="min-width:10px"> : </div>
+                      <div class="col">{{ formatDateTime(pasien?.updateststgl) }}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
                   <div class="col-3">Jenis Pembayaran </div>
                   <div class="col-9">
                     <div class="row">

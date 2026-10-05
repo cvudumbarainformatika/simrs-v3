@@ -280,7 +280,21 @@ function canDelete(item) {
 }
 
 function getPacsUrl(item, rinci = null) {
-  return rinci?.view_url || rinci?.view_url_local || item?.view_url || item?.pacs?.view_url || null
+  if (rinci) {
+    if (!rinci?.relmasterpemeriksaan?.alat && !rinci?.alat) {
+      return null
+    }
+    return rinci?.view_url || rinci?.view_url_local || null
+  }
+  const r = item?.rincians?.[0] || item?.rinciansementara?.[0]
+  const hasAlat = !!(r?.relmasterpemeriksaan?.alat || r?.alat)
+  if (!hasAlat) {
+    return null
+  }
+  if (item?.rincians?.length === 1) {
+    return item?.rincians[0]?.view_url || item?.rincians[0]?.view_url_local || item?.view_url || item?.pacs?.view_url || null
+  }
+  return item?.view_url || item?.pacs?.view_url || null
 }
 
 function openPacs(url) {

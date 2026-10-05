@@ -50,6 +50,14 @@ const props = defineProps({
   pasien: {
     type: Object,
     default: null
+  },
+  loading: {
+    type: Boolean,
+    default: false
+  },
+  depo: {
+    type: String,
+    default: ''
   }
 })
 
