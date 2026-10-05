@@ -121,7 +121,6 @@ export default function useLayanan (pasien) {
   const menu = ref(null)
 
   onMounted(() => {
-    console.log('mounted pageLayananRanap', auth?.user?.username)
     menu.value = filterredMenus.value[0]
   })
 

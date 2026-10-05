@@ -1,7 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
-import { notifSuccess, notifSuccessVue } from 'src/modules/utils'
+import { notifErrVue, notifSuccess, notifSuccessVue } from 'src/modules/utils'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useListPasienHemodialisaStore } from './hemodialisa'
 
@@ -1026,7 +1026,6 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
             resolve(resp)
           })
           .catch((err) => {
-            console.log(err)
             reject(err)
           })
       })
@@ -1053,7 +1052,6 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
             resolve(resp)
           })
           .catch((err) => {
-            console.log(err)
             reject(err)
           })
       })
@@ -1072,14 +1070,12 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
             resolve(resp)
           })
           .catch((err) => {
-            console.log(err)
             reject(err)
           })
       })
     },
 
     select (item) {
-      console.log('item', item)
       this.initReset(item)
     },
 
@@ -1135,25 +1131,26 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       try {
         const resp = await api.post('v1/simrs/hemodialisa/layanan/anamnesis/simpananamnesis', req)
         // console.log('resp', resp)
-        if (resp.status === 200) {
-          notifSuccess(resp)
+        if (resp.status === 200 && resp?.data?.success !== false) {
           const result = resp?.data?.result
-          // pengunjung.injectDataPasien(noreg, result, 'anamnesis')
-          if (awal == 'awal') {
-            pengunjung.deleteInjectanNull2(noreg, 'anamnesis_awal_hd')
-            pengunjung.injectDataArray(noreg, result, 'anamnesis_awal_hd')
+          if (Array.isArray(result)) {
+            if (awal == 'awal') {
+              pengunjung.deleteInjectanNull2(noreg, 'anamnesis_awal_hd')
+              pengunjung.injectDataArray(noreg, result, 'anamnesis_awal_hd')
+            } else {
+              pengunjung.deleteInjectanNull2(noreg, 'anamnesis')
+              pengunjung.injectDataArray(noreg, result, 'anamnesis')
+            }
 
-          } else {
-            pengunjung.deleteInjectanNull2(noreg, 'anamnesis')
-            pengunjung.injectDataArray(noreg, result, 'anamnesis')
+            this.PISAH_DATA_RANAP_IGD(result, pasien)
           }
-
-          if (result?.length) this.PISAH_DATA_RANAP_IGD(result, pasien)
+          notifSuccess(resp)
+        } else {
+          notifErrVue(resp?.data?.message || 'Gagal menyimpan data anamnesis')
         }
         this.loadingSave = false
       }
       catch (error) {
-        console.log('error', error)
         this.SPLICE_ITEMS_RANAP(this.items.ranap)
         this.SPLICE_ITEMS_AWAL(this.items.awal)
         this.loadingSave = false
@@ -1162,6 +1159,13 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
     },
 
     PISAH_DATA_RANAP_IGD (arr, pasien, cat) {
+      if (!Array.isArray(arr)) {
+        this.items.igd = []
+        this.items.awal = []
+        this.items.ranap = []
+        return
+      }
+
       const auth = useAplikasiStore()
       const jns = auth?.user?.pegawai?.kdgroupnakes
       // console.log('jns auth', jns)
@@ -1204,7 +1208,6 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       }
       // form = isianDokter[0] || isianKeperawatan[0] || isianKebidanan[0] || null
       // form.id = null
-      console.log('form', form, pasien)
 
       this.initReset(form)
       if (dokter) this.form.keluhannyeri = null
