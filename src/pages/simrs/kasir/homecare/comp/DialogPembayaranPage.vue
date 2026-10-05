@@ -41,6 +41,11 @@
                   <div class="row justify-between items-center q-mt-md"><span class="text-weight-bold">Total
                       tagihan</span><span class="text-h6 text-negative text-weight-bold">{{ formatCurrency(totalTagihan)
                       }}</span></div>
+                  <q-separator class="q-my-sm" />
+                  <div class="row justify-between q-mb-xs text-grey-8"><span>Total billing terbayar</span><span
+                      class="text-positive text-weight-bold">{{ formatCurrency(totalBillingTerbayar) }}</span></div>
+                  <div class="row justify-between text-grey-8"><span>Total kwitansi batal</span><span
+                      class="text-negative text-weight-bold">{{ formatCurrency(totalKwitansiBatal) }}</span></div>
                 </template>
               </q-card-section></q-card>
           </div>
@@ -72,11 +77,11 @@
         <div class="text-subtitle1 text-weight-bold q-mb-sm">Riwayat transaksi</div>
         <div class="row q-col-gutter-md">
           <div class="col-12 col-md-6">
-            <GridpembyaranPage :payments="paymentHistory" @print="checkAndOpenReceipt"
+            <GridpembyaranPage :payments="paymentHistory" :loading="loadingPaymentHistory" :active-receipt-payments="activeReceiptPayments" @print="checkAndOpenReceipt"
               @delete="deletePayment" />
           </div>
           <div class="col-12 col-md-6">
-            <GridCetakKwuitansiPage :receipts="receiptHistory" :cancelling="homecareStore.membatalkanKwitansi"
+            <GridCetakKwuitansiPage :receipts="receiptHistory" :loading="loadingReceiptHistory" :cancelling="homecareStore.membatalkanKwitansi"
               @cancel="cancelReceipt" />
           </div>
         </div>
@@ -134,9 +139,20 @@ const paymentMethods = ['Tunai', 'QRIS', 'Transfer Bank', 'Kartu Debit/Kredit']
 const homecareStore = useKasirHomecareStore()
 const paymentDetails = computed(() => homecareStore.rincianPembayaran)
 const loadingRincian = computed(() => homecareStore.loadingRincian)
+const loadingPaymentHistory = computed(() => homecareStore.loadingRiwayatPembayaran)
+const loadingReceiptHistory = computed(() => homecareStore.loadingRiwayatKwitansi)
 const savingPayment = computed(() => homecareStore.savingPembayaran)
 const paymentHistory = computed(() => homecareStore.riwayatPembayaran)
 const receiptHistory = computed(() => homecareStore.riwayatKwitansi)
+const totalBillingTerbayar = computed(() => receiptHistory.value
+  .filter(receipt => !receipt.batal || receipt.batal === '0')
+  .reduce((total, receipt) => total + Number(receipt.nominal || 0), 0))
+const totalKwitansiBatal = computed(() => receiptHistory.value
+  .filter(receipt => String(receipt.batal) === '1')
+  .reduce((total, receipt) => total + Number(receipt.nominal || 0), 0))
+const activeReceiptPayments = computed(() => receiptHistory.value
+  .filter(receipt => !receipt.batal || receipt.batal === '0')
+  .map(receipt => String(receipt.no_pembayaran || '')))
 const receiptDialog = ref(false)
 const selectedReceipt = ref(null)
 const cashReceived = ref(0)
@@ -147,7 +163,7 @@ const changeAmount = computed(() => Math.max(Number(cashReceived.value || 0) - t
 const cashReceivedText = computed({ get: () => Number(cashReceived.value || 0).toLocaleString('id-ID'), set: value => { cashReceived.value = Number(String(value).replace(/\D/g, '')) || 0 } })
 
 watch(() => props.modelValue, async visible => { if (visible && props.patient?.noreg) await loadPaymentData() })
-async function loadPaymentData() { homecareStore.resetPembayaran(); try { await homecareStore.getRincianPembayaran(props.patient.noreg); paymentForm.value = { metode: '', nominal: homecareStore.totalTagihan, catatan: '' }; cashReceived.value = homecareStore.totalTagihan; await getPaymentHistory(); await getReceiptHistory(); await nextTick(); refPaymentMethod.value?.focus() } catch (error) { Notify.create({ type: 'negative', message: error.response?.data?.message || 'Rincian pembayaran gagal dimuat.' }) } }
+async function loadPaymentData() { homecareStore.resetPembayaran(); try { await Promise.all([homecareStore.getRincianPembayaran(props.patient.noreg), getPaymentHistory(), getReceiptHistory()]); paymentForm.value = { metode: '', nominal: homecareStore.totalTagihan, catatan: '' }; cashReceived.value = homecareStore.totalTagihan; await nextTick(); refPaymentMethod.value?.focus() } catch (error) { Notify.create({ type: 'negative', message: error.response?.data?.message || 'Rincian pembayaran gagal dimuat.' }) } }
 async function getPaymentHistory() { return homecareStore.getRiwayatPembayaran(props.patient?.noreg) }
 async function getReceiptHistory() { return homecareStore.getRiwayatKwitansi(props.patient?.noreg) }
 function closeDialog(value) { emit('update:modelValue', Boolean(value)) }
@@ -159,7 +175,8 @@ async function checkAndOpenReceipt(payment) {
   try {
     const response = await homecareStore.cekKwitansiPembayaran(props.patient?.noreg, payment.no_pembayaran)
     if (response.data?.data?.ada) {
-      Notify.create({ type: 'warning', message: 'Kwitansi sudah tercetak untuk pembayaran ini.' })
+      selectedReceipt.value = { ...payment, ...response.data.data.kwitansi }
+      receiptDialog.value = true
       return
     }
     selectedReceipt.value = payment

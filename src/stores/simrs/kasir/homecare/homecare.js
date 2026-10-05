@@ -21,6 +21,8 @@ export const useKasirHomecareStore = defineStore('kasir_homecare', {
     riwayatPembayaran: [],
     riwayatKwitansi: [],
     loadingRincian: false,
+    loadingRiwayatPembayaran: false,
+    loadingRiwayatKwitansi: false,
     savingPembayaran: false,
     deletingPembayaran: false,
     printingKwitansi: false,
@@ -84,9 +86,15 @@ export const useKasirHomecareStore = defineStore('kasir_homecare', {
     },
 
     async getRiwayatPembayaran (noreg) {
-      const response = await api.get('v1/simrs/pendaftaran/homecare/riwayat-pembayaran', { params: { noreg } })
-      this.riwayatPembayaran = response.data?.data || []
-      return response
+      this.loadingRiwayatPembayaran = true
+      try {
+        const response = await api.get('v1/simrs/pendaftaran/homecare/riwayat-pembayaran', { params: { noreg } })
+        this.riwayatPembayaran = response.data?.data || []
+        return response
+      }
+      finally {
+        this.loadingRiwayatPembayaran = false
+      }
     },
 
     async cekKwitansiPembayaran (noreg, noPembayaran) {
@@ -95,9 +103,15 @@ export const useKasirHomecareStore = defineStore('kasir_homecare', {
       })
     },
     async getRiwayatKwitansi (noreg) {
-      const response = await api.get('v1/simrs/pendaftaran/homecare/riwayat-kwitansi', { params: { noreg } })
-      this.riwayatKwitansi = response.data?.data || []
-      return response
+      this.loadingRiwayatKwitansi = true
+      try {
+        const response = await api.get('v1/simrs/pendaftaran/homecare/riwayat-kwitansi', { params: { noreg } })
+        this.riwayatKwitansi = response.data?.data || []
+        return response
+      }
+      finally {
+        this.loadingRiwayatKwitansi = false
+      }
     },
 
     async batalKwitansi (payload) {

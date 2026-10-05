@@ -1,7 +1,7 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file
 
-import { defineConfig } from '#q-app/wrappers'
+import { defineConfig } from "#q-app/wrappers";
 
 export default defineConfig((ctx) => {
   // console.log('module', ctx)
@@ -12,13 +12,21 @@ export default defineConfig((ctx) => {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
-    boot: ['axios', 'global-components', 'editor-componens', 'other-components', 'static-components', 'router',
+    boot: [
+      "axios",
+      "global-components",
+      "editor-componens",
+      "other-components",
+      "static-components",
+      "router",
       // ini juga baru untuk optimasi dan monitoring
-      'performance', 'memory-monitor', 'error-tracking'
+      "performance",
+      "memory-monitor",
+      "error-tracking",
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
-    css: ['app.scss'],
+    css: ["app.scss"],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
@@ -30,41 +38,42 @@ export default defineConfig((ctx) => {
       // 'line-awesome',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
       // 'roboto-font', // optional, you are not bound to it
-      'material-icons' // optional, you are not bound to it yaaa
+      "material-icons", // optional, you are not bound to it yaaa
     ],
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#build
     build: {
       target: {
-        browser: ['es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1'],
-        node: 'node16'
+        browser: ["es2019", "edge88", "firefox78", "chrome87", "safari13.1"],
+        node: "node16",
       },
 
       env: {
         // NODE_OPTIONS: '--max-old-space-size=20480',
         API: ctx?.dev
-          // ? 'http://192.168.150.112:3503'
-          // ? 'http://192.168.150.112:3501'
+          ? // ? 'http://192.168.150.112:3503'
+            // ? 'http://192.168.150.112:3501'
 
-          ? 'http://localhost:8080'
-          // ? 'http://192.168.101.77:8080'
-          // : 'http://192.168.150.111:3507',
-          : 'http://192.168.150.112:3501',
+            "http://localhost:8080"
+          : // ? 'http://192.168.101.77:8080'
+            // : 'http://192.168.150.111:3507',
+            "http://192.168.150.112:3501",
 
         WSHOST: ctx?.dev
-          ? '192.168.150.112'
-          // ? 'localhost'
-          : '192.168.150.112',
+          ? "192.168.150.112"
+          : // ? 'localhost'
+            "192.168.150.112",
 
         PATHIMG: ctx?.dev
-          // ? 'http://localhost:8000/storage/'
-          ? 'http://192.168.150.111:3507'
-          : 'http://192.168.150.111:3507',
+          ? // ? 'http://localhost:8000/storage/'
+            "http://192.168.150.111:3507"
+          : "http://192.168.150.111:3507",
 
-        SPO_DOCUMENT_HOST: process.env.SPO_DOCUMENT_HOST || 'http://192.168.100.100',
+        SPO_DOCUMENT_HOST:
+          process.env.SPO_DOCUMENT_HOST || "http://192.168.100.100",
       },
 
-      vueRouterMode: 'history', // available values: 'hash', 'history'
+      vueRouterMode: "history", // available values: 'hash', 'history'
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,
@@ -80,60 +89,61 @@ export default defineConfig((ctx) => {
       // polyfillModulePreload: true,
       // distDir
 
-
       // ini baru saya optimasi
-
 
       rollupOptions: {
         plugins: [
           {
-            name: 'optimize-images',
-            async generateBundle (options, bundle) {
+            name: "optimize-images",
+            async generateBundle(options, bundle) {
               // Optimize hanya file yang dibutuhkan
-              const imagePattern = /\.(jpg|jpeg|png|gif|webp)$/
+              const imagePattern = /\.(jpg|jpeg|png|gif|webp)$/;
               for (const fileName in bundle) {
                 if (imagePattern.test(fileName)) {
                   // Gunakan sharp yang sudah ada
-                  const file = bundle[fileName]
+                  const file = bundle[fileName];
                   // Proses optimasi
                 }
               }
-            }
-          }
-        ]
+            },
+          },
+        ],
       },
 
       // Tambahkan source maps untuk production debugging
       sourcemap: false,
       // Tambahkan performance budgets
       performance: {
-        hints: 'warning',
+        hints: "warning",
         maxEntrypointSize: 512000,
-        maxAssetSize: 512000
+        maxAssetSize: 512000,
       },
       viteVuePluginOptions: {
-        reactivityTransform: true
+        reactivityTransform: true,
       },
 
-      extendViteConf (viteConf) {
-        if (!viteConf.server) viteConf.server = {}
-        viteConf.server.allowedHosts = true
-        viteConf.build.chunkSizeWarningLimit = 5000
+      extendViteConf(viteConf) {
+        if (!viteConf.server) viteConf.server = {};
+        viteConf.server.allowedHosts = true;
+        viteConf.build.chunkSizeWarningLimit = 5000;
         viteConf.build.rollupOptions = {
           output: {
-
             // Pastikan nama file pakai hash agar cache di browser terhindar
-            entryFileNames: 'assets/[name].[hash].js',
-            chunkFileNames: 'assets/[name].[hash].js',
-            assetFileNames: 'assets/[name].[hash].[ext]',
+            entryFileNames: "assets/[name].[hash].js",
+            chunkFileNames: "assets/[name].[hash].js",
+            assetFileNames: "assets/[name].[hash].[ext]",
 
-            manualChunks (id) {
-              if (id.includes('node_modules')) {
-                return id.toString().split('node_modules/')[1].split('/')[0].toString()
+            manualChunks(id) {
+              if (id.includes("node_modules")) {
+                return id
+                  .toString()
+                  .split("node_modules/")[1]
+                  .split("/")[0]
+                  .toString();
               }
-            }
-          }
-        }
+            },
+          },
+        };
       },
       // viteVuePluginOptions: {},
 
@@ -146,23 +156,21 @@ export default defineConfig((ctx) => {
       //   }, { server: false }]
       // ]
       // Monitor build size
-      analyze: false  // Gunakan webpack-bundle-analyzer
+      analyze: false, // Gunakan webpack-bundle-analyzer
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#devserver
     devServer: {
       // https: true
-      port: ctx.mode.spa
-        ? 9001
-        : (ctx.mode.pwa ? 9100 : 9200),
+      port: ctx.mode.spa ? 9001 : ctx.mode.pwa ? 9100 : 9200,
       open: true, // opens browser window automatically
-      allowedHosts: 'all'
+      allowedHosts: "all",
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#framework
     framework: {
       config: {
-        dark: 'auto',  // 'auto' akan mengikuti sistem, atau bisa set langsung ke true
+        dark: "auto", // 'auto' akan mengikuti sistem, atau bisa set langsung ke true
         // brand: {
         //   primary: '#6366f1',    // Indigo yang lebih vibrant
         //   secondary: '#8b5cf6',  // Purple yang menarik
@@ -175,22 +183,43 @@ export default defineConfig((ctx) => {
 
       // iconSet: 'material-icons', // Quasar icon set
       // lang: 'en-US', // Quasar language pack
-      lang: 'id', // Quasar language pack ganti jadi bahas Indonesia
+      lang: "id", // Quasar language pack ganti jadi bahas Indonesia
       // For special cases outside of where the auto-import strategy can have an impact
       // (like functional components as one of the examples),
       // you can manually specify Quasar components/directives to be available everywhere:
       //
-      components: ['QIcon', 'QBtn'],
+      components: ["QIcon", "QBtn"],
       // directives: [],
 
       // Quasar plugins
       // plugins: []
-      plugins: ['Notify', 'LocalStorage', 'Dialog', 'Loading', 'AppFullscreen', 'BottomSheet']
+      plugins: [
+        "Notify",
+        "LocalStorage",
+        "Dialog",
+        "Loading",
+        "AppFullscreen",
+        "BottomSheet",
+      ],
     },
 
     // animations: 'all', // --- includes all animations
     // https://v2.quasar.dev/options/animations
-    animations: ['fadeIn', 'fadeOut', 'slideInLeft', 'slideInDown', 'slideInRight', 'slideInUp', 'slideOutDown', 'slideOutLeft', 'slideOutRight', 'slideOutUp', 'bounce', 'bounceIn', 'flip'],
+    animations: [
+      "fadeIn",
+      "fadeOut",
+      "slideInLeft",
+      "slideInDown",
+      "slideInRight",
+      "slideInUp",
+      "slideOutDown",
+      "slideOutLeft",
+      "slideOutRight",
+      "slideOutUp",
+      "bounce",
+      "bounceIn",
+      "flip",
+    ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#sourcefiles
     // sourceFiles: {
@@ -211,7 +240,7 @@ export default defineConfig((ctx) => {
       // (gets superseded if process.env.PORT is specified at runtime)
 
       middlewares: [
-        'render' // keep this as last one
+        "render", // keep this as last one
       ],
 
       // extendPackageJson (json) {},
@@ -222,7 +251,7 @@ export default defineConfig((ctx) => {
       // manualStoreHydration: true,
       // manualPostHydrationTrigger: true,
 
-      pwa: false
+      pwa: false,
       // pwaOfflineHtmlFilename: 'offline.html', // do NOT use index.html as name!
 
       // pwaExtendGenerateSWOptions (cfg) {},
@@ -231,7 +260,7 @@ export default defineConfig((ctx) => {
 
     // https://v2.quasar.dev/quasar-cli-vite/developing-pwa/configuring-pwa
     pwa: {
-      workboxMode: 'GenerateSW' // 'GenerateSW' or 'InjectManifest'
+      workboxMode: "GenerateSW", // 'GenerateSW' or 'InjectManifest'
       // swFilename: 'sw.js',
       // manifestFilename: 'manifest.json'
       // extendManifestJson (json) {},
@@ -249,7 +278,7 @@ export default defineConfig((ctx) => {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-capacitor-apps/configuring-capacitor
     capacitor: {
-      hideSplashscreen: true
+      hideSplashscreen: true,
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-electron-apps/configuring-electron
@@ -260,22 +289,20 @@ export default defineConfig((ctx) => {
       // extendPackageJson (json) {},
 
       // Electron preload scripts (if any) from /src-electron, WITHOUT file extension
-      preloadScripts: ['electron-preload'],
+      preloadScripts: ["electron-preload"],
 
       // specify the debugging port to use for the Electron app when running in development mode
       inspectPort: 5858,
 
-      bundler: 'packager', // 'packager' or 'builder'
+      bundler: "packager", // 'packager' or 'builder'
 
       packager: {
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
-
         // OS X / Mac App Store
         // appBundleId: '',
         // appCategoryType: '',
         // osxSign: '',
         // protocol: 'myapp://path',
-
         // Windows only
         // win32metadata: { ... }
       },
@@ -283,8 +310,8 @@ export default defineConfig((ctx) => {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'simrs-v3'
-      }
+        appId: "simrs-v3",
+      },
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-browser-extensions/configuring-bex
@@ -300,7 +327,7 @@ export default defineConfig((ctx) => {
        *
        * @example [ 'my-script.ts', 'sub-folder/my-other-script.js' ]
        */
-      extraScripts: []
-    }
-  }
-})
+      extraScripts: [],
+    },
+  };
+});

@@ -805,7 +805,7 @@ async function onSubmit() {
     id: editId.value,
     noreg: props.pasien?.noreg,
     norm: props.pasien?.norm,
-    kdruangan: props.pasien?.kdruangansim || props.pasien?.kdpoli || props.pasien?.kdruang || '',
+    kdruangan: props.pasien?.kdruangan || props.pasien?.kodepoli || props.pasien?.kdruang || props.pasien?.koderuangan || props.pasien?.kdruangansim || props.pasien?.kdpoli || '',
     sumber: 'ranap',
     kdpegsimrs: currentUserPegawai.value,
     petugas: appStore.user?.pegawai?.nama || appStore.user?.nama || ''
