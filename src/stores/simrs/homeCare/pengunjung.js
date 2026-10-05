@@ -159,6 +159,8 @@ export const usePengunjungHomeCareStore = defineStore('pengunjung_home_care_stor
         datax.memodiagnosa = data?.memodiagnosa ?? ''
         datax.edukasi = data?.edukasi ?? []
         datax.dokumenluar = data?.dokumenluar ?? []
+        datax.pemeriksaanfisik = data?.pemeriksaanfisik ?? []
+        datax.diagnosakeperawatan = data?.diagnosakeperawatan ?? []
         // datax.dataigd = data?.dataigd ?? null
         // datax.pemeriksaan = data?.pemeriksaan ?? []
         // datax.penilaian = data?.penilaian ?? []
@@ -206,18 +208,12 @@ export const usePengunjungHomeCareStore = defineStore('pengunjung_home_care_stor
     },
 
     injectDataPasien (pasien, val, kode, arr) {
-      // console.log('injuxt', this.pasiens)
-      // console.log('b', val.id)
-      // console.log('kode', kode)
-      const data = this.pasiens.find(x => x.noreg == pasien.noreg)
-      // console.log('findPasien', data)
+      const data = this.pasiens.find(x => x.noreg == pasien?.noreg)
       if (data) {
-        // const data = findPasien
-        // console.log('data', data[kode])
+        if (!data[kode]) {
+          data[kode] = []
+        }
         const target = data[kode]?.find(x => x.id === val.id)
-        // console.log('itarget', target)
-        // console.log('inject kode pasien', kode)
-        // console.log('inject isi pasien', val)
 
         if (target) {
           Object.assign(target, val)
@@ -239,6 +235,26 @@ export const usePengunjungHomeCareStore = defineStore('pengunjung_home_care_stor
           }
         }
       }
+      if (pasien && pasien !== data) {
+        if (!pasien[kode]) {
+          pasien[kode] = []
+        }
+        const target = pasien[kode]?.find(x => x.id === val.id)
+        if (target) {
+          Object.assign(target, val)
+        }
+        else {
+          if (kode === 'diagnosa') {
+            pasien[kode]?.push(val)
+          }
+          else if (kode === 'dokumenluar') {
+            pasien[kode] = val
+          }
+          else {
+            pasien[kode]?.splice(0, 0, val)
+          }
+        }
+      }
     },
     setLayananSelesai (val) {
       console.log('selesai layanan', val)
@@ -246,11 +262,31 @@ export const usePengunjungHomeCareStore = defineStore('pengunjung_home_care_stor
     },
 
     hapusDataAnamnesis (pasien, id) {
-      const findPasien = this.pasiens.find(x => x.noreg === pasien.noreg)
+      const findPasien = this.pasiens.find(x => x.noreg === pasien?.noreg)
       if (findPasien) {
         const data = findPasien.anamnesis
-        const pos = data.findIndex(el => el.id === id)
-        if (pos >= 0) { data.splice(pos, 1) }
+        if (data) {
+          const pos = data.findIndex(el => el.id === id)
+          if (pos >= 0) { data.splice(pos, 1) }
+        }
+      }
+      if (pasien && pasien !== findPasien && pasien.anamnesis) {
+        const pos = pasien.anamnesis.findIndex(el => el.id === id)
+        if (pos >= 0) { pasien.anamnesis.splice(pos, 1) }
+      }
+    },
+    hapusDataPemeriksaanfisik (pasien, id) {
+      const findPasien = this.pasiens.find(x => x.noreg === pasien?.noreg)
+      if (findPasien) {
+        const data = findPasien.pemeriksaanfisik
+        if (data) {
+          const pos = data.findIndex(el => el.id === id)
+          if (pos >= 0) { data.splice(pos, 1) }
+        }
+      }
+      if (pasien && pasien !== findPasien && pasien.pemeriksaanfisik) {
+        const pos = pasien.pemeriksaanfisik.findIndex(el => el.id === id)
+        if (pos >= 0) { pasien.pemeriksaanfisik.splice(pos, 1) }
       }
     },
     hapusDataEdukasi (pasien, id) {

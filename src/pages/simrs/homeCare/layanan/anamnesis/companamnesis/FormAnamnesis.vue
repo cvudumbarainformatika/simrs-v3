@@ -257,9 +257,9 @@
 </template>
 
 <script setup>
-import { useAnamnesis } from 'src/stores/simrs/pelayanan/poli/anamnesis'
+import { useAnamnesisHomeCare } from 'src/stores/simrs/homeCare/anamnesis'
 import { computed, ref } from 'vue'
-const store = useAnamnesis()
+const store = useAnamnesisHomeCare()
 const emits = defineEmits(['openHistory'])
 
 const refForm = ref()

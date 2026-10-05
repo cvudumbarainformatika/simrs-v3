@@ -118,11 +118,11 @@
 <script setup>
 // eslint-disable-next-line no-unused-vars
 import { onMounted, ref } from 'vue'
-import { useAnamnesis } from 'src/stores/simrs/pelayanan/poli/anamnesis'
+import { useAnamnesisHomeCare } from 'src/stores/simrs/homeCare/anamnesis'
 // eslint-disable-next-line no-unused-vars
 import { humanDate } from 'src/modules/formatter'
 
-const store = useAnamnesis()
+const store = useAnamnesisHomeCare()
 const props = defineProps({
   pasien: {
     type: Object,

@@ -49,6 +49,14 @@ export const useAnamnesisHomeCare = defineStore('anamnesis-home-care', {
       this.form.norm = pasien ? pasien.norm : ''
       this.form.noreg = pasien ? pasien.noreg : ''
 
+      if (this.selection?.length) {
+        this.form.riwayatalergi = this.selection.join(', ')
+      }
+      else {
+        this.form.riwayatalergi = ''
+      }
+      this.form.riwayat_pekerjaan_yang_berhubungan_dengan_zat_berbahaya = this.form.riwayatpekerjaan
+
       this.hitungNilaiSkor()
 
       // console.log(this.form)
@@ -59,17 +67,19 @@ export const useAnamnesisHomeCare = defineStore('anamnesis-home-care', {
           // console.log('simpan anamnesis', resp)
           const storePasien = usePengunjungHomeCareStore()
           let isi = resp.data.result
-          if (resp.data.result === 1) {
+          if (resp.data.result === 1 || !resp.data.result) {
             this.form.rs4 = this.form.keluhanutama
-            isi = this.form
+            isi = { ...this.form }
           }
           storePasien.injectDataPasien(pasien, isi, 'anamnesis')
           notifSuccess(resp)
           this.initReset()
           this.loadingForm = false
+          return resp
         }
 
         this.loadingForm = false
+        return resp
       }
       catch (error) {
         // console.log('anamnesis err', error)
@@ -78,50 +88,82 @@ export const useAnamnesisHomeCare = defineStore('anamnesis-home-care', {
       }
     },
 
+    parseAlergi (raw) {
+      if (!raw) return []
+      let list = []
+      if (Array.isArray(raw)) {
+        list = raw
+      }
+      else if (typeof raw === 'string') {
+        const trimmed = raw.trim()
+        if (trimmed.startsWith('[') || trimmed.startsWith('"')) {
+          try {
+            const parsed = JSON.parse(trimmed)
+            if (Array.isArray(parsed)) {
+              list = parsed
+            }
+            else if (typeof parsed === 'string') {
+              list = parsed.split(',').map(s => s.trim()).filter(Boolean)
+            }
+          }
+          catch (e) {
+            list = trimmed.split(',').map(s => s.trim()).filter(Boolean)
+          }
+        }
+        else {
+          list = trimmed.split(',').map(s => s.trim()).filter(Boolean)
+        }
+      }
+
+      return list.map(item => {
+        const str = String(item).trim()
+        const match = this.alergis.find(a => a.toLowerCase() === str.toLowerCase())
+        return match || str
+      }).filter(Boolean)
+    },
+
     editForm (val) {
+      this.selection = this.parseAlergi(val?.riwayatalergi)
+      const rwPekerjaan = val?.riwayat_pekerjaan_yang_berhubungan_dengan_zat_berbahaya || val?.riwayatpekerjaan || ''
+
       this.form = {
         id: val.id,
-        keluhanutama: val.rs4,
-        riwayatpenyakit: val.riwayatpenyakit,
-        riwayatpenyakitsekarang: val.riwayatpenyakitsekarang,
-        riwayatalergi: val.riwayatalergi,
-        keteranganalergi: val.keteranganalergi,
-        riwayatpengobatan: val.riwayatpengobatan,
-        // baru
-        riwayatpenyakitkeluarga: val.riwayatpenyakitkeluarga,
-        skreeninggizi: val.skreeninggizi,
-        asupanmakan: val.asupanmakan,
-        kondisikhusus: val.kondisikhusus,
-        skor: val.skor,
+        keluhanutama: val.rs4 || val.keluhanutama || '',
+        riwayatpenyakit: val.riwayatpenyakit || '',
+        riwayatpenyakitsekarang: val.riwayatpenyakitsekarang || '',
+        riwayatalergi: this.selection.join(', '),
+        keteranganalergi: val.keteranganalergi || '',
+        riwayatpengobatan: val.riwayatpengobatan || '',
+        riwayatpekerjaan: rwPekerjaan,
+        riwayatpenyakitkeluarga: val.riwayatpenyakitkeluarga || '',
+        skreeninggizi: val.skreeninggizi || 0,
+        asupanmakan: val.asupanmakan || 0,
+        kondisikhusus: val.kondisikhusus || '',
+        skor: val.skor || 0,
         skornyeri: isNaN(parseInt(val?.scorenyeri)) ? 0 : parseInt(val?.scorenyeri),
-        keteranganscorenyeri: val?.keteranganscorenyeri
+        keteranganscorenyeri: val?.keteranganscorenyeri || 'tidak ada nyeri'
       }
-      const kommatext = val?.riwayatalergi?.split(', ')
-      this.selection = kommatext
-      // console.log('form', this.form)
-      // console.log('xxx', val)
     },
     copyForm (val) {
+      this.selection = this.parseAlergi(val?.riwayatalergi)
+      const rwPekerjaan = val?.riwayat_pekerjaan_yang_berhubungan_dengan_zat_berbahaya || val?.riwayatpekerjaan || ''
+
       this.form = {
-        keluhanutama: val.keluhanutama,
-        riwayatpenyakit: val.riwayatpenyakit,
-        riwayatpenyakitsekarang: val.riwayatpenyakitsekarang,
-        riwayatalergi: val.riwayatalergi,
-        keteranganalergi: val.keteranganalergi,
-        riwayatpengobatan: val.riwayatpengobatan,
-        // baru
-        riwayatpenyakitkeluarga: val.riwayatpenyakitkeluarga,
-        skreeninggizi: val.skreeninggizi,
-        asupanmakan: val.asupanmakan,
-        kondisikhusus: val.kondisikhusus,
-        skor: val.skor,
+        keluhanutama: val.keluhanutama || val.rs4 || '',
+        riwayatpenyakit: val.riwayatpenyakit || '',
+        riwayatpenyakitsekarang: val.riwayatpenyakitsekarang || '',
+        riwayatalergi: this.selection.join(', '),
+        keteranganalergi: val.keteranganalergi || '',
+        riwayatpengobatan: val.riwayatpengobatan || '',
+        riwayatpekerjaan: rwPekerjaan,
+        riwayatpenyakitkeluarga: val.riwayatpenyakitkeluarga || '',
+        skreeninggizi: val.skreeninggizi || 0,
+        asupanmakan: val.asupanmakan || 0,
+        kondisikhusus: val.kondisikhusus || '',
+        skor: val.skor || 0,
         skornyeri: isNaN(parseInt(val?.scorenyeri)) ? 0 : parseInt(val?.scorenyeri),
-        keteranganscorenyeri: val?.keteranganscorenyeri
+        keteranganscorenyeri: val?.keteranganscorenyeri || 'tidak ada nyeri'
       }
-      const kommatext = val?.riwayatalergi?.split(', ')
-      this.selection = kommatext
-      // console.log('form', this.form)
-      // console.log('xxx', val)
     },
 
     setForm (key, val) {
