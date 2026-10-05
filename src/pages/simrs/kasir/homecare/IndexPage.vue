@@ -42,7 +42,9 @@
       <div v-for="stat in stats" :key="stat.label" class="col-6 col-md-3">
         <q-card flat bordered class="stat-card">
           <q-card-section class="row items-center no-wrap q-pa-sm">
-            <q-avatar :color="stat.color" text-color="white" :icon="stat.icon" size="38px" />
+            <q-avatar :color="stat.color" text-color="white" size="38px">
+              <q-icon :name="stat.icon" />
+            </q-avatar>
             <div class="q-ml-sm">
               <div class="text-h6 text-weight-bold">{{ stat.value }}</div>
               <div class="text-caption text-grey-7">{{ stat.label }}</div>

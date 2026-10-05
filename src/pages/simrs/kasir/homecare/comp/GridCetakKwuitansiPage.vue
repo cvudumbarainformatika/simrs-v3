@@ -5,7 +5,11 @@
       </div>
     </q-card-section>
     <q-separator />
-    <q-list v-if="receipts.length" separator>
+    <q-card-section v-if="loading" class="q-py-lg text-center text-grey-7">
+      <q-spinner color="teal" size="2em" />
+      <div class="q-mt-sm text-caption">Memuat riwayat kwitansi...</div>
+    </q-card-section>
+    <q-list v-else-if="receipts.length" separator>
       <q-item v-for="receipt in receipts" :key="receipt.id">
         <q-item-section><q-item-label>{{ receipt.nomor }}</q-item-label><q-item-label caption>{{ receipt.tanggal }} - {{
           formatCurrency(receipt.nominal) }}</q-item-label><q-item-label v-if="isActive(receipt)" caption
@@ -24,7 +28,7 @@
 </template>
 
 <script setup>
-defineProps({ receipts: { type: Array, default: () => [] }, cancelling: Boolean })
+defineProps({ receipts: { type: Array, default: () => [] }, cancelling: Boolean, loading: Boolean })
 defineEmits(['cancel'])
 function isActive(receipt) { return !receipt.batal || receipt.batal === '0' }
 function formatCurrency(value) { return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(Number(value || 0)) }
