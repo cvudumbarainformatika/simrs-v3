@@ -9,6 +9,7 @@ export const useAsesmenJatuhNyeriStore = defineStore('asesmen-jatuh-nyeri-store'
     itemsPascaJatuh: [],
     itemsPenyakitMenular: [],
     itemsMonitoringRestrain: [],
+    itemsIndikasiIntensif: [],
     loading: false,
     loadingSave: false
   }),
@@ -26,6 +27,7 @@ export const useAsesmenJatuhNyeriStore = defineStore('asesmen-jatuh-nyeri-store'
           this.itemsPascaJatuh = resp.data?.pasca_jatuh ?? []
           this.itemsPenyakitMenular = resp.data?.penyakit_menular ?? []
           this.itemsMonitoringRestrain = resp.data?.monitoring_restrain ?? []
+          this.itemsIndikasiIntensif = resp.data?.indikasi_intensif ?? []
         }
       } catch (err) {
         console.log(err)
@@ -193,6 +195,40 @@ export const useAsesmenJatuhNyeriStore = defineStore('asesmen-jatuh-nyeri-store'
         const resp = await api.post('v1/simrs/ranap/layanan/asesmenulang/hapus-monitoring-restrain', { id })
         if (resp.status === 200) {
           notifSuccess('Hapus Monitoring Pengikatan Restrain Berhasil')
+          this.getData(pasien)
+          return true
+        }
+      } catch (err) {
+        console.log(err)
+      } finally {
+        this.loading = false
+      }
+      return false
+    },
+
+    async simpanIndikasiIntensif(pasien, payload) {
+      this.loadingSave = true
+      try {
+        const resp = await api.post('v1/simrs/ranap/layanan/asesmenulang/simpan-indikasi-intensif', payload)
+        if (resp.status === 200) {
+          notifSuccess('Simpan Indikasi Ruang Intensif Berhasil')
+          this.getData(pasien)
+          return true
+        }
+      } catch (err) {
+        console.log(err)
+      } finally {
+        this.loadingSave = false
+      }
+      return false
+    },
+
+    async hapusIndikasiIntensif(pasien, id) {
+      this.loading = true
+      try {
+        const resp = await api.post('v1/simrs/ranap/layanan/asesmenulang/hapus-indikasi-intensif', { id })
+        if (resp.status === 200) {
+          notifSuccess('Hapus Indikasi Ruang Intensif Berhasil')
           this.getData(pasien)
           return true
         }
