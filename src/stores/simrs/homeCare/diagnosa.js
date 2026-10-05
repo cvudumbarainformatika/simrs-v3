@@ -3,6 +3,7 @@ import { api } from 'src/boot/axios'
 import { usePengunjungHomeCareStore } from './pengunjung'
 import { useInacbgPoli } from '../pelayanan/poli/inacbg'
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
+import { dateFilter } from 'src/modules/formatter'
 // import { api } from 'src/boot/axios'
 
 export const useDiagnosaHomeCare = defineStore('diagnosa-home-care', {
@@ -13,6 +14,7 @@ export const useDiagnosaHomeCare = defineStore('diagnosa-home-care', {
     searchdiagnosa: '',
     listDiagnosa: [],
     listTindakan: [],
+    listPetugas: [],
     listjeniskasus: [],
     loadingFormDiagnosa: false,
     formdiagnosa: {
@@ -29,6 +31,7 @@ export const useDiagnosaHomeCare = defineStore('diagnosa-home-care', {
     searchtindakan: '',
     notaTindakans: [],
     notaTindakan: 'BARU',
+    tanggal: dateFilter(Date.now()),
     formtindakan: {
       kdtindakan: '',
       tindakan: '',
@@ -38,7 +41,8 @@ export const useDiagnosaHomeCare = defineStore('diagnosa-home-care', {
       hargapelayanan: 0,
       jmltindakan: 1,
       subtotal: 0,
-      // pelaksana: '',
+      pelaksanaSatu: [],
+      pelaksanaDua: [],
       keterangan: ''
     },
     loadingFormTindakan: false,
@@ -73,6 +77,13 @@ export const useDiagnosaHomeCare = defineStore('diagnosa-home-care', {
       // console.log('list tindakan', resp)
       if (resp.status === 200) {
         this.listTindakan = resp.data
+      }
+    },
+
+    async getAllPetugas () {
+      const resp = await api.get('v1/simrs/ranap/ruangan/allNakes')
+      if (resp.status === 200) {
+        this.listPetugas = resp.data
       }
     },
 
@@ -142,7 +153,7 @@ export const useDiagnosaHomeCare = defineStore('diagnosa-home-care', {
           ? this.formtindakan.biaya = (parseInt(target[0].pelayanan) + parseInt(target[0].sarana))
           : this.formtindakan.biaya = 0
         target?.length
-          ? this.formtindakan.subtotal = parseInt(this.formtindakan.biaya) * this.formtindakan.jumlah
+          ? this.formtindakan.subtotal = parseInt(this.formtindakan.biaya) * (this.formtindakan.jmltindakan || 1)
           : this.formtindakan.subtotal = 0
       }
 
@@ -229,34 +240,43 @@ export const useDiagnosaHomeCare = defineStore('diagnosa-home-care', {
       }
       this.loadingFormTindakan = true
 
-      const form = this.formtindakan
+      const pelaksanaSatu = this.formtindakan?.pelaksanaSatu?.length ? this.formtindakan?.pelaksanaSatu?.join(';') : ''
+      const pelaksanaDua = this.formtindakan?.pelaksanaDua?.length ? this.formtindakan?.pelaksanaDua?.join(';') : ''
+
+      const form = { ...this.formtindakan }
       form.noreg = pasien.noreg
       form.norm = pasien.norm
-      form.kdpoli = pasien?.kodepoli
+      form.kdpoli = pasien?.kodepoli || 'PEN014'
       form.kodedokter = pasien?.kodedokter
       form.kdsistembayar = pasien?.kodesistembayar
-      form.nota = this.notaTindakan === 'BARU' || this.notaTindakan === '' ? '' : this.notaTindakan //
+      form.pelaksanaSatu = pelaksanaSatu
+      form.pelaksanaDua = pelaksanaDua
+      form.kddpjp = pasien?.kodedokter
+      form.nota = (this.notaTindakan === 'BARU' || this.notaTindakan === '' || this.notaTindakan === 'SEMUA' || this.notaTindakan === null) ? '' : this.notaTindakan
+
       try {
         const resp = await api.post('v1/simrs/pelayanan/simpan-tindakan-home-care', form)
         // console.log('simpan tindakan', resp)
         if (resp.status === 200) {
           const storePasien = usePengunjungHomeCareStore()
           const isi = resp?.data?.result
-          // isi.mastertindakan = { rs2: form.tindakan }
           storePasien.injectDataPasien(pasien, isi, 'tindakan')
           this.setNotas(resp?.data?.nota)
           notifSuccess(resp)
           this.loadingFormTindakan = false
           this.initReset('Tindakan Medik')
+          return Promise.resolve(resp)
         }
         this.loadingFormTindakan = false
       }
       catch (error) {
         this.loadingFormTindakan = false
+        return Promise.reject(error)
       }
     },
 
     async getNota (pasien) {
+      this.tanggal = dateFilter(Date.now())
       const params = {
         params: {
           noreg: pasien?.noreg
@@ -267,8 +287,8 @@ export const useDiagnosaHomeCare = defineStore('diagnosa-home-care', {
       // console.log('notas', resp)
       if (resp.status === 200) {
         const arr = resp.data.map(x => x.nota)
-        // console.log('wewew', arr)
-        this.notaTindakans = arr?.length ? arr : []
+        this.notaTindakans = arr?.length ? [...arr] : []
+        this.notaTindakans.unshift('SEMUA')
         this.notaTindakans.push('BARU')
         this.notaTindakan = this.notaTindakans[0]
       }
@@ -346,23 +366,24 @@ export const useDiagnosaHomeCare = defineStore('diagnosa-home-care', {
       const payload = { id, noreg: pasien?.noreg }
 
       try {
-        const resp = await api.post('v1/simrs/pelayanan/hapustindakanIgd', payload)
+        const resp = await api.post('v1/simrs/pelayanan/hapustindakanpoli', payload)
         // console.log(resp)
         if (resp.status === 200) {
           const storePasien = usePengunjungHomeCareStore()
-          storePasien.hapusDataTindakan(pasien, id)
-          this.getNota(pasien)
+          storePasien.hapusDataInjectan(pasien, id, 'tindakan')
+          this.setNotas(resp?.data?.nota)
           notifSuccess(resp)
         }
       }
       catch (error) {
-        console.log('hapus tindakan poli', error)
+        console.log('hapus tindakan', error)
       }
     },
 
     setNotas (array) {
-      const arr = array.map(x => x.nota)
-      this.notaTindakans = arr?.length ? arr : []
+      const arr = array?.map(x => x.nota) || []
+      this.notaTindakans = arr?.length ? [...arr] : []
+      this.notaTindakans.unshift('SEMUA')
       this.notaTindakans.push('BARU')
       this.notaTindakan = this.notaTindakans[0]
     },
@@ -385,6 +406,7 @@ export const useDiagnosaHomeCare = defineStore('diagnosa-home-care', {
         }
         // tindakan
         this.searchtindakan = ''
+        this.tanggal = dateFilter(Date.now())
         this.formtindakan = {
           kdtindakan: '',
           tindakan: '',
@@ -394,7 +416,8 @@ export const useDiagnosaHomeCare = defineStore('diagnosa-home-care', {
           hargapelayanan: 0,
           jmltindakan: 1,
           subtotal: 0,
-          // pelaksana: '',
+          pelaksanaSatu: [],
+          pelaksanaDua: [],
           keterangan: ''
         }
         // icd
