@@ -41,14 +41,14 @@
           </template>
 
           <template #cell-default-img="{ row }">
-            <div v-if="row.pasien_kunjungan_poli || row.pasien_kunjungan_rawat_inap" class="row">
+            <div v-if="hasPatientVisit(row)" class="row">
               <q-avatar size="30px" :class="getKelamin(row) === 'Laki-laki' ? 'bg-secondary' : 'bg-orange'">
                 <img :src="getImage(getKelamin(row))">
               </q-avatar>
             </div>
           </template>
           <template #cell-pasien="{ row }">
-            <div v-if="row.pasien_kunjungan_poli || row.pasien_kunjungan_rawat_inap">
+            <div v-if="hasPatientVisit(row)">
               <div class="text-weight-bold">
                 {{ getNama(row) }}
               </div>
@@ -63,7 +63,7 @@
             </div>
           </template>
           <template #cell-status="{ row }">
-            <div v-if="row.pasien_kunjungan_poli || row.pasien_kunjungan_rawat_inap">
+            <div v-if="hasPatientVisit(row)">
               {{ getProgress(row) }}
             </div>
             <div v-else class="text-negative">
@@ -71,7 +71,7 @@
             </div>
           </template>
           <template #cell-detail="{ row }">
-            <div v-if="row.pasien_kunjungan_poli || row.pasien_kunjungan_rawat_inap" class="column">
+            <div v-if="hasPatientVisit(row)" class="column">
               <!-- <div class="flex items-center"> -->
               <div>No.Nota : <i class="text-primary">{{ row.rs2 }}</i></div>
               <div class="text-negative f-12 q-mb-xs">
@@ -85,7 +85,7 @@
             </div>
           </template>
           <template #cell-dokter="{ row }">
-            <div v-if="row.pasien_kunjungan_poli || row.pasien_kunjungan_rawat_inap">
+            <div v-if="hasPatientVisit(row)">
               <div class="q-mb-sm">
                 <q-badge outline color="primary" :label="getSistemBayar(row)" class="q-mr-xs" />
               </div>
@@ -97,7 +97,7 @@
           </template>
           <template #custom-btn="{ row }">
             <!-- {{ row.pasien_kunjungan_poli }} {{ row.pasien_kunjungan_rawat_inap }} -->
-            <div v-if="row.pasien_kunjungan_poli || row.pasien_kunjungan_rawat_inap">
+            <div v-if="hasPatientVisit(row)">
               <q-btn round flat icon="icon-mat-print" color="grey-8" @click="printHasil(row)">
                 <q-tooltip>
                   Print Hasil Pemeriksaan
@@ -182,9 +182,16 @@ function getProgress(row) {
   return progress || complete ? 'Complete' : 'Menunggu Hasil ...'
 }
 
+function hasPatientVisit(row) {
+  return Boolean(row.pasien_kunjungan_poli || row.pasien_kunjungan_rawat_inap || row.homecare_kunjungan?.masterpasien)
+}
+
 function getNoRm(row) {
   const kp = row.kunjungan_poli
   const krw = row.kunjungan_rawat_inap
+  if (row.homecare_kunjungan) {
+    return row.homecare_kunjungan.masterpasien?.rs1 ?? 'kosong'
+  }
   if (kp) {
     return row.pasien_kunjungan_poli.rs1
   }
@@ -198,6 +205,9 @@ function getNoRm(row) {
 function getNama(row) {
   const kp = row.kunjungan_poli
   const krw = row.kunjungan_rawat_inap
+  if (row.homecare_kunjungan) {
+    return row.homecare_kunjungan.masterpasien?.rs2 ?? 'kosong'
+  }
   if (kp) {
     return row.pasien_kunjungan_poli.rs2
   }
@@ -211,6 +221,9 @@ function getNama(row) {
 function getKelamin(row) {
   const kp = row.kunjungan_poli
   const krw = row.kunjungan_rawat_inap
+  if (row.homecare_kunjungan) {
+    return row.homecare_kunjungan.masterpasien?.rs17 ?? '-'
+  }
   if (kp) {
     return row.pasien_kunjungan_poli.rs17
   }
@@ -225,6 +238,10 @@ function getUsia(row) {
   const kp = row.kunjungan_poli
   const krw = row.kunjungan_rawat_inap
   let usia = 0
+  if (row.homecare_kunjungan) {
+    usia = row.homecare_kunjungan.masterpasien?.rs16
+    return diffDate(usia)
+  }
   if (kp) {
     usia = row.pasien_kunjungan_poli.rs16
   }
@@ -239,6 +256,10 @@ function getBOD(row) {
   const kp = row.kunjungan_poli
   const krw = row.kunjungan_rawat_inap
   let BOD = 0
+  if (row.homecare_kunjungan) {
+    BOD = row.homecare_kunjungan.masterpasien?.rs16
+    return dateBOD(BOD)
+  }
   if (kp) {
     BOD = row.pasien_kunjungan_poli.rs16
   }
@@ -253,6 +274,10 @@ function getAlamat(row) {
   const kp = row.kunjungan_poli
   const krw = row.kunjungan_rawat_inap
   let alamat = '-'
+  if (row.homecare_kunjungan?.masterpasien) {
+    const pasien = row.homecare_kunjungan.masterpasien
+    return `${pasien.rs4 ?? '-'} - ${pasien.rs6 ?? '-'}`
+  }
   if (kp) {
     alamat = row.pasien_kunjungan_poli.rs4 + ' - ' + row.pasien_kunjungan_poli.rs6
   }
@@ -272,6 +297,9 @@ function getLamaBaru(row) {
   const kp = row.kunjungan_poli
   const krw = row.kunjungan_rawat_inap
   let status = 0
+  if (row.homecare_kunjungan) {
+    return row.homecare_kunjungan.masterpasien?.rs31 ?? 'Baru'
+  }
   if (kp) {
     status = row.pasien_kunjungan_poli.rs31
   }
@@ -287,6 +315,9 @@ function getLamaBaru(row) {
 function getRuangan(row) {
   const poli = row.poli
   const krw = row.kunjungan_rawat_inap
+  if (row.homecare_kunjungan?.poli) {
+    return row.homecare_kunjungan.poli.rs2
+  }
   if (poli) {
     return poli.rs2
   }
@@ -300,6 +331,9 @@ function getRuangan(row) {
 function getSistemBayar(row) {
   const poli = row.poli
   const krw = row.kunjungan_rawat_inap
+  if (row.homecare_kunjungan) {
+    return row.homecare_kunjungan.sistem_bayar ?? 'tdk ada'
+  }
   if (poli) {
     return row.sb_kunjungan_poli ? row.sb_kunjungan_poli.rs2 : 'tdk ada'
   }

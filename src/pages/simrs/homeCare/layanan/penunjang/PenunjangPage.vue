@@ -59,7 +59,6 @@ const cekPanel = () => {
 onMounted(() => {
   lab.getMasterLaborat()
   lab.getNota(props.pasien)
-  lab.getNotaold(props.pasien)
   console.log('tabs', tabs.value)
 
 })
