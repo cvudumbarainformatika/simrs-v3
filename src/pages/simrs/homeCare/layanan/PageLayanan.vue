@@ -131,6 +131,13 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('../../eresep/EresepPage.vue')))
   },
   {
+    name: 'inform-concern',
+    label: 'Infrom Concern',
+    icon: 'assignment_turned_in',
+    route: ['homecare'],
+    comp: shallowRef(defineAsyncComponent(() => import('../layanan/informConcern/IndexPage.vue')))
+  },
+  {
     name: 'upload-dokomen',
     label: 'Upload Dokumen',
     icon: 'icon-fa-folder-tree-solid',
