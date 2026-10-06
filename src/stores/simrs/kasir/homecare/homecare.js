@@ -12,7 +12,8 @@ export const useKasirHomecareStore = defineStore('kasir_homecare', {
       sort: 'DESC',
       page: 1,
       order_by: 'id',
-      tgl: dateDbFormat(new Date()),
+      from: dateDbFormat(new Date(new Date().getFullYear(), new Date().getMonth(), 1)),
+      to: dateDbFormat(new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0)),
       flag: 'SEMUA'
     },
     loading: false,
@@ -48,9 +49,10 @@ export const useKasirHomecareStore = defineStore('kasir_homecare', {
       this.getLists()
     },
 
-    setDate (payload) {
+    setDateRange (payload) {
       this.params.page = 1
-      this.params.tgl = payload
+      this.params.from = payload.from
+      this.params.to = payload.to
       this.getLists()
     },
 

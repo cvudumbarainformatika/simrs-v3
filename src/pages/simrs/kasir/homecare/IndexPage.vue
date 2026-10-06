@@ -17,21 +17,30 @@
       <q-card-section class="q-pa-md">
         <div class="text-subtitle2 text-weight-bold q-mb-sm">Filter kunjungan</div>
         <div class="row q-col-gutter-sm items-center">
-          <div class="col-12 col-md-5">
+          <div class="col-12 col-md-4">
             <q-input v-model="search" outlined dense clearable debounce="500" bg-color="white" label="Cari nama, No. RM, atau No. Registrasi" @update:model-value="store.setQ(search || '')">
               <template #prepend><q-icon name="icon-mat-search" color="primary" /></template>
             </q-input>
           </div>
           <div class="col-12 col-sm-6 col-md-3">
-            <q-input v-model="tanggal" outlined dense bg-color="white" label="Tanggal kunjungan">
+            <q-input v-model="tanggalDari" outlined dense bg-color="white" label="Dari tanggal">
               <template #append>
                 <q-icon name="icon-mat-event" color="primary" class="cursor-pointer">
-                  <q-popup-proxy cover transition-show="scale" transition-hide="scale"><q-date v-model="tanggal" mask="YYYY-MM-DD" /></q-popup-proxy>
+                  <q-popup-proxy cover transition-show="scale" transition-hide="scale"><q-date v-model="tanggalDari" mask="YYYY-MM-DD" /></q-popup-proxy>
                 </q-icon>
               </template>
             </q-input>
           </div>
-          <div class="col-12 col-sm-6 col-md-4">
+          <div class="col-12 col-sm-6 col-md-3">
+            <q-input v-model="tanggalSampai" outlined dense bg-color="white" label="Sampai tanggal">
+              <template #append>
+                <q-icon name="icon-mat-event" color="primary" class="cursor-pointer">
+                  <q-popup-proxy cover transition-show="scale" transition-hide="scale"><q-date v-model="tanggalSampai" mask="YYYY-MM-DD" /></q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+          </div>
+          <div class="col-12 col-sm-6 col-md-2">
             <q-select v-model="status" outlined dense emit-value map-options bg-color="white" label="Status layanan" :options="statusOptions" />
           </div>
         </div>
@@ -127,15 +136,16 @@ const statusOptions = [
   { label: 'Terlayani', value: 'TERLAYANI' },
   { label: 'Belum terlayani', value: 'BELUM TERLAYANI' }
 ]
-const tanggal = computed({ get: () => store.params.tgl, set: value => store.setDate(value) })
+const tanggalDari = computed({ get: () => store.params.from, set: value => store.setDateRange({ from: value, to: store.params.to }) })
+const tanggalSampai = computed({ get: () => store.params.to, set: value => store.setDateRange({ from: store.params.from, to: value }) })
 const status = computed({ get: () => store.params.flag, set: value => store.setFlag(value) })
 const page = computed({ get: () => store.params.page, set: value => store.setPage(value) })
 const stats = computed(() => {
   const items = store.items || []
   return [
     { label: 'Total pasien', value: store.meta?.total || items.length, color: 'primary', icon: 'icon-mat-groups' },
-    { label: 'Belum lunas', value: items.filter(item => !item.kwitansi_aktif).length, color: 'negative', icon: 'icon-mat-pending_actions' },
-    { label: 'Sudah lunas', value: items.filter(item => item.kwitansi_aktif).length, color: 'positive', icon: 'icon-mat-verified' },
+    { label: 'Belum lunas', value: items.filter(item => !item.kwitansi_aktif).length, color: 'negative', icon: 'icon-mat-warning' },
+    { label: 'Sudah lunas', value: items.filter(item => item.kwitansi_aktif).length, color: 'positive', icon: 'icon-mat-check_circle' },
     { label: 'Selesai layanan', value: items.filter(item => item.tgl_selesai).length, color: 'teal', icon: 'icon-mat-task_alt' }
   ]
 })

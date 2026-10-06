@@ -1,13 +1,13 @@
 <template>
   <q-page class="igd-page q-pa-md">
     <section class="hero q-mb-md">
-      <div class="row items-center q-gutter-sm"><q-avatar color="white" text-color="negative" icon="icon-mat-emergency"
+      <div class="row items-center q-gutter-sm"><q-avatar color="white" text-color="primary" icon="icon-mat-emergency"
           size="42px" />
         <div>
           <div class="text-h6 text-weight-bold">Kasir IGD</div>
-          <div class="text-caption text-red-1">Pasien IGD yang telah pulang</div>
+          <div class="text-caption text-blue-1">Pasien IGD yang telah pulang</div>
         </div>
-      </div><q-btn unelevated color="white" text-color="negative" icon="icon-mat-refresh" label="Muat ulang"
+      </div><q-btn unelevated color="white" text-color="primary" icon="icon-mat-refresh" label="Muat ulang"
         :loading="store.loading" @click="store.getLists" />
     </section>
     <q-card flat bordered class="filter-card q-mb-md"><q-card-section>
@@ -16,18 +16,16 @@
               label="Cari nama, No. RM, atau registrasi" @update:model-value="store.setQ(search || '')"><template
                 #prepend><q-icon name="icon-mat-search" /></template></q-input>
           </div>
-          <div class="col-12 col-sm-6 col-md-3"><q-input v-model="from" outlined dense label="Tanggal dari"><template
-                #append><q-icon name="icon-mat-event" class="cursor-pointer"><q-popup-proxy cover><q-date v-model="from"
-                      mask="YYYY-MM-DD"
-                      @update:model-value="reloadRange" /></q-popup-proxy></q-icon></template></q-input>
+          <div class="col-12 col-sm-6 col-md-3"><q-input v-model="from" outlined dense label="Tanggal dari" readonly><template
+                #append><q-icon name="icon-mat-event" class="cursor-pointer"><q-popup-proxy cover><q-card><q-date
+                      v-model="from" mask="YYYY-MM-DD" /><q-card-actions align="right" class="q-px-sm q-pb-sm"><q-btn v-close-popup unelevated color="primary"
+                        label="Terapkan" @click="reloadRange" /></q-card-actions></q-card></q-popup-proxy></q-icon></template></q-input>
           </div>
-          <div class="col-12 col-sm-6 col-md-3"><q-input v-model="to" outlined dense label="Tanggal sampai"><template
-                #append><q-icon name="icon-mat-event" class="cursor-pointer"><q-popup-proxy cover><q-date v-model="to"
-                      mask="YYYY-MM-DD"
-                      @update:model-value="reloadRange" /></q-popup-proxy></q-icon></template></q-input>
+          <div class="col-12 col-sm-6 col-md-3"><q-input v-model="to" outlined dense label="Tanggal sampai" readonly><template
+                #append><q-icon name="icon-mat-event" class="cursor-pointer"><q-popup-proxy cover><q-card><q-date
+                      v-model="to" mask="YYYY-MM-DD" /><q-card-actions align="right" class="q-px-sm q-pb-sm"><q-btn v-close-popup unelevated color="primary"
+                        label="Terapkan" @click="reloadRange" /></q-card-actions></q-card></q-popup-proxy></q-icon></template></q-input>
           </div>
-          <div class="col-12 col-md-2"><q-btn class="full-width" outline color="negative" icon="icon-mat-filter_alt"
-              label="Terapkan" @click="reloadRange" /></div>
         </div>
       </q-card-section></q-card>
     <q-card flat bordered class="list-card"><q-card-section class="row items-center justify-between">
@@ -86,7 +84,7 @@ function age(value) { if (!value) return 'Usia -'; const birth = new Date(value)
 }
 
 .hero {
-  background: linear-gradient(110deg, #b51f2c, #e54850);
+  background: linear-gradient(110deg, #1565c0, #42a5f5);
   color: #fff;
   border-radius: 14px;
   padding: 18px 22px;
