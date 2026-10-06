@@ -59,9 +59,6 @@ const createValue = (val, done) => {
         }
       })
 
-    console.log('modelValue', modelValue)
-    console.log('val', val)
-
     // done(val, 'add-unique')
     done(null)
     if (modelValue && model?.value) model.value = modelValue
@@ -86,7 +83,6 @@ const filterFn = (val, update) => {
     }
   },
   ref => {
-    console.log('ref', ref)
     if (val !== '' && ref.options?.length) {
       ref.setOptionIndex(-1)
       ref.moveOptionSelection(1, true)

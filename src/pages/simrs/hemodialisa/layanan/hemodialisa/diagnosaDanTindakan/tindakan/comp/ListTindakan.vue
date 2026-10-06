@@ -49,7 +49,6 @@ onMounted(() => {
 })
 
 function hapusItem (id) {
-  console.log('id', id)
   $q.dialog({
     // dark: true,
     title: 'Peringatan',

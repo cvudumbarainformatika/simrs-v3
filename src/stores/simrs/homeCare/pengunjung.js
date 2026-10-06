@@ -334,6 +334,18 @@ export const usePengunjungHomeCareStore = defineStore('pengunjung_home_care_stor
       }
     },
 
+    hapusDataFisio (pasien, id) {
+      const findPasien = this.pasiens.find(x => x.noreg === pasien?.noreg)
+      if (findPasien?.fisio) {
+        const pos = findPasien.fisio.findIndex(item => item.id === id)
+        if (pos >= 0) findPasien.fisio.splice(pos, 1)
+      }
+      if (pasien && pasien !== findPasien && pasien.fisio) {
+        const pos = pasien.fisio.findIndex(item => item.id === id)
+        if (pos >= 0) pasien.fisio.splice(pos, 1)
+      }
+    },
+
     hapusDataPenunjangLain (pasien, id) {
       const findPasien = this.pasiens.find(x => x.noreg === pasien.noreg)
       if (findPasien) {

@@ -74,8 +74,6 @@ const props = defineProps({
 const filterredTable = computed(() => {
   const val = store?.form?.nota
   const arr = props?.pasien?.fisio
-  console.log('pasien ', props?.pasien)
-  console.log('pasien fisio', arr)
   return arr?.length ? arr?.filter(x => x?.rs2 === val) : []
 })
 

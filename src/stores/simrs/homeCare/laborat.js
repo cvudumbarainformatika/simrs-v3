@@ -112,14 +112,9 @@ export const useLaboratHomeCare = defineStore('laborat-home-care', {
 
     async getNota (pasien) {
       const payload = { params: { noreg: pasien?.noreg } }
-      const resp = await api.get('v1/simrs/penunjang/laborat/getnotaIgd', payload)
-      console.log('notalaborat', resp)
+      const resp = await api.get('v1/simrs/penunjang/laborat/getnota', payload)
       if (resp.status === 200) {
-        // this.setNotas(resp?.data)
-        // const arr = resp.data.map(x => x.nota)
-        // this.notalaborats = arr?.length ? arr : []
-        // this.notalaborats.push('BARU')
-        // this.notalaborat = this.notalaborats[0]
+        this.setNotas(resp?.data ?? [])
       }
     },
 
@@ -208,7 +203,7 @@ export const useLaboratHomeCare = defineStore('laborat-home-care', {
       if (!pasien?.kodedokter) {
         return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
       }
-      this.loadingSave = true
+      this.loadingSaveLab = true
       this.form.norm = pasien?.norm
       this.form.noreg = pasien?.noreg
       this.form.kodedokter = pasien?.kodedokter
@@ -247,7 +242,7 @@ export const useLaboratHomeCare = defineStore('laborat-home-care', {
       // console.log('payload', formbaru)
 
       try {
-        const resp = await api.post('v1/simrs/penunjang/laborat/simpanpermintaanlaborat', formbaru)
+        const resp = await api.post('v1/simrs/penunjang/laborat/simpanpermintaanlaboratbaru', formbaru)
         // console.log('save resp', resp)
         if (resp.status === 200) {
           const storePasien = usePengunjungHomeCareStore()
@@ -260,13 +255,13 @@ export const useLaboratHomeCare = defineStore('laborat-home-care', {
           }
           this.setNotas(resp?.data?.nota)
           notifSuccess(resp)
-          this.loadingSaveLab = false
           this.initReset()
         }
-        this.loadingSaveLab = false
       }
       catch (error) {
-        // console.log('save laborat', error)
+        notifErrVue(error?.response?.data?.message ?? 'Gagal menyimpan permintaan laborat')
+      }
+      finally {
         this.loadingSaveLab = false
       }
     },
@@ -298,7 +293,7 @@ export const useLaboratHomeCare = defineStore('laborat-home-care', {
     async hapusLaboratBaru (pasien, id) {
       const payload = { id, noreg: pasien?.noreg }
       try {
-        const resp = await api.post('v1/simrs/penunjang/laborat/hapuspermintaanlaboratbaruIgd', payload)
+        const resp = await api.post('v1/simrs/penunjang/laborat/hapuspermintaanlaboratbaru', payload)
         // console.log('hapus laborat', resp)
         if (resp.status === 200) {
           const storePasien = usePengunjungHomeCareStore()
@@ -309,7 +304,7 @@ export const useLaboratHomeCare = defineStore('laborat-home-care', {
         }
       }
       catch (error) {
-        console.log('hapus laborat', error)
+        notifErrVue(error?.response?.data?.message ?? 'Gagal menghapus permintaan laborat')
       }
     },
     setNotas (array) {

@@ -72,8 +72,6 @@ export const useFisioHomeCare = defineStore('fisio-home-care', {
       const payload = { noreg: pasien?.noreg, id }
       try {
         const resp = await api.post('v1/simrs/penunjang/fisioterapi/hapuspermintaan', payload)
-        this.loadingHapus = false
-        // console.log(resp)
         if (resp.status === 200) {
           const storePasien = usePengunjungHomeCareStore()
           storePasien.hapusDataFisio(pasien, id)
@@ -82,8 +80,10 @@ export const useFisioHomeCare = defineStore('fisio-home-care', {
         }
       }
       catch (error) {
+        notifErrVue(error?.response?.data?.message ?? 'Gagal menghapus permintaan fisioterapi')
+      }
+      finally {
         this.loadingHapus = false
-        // console.log(error)
       }
     },
 
@@ -106,4 +106,3 @@ export const useFisioHomeCare = defineStore('fisio-home-care', {
 if (import.meta.hot) {
   import.meta.hot.accept(acceptHMRUpdate(useFisioHomeCare, import.meta.hot))
 }
-

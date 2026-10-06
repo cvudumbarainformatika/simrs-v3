@@ -88,7 +88,6 @@ const validate = () => {
     else {
       // oh no, user has filled in
       // at least one invalid value
-      console.log('failed')
       formRef.value?.refInputKu.focus()
       scrollToElement(formRef.value?.refInputKu.$el)
     }

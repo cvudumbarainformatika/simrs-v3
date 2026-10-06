@@ -94,7 +94,6 @@ onMounted(() => {
 })
 
 function bukaTindakan(val) {
-  console.log('buka tindakan', val)
   store.pasien = val
   store.terimapasien(val)
 }
