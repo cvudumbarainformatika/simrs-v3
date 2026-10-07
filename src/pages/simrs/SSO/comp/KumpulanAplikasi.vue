@@ -11,6 +11,7 @@
         label="Cari Aplikasi"
         dense
         dark
+        clearable
       >
         <template #prepend>
           <q-icon name="icon-mat-search" />
@@ -176,20 +177,24 @@ const emits = defineEmits(['goTo'])
 const $q = useQuasar()
 const isMobile = ref($q.platform.is.mobile)
 const filterApps = computed(() => {
-  const allApp = props.items
-  const akses = props.akses
-  if (akses === 'all') {
-    return allApp
-  }
-  const filt = akses.reduce(function (r, e) {
-    r[e.aplikasi_id] = (r[e.aplikasi_id] || 0) + e.aplikasi_id
-    return r
-  }, {})
+  let accessibleApps = props.items
+  if (props.akses !== 'all') {
+    const filt = props.akses.reduce(function (r, e) {
+      r[e.aplikasi_id] = (r[e.aplikasi_id] || 0) + e.aplikasi_id
+      return r
+    }, {})
 
-  const group = Object.keys(filt)
-  const grouped = group.map(x => parseInt(x))
-  const r = allApp.filter((a) => grouped.some(x => x === a.id))
-  return r
+    const grouped = Object.keys(filt).map(x => parseInt(x))
+    accessibleApps = props.items.filter((app) => grouped.some(id => id === app.id))
+  }
+
+  const query = search.value?.trim().toLowerCase()
+  if (!query) return accessibleApps
+
+  return accessibleApps.filter((app) =>
+    [app.nama, app.julukan, app.singkatan]
+      .some(value => String(value ?? '').toLowerCase().includes(query))
+  )
 })
 
 onMounted(() => {
