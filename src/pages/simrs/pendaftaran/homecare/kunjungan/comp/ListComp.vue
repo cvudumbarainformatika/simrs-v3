@@ -61,8 +61,8 @@
               </div>
               <div class="row q-my-xs justify-end">
                 <div class="q-ml-sm">
-                  <q-badge outline :color="item.tgl_selesai ? 'green' : 'dark'"
-                    :label="item.tgl_selesai ? 'Sudah Selesai' : 'Belum Selesai'" />
+                  <q-badge outline :color="item.flag === '2' || item.tgl_selesai ? 'green' : 'dark'"
+                    :label="item.flag === '2' || item.tgl_selesai ? 'Sudah Selesai' : 'Belum Selesai'" />
                 </div>
               </div>
             </q-item-label>

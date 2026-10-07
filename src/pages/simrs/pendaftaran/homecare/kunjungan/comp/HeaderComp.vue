@@ -56,7 +56,7 @@
 import { dateDbFormat } from 'src/modules/formatter'
 import { computed, ref } from 'vue'
 const txt = ref('SEMUA')
-const txts = ref(['SEMUA', 'TERLAYANI', 'BELUM TERLAYANI'])
+const txts = ref(['SEMUA', 'SUDAH BERANGKAT', 'BELUM BERANGKAT', 'SELESAI'])
 const emits = defineEmits(['fullscreen', 'setTanggal', 'setSearch', 'setRow', 'status'])
 const options = ref([5, 10, 20, 50, 100])
 const props = defineProps({
