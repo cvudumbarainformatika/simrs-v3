@@ -10,9 +10,34 @@
       <div class="col-auto">
         :
       </div>
-      <div class="col-10">
-        <div v-for="(diag, i) in pasien?.diagnosa" :key="i">
-          {{ diag?.masterdiagnosa?.rs4 }}
+      <div class="col-10 column">
+        <div class="row q-mb-xs">
+          <div class="col-4">DIAGNOSIS DPJP</div>
+          <div class="col-8">{{ pasien?.memodiagnosa || '-' }}</div>
+        </div>
+        <div class="row q-mb-xs">
+          <div class="col-4">DIAGNOSIS Primer</div>
+          <div class="col-8">
+            <div
+              v-for="(diag, i) in pasien?.diagnosa?.filter(item => item?.rs4 === 'Primer')"
+              :key="`primer-${i}`"
+            >
+              {{ diag?.masterdiagnosa?.rs4 ?? diag?.masterdiagnosa?.rs3 ?? '-' }}
+            </div>
+            <span v-if="!pasien?.diagnosa?.some(item => item?.rs4 === 'Primer')">-</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">DIAGNOSIS Sekunder</div>
+          <div class="col-8">
+            <div
+              v-for="(diag, i) in pasien?.diagnosa?.filter(item => item?.rs4 === 'Sekunder')"
+              :key="`sekunder-${i}`"
+            >
+              {{ diag?.masterdiagnosa?.rs4 ?? diag?.masterdiagnosa?.rs3 ?? '-' }}
+            </div>
+            <span v-if="!pasien?.diagnosa?.some(item => item?.rs4 === 'Sekunder')">-</span>
+          </div>
         </div>
       </div>
     </div>
