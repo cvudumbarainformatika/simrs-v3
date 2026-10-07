@@ -1,14 +1,15 @@
 <template>
-  <div class="fit column bg-white">
-    <div class="col-auto bg-grey-2 border-bottom">
+  <div class="fit column bg-white document-page">
+    <div class="col-auto bg-grey-2 border-bottom document-tabs-wrap">
       <q-tabs
         v-model="tabActive"
         dense
         align="left"
+        mobile-arrows
         active-color="primary"
         active-bg-color="white"
         indicator-color="primary"
-        class="text-grey-8"
+        class="text-grey-8 document-tabs"
       >
         <q-tab name="dokumen-ranap" icon="icon-mat-description" label="Dokumen Rekam Medis (Ranap)" no-caps />
         <q-tab name="billing-ranap" icon="icon-mat-receipt_long" label="Billing & Rincian Biaya" no-caps />
@@ -16,10 +17,10 @@
       </q-tabs>
     </div>
 
-    <div class="col full-height" style="overflow: hidden;">
-      <q-tab-panels v-model="tabActive" animated class="fit q-pa-none">
+    <div class="col full-height document-content">
+      <q-tab-panels v-model="tabActive" animated class="fit q-pa-none document-panels">
         <!-- Panel 1: Dokumen Rawat Inap (Otomatis mencakup semua dokumen ranap) -->
-        <q-tab-panel name="dokumen-ranap" class="fit q-pa-none">
+        <q-tab-panel name="dokumen-ranap" class="fit q-pa-none document-panel">
           <Suspense>
             <template #default>
               <DokumenRanapIndex :key="pasien?.noreg" :pasien="pasien" />
@@ -89,5 +90,41 @@ defineProps({
 <style lang="scss" scoped>
 .border-bottom {
   border-bottom: 1px solid #e0e0e0;
+}
+
+.document-page,
+.document-tabs-wrap,
+.document-content,
+.document-panels {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.document-page,
+.document-content {
+  overflow: hidden;
+}
+
+.document-tabs-wrap {
+  overflow: hidden;
+}
+
+.document-tabs {
+  width: 100%;
+}
+
+.document-panels :deep(.q-tab-panel) {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.document-panels :deep(.q-tab-panel > *) {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
 }
 </style>
