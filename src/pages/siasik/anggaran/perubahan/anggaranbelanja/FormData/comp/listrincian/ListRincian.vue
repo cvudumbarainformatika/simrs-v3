@@ -73,7 +73,7 @@
               </template>
               <template v-else>
                 <q-btn size="sm" class="q-pl-md" color="negative" icon="icon-mat-delete"
-                  @click="deleteData(props?.row?.id)" :loading="store.loadingDelete" />
+                  @click="deleteData(props.row)" :loading="store.loadingDelete" />
               </template>
             </div>
 
@@ -224,22 +224,19 @@ function selisih() {
   return subtotal.value - Number(store.form.paguanggaran || 0);
 }
 
-function deleteData(row) {
-  console.log('row delete', row)
+function deleteData(item) {
   $q.dialog({
     title: 'Peringatan',
     message: 'Apakah Data ini akan dihapus?',
     cancel: true,
     persistent: true
   }).onOk(() => {
-
     const payload = {
       notrans: store.form.notrans,
-      id: Number(row),
-
+      id: Number(item.id),
     }
     // console.log('payload', payload)
-    store.deleteData(payload)
+    store.deleteData(payload, item)
       .then(() => {
         //   store.loadingHapus = true
         // carisrt.refreshTable()

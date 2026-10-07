@@ -218,19 +218,8 @@ const RincianBaru = () => {
   openDialogRincianBaru.value = !openDialogRincianBaru.value
 }
 const openDialogRincian = async () => {
-  // const itemdialog = store.dataBarangslama
-  // const itemsimpan = store.rincians
-
+  store.params.page = 1
   await store.getBarangslama()
-  const itemsimpan = new Set(
-    (store.rincians || [])
-      .map(r => r.kode)
-      .filter(Boolean)
-  )
-  // console.log('tersimpan ', itemsimpan)
-  store.dataBarangslama.filter(r => !itemsimpan.has(r.kode))
-    .map(r => ({ ...r }))
-  // console.log('barang lama ', store.dataBarangslama)
 
   if (!Indikator.value) {
     $q.notify({

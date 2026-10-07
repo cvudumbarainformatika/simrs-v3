@@ -1,51 +1,21 @@
 <template>
   <template v-if="store.jurnals?.length">
     <div class="q-pa-md full-width">
-      <q-table
-        class="my-sticky-table"
-        wrap-cells
-        :rows="store.jurnals"
-        :columns="columns"
-        dense
-        flat bordered
-        row-key="name"
-        :filter="store.reqs.q"
-        :loading="store.loading"
-        :rows-per-page-options="[0]"
-        :rows-number="[0]"
-      >
+      <q-table class="my-sticky-table" wrap-cells :rows="store.jurnals" :columns="columns" dense flat bordered
+        row-key="id" :filter="store.reqs.q" :loading="store.loading" :rows-per-page-options="[0]" :rows-number="[0]">
         <template #loading>
           <q-inner-loading showing color="warning" />
         </template>
         <template #top-left>
           <div class="flex q-qutter-sm z-top">
             <div>
-              <q-input
-                v-model="store.reqs.q"
-                outlined
-                dark
-                color="warning"
-                dense
-                placeholder="Cari Transaksi..."
-                debounce="0"
-                style="min-width: 300px;"
-              >
-                <template
-                  v-if="store.reqs.q"
-                  #append
-                >
-                  <q-icon
-                    name="icon-mat-close"
-                    size="xs"
-                    class="cursor-pointer"
-                    @click.stop.prevent="clearSearch"
-                  />
+              <q-input v-model="store.reqs.q" outlined dark color="warning" dense placeholder="Cari Transaksi..."
+                debounce="0" style="min-width: 300px;">
+                <template v-if="store.reqs.q" #append>
+                  <q-icon name="icon-mat-close" size="xs" class="cursor-pointer" @click.stop.prevent="clearSearch" />
                 </template>
                 <template #prepend>
-                  <q-icon
-                    size="sm"
-                    name="icon-mat-search"
-                  />
+                  <q-icon size="sm" name="icon-mat-search" />
                 </template>
               </q-input>
             </div>
@@ -78,7 +48,8 @@
               </div>
               <div class="row q-pl-md" v-for="it in props.row?.kredit" :key="it">
                 <template v-if="it?.length">
-                  <q-badge v-for="at in it" :key="at" color="white" class="row full-width text-weight-bold text-orange-6">
+                  <q-badge v-for="at in it" :key="at" color="white"
+                    class="row full-width text-weight-bold text-orange-6">
                     {{ at.kode }}
                   </q-badge>
                 </template>
@@ -181,7 +152,8 @@
               </div>
               <div class="row q-pl-md" v-for="it in props.row?.kredit" :key="it">
                 <template v-if="it?.length">
-                  <q-badge v-for="at in it" :key="at" color="white" class="row full-width text-weight-bold text-orange-6">
+                  <q-badge v-for="at in it" :key="at" color="white"
+                    class="row full-width text-weight-bold text-orange-6">
                     {{ at.uraian }}
                   </q-badge>
                 </template>
@@ -531,45 +503,48 @@ const listRegjurnal = [
 const columns = ref(listRegjurnal)
 </script>
 <style lang="scss">
-.my-sticky-table{
+.my-sticky-table {
   height: 510px;
 
   .q-table__top,
   .q-table__bottom,
-  thead tr:first-child th{
+  thead tr:first-child th {
     background-color: #000000;
     color: $white;
 
   }
 
-  thead tr th{
+  thead tr th {
     position: sticky;
     z-index: 1;
     font-weight: bold;
   }
 
   /* this will be the loading indicator */
-  thead tr:last-child th{
+  thead tr:last-child th {
     top: 48px;
 
   }
-    /* height of all previous header rows */
 
-  thead tr:first-child th{
+  /* height of all previous header rows */
+
+  thead tr:first-child th {
     top: 0;
   }
-  .q-td{
+
+  .q-td {
     font-size: 3mm;
   }
+
   /* prevent scrolling behind sticky top row on focus */
-  tbody{
+  tbody {
     scroll-margin-top: 48px;
     font-size: 1mm;
   }
+
   .q-table__bottom .q-field__native,
   .q-table__bottom .q-field__inner .q-field__control .q-anchor--skip,
-  i.q-icon
-   {
+  i.q-icon {
     color: $white;
   }
 }

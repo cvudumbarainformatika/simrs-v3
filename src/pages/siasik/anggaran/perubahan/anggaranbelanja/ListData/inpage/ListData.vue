@@ -1,7 +1,7 @@
 <template>
   <template v-if="store.items">
     <div class="justify-content-center full-width">
-      <q-table class="my-sticky-table" style="height: 100%;" :rows="store.items" :columns="columnsData" row-key="name"
+      <q-table class="my-sticky-table" style="height: 100%;" :rows="store.items" :columns="columnsData" row-key="id"
         dense flat bordered wrap-cells :filter="store.params.q" :loading="store.loading"
         :rows-per-page-options="[10, 50, 100]">
         <template #loading>
@@ -226,7 +226,7 @@ async function viewCetakData(row) {
 }
 
 function editDataPangusulan(row) {
-  // console.log('rooow', row)
+
   // if (auth.user?.pegawai?.kdpegsimrs !== 'sa') {
   //   $q.notify({
   //     type: 'negative',
@@ -242,6 +242,8 @@ function editDataPangusulan(row) {
     return
   }
 
+  store.params.q = ''
+  store.params.page = 1
   store.form = {
     ...store.form,
     ...row
@@ -254,7 +256,7 @@ function editDataPangusulan(row) {
       store.params.tahun = tahun
     }
   }
-  store.rincians = row.rincian ? [...row.rincian] : []
+  store.rincians = Array.isArray(row.rincian) ? [...row.rincian] : []
 
   router.push({ path: '/anggaran/perubahan/belanja/form', replace: true, query: { id: row.id } })
   store.disableSaved = true
