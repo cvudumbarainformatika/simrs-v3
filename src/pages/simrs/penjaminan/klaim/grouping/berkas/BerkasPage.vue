@@ -20,7 +20,7 @@
               <DokumenIgdIndex v-if="pasien?.kodepoli === 'POL014'" :key="pasien?.noreg" :pasien="pasien"
                 :loadingaja="loadingaja" />
               <!-- Jika Pasien Poli Rawat Jalan -->
-              <DokumenPoliIndex v-else :key="pasien?.noreg" :pasien="pasien" :loadingaja="loadingaja" />
+              <DokumenPoliIndex v-else :key="pasien.noreg" :pasien="pasien" :loadingaja="loadingaja" />
             </template>
             <template #fallback>
               <app-loading />
