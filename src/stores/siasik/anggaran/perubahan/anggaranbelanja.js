@@ -53,6 +53,7 @@ export const usePerubahanAnggaranBelanja_PAK = defineStore('perubahan-anggaran-b
             per_page: 30,
         },
         dataBarangslama: [],
+        deletedBarangLama: [],
         metaBarangLama: {
             current_page: 1,
             per_page: 30,
@@ -99,11 +100,23 @@ export const usePerubahanAnggaranBelanja_PAK = defineStore('perubahan-anggaran-b
                         waitLoad('done')
                         console.log('resp barang lama', resp)
                         if (resp.status === 200) {
-                            this.dataBarangslama = resp.data.data.map(item => ({
+                            const data = resp.data.data.map(item => ({
                                 ...item,
                                 tmp_touched: false,
                                 sedangInput: false
                             }))
+                            const cachedDeletedItems = this.deletedBarangLama.filter(item =>
+                                String(item._deletedNotrans) === String(this.form.notrans) &&
+                                String(item._deletedKodeKegiatan) === String(this.form.kodeKegiatan) &&
+                                String(item._deletedTahun) === String(this.form.tahun)
+                            )
+                            const availableItems = new Set(
+                                data.map(item => JSON.stringify([item.kode, item.koderek50]))
+                            )
+                            const missingDeletedItems = cachedDeletedItems.filter(item =>
+                                !availableItems.has(JSON.stringify([item.kode, item.koderek50]))
+                            )
+                            this.dataBarangslama = [...data, ...missingDeletedItems]
                             console.log('dataBarangslama', this.dataBarangslama)
                             this.metaBarangLama = {
                                 current_page: resp.data.current_page,
@@ -321,7 +334,7 @@ export const usePerubahanAnggaranBelanja_PAK = defineStore('perubahan-anggaran-b
             // this.form.group = val?.groups?.toString()
 
         },
-        async deleteData(payload) {
+        async deleteData(payload, deletedItem) {
             this.loadingDelete = true
             try {
                 const resp = await api.post(
@@ -331,6 +344,22 @@ export const usePerubahanAnggaranBelanja_PAK = defineStore('perubahan-anggaran-b
 
                 if (resp.status === 200) {
                     this.rincians = resp.data.data ?? []
+                    if (deletedItem) {
+                        const cachedItem = {
+                            ...deletedItem,
+                            _deletedNotrans: this.form.notrans,
+                            _deletedKodeKegiatan: this.form.kodeKegiatan,
+                            _deletedTahun: this.form.tahun
+                        }
+                        const deletedKey = JSON.stringify([deletedItem.kode, deletedItem.koderek50])
+                        this.deletedBarangLama = [
+                            ...this.deletedBarangLama.filter(item =>
+                                String(item._deletedNotrans) !== String(this.form.notrans) ||
+                                JSON.stringify([item.kode, item.koderek50]) !== deletedKey
+                            ),
+                            cachedItem
+                        ]
+                    }
                     notifSuccessVue(resp.data.message)
                 }
             } catch (error) {

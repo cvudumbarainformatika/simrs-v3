@@ -1,7 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
-import { notifInfVue } from 'src/modules/utils'
+import { notifErrVue, notifInfVue } from 'src/modules/utils'
 
 export const useListKunjunganHomeCareStore = defineStore('list_kunjungan_home_care', {
   state: () => ({
@@ -24,15 +24,16 @@ export const useListKunjunganHomeCareStore = defineStore('list_kunjungan_home_ca
   actions: {
     async getLists () {
       this.loading = true
-      const params = { params: this.params }
-      const resp = await api.get('/v1/simrs/pendaftaran/homecare/list', params)
-      if (resp.status === 200) {
-        console.log('kunjungan', resp)
-        this.items = resp.data?.data
-        this.meta = resp.data?.meta
+      try {
+        const params = { params: this.params }
+        const resp = await api.get('/v1/simrs/pendaftaran/homecare/list', params)
+        this.items = resp.data?.data ?? []
+        this.meta = resp.data?.meta ?? null
+      } catch (error) {
+        notifErrVue(error?.response?.data?.message ?? 'Gagal memuat list kunjungan HomeCare.')
+      } finally {
         this.loading = false
       }
-      this.loading = false
     },
     berangkat (val) {
       // console.log(val)

@@ -1,4 +1,5 @@
 import { acceptHMRUpdate, defineStore } from "pinia"
+import { Notify } from 'quasar'
 import { api } from "src/boot/axios"
 import { dateDbFormat } from "src/modules/formatter"
 
@@ -23,6 +24,7 @@ export const usePengunjungHomeCareStore = defineStore('pengunjung_home_care_stor
     statuses: ['Semua', 'Terlayani', 'Dalam Pelayanan', 'Belum Dilayani'],
     statusx: 'Semua',
     pageLayanan: false,
+    loadingSelesai: false,
     listkhasusdiagnosa: null,
     notaTindakans: [],
   }),
@@ -256,9 +258,29 @@ export const usePengunjungHomeCareStore = defineStore('pengunjung_home_care_stor
         }
       }
     },
-    setLayananSelesai (val) {
-      console.log('selesai layanan', val)
+    async setLayananSelesai (pasien) {
+      if (!pasien?.noreg) {
+        Notify.create({ type: 'negative', message: 'Nomor registrasi HomeCare tidak ditemukan.' })
+        return
+      }
 
+      this.loadingSelesai = true
+      try {
+        await api.post('v1/simrs/homecare/pengunjung/selesaikan-layanan', { noreg: pasien.noreg })
+        pasien.flag = '2'
+        const kunjungan = this.pasiens.find(item => item.noreg === pasien.noreg)
+        if (kunjungan) kunjungan.flag = '2'
+        this.pageLayanan = false
+        Notify.create({ type: 'positive', message: 'Layanan HomeCare berhasil diselesaikan.' })
+        await this.getData()
+      } catch (error) {
+        Notify.create({
+          type: 'negative',
+          message: error.response?.data?.message || 'Layanan HomeCare gagal diselesaikan.'
+        })
+      } finally {
+        this.loadingSelesai = false
+      }
     },
 
     hapusDataAnamnesis (pasien, id) {

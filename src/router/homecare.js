@@ -9,6 +9,11 @@ const homecare = {
       name: 'homecare.list-pasien',
       component: () => import('pages/simrs/homeCare/pengunjung/IndexPage.vue')
     },
+    {
+      path: '/homecare/permintaan-cssd',
+      name: 'homecare.permintaan-cssd',
+      component: () => import('pages/simrs/homeCare/cssd/IndexPage.vue')
+    },
     // {
     //   path: '/homecare/suratkontrol',
     //   name: 'homecare.suratkontrol',

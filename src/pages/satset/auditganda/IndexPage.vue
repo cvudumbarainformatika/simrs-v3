@@ -519,59 +519,25 @@
       </q-card>
     </q-dialog>
 
-    <!-- Dialog Edit Form Pasien Pendaftaran Master (Identik Menu Pendaftaran) -->
-    <app-fullscreen
-      v-model="editStore.openEdit"
-      @close="tutupFormEdit"
-    >
-      <template #default>
-        <div class="row items-center justify-between bg-primary text-white q-pa-sm shadow-2">
-          <div class="text-subtitle1 text-weight-bolder row items-center q-gutter-xs">
-            <q-icon name="icon-mat-person" size="20px" />
-            <span>Form Identitas Pasien Master (Pendaftaran SIMRS)</span>
-          </div>
-          <q-btn flat round dense icon="icon-mat-close" color="white" @click="tutupFormEdit" />
-        </div>
-        <div class="q-pa-md">
-          <DataPasien
-            ref="refDataPasien"
-            bpjs
-            :not-edit="false"
-            :tglsep="today"
-          />
-          <div class="row justify-end q-my-lg q-mx-md q-gutter-sm">
-            <q-btn flat label="Batal" color="grey-7" no-caps @click="tutupFormEdit" />
-            <q-btn
-              unelevated
-              color="primary"
-              label="Simpan Perubahan Master Pasien"
-              icon="icon-mat-save"
-              no-caps
-              :loading="editStore.loading"
-              @click="simpanMasterPasien"
-            />
-          </div>
-        </div>
-      </template>
-    </app-fullscreen>
+    <!-- Modal Edit Master Pasien Modern -->
+    <ModalEditMasterPasien
+      v-model="modalEditMaster"
+      :norm="selectedEditNorm"
+      @saved="onMasterPasienSaved"
+    />
   </q-page>
 </template>
 
 <script setup>
 import { onMounted, ref } from 'vue'
 import { useSatsetAuditGandaStore } from 'src/stores/satset/auditganda'
-import { usePendaftaranEditPasienStore } from 'src/stores/simrs/pendaftaran/table/editpasien'
-import DataPasien from 'src/pages/simrs/pendaftaran/form/pasien/DataPasien.vue'
-import { api } from 'src/boot/axios'
-import { date } from 'quasar'
-import { notifErr, notifSuccess } from 'src/modules/utils'
+import ModalEditMasterPasien from './comp/ModalEditMasterPasien.vue'
 
 const store = useSatsetAuditGandaStore()
-const editStore = usePendaftaranEditPasienStore()
 
-const refDataPasien = ref(null)
+const modalEditMaster = ref(false)
+const selectedEditNorm = ref('')
 const loadingEditNorm = ref(null)
-const today = ref(date.formatDate(Date.now(), 'YYYY-MM-DD'))
 
 onMounted(() => {
   store.initPage()
@@ -596,45 +562,29 @@ function formatDate(val) {
   }
 }
 
-async function bukaFormEditPasien(norm) {
+function bukaFormEditPasien(norm) {
   if (!norm) return
-  loadingEditNorm.value = norm
-  try {
-    const resp = await api.get('/v1/simrs/pendaftaran/caripasienbyrm', {
-      params: { norm }
-    })
-    if (resp?.data && Array.isArray(resp.data) && resp.data.length > 0) {
-      const dataPasien = resp.data[0]
-      editStore.openDialogEdit()
-      editStore.editPasienIni(dataPasien)
-    } else {
-      notifErr({ message: 'Data master pasien tidak ditemukan' })
-    }
-  } catch (err) {
-    notifErr(err)
-  } finally {
-    loadingEditNorm.value = null
-  }
+  selectedEditNorm.value = norm
+  modalEditMaster.value = true
 }
 
-function tutupFormEdit() {
-  editStore.clearFormPasien()
-  editStore.openEdit = false
-}
+function onMasterPasienSaved(data) {
+  // Refresh list audit ganda & stats
+  store.getList(store.meta.current_page)
+  store.getStats()
 
-function simpanMasterPasien() {
-  if (refDataPasien.value) {
-    refDataPasien.value.set()
-  }
-  editStore.saveForm().then((res) => {
-    if (res?.data?.status === 'success' || res?.status === 200) {
-      notifSuccess({ message: 'Data master pasien berhasil diperbarui!' })
-      tutupFormEdit()
-      // Refresh list audit ganda
-      store.getList(store.meta.current_page)
-      store.getStats()
+  // Jika sedang membuka modal dialog detail grup komparasi, update data member di grup yang terbuka
+  if (store.dialogDetail && store.selectedGroup?.members) {
+    const idx = store.selectedGroup.members.findIndex(m => m.norm === data.norm)
+    if (idx !== -1) {
+      store.selectedGroup.members[idx].nama = data.nama
+      store.selectedGroup.members[idx].nik = data.nik
+      store.selectedGroup.members[idx].noka_bpjs = data.nokabpjs
+      store.selectedGroup.members[idx].tgl_lahir = data.tgllahir
+      store.selectedGroup.members[idx].alamat = data.alamat
+      store.selectedGroup.members[idx].sapaan = data.sapaan
     }
-  })
+  }
 }
 </script>
 

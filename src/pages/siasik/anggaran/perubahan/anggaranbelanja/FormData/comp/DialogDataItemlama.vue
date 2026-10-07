@@ -220,16 +220,14 @@ const rincianByKegiatan = computed(() => {
   if (!store.form.kodeKegiatan) return []
   const all = Array.isArray(store.dataBarangslama) ? store.dataBarangslama : []
   const used = Array.isArray(store.rincians) ? store.rincians : []
-  // console.log('all', all)
-  // console.log('all used', used)
-  const usedKode = new Set(
+  const usedItems = new Set(
     used
-      .map(r => r.kode)
-      .filter(Boolean)
+      .filter(r => r.kode)
+      .map(r => JSON.stringify([r.kode, r.koderek50]))
   )
 
   // tampilkan hanya yang BELUM dipakai
-  return all.filter(r => !usedKode.has(r.kode))
+  return all.filter(r => !usedItems.has(JSON.stringify([r.kode, r.koderek50])))
 })
 
 /* validasi tombol */

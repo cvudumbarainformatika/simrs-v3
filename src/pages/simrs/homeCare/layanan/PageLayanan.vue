@@ -3,7 +3,7 @@
     <q-card square flat class="container-no-header">
       <q-layout view="lHr Lpr lFf" container class="shadow-2 rounded-borders z-top">
         <q-header elevated class="bg-primary">
-          <HeaderLayout :pasien="pasien" :loading-save-dpjp="store.loadingSaveGantiDpjp" :loading-finish="store.loading"
+          <HeaderLayout :pasien="pasien" :loading-save-dpjp="store.loadingSaveGantiDpjp" :loading-finish="store.loadingSelesai"
             @toggle-left-drawer="() => drawer = !drawer" @gantidpjp="(val) => store.gantiDpjp(val, pasien)"
             @layanan-selesai="store.setLayananSelesai(pasien)" />
         </q-header>
@@ -129,6 +129,13 @@ const menus = ref([
     icon: 'icon-mat-receipt',
     route: ['homecare'],
     comp: shallowRef(defineAsyncComponent(() => import('../../eresep/EresepPage.vue')))
+  },
+  {
+    name: 'inform-concern',
+    label: 'Infrom Concern',
+    icon: 'assignment_turned_in',
+    route: ['homecare'],
+    comp: shallowRef(defineAsyncComponent(() => import('../layanan/informConcern/IndexPage.vue')))
   },
   {
     name: 'upload-dokomen',
