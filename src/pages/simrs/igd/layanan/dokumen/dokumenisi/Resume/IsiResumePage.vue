@@ -10,35 +10,10 @@
       <div class="col-auto">
         :
       </div>
-      <div class="col-10 column">
-        <div class="row q-mb-xs">
-          <div class="col-4">DIAGNOSIS DPJP</div>
-          <div class="col-8">{{ pasien?.memodiagnosa || '-' }}</div>
-        </div>
-        <div class="row q-mb-xs">
-          <div class="col-4">DIAGNOSIS Primer</div>
-          <div class="col-8">
-            <div
-              v-for="(diag, i) in pasien?.diagnosa?.filter(item => item?.rs4 === 'Primer')"
-              :key="`primer-${i}`"
-            >
-              {{ diag?.masterdiagnosa?.rs4 ?? diag?.masterdiagnosa?.rs3 ?? '-' }}
-            </div>
-            <span v-if="!pasien?.diagnosa?.some(item => item?.rs4 === 'Primer')">-</span>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-4">DIAGNOSIS Sekunder</div>
-          <div class="col-8">
-            <div
-              v-for="(diag, i) in pasien?.diagnosa?.filter(item => item?.rs4 === 'Sekunder')"
-              :key="`sekunder-${i}`"
-            >
-              {{ diag?.masterdiagnosa?.rs4 ?? diag?.masterdiagnosa?.rs3 ?? '-' }}
-            </div>
-            <span v-if="!pasien?.diagnosa?.some(item => item?.rs4 === 'Sekunder')">-</span>
-          </div>
-        </div>
+      <div class="col-10">
+        <div>- DIAGNOSIS DPJP : {{ pasien?.memodiagnosa || '-' }}</div>
+        <div>- DIAGNOSIS Primer : {{ diagnosaPrimer }}</div>
+        <div>- DIAGNOSIS Sekunder : {{ diagnosaSekunder }}</div>
       </div>
     </div>
     <q-separator class="q-mt-sm q-mb-sm" style="border-top: 1px solid black;" />
@@ -306,19 +281,7 @@
       </div>
       <div class="col-auto">:</div>
       <div class="col-8">
-        <div class="row q-gutter-xs">
-          <div v-for="(carakeluar, t) in pasien?.planheder" :key="t">
-            <span v-if="carakeluar?.rs4 === 'Pulang'">{{ carakeluar?.rs4 }} Dengan Kondisi
-              {{ carakeluar?.planpulang?.atas_dasar
-              }}
-            </span>
-            <span v-else-if="carakeluar?.rs4 === 'Rawat Inap'">{{ carakeluar?.rs4 }} Ke {{
-              carakeluar?.planranap?.ruangranap?.rs2 }}</span>
-            <span v-else-if="carakeluar?.rs4 === 'Rujuk'">{{ carakeluar?.rs4 }} Ke {{ carakeluar?.transrujukan?.rs7
-            }}</span>
-            <span v-else></span>
-          </div>
-        </div>
+        <span>{{ caraKeluar }}</span>
       </div>
     </div>
 
@@ -381,12 +344,12 @@
   <!-- <pre>{{ props?.pasien }}</pre> -->
 </template>
 <script setup>
-import { formatRp } from 'src/modules/formatter';
-import { useKasirIgdStore } from 'src/stores/simrs/kasir/igd/kasirigd';
-import { pathImg } from 'src/boot/axios';
-import { date } from 'quasar';
-import { computed, ref, watch } from 'vue';
-import AppSignature from 'src/components/~global/AppSignature.vue';
+import { formatRp } from 'src/modules/formatter'
+import { useKasirIgdStore } from 'src/stores/simrs/kasir/igd/kasirigd'
+import { pathImg } from 'src/boot/axios'
+import { date } from 'quasar'
+import { computed, ref, watch } from 'vue'
+import AppSignature from 'src/components/~global/AppSignature.vue'
 
 const store = useKasirIgdStore()
 const props = defineProps({
@@ -442,7 +405,45 @@ const resumeSignatureUrl = computed(() => {
   return pathImg + signature
 })
 
-async function saveResumeSignature() {
+const diagnosaIgd = computed(() => (props.pasien?.diagnosa || [])
+  .filter(item => item?.rs13 === 'POL014'))
+
+function formatDiagnosa (items) {
+  const data = items
+    .map(item => [item?.rs3, item?.masterdiagnosa?.rs4].filter(Boolean).join(' - '))
+    .filter(Boolean)
+  return data.length ? data.join('; ') : '-'
+}
+
+const diagnosaPrimer = computed(() => formatDiagnosa(
+  diagnosaIgd.value.filter(item => String(item?.rs4 || '').toLowerCase() === 'primer')
+))
+
+const diagnosaSekunder = computed(() => formatDiagnosa(
+  diagnosaIgd.value.filter(item => String(item?.rs4 || '').toLowerCase() === 'sekunder')
+))
+
+const caraKeluar = computed(() => {
+  const plan = props.pasien?.planheder?.[0]
+  const keadaanKeluar = plan?.rs4 || ''
+  if (!keadaanKeluar) return '-'
+
+  if (keadaanKeluar === 'Rawat Inap') {
+    const ruang = plan?.planranap?.ruangranap?.rs2 || plan?.ruangkeluar?.rs2 || ''
+    return ruang ? `${keadaanKeluar} Ke ${ruang}` : keadaanKeluar
+  }
+
+  if (keadaanKeluar === 'Pulang') {
+    const atasDasar = plan?.planpulang?.atas_dasar || ''
+    return atasDasar ? `${keadaanKeluar} ${atasDasar}` : keadaanKeluar
+  }
+
+  if (keadaanKeluar === 'Rujuk Ke Rumah Sakit') return keadaanKeluar
+
+  return [keadaanKeluar, plan?.cara_keluar || plan?.rs5 || ''].filter(Boolean).join(' ')
+})
+
+async function saveResumeSignature () {
   const signature = store.form.resumekeluargapasien
   if (!signature) return
 
@@ -469,21 +470,21 @@ const dataanamnesis = props?.pasien?.anamnesis
 const hasilanamnesis = dataanamnesis?.filter(item => {
   if (item?.datasimpeg?.kdgroupnakes === "1") {
     // lakukan sesuatu dengan item
-    console.log(item);
-    return true;
+    console.log(item)
+    return true
   }
-  return false;
-});
+  return false
+})
 
 const datapemeriksaanfisik = props?.pasien?.pemeriksaanfisikpsikologidll
 const hasilpemeriksaanfisik = datapemeriksaanfisik?.filter(item => {
   if (item?.datasimpeg?.kdgroupnakes === "1") {
     // lakukan sesuatu dengan item
-    console.log(item);
-    return true;
+    console.log(item)
+    return true
   }
-  return false;
-});
+  return false
+})
 
 const filterredTableobat = computed(() => {
   const dataawalobat = props?.pasien?.newapotekrajal
@@ -506,9 +507,9 @@ const filterredTableobat = computed(() => {
     hasilglobal.push(xxx)
   })
 
-  const flattenedArray = hasilglobal.flat();
+  const flattenedArray = hasilglobal.flat()
   const uniqueMap = new Map()
-  flattenedArray?.forEach(item => uniqueMap.set(item.kode, item));
+  flattenedArray?.forEach(item => uniqueMap.set(item.kode, item))
 
   return [...uniqueMap.values()]
 })
@@ -516,7 +517,7 @@ const filterredTableobat = computed(() => {
 
 const filterredTabletindakan = computed(() => {
   const arr = props?.pasien?.tindakan
-  console.log('arr', arr);
+  console.log('arr', arr)
   const tindakan = []
   arr.forEach(x => {
     const tindakanx = {
@@ -526,13 +527,13 @@ const filterredTabletindakan = computed(() => {
     tindakan.push(tindakanx)
   })
   const xxx = tindakan
-  const uniqueMap = new Map();
-  xxx.forEach(item => uniqueMap.set(item.kode, item));
+  const uniqueMap = new Map()
+  xxx.forEach(item => uniqueMap.set(item.kode, item))
 
   return [...uniqueMap.values()]
 })
 
-function iconNyeri(skor) {
+function iconNyeri (skor) {
   const nilai = Number(skor)
 
   if (nilai <= 0) return 'sentiment_very_satisfied'

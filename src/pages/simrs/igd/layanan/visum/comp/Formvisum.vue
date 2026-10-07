@@ -21,7 +21,7 @@
             <q-option-group v-model="jenisvisum" inline :options="visumoptions" />
           </div>
           <q-tab-panels v-model="jenisvisum" animated class="shadow-2 rounded-borders">
-            <q-tab-panel name="1">
+            <q-tab-panel v-for="jenis in ['1', '2']" :key="jenis" :name="jenis">
               <q-form ref="refForm" @submit="onSubmit" class="column full-height">
                 <div class="row q-col-gutter-sm">
                   <div class="col-6">
@@ -31,7 +31,7 @@
                           <q-popup-proxy cover transition-show="scale" transition-hide="scale">
                             <q-date v-model="store.form.tanggalvisum" mask="YYYY-MM-DD">
                               <div class="row items-center justify-end">
-                                <q-btn label="Close" color="primary" flat />
+                                <q-btn label="OK" color="primary" flat v-close-popup />
                               </div>
                             </q-date>
                           </q-popup-proxy>
@@ -63,9 +63,9 @@
                       <template v-slot:append>
                         <q-icon name="event" class="cursor-pointer">
                           <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                            <q-date v-model="store.form.tanggalvisum" mask="YYYY-MM-DD">
+                            <q-date v-model="store.form.tanggalsurat" mask="YYYY-MM-DD">
                               <div class="row items-center justify-end">
-                                <q-btn label="Close" color="primary" flat />
+                                <q-btn label="OK" color="primary" flat v-close-popup />
                               </div>
                             </q-date>
                           </q-popup-proxy>
@@ -80,13 +80,13 @@
                     <q-input v-model="store.form.bangsa" label="Bangsa" outlined dense />
                   </div>
                   <div class="col-6">
-                    <q-input v-model="store.form.umur" label="Umur" outlined dense />
+                    <q-input v-model="store.form.umur" label="Umur" outlined dense readonly />
                   </div>
                   <div class="col-6">
                     <q-input v-model="store.form.pekerjaan" label="Pekerjaan" outlined dense />
                   </div>
                   <div class="col-6">
-                    <q-input v-model="store.form.Alamat" label="Alamat" outlined dense />
+                    <q-input v-model="store.form.Alamat" label="Alamat" outlined dense readonly />
                   </div>
                 </div>
 
@@ -97,11 +97,6 @@
                     :loading="store.loadingForm" />
                 </div>
               </q-form>
-            </q-tab-panel>
-
-            <q-tab-panel name="2">
-              <div class="text-h6">Alarms</div>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
             </q-tab-panel>
 
             <q-tab-panel name="3">
@@ -119,7 +114,7 @@
 </template>
 <script setup>
 import { useVisumStore } from 'src/stores/simrs/igd/visum';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const props = defineProps({
   pasien: {
@@ -133,8 +128,17 @@ const props = defineProps({
 })
 const store = useVisumStore()
 const jenisvisum = ref('1')
-function onSubmit() {
-  console.log('aaaa')
+
+watch(() => props.pasien?.noreg, () => {
+  if (!store.form.id) {
+    store.form.umur = props.pasien?.usia || ''
+    store.form.Alamat = props.pasien?.alamat || ''
+  }
+}, { immediate: true })
+
+async function onSubmit() {
+  store.form.novisum = visumoptions.find(item => item.value === jenisvisum.value)?.label || ''
+  await store.onSubmit(props.pasien)
 }
 
 function historyOpen() {

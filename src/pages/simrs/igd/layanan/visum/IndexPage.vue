@@ -2,19 +2,20 @@
   <div class="full-height q-pa-sm">
     <div class="row q-col-gutter-x-xs full-height">
       <div class="col-6 full-height">
-        <Formvisum :pasien="props.pasien" :loadingaja="props.loadingaja" tooltip="History Pasien (Shift + H)" />
+        <Formvisum :key="props.pasien?.noreg" :pasien="props.pasien" :loadingaja="props.loadingaja" tooltip="History Pasien (Shift + H)" />
       </div>
 
       <div class="col-6 full-height">
-        <ListVisum :pasien="props.pasien" :loadingaja="props.loadingaja" />
+        <ListVisum :key="props.pasien?.noreg" :pasien="props.pasien" :loadingaja="props.loadingaja" />
       </div>
     </div>
   </div>
 </template>
 <script setup>
-import { useVisumStore } from 'src/stores/simrs/igd/visum';
-import Formvisum from './comp/Formvisum.vue';
-import ListVisum from './comp/ListVisum.vue';
+import { watch } from 'vue'
+import { useVisumStore } from 'src/stores/simrs/igd/visum'
+import Formvisum from './comp/Formvisum.vue'
+import ListVisum from './comp/ListVisum.vue'
 
 const store = useVisumStore()
 const props = defineProps({
@@ -28,4 +29,7 @@ const props = defineProps({
   }
 })
 
+watch(() => props.pasien?.noreg, (noreg) => {
+  store.getDataVisum(noreg)
+}, { immediate: true })
 </script>

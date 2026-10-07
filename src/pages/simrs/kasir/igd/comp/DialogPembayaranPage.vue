@@ -2,7 +2,7 @@
   <q-dialog :model-value="modelValue" maximized @update:model-value="$emit('update:modelValue', $event)">
     <q-card class="dialog-igd">
       <q-card-section class="header row items-center justify-between">
-        <div class="row items-center q-gutter-sm"><q-avatar color="white" text-color="negative" icon="icon-mat-emergency" /><div><div class="text-subtitle1 text-weight-bold">Pembayaran Pasien IGD</div><div class="text-caption text-red-1">{{ patient?.noreg }}</div></div></div>
+        <div class="row items-center q-gutter-sm"><q-avatar color="white" text-color="primary" icon="icon-mat-emergency" /><div><div class="text-subtitle1 text-weight-bold">Pembayaran Pasien IGD</div><div class="text-caption text-blue-1">{{ patient?.noreg }}</div></div></div>
         <q-btn flat round color="white" icon="icon-mat-close" @click="$emit('update:modelValue', false)" />
       </q-card-section>
       <q-card-section class="q-pa-md">
@@ -19,7 +19,7 @@
           <div class="col-12"><q-separator /></div>
           <div class="col-12 col-md-6"><q-select v-model="paymentMethod" outlined dense label="Metode pembayaran" :options="paymentMethods" /></div>
           <div class="col-12 col-md-6 row justify-end"><q-btn unelevated color="primary" icon="icon-mat-save" label="Simpan pembayaran" :loading="store.savingPembayaran" :disable="!paymentMethod || selectedTotal <= 0" @click="savePayment" /></div>
-          <div class="col-12 col-md-6"><GridPembayaranPage :payments="store.riwayatPembayaran" @print="checkAndOpenReceipt" /></div><div class="col-12 col-md-6"><GridCetakKwitansiPage :receipts="store.riwayatKwitansi" :cancelling="store.membatalkanKwitansi" @cancel="cancelReceipt" /></div>
+          <div class="col-12 col-md-6"><GridPembayaranPage :payments="store.riwayatPembayaran" :deleting="store.deletingPembayaran" @print="checkAndOpenReceipt" @delete="deletePayment" /></div><div class="col-12 col-md-6"><GridCetakKwitansiPage :receipts="store.riwayatKwitansi" :cancelling="store.membatalkanKwitansi" @cancel="cancelReceipt" /></div>
         </div>
       </q-card-section>
       <q-card-actions align="right" class="q-pa-md"><q-btn flat color="grey-8" label="Tutup" @click="$emit('update:modelValue', false)" /></q-card-actions>
@@ -28,7 +28,7 @@
   <q-dialog v-model="billingDialog"><q-card class="billing-dialog"><q-card-section class="row items-center justify-between"><div class="text-subtitle1 text-weight-bold">Rincian billing IGD</div><q-btn flat round dense icon="icon-mat-close" v-close-popup /></q-card-section><q-separator /><q-card-section>
     <div class="row items-center justify-between q-mb-md"><q-checkbox :model-value="allUnpaidSelected" :indeterminate="someUnpaidSelected && !allUnpaidSelected" label="Pilih semua" dense size="sm" color="negative" @update:model-value="toggleAll" /><q-btn flat round dense icon="icon-mat-refresh" color="primary" :loading="store.loading" @click="loadData"><q-tooltip>Refresh rincian billing</q-tooltip></q-btn></div>
     <div v-if="store.loading" class="text-center q-py-xl"><q-spinner color="negative" size="2em" /><div class="q-mt-sm">Memuat tagihan...</div></div>
-    <template v-else><div v-for="item in billingItems" :key="item.key" class="row items-center justify-between q-mb-sm"><div class="row items-center no-wrap"><q-checkbox v-model="selectedItems" :val="item.key" :disable="item.sudah_dibayar || Number(item.nominal || 0) <= 0" dense size="sm" color="negative" class="q-mr-xs" /><span :class="{ 'text-grey-5': Number(item.nominal || 0) <= 0 }">{{ item.nama }}</span><q-badge v-if="item.sudah_dibayar_rs35" :color="item.sudah_dibayar ? 'positive' : 'orange'" class="q-ml-sm">{{ item.sudah_dibayar ? 'Terbayar' : 'Terbayar belum cetak kwitansi' }}</q-badge></div><span :class="{ 'text-grey-5': Number(item.nominal || 0) <= 0 }">{{ formatCurrency(item.nominal) }}</span></div><q-separator /><div class="row justify-between q-mt-md"><span>Nominal dipilih</span><span class="text-subtitle1 text-primary text-weight-bold">{{ formatCurrency(selectedTotal) }}</span></div><div class="row justify-between q-mt-sm"><span>Total tagihan</span><span class="text-weight-bold">{{ formatCurrency(totalTagihan) }}</span></div><div class="row justify-between q-mt-sm"><span>Sudah dibuat kwitansi</span><span class="text-weight-bold text-positive">{{ formatCurrency(store.totalKwitansiAktif) }}</span></div><div class="row justify-between q-mt-sm"><span class="text-weight-bold">Sisa tagihan</span><span class="text-h6 text-negative text-weight-bold">{{ formatCurrency(sisaTagihan) }}</span></div></template>
+    <template v-else><div v-for="item in billingItems" :key="item.key" class="row items-center justify-between q-mb-sm"><div class="row items-center no-wrap"><q-checkbox v-model="selectedItems" :val="item.key" :disable="item.sudah_dibayar || Number(item.nominal || 0) <= 0" dense size="sm" color="negative" class="q-mr-xs" /><span :class="{ 'text-grey-5': Number(item.nominal || 0) <= 0 }">{{ item.nama }}</span><q-badge v-if="item.sudah_dibayar_rs35" :color="item.sudah_kwitansi_aktif ? 'positive' : 'orange'" class="q-ml-sm">{{ item.sudah_kwitansi_aktif ? 'Terbayar' : 'Terbayar belum cetak kwitansi' }}</q-badge></div><span :class="{ 'text-grey-5': Number(item.nominal || 0) <= 0 }">{{ formatCurrency(item.nominal) }}</span></div><q-separator /><div class="row justify-between q-mt-md"><span>Nominal dipilih</span><span class="text-subtitle1 text-primary text-weight-bold">{{ formatCurrency(selectedTotal) }}</span></div><div class="row justify-between q-mt-sm"><span>Total tagihan</span><span class="text-weight-bold">{{ formatCurrency(totalTagihan) }}</span></div><div class="row justify-between q-mt-sm"><span>Sudah dibuat kwitansi</span><span class="text-weight-bold text-positive">{{ formatCurrency(store.totalKwitansiAktif) }}</span></div><div class="row justify-between q-mt-sm"><span class="text-weight-bold">Sisa tagihan</span><span class="text-h6 text-negative text-weight-bold">{{ formatCurrency(sisaTagihan) }}</span></div></template>
   </q-card-section><q-card-actions align="right"><q-btn flat color="primary" label="Selesai" v-close-popup /></q-card-actions></q-card></q-dialog>
   <q-dialog v-model="receiptDialog" maximized><q-card class="receipt-page"><q-card-actions align="right" class="no-print q-pa-sm"><q-btn flat icon="icon-mat-close" label="Tutup" v-close-popup /><q-btn unelevated color="primary" icon="icon-mat-print" label="Cetak Kwitansi" :loading="store.printingKwitansi" @click="printReceipt" /></q-card-actions><q-card-section class="receipt-content q-pa-md"><div class="receipt-kop row items-center"><img src="/images/logos/logo-rsud.png" class="receipt-logo"><div><div class="text-weight-bold">UOBK RSUD dr. MOHAMAD SALEH</div><div class="text-caption">Jl. Mayjen Panjaitan No. 65 Probolinggo Jawa Timur</div><div class="text-caption">Telp. (0335) 433478, 433119, 421118</div></div><div class="col text-right text-weight-bold">{{ selectedReceipt?.nokwitansi ? `No. Kwitansi : ${selectedReceipt.nokwitansi}` : `No. RM : ${patient?.norm || '-'}` }}</div></div><div class="text-right text-caption q-mt-sm">{{ selectedReceipt?.tanggal || '' }}</div><q-separator class="q-my-sm" /><div class="text-h4 text-weight-bold q-mb-xl">{{ selectedReceipt?.nokwitansi ? 'Kwitansi' : 'Bukan Kwitansi Original' }}</div><div class="receipt-row"><span>Sudah terima dari</span><b>:</b><em>{{ patient?.nama || '-' }}</em></div><div class="receipt-row"><span>Banyaknya uang</span><b>:</b><em>{{ formatCurrency(selectedReceipt?.nominal) }}</em></div><div class="receipt-row q-mt-md"><span>Untuk pembayaran</span><b>:</b><em>Pembayaran IGD</em></div><div class="receipt-row"><span>Untuk</span><b>:</b><em>{{ patient?.nama || '-' }}</em></div><div class="receipt-total q-mt-lg">Terbilang Rp. {{ Number(selectedReceipt?.nominal || 0).toLocaleString('id-ID') }},-</div></q-card-section></q-card></q-dialog>
 </template>
@@ -65,7 +65,7 @@ const allUnpaidSelected = computed(() => unpaidItems.value.length > 0 && unpaidI
 const someUnpaidSelected = computed(() => unpaidItems.value.some(item => selectedItems.value.includes(item.key)))
 const selectedTotal = computed(() => billingItems.value.filter(item => selectedItems.value.includes(item.key) && !item.sudah_dibayar).reduce((total, item) => total + Number(item.nominal || 0), 0))
 const totalTagihan = computed(() => billingItems.value.reduce((total, item) => total + Number(item.nominal || 0), 0))
-const sisaTagihan = computed(() => Math.max(totalTagihan.value - Number(store.totalKwitansiAktif || 0), 0))
+const sisaTagihan = computed(() => Number(store.totalSisa || 0))
 
 watch(() => props.modelValue, visible => { if (visible) loadData() })
 async function loadData () {
@@ -96,6 +96,15 @@ function cancelReceipt (receipt) {
       await loadData()
     } catch (error) { Notify.create({ type: 'negative', message: error.response?.data?.message || 'Kwitansi gagal dibatalkan.' }) }
   })
+}function deletePayment (payment) {
+  Dialog.create({ title: 'Hapus pembayaran', message: 'Hapus pembayaran ini? Pembayaran dengan kwitansi aktif tidak dapat dihapus.', cancel: true, persistent: true }).onOk(async () => {
+    try {
+      const response = await store.hapusPembayaranIgd({ noreg: props.patient?.noreg, no_pembayaran: payment.no_pembayaran })
+      Notify.create({ type: 'positive', message: response.data?.message || 'Pembayaran IGD berhasil dihapus.' })
+      await loadData()
+      emit('saved')
+    } catch (error) { Notify.create({ type: 'negative', message: error.response?.data?.message || 'Pembayaran IGD gagal dihapus.' }) }
+  })
 }async function checkAndOpenReceipt (payment) {
   try {
     const response = await store.cekKwitansiPembayaranIgd(props.patient?.noreg, payment.no_pembayaran)
@@ -106,14 +115,14 @@ function cancelReceipt (receipt) {
 }
 async function printReceipt () {
   if (!selectedReceipt.value?.no_pembayaran) return
-  try { const response = await store.cetakKwitansiIgd({ noreg: props.patient?.noreg, no_pembayaran: selectedReceipt.value.no_pembayaran }); selectedReceipt.value = { ...selectedReceipt.value, ...response.data?.data }; Notify.create({ type: 'positive', message: response.data?.message || 'Kwitansi berhasil dibuat.' }); await store.getRiwayatKwitansiIgd(props.patient?.noreg); window.print(); receiptDialog.value = false } catch (error) { Notify.create({ type: 'negative', message: error.response?.data?.message || 'Kwitansi gagal dibuat.' }) }
+  try { const response = await store.cetakKwitansiIgd({ noreg: props.patient?.noreg, no_pembayaran: selectedReceipt.value.no_pembayaran }); selectedReceipt.value = { ...selectedReceipt.value, ...response.data?.data }; Notify.create({ type: 'positive', message: response.data?.message || 'Kwitansi berhasil dibuat.' }); await loadData(); window.print(); receiptDialog.value = false } catch (error) { Notify.create({ type: 'negative', message: error.response?.data?.message || 'Kwitansi gagal dibuat.' }) }
 }function formatCurrency (value) { return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(Number(value || 0)) }
 </script>
 
 <style scoped lang="scss">
 .dialog-igd { width: 1100px; max-width: 98vw; }
 .billing-dialog { width: 680px; max-width: 96vw; }
-.header { background: linear-gradient(110deg, #b51f2c, #e54850); color: #fff; }
+.header { background: linear-gradient(110deg, #1565c0, #42a5f5); color: #fff; }
 .detail-card { border-radius: 10px; background: #fff; }
 .receipt-page,.receipt-content{background:#fff}.receipt-kop{border-bottom:1px solid #555;padding-bottom:6px}.receipt-logo{width:65px;height:65px;object-fit:contain;margin-right:10px}.receipt-row{display:grid;grid-template-columns:160px 16px 1fr;margin:8px 0}.receipt-total{width:68%;color:#fff;background-color:#111!important;background-image:repeating-linear-gradient(0deg,#111 0,#111 1px,#eee 1px,#eee 2px)!important;padding:3px 4px;font-size:20px;font-weight:bold;font-style:italic;-webkit-print-color-adjust:exact;print-color-adjust:exact}@media print{*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}.no-print{display:none!important}.receipt-content{padding:0!important;max-width:none}}
 </style>
