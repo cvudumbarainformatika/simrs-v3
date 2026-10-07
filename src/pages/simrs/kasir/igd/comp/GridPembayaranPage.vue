@@ -5,13 +5,13 @@
       <q-badge color="primary">{{ sortedPayments.length }}</q-badge>
     </q-card-section>
     <q-separator />
-    <q-list v-if="payments.length" separator>
+    <q-list v-if="payments.length" separator class="history-list-scroll">
       <q-item v-for="payment in sortedPayments" :key="payment.id">
         <q-item-section>
           <q-item-label>{{ payment.tanggal }}</q-item-label>
           <q-item-label caption>{{ payment.jenis_pembayaran || '-' }} - {{ formatCurrency(payment.nominal) }}</q-item-label>
         </q-item-section>
-        <q-item-section side><div class="row items-center no-wrap q-gutter-sm"><span class="text-caption text-grey-7">{{ payment.no_pembayaran }}</span><q-badge v-if="hasActiveReceipt(payment)" color="positive" label="Sudah dicetak" /><q-btn v-else flat dense color="primary" icon="icon-mat-print" label="Cetak kwitansi" @click="$emit('print', payment)" /><q-btn flat dense color="negative" icon="icon-mat-delete" label="Hapus" @click="$emit('delete', payment)" /></div></q-item-section>
+        <q-item-section side><div class="row items-center no-wrap q-gutter-sm"><span class="text-caption text-grey-7">{{ payment.no_pembayaran }}</span><q-badge v-if="hasActiveReceipt(payment)" color="positive" label="Sudah dicetak" /><q-btn v-else flat dense color="primary" icon="icon-mat-print" label="Cetak kwitansi" @click="$emit('print', payment)" /><q-btn flat dense color="negative" icon="icon-mat-delete" label="Hapus" :disable="hasActiveReceipt(payment)" :loading="deleting" @click="$emit('delete', payment)" /></div></q-item-section>
       </q-item>
     </q-list>
     <q-card-section v-else class="text-center text-grey-7 q-py-lg">
@@ -23,7 +23,7 @@
 
 <script setup>
 import { computed } from 'vue'
-const props = defineProps({ payments: { type: Array, default: () => [] } })
+const props = defineProps({ payments: { type: Array, default: () => [] }, deleting: Boolean })
 defineEmits(['print', 'delete'])
 const sortedPayments = computed(() => [...props.payments].sort((a, b) => new Date(b.tanggal || 0) - new Date(a.tanggal || 0)))
 function hasActiveReceipt (payment) { return Number(payment?.sudah_kwitansi || 0) === 1 }
@@ -31,3 +31,10 @@ function formatCurrency (value) {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(Number(value || 0))
 }
 </script>
+
+<style scoped>
+.history-list-scroll {
+  max-height: 360px;
+  overflow-y: auto;
+}
+</style>

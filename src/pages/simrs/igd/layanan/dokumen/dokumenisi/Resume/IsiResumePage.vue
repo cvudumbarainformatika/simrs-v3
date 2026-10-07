@@ -11,9 +11,9 @@
         :
       </div>
       <div class="col-10">
-        <div v-for="(diag, i) in pasien?.diagnosa" :key="i">
-          {{ diag?.masterdiagnosa?.rs4 }}
-        </div>
+        <div>- DIAGNOSIS DPJP : {{ pasien?.memodiagnosa || '-' }}</div>
+        <div>- DIAGNOSIS Primer : {{ diagnosaPrimer }}</div>
+        <div>- DIAGNOSIS Sekunder : {{ diagnosaSekunder }}</div>
       </div>
     </div>
     <q-separator class="q-mt-sm q-mb-sm" style="border-top: 1px solid black;" />
@@ -281,19 +281,7 @@
       </div>
       <div class="col-auto">:</div>
       <div class="col-8">
-        <div class="row q-gutter-xs">
-          <div v-for="(carakeluar, t) in pasien?.planheder" :key="t">
-            <span v-if="carakeluar?.rs4 === 'Pulang'">{{ carakeluar?.rs4 }} Dengan Kondisi
-              {{ carakeluar?.planpulang?.atas_dasar
-              }}
-            </span>
-            <span v-else-if="carakeluar?.rs4 === 'Rawat Inap'">{{ carakeluar?.rs4 }} Ke {{
-              carakeluar?.planranap?.ruangranap?.rs2 }}</span>
-            <span v-else-if="carakeluar?.rs4 === 'Rujuk'">{{ carakeluar?.rs4 }} Ke {{ carakeluar?.transrujukan?.rs7
-            }}</span>
-            <span v-else></span>
-          </div>
-        </div>
+        <span>{{ caraKeluar }}</span>
       </div>
     </div>
 
@@ -415,6 +403,44 @@ const resumeSignatureUrl = computed(() => {
   const signature = resumeSignature.value
   if (!signature || signature.startsWith('data:image') || signature.startsWith('http')) return signature
   return pathImg + signature
+})
+
+const diagnosaIgd = computed(() => (props.pasien?.diagnosa || [])
+  .filter(item => item?.rs13 === 'POL014'))
+
+function formatDiagnosa (items) {
+  const data = items
+    .map(item => [item?.rs3, item?.masterdiagnosa?.rs4].filter(Boolean).join(' - '))
+    .filter(Boolean)
+  return data.length ? data.join('; ') : '-'
+}
+
+const diagnosaPrimer = computed(() => formatDiagnosa(
+  diagnosaIgd.value.filter(item => String(item?.rs4 || '').toLowerCase() === 'primer')
+))
+
+const diagnosaSekunder = computed(() => formatDiagnosa(
+  diagnosaIgd.value.filter(item => String(item?.rs4 || '').toLowerCase() === 'sekunder')
+))
+
+const caraKeluar = computed(() => {
+  const plan = props.pasien?.planheder?.[0]
+  const keadaanKeluar = plan?.rs4 || ''
+  if (!keadaanKeluar) return '-'
+
+  if (keadaanKeluar === 'Rawat Inap') {
+    const ruang = plan?.planranap?.ruangranap?.rs2 || plan?.ruangkeluar?.rs2 || ''
+    return ruang ? `${keadaanKeluar} Ke ${ruang}` : keadaanKeluar
+  }
+
+  if (keadaanKeluar === 'Pulang') {
+    const atasDasar = plan?.planpulang?.atas_dasar || ''
+    return atasDasar ? `${keadaanKeluar} ${atasDasar}` : keadaanKeluar
+  }
+
+  if (keadaanKeluar === 'Rujuk Ke Rumah Sakit') return keadaanKeluar
+
+  return [keadaanKeluar, plan?.cara_keluar || plan?.rs5 || ''].filter(Boolean).join(' ')
 })
 
 async function saveResumeSignature() {
