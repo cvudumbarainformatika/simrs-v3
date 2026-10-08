@@ -314,7 +314,14 @@ async function filterFn(val, update) {
 }
 
 function saveData() {
+  const kodeSudahAda = (store.dataBarangslama || []).some(item =>
+    item.kode === store.form.kode && item.koderek50 === store.form.koderek50
+  )
 
+  if (kodeSudahAda) {
+    notifErrVue('Item ini sudah ada di Rincian sebelumnya, silahkan klik tombol "Tambah Rincian Sebelumnya"')
+    return
+  }
 
   store.simpanData()
   store.disableSaved = true

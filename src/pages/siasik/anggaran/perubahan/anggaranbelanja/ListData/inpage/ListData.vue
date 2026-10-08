@@ -81,7 +81,7 @@
                     <q-tooltip> Buka Kunci </q-tooltip>
                   </q-btn>
                   <q-btn v-else flat round size="xs" class="bg-orange" icon="icon-mat-key"
-                    @click="kunciData(props?.row)">
+                    @click="kunciData(props?.row)" :loading="store.loading">
                     <q-tooltip> Kunci Data </q-tooltip>
                   </q-btn>
                 </div>
@@ -97,7 +97,8 @@
                         <q-item clickable v-close-popup @click="viewCetakData(props?.row)">
                           <q-item-section>Cetak Data</q-item-section>
                         </q-item>
-                        <q-item v-if="user === 'sa'" clickable v-close-popup @click="penetapan(props?.row)">
+                        <q-item v-if="user === 'sa' && props?.row?.kunci === '1'" clickable v-close-popup
+                          @click="penetapan(props?.row)">
                           <q-item-section>Penetapan</q-item-section>
                         </q-item>
                         <!-- <q-item clickable v-close-popup @click="PrintPencairan(props?.row)">
@@ -341,6 +342,7 @@ function kunciData(row) {
     }).onDismiss(() => {
     })
   }
+
 }
 </script>
 
