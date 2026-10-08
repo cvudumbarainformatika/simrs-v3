@@ -63,7 +63,6 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
       this.params[key] = val
     },
     setSearch (payload) {
-      console.log(this.params.q)
       // this.setParams('q', payload)
       this.items = []
       this.setParams('page', 1)
@@ -191,10 +190,7 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
                 keluar.push(dat)
               }
             })
-            // console.log('masuk', masuk)
-            // console.log('penyesuaian', it?.penyesuaian, akhir)
           }
-          // console.log('masuk', masuk)
 
           it?.resepkeluarok?.forEach(res => {
             const temp = {
@@ -329,7 +325,6 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
 
             masuk.push(ms)
 
-            // console.log('terima ', masukx)
           }
           if (it?.persiapanretur?.length) {
             const jumlah = it?.persiapanretur?.reduce((a, b) => parseFloat(a) + parseFloat(b.jumlah), 0)
@@ -346,7 +341,6 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
 
             masuk.push(ms)
 
-            // console.log('terima ', masukx)
           }
           if (it?.returpenjualan?.length) {
             const raw = {
@@ -386,8 +380,6 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
 
               keluarx.push(raw)
             }
-            // console.log('Ada penyesuanag', masukx, masuk)
-            // console.log('penyesuaian', it?.penyesuaian, akhir)
           }
 
           if (it?.resepkeluarok?.length) {
@@ -550,11 +542,6 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
           // const newKeluar = keluarx?.reduce((a, b) => parseFloat(a) + parseFloat(b.jumlah), 0)
           // const newAw = it?.saldoawal?.reduce((a, b) => parseFloat(a) + parseFloat(b.jumlah), 0)
           // const newAkhir = newAw + newMasuk - newKeluar
-          // console.log('masukAll', masuk)
-          // console.log('keluarAll', keluarx)
-          // console.log('masuk', newMasuk)
-          // console.log('keluar', newKeluar)
-          // console.log('akhir', newAkhir)
 
         }
         else {
@@ -562,9 +549,6 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
           const npms = masuk.map(m => m.nopenerimaan)
           const nkms = keluar.map(m => m.nopenerimaan)
           const noper = filterDuplicateArrays([...new Set([...npms, ...nkms, ...aw])])
-          console.log('masuk', masuk)
-          console.log('keluar', keluar)
-          console.log('noper', noper)
 
           // const akhir = masuk.filter(f => f.jumlah !== 0)
           const akhir = []
@@ -582,7 +566,6 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
             }
             akhir.push(temp)
           })
-          console.log('akhir', akhir)
 
           it.akhir = akhir.filter(f => f.jumlah !== 0)
           it.akhir.forEach(s => {
@@ -601,7 +584,6 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
             else {
               temp.akhir = s
             }
-            // console.log('temp akhir', temp)
 
             if (type !== 'download') it.data.push(temp)
           })
@@ -650,7 +632,6 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
       })
 
       // array = val
-      console.log('metani items', array)
     },
     getInitialData (val) {
       this.ketProses = null
@@ -745,9 +726,7 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
       }
       // this.setParams('per_page', 5)
       // this.getDatanya()
-      // console.log('this.meta?.current_page', this.meta?.current_page, !(this.ketProses))
       // watch(() => this.meta?.current_page, (obj) => {
-      //   console.log('obj', obj, !this.scrolling, this.meta?.current_page < this.meta?.last_page, !(this.ketProses), this.meta?.current_page < this.meta?.last_page && !this.scrolling && !(this.ketProses))
       //   if (this.meta?.current_page < this.meta?.last_page && !this.scrolling && !(this.ketProses)) {
       //     this.setParams('page', obj + 1)
       //     // this.ketProses = 'Mengambil data halaman ' + this.meta?.current_page + ' dari ' + this.meta?.last_page + ' halaman'
@@ -928,7 +907,6 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
           })
         }
         else {
-          console.log('ada tidak')
           const temp = {}
           temp.no = i + 1
           temp.kd_obat = item?.kd_obat
@@ -955,7 +933,6 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
         nilaiSalAkhir: this.cekNan(formatDoubleKoma(dataForTotal?.filter(f => parseFloat(f.nilaiSalAkhir) > 0)?.reduce((a, b) => parseFloat(a) + parseFloat(b.nilaiSalAkhir), 0), 2))
       }
       data.push(tot)
-      console.log('items', data)
       this.ketProses = null
       this.items = [...items]
       return data
@@ -977,7 +954,6 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
           }, 1000)
           this.loading = false
           this.loadingNext = false
-          // console.log('data tabel', resp.data)
           this.meta = resp.data?.meta
           // this.items = resp?.data?.data
           this.mapingItem(resp?.data?.data, this.items)
