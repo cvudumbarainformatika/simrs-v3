@@ -545,6 +545,24 @@ function setNumerKoma(val, koma) {
 
 }
 
+const openPacsViewer = (url, router = null) => {
+  if (!url) return
+  const token = Date.now().toString(36) + Math.random().toString(36).substring(2, 7)
+  try {
+    sessionStorage.setItem('pacs_' + token, url)
+    localStorage.setItem('pacs_' + token, url)
+    sessionStorage.setItem('last_pacs_url', url)
+  } catch (e) {
+    console.error('pacs storage error', e)
+  }
+
+  let href = `/pacs?k=${token}`
+  if (router) {
+    href = router.resolve({ name: 'pacs.viewer', query: { k: token } }).href
+  }
+  window.open(href, '_blank')
+}
+
 export {
   daysInMonth,
   notifCenterVue,
@@ -567,4 +585,5 @@ export {
   inputMustNumber,
   terbilangRupiah,
   setNumerKoma,
+  openPacsViewer,
 }

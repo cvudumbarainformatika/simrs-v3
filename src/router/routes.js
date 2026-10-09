@@ -82,6 +82,12 @@ const routes = [
       }
     ]
   },
+  {
+    path: '/pacs',
+    name: 'pacs.viewer',
+    component: () => import('pages/simrs/radiologi/pacs/PacsViewerPage.vue'),
+    meta: { requireAuth: true },
+  },
   settings,
   pegawai,
   sigarang,

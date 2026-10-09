@@ -165,6 +165,13 @@ export default defineConfig((ctx) => {
       port: ctx.mode.spa ? 9001 : ctx.mode.pwa ? 9100 : 9200,
       open: true, // opens browser window automatically
       allowedHosts: "all",
+      proxy: {
+        '/pacs-proxy': {
+          target: 'http://192.168.150.134:8001',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/pacs-proxy/, '')
+        }
+      }
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#framework
