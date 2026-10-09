@@ -10,6 +10,9 @@
       <template #col-penyedia>
         <div>Penyedia</div>
       </template>
+      <template #col-opsi>
+        <div>Opsi Retur</div>
+      </template>
       <template #col-tanggal>
         <div>Tanggal</div>
       </template>
@@ -77,6 +80,9 @@
       </template>
       <template #cell-penyedia="{ row }">
         {{ row?.penyedia?.nama }}
+      </template>
+      <template #cell-opsi="{ row }">
+        {{ opsiReturLabels[row?.opsiretur] ?? row?.opsiretur ?? '-' }}
       </template>
       <template #left-acttion="{ row }">
         <div v-if="!row.kunci" class="row items-center">
@@ -277,6 +283,17 @@
           {{ store.dataToPrint?.no_retur }}
         </div>
       </div>
+      <div class="row justify-center q-mb-sm">
+        <div class="col-2">
+          Opsi Retur
+        </div>
+        <div class="col-1">
+          :
+        </div>
+        <div class="col-9">
+          {{ opsiReturLabels[store.dataToPrint?.opsiretur] ?? store.dataToPrint?.opsiretur ?? '-' }}
+        </div>
+      </div>
       <div v-if="store.dataToPrint?.tgl_kwitansi_pembayaran" class="row justify-center q-mb-sm">
         <div class="col-2">
           Tanggal Kwitansi Pembayaran
@@ -374,6 +391,12 @@ import { useListReturPenyediaStore } from 'src/stores/simrs/farmasi/gudang/list'
 import { defineAsyncComponent, ref, shallowRef } from 'vue'
 
 const store = useListReturPenyediaStore()
+const opsiReturLabels = {
+  barang: 'Retur Barang',
+  uang: 'Retur Uang',
+  recall: 'Recall',
+  konsinyasi: 'Retur Konsinyasi'
+}
 
 /** edit header section */
 const headerOpen = ref(false)
