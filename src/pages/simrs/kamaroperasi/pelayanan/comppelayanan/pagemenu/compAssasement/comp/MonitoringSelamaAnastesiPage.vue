@@ -627,12 +627,16 @@ const allRows = computed(() => {
 
   // 2. Ambil semua nama Obat unik dari seluruh log
   const uniqueObat = [...new Set(logs.value.flatMap(l =>
-    (l.obat || []).map(o => o.nama)
+    (l.obat || [])
+      .map(o => o?.nama)
+      .filter(nama => typeof nama === 'string' && nama.trim() !== '')
   ))]
 
   // 3. Ambil semua nama Cairan unik dari seluruh log
   const uniqueCairan = [...new Set(logs.value.flatMap(l =>
-    (l.cairan || []).map(c => c.nama)
+    (l.cairan || [])
+      .map(c => c?.nama)
+      .filter(nama => typeof nama === 'string' && nama.trim() !== '')
   ))]
 
   // 4. Gabungkan: Gas (bawah) + Obat (tengah) + Cairan (atas)
@@ -647,6 +651,7 @@ const upperSeries = computed(() => {
   return allRows.value.map((itemName, index) => {
     const yValue = index + 1
     const isGas = gasKeys.includes(itemName)
+    const itemInitial = typeof itemName === 'string' ? itemName.charAt(0).toUpperCase() : ''
 
     if (isGas) {
       // 1. Cari X (waktu) terbesar yang nilainya >= 1 untuk gas ini
@@ -661,7 +666,7 @@ const upperSeries = computed(() => {
           x: l.time,
           // Selama menit log kurang dari atau sama dengan menit terakhir di-input true
           y: l.time <= lastTrueTime ? yValue : null,
-          markerLabel: l.time <= lastTrueTime ? itemName.charAt(0).toUpperCase() : '',
+          markerLabel: l.time <= lastTrueTime ? itemInitial : '',
         }
       })
 
@@ -676,7 +681,7 @@ const upperSeries = computed(() => {
       // --- LOGIKA OBAT & CAIRAN (Tetap Scatter) ---
       const seriesData = logs.value.map(l => {
         const item = [...(l.obat || []), ...(l.cairan || [])].find(i => i.nama === itemName)
-        return item ? { x: l.time, y: yValue, info: item.dosis || item.volume, markerLabel: itemName.charAt(0).toUpperCase() + ' ' + (item.dosis || item.volume) } : null
+        return item ? { x: l.time, y: yValue, info: item.dosis || item.volume, markerLabel: itemInitial + ' ' + (item.dosis || item.volume) } : null
       }).filter(d => d !== null)
 
       return {
