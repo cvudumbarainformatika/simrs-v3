@@ -6,8 +6,8 @@
         <tr class="text-bold">
           <td class="text-center">KODE REKENING</td>
           <td class="text-center">URAIAN</td>
-          <td class="text-center" colspan="2">PAGU AWAL (Rp.)</td>
-          <td class="text-center" colspan="2">PAGU PERGESERAN (Rp.)</td>
+          <td class="text-center" colspan="2">NILAI SEBELUM (Rp.)</td>
+          <td class="text-center" colspan="2">NILAI SESUDAH (Rp.)</td>
           <td class="text-center">SELISIH (Rp.)</td>
         </tr>
 
