@@ -158,6 +158,9 @@ function historyPasien() {
   display: flex;
   flex-direction: column;
   height: calc(100vh - 50px);
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   overflow: hidden;
 }
 </style>

@@ -416,9 +416,10 @@ export const usePenerimaanFarmasiStore = defineStore('farmasi_penerimaan', {
             const list = useListPenerimaanStore()
             const item = list?.items?.find(a => a.nopenerimaan === val.nopenerimaan)
             if (item) {
-              const indexRinci = item?.penerimaanrinci?.findIndex(a => a.kdobat === val.kdobat)
-              if (indexRinci >= 0) list.items.splice(indexRinci, 1)
-              if (item?.penerimaanrinci?.length <= 1) {
+              item.penerimaanrinci = item.penerimaanrinci.filter(a => a.id !== val.id)
+              item.total = resp.data.total
+              if (item.faktur) item.faktur.total_faktur = resp.data.total
+              if (item.penerimaanrinci.length === 0) {
                 const indexItem = list?.items?.findIndex(a => a.nopenerimaan === val.nopenerimaan)
                 if (indexItem >= 0) list.items.splice(indexItem, 1)
               }

@@ -352,7 +352,6 @@ function jenis () {
   return ' (' + bul?.nama + ')' ?? '-'
 }
 function setJenis (val) {
-  // console.log(val)
   if (store.items?.length) store.getInitialData(1)
 }
 const refScroll = ref(null)
@@ -362,37 +361,14 @@ function onScroll (pos) {
   const currPage = store.meta.current_page
   if ((store.meta.current_page < store.meta.last_page) && pos >= height) {
     if (!store.loadingNext && !store.ketProses) store.setPage(currPage + 1)
-    // console.log('meta', store.meta)
-    console.log('pos', pos, 'height', height, 'scroll client height', refScroll.value.clientHeight, 'tt height', refTt.value.clientHeight)
   }
-  // console.log('pos', pos, 'height', height, 'scroll client height', refScroll.value.clientHeight, 'tt height', refTt.value.clientHeight)
 }
-// function scrollHandler (observ) {
-// console.log('observ', observ)
-// }
 // const print = defineAsyncComponent(() => import('./print/IndexPage.vue'))
 // const isiHtml = ref(null)
 // const printOpen = ref(false)
-// function exportExcel () {
-//   const htmltable = document.getElementById('printMe')
-//   printOpen.value = true
-//   isiHtml.value = htmltable.outerHTML
-//   // window.open('data:application/vnd.ms-excel,' + encodeURIComponent(html), '_blank')
-
-//   console.log(
-//     'type',
-//     // typeof isiHtml.value,
-//     encodeURIComponent(isiHtml.value),
-//     // 'html',
-//     // isiHtml.value,
-//     'encode',
-//     encodeURIComponent(isiHtml.value)
-//   )
-// }
 const refTop = ref(null)
 const h = ref(0)
 onMounted(() => {
-  console.log('h', refTop.value.clientHeight)
   h.value = refTop.value.clientHeight
 })
 const printObj = {

@@ -77,7 +77,7 @@ export const useKasirHomecareStore = defineStore('kasir_homecare', {
     async getRincianPembayaran (noreg) {
       this.loadingRincian = true
       try {
-        const response = await api.get('v1/simrs/pendaftaran/homecare/rincian-pembayaran', { params: { noreg } })
+        const response = await this.fetchRincianPembayaran(noreg)
         this.rincianPembayaran = response.data?.data || []
         this.totalTagihan = Number(response.data?.total || 0)
         return response
@@ -85,6 +85,10 @@ export const useKasirHomecareStore = defineStore('kasir_homecare', {
       finally {
         this.loadingRincian = false
       }
+    },
+
+    fetchRincianPembayaran (noreg) {
+      return api.get('v1/simrs/pendaftaran/homecare/rincian-pembayaran', { params: { noreg } })
     },
 
     async getRiwayatPembayaran (noreg) {

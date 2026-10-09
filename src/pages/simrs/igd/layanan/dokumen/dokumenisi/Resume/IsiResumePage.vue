@@ -344,12 +344,12 @@
   <!-- <pre>{{ props?.pasien }}</pre> -->
 </template>
 <script setup>
-import { formatRp } from 'src/modules/formatter';
-import { useKasirIgdStore } from 'src/stores/simrs/kasir/igd/kasirigd';
-import { pathImg } from 'src/boot/axios';
-import { date } from 'quasar';
-import { computed, ref, watch } from 'vue';
-import AppSignature from 'src/components/~global/AppSignature.vue';
+import { formatRp } from 'src/modules/formatter'
+import { useKasirIgdStore } from 'src/stores/simrs/kasir/igd/kasirigd'
+import { pathImg } from 'src/boot/axios'
+import { date } from 'quasar'
+import { computed, ref, watch } from 'vue'
+import AppSignature from 'src/components/~global/AppSignature.vue'
 
 const store = useKasirIgdStore()
 const props = defineProps({
@@ -443,7 +443,7 @@ const caraKeluar = computed(() => {
   return [keadaanKeluar, plan?.cara_keluar || plan?.rs5 || ''].filter(Boolean).join(' ')
 })
 
-async function saveResumeSignature() {
+async function saveResumeSignature () {
   const signature = store.form.resumekeluargapasien
   if (!signature) return
 
@@ -470,21 +470,21 @@ const dataanamnesis = props?.pasien?.anamnesis
 const hasilanamnesis = dataanamnesis?.filter(item => {
   if (item?.datasimpeg?.kdgroupnakes === "1") {
     // lakukan sesuatu dengan item
-    console.log(item);
-    return true;
+    console.log(item)
+    return true
   }
-  return false;
-});
+  return false
+})
 
 const datapemeriksaanfisik = props?.pasien?.pemeriksaanfisikpsikologidll
 const hasilpemeriksaanfisik = datapemeriksaanfisik?.filter(item => {
   if (item?.datasimpeg?.kdgroupnakes === "1") {
     // lakukan sesuatu dengan item
-    console.log(item);
-    return true;
+    console.log(item)
+    return true
   }
-  return false;
-});
+  return false
+})
 
 const filterredTableobat = computed(() => {
   const dataawalobat = props?.pasien?.newapotekrajal
@@ -507,9 +507,9 @@ const filterredTableobat = computed(() => {
     hasilglobal.push(xxx)
   })
 
-  const flattenedArray = hasilglobal.flat();
+  const flattenedArray = hasilglobal.flat()
   const uniqueMap = new Map()
-  flattenedArray?.forEach(item => uniqueMap.set(item.kode, item));
+  flattenedArray?.forEach(item => uniqueMap.set(item.kode, item))
 
   return [...uniqueMap.values()]
 })
@@ -517,7 +517,7 @@ const filterredTableobat = computed(() => {
 
 const filterredTabletindakan = computed(() => {
   const arr = props?.pasien?.tindakan
-  console.log('arr', arr);
+  console.log('arr', arr)
   const tindakan = []
   arr.forEach(x => {
     const tindakanx = {
@@ -527,13 +527,13 @@ const filterredTabletindakan = computed(() => {
     tindakan.push(tindakanx)
   })
   const xxx = tindakan
-  const uniqueMap = new Map();
-  xxx.forEach(item => uniqueMap.set(item.kode, item));
+  const uniqueMap = new Map()
+  xxx.forEach(item => uniqueMap.set(item.kode, item))
 
   return [...uniqueMap.values()]
 })
 
-function iconNyeri(skor) {
+function iconNyeri (skor) {
   const nilai = Number(skor)
 
   if (nilai <= 0) return 'sentiment_very_satisfied'

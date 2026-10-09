@@ -13,8 +13,6 @@ const props = defineProps({
 })
 const refGue = ref(null)
 watch(() => props.html, (obj) => {
-  console.log(obj)
   if (obj) refGue.value.innerHtml = obj
-  console.log(refGue.value?.innerHtml)
 })
 </script>

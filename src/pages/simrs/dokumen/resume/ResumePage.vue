@@ -107,18 +107,33 @@
             </div>
           </div>
           <div class="col-7">
-            <!-- {{ pasien?.diagnosamedis }} -->
-            <div v-if="pasien?.memodiagnosa" class="row">
-              <div>{{ pasien?.memodiagnosa }} (Diagnosa Dokter)</div>
+            <div class="row q-mb-xs">
+              <div class="col-4">DIAGNOSIS DPJP</div>
+              <div class="col-8">{{ pasien?.memodiagnosa || '-' }}</div>
             </div>
-            <div v-if="pasien?.diagnosamedis?.length">
-              <div v-for="(diagnosa, i) in pasien?.diagnosamedis" :key="i" class="row">
-                <div class="col-12">
-                  {{ diagnosa?.rs3 }} - {{ diagnosa?.masterdiagnosa?.rs4 ?? diagnosa?.masterdiagnosa?.rs3 }} ({{
-                    diagnosa?.rs4 }})
+            <div class="row q-mb-xs">
+              <div class="col-4">DIAGNOSIS Primer</div>
+              <div class="col-8">
+                <div
+                  v-for="(diagnosa, i) in pasien?.diagnosamedis?.filter(item => item?.rs4 === 'Primer')"
+                  :key="`primer-${i}`"
+                >
+                  {{ diagnosa?.masterdiagnosa?.rs4 ?? diagnosa?.masterdiagnosa?.rs3 ?? '-' }}
                 </div>
+                <span v-if="!pasien?.diagnosamedis?.some(item => item?.rs4 === 'Primer')">-</span>
               </div>
-
+            </div>
+            <div class="row">
+              <div class="col-4">DIAGNOSIS Sekunder</div>
+              <div class="col-8">
+                <div
+                  v-for="(diagnosa, i) in pasien?.diagnosamedis?.filter(item => item?.rs4 === 'Sekunder')"
+                  :key="`sekunder-${i}`"
+                >
+                  {{ diagnosa?.masterdiagnosa?.rs4 ?? diagnosa?.masterdiagnosa?.rs3 ?? '-' }}
+                </div>
+                <span v-if="!pasien?.diagnosamedis?.some(item => item?.rs4 === 'Sekunder')">-</span>
+              </div>
             </div>
           </div>
         </div>

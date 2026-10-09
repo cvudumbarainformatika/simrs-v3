@@ -69,6 +69,18 @@ export const usePerubahanAnggaranBelanja_PAK = defineStore('perubahan-anggaran-b
         dataSaved: [],
         rincians: [],
         columns: [],
+        databatasan: {},
+        form_batasan: {
+            notrans: '',
+            pagu: '',
+            batasan: 0,
+            koderek50: '',
+            uraian50: '',
+            kodekegiatanblud: '',
+            tahun: '',
+            kodebidang: '',
+            flag: ''
+        },
     }),
     actions: {
         goToPage(val) {
@@ -317,7 +329,6 @@ export const usePerubahanAnggaranBelanja_PAK = defineStore('perubahan-anggaran-b
             } finally {
                 this.loading = false
             }
-
         },
         editForm(val) {
             this.form.notrans = val.notrans
@@ -370,24 +381,27 @@ export const usePerubahanAnggaranBelanja_PAK = defineStore('perubahan-anggaran-b
             }
         },
         async kunciData(id) {
-            this.loadingKunci = true
+            this.loading = true
             const payload = { id }
             try {
                 const resp = await api.post('/v1/anggaran/perubahan/belanja/kunci', payload)
                 if (resp.status === 200) {
                     // this.items = resp?.data?.data
                     notifSuccess(resp)
-                    this.getData()
+                    // this.getData()
                 }
-                this.loadingKunci = false
+
+                this.loading = false
             }
             catch (error) {
                 notifErr(error)
-                this.loadingKunci = false
+                this.loading = false
             }
         },
         search(val) {
             this.params.q = val
+            this.params.page = 1
+            this.params.tahun = date.formatDate(Date.now(), 'YYYY')
             this.getData()
         },
         goToPage(val) {
@@ -586,6 +600,28 @@ export const usePerubahanAnggaranBelanja_PAK = defineStore('perubahan-anggaran-b
 
             } finally {
                 this.loadingSave = false // 🔥 paling aman
+            }
+        },
+
+        async getDataBatasan(item) {
+            this.loading = true
+            try {
+                const resp = await api.get(
+                    '/v1/anggaran/pergeseran/rincian/getbatasan',
+                    {
+                        params: {
+                            notrans: item.notrans,
+                            kodekegiatanblud: item.kodekegiatanblud,
+                            koderek50: item.koderek50
+                        }
+                    }
+                )
+
+                this.databatasan = resp.data?.databatasan
+                this.datarealisasi = resp.data?.datarealisasi
+                console.log('data batasan', resp.data)
+            } finally {
+                this.loading = false
             }
         },
     }

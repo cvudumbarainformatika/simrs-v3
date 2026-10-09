@@ -150,7 +150,6 @@ export const useLaporanPemakaianObatStore = defineStore('laporan_pemakaian_obat'
         data.push(temp)
       })
 
-      console.log('items', data)
       return data
       // })
     },
@@ -190,12 +189,8 @@ export const useLaporanPemakaianObatStore = defineStore('laporan_pemakaian_obat'
           ite.kelTagihan = (resTg + racTg - retTg)
           ite.kelSktm = (ressK + racsK - retsK)
           ite.stok_akhir = ite.stok_awal + ite.masuk - ite.kelBpjs - ite.kelUmum - ite.kelTagihan - ite.kelSktm - ite.kelLain
-          // console.log('lain', lain, ite.kelLain)
-          // console.log('umum', resUm)
-          // console.log('tag', resTg)
         })
       }
-      // console.log('items', this.items)
     },
     getDataTable () {
       this.items = []
@@ -205,7 +200,6 @@ export const useLaporanPemakaianObatStore = defineStore('laporan_pemakaian_obat'
         api.get('v1/simrs/laporan/farmasi/pemakaian/get-pemakaian', param)
           .then(resp => {
             this.loading = false
-            console.log('master maping', resp?.data)
             this.items = resp?.data?.data ?? resp?.data
             this.meta = resp?.data?.meta ?? resp?.data
             this.metaniitems(this.items)
@@ -217,7 +211,6 @@ export const useLaporanPemakaianObatStore = defineStore('laporan_pemakaian_obat'
     async getSistembayars () {
       await api.get('v1/simrs/laporan/farmasi/pemakaian/get-sistembayar')
         .then(resp => {
-          // console.log('sisba', resp?.data)
           this.sistemBayars = resp?.data
         })
     }
