@@ -41,6 +41,35 @@
       </q-card-section>
     </q-card>
 
+    <div class="row q-col-gutter-md q-mb-md">
+      <div class="col-xs-12 col-md-6">
+        <app-autocomplete
+          v-model="store.inputFormPasca.petugas_ibs"
+          :key="laporanOp.nakes?.length || 0"
+          label="Petugas IBS"
+          outlined
+          dense
+          :source="optionsPetugas"
+          option-label="nama"
+          option-value="kdpegsimrs"
+          clearable
+        />
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <app-autocomplete
+          v-model="store.inputFormPasca.petugas_rr"
+          :key="laporanOp.nakes?.length || 0"
+          label="Petugas Ruang RR"
+          outlined
+          dense
+          :source="optionsPetugas"
+          option-label="nama"
+          option-value="kdpegsimrs"
+          clearable
+        />
+      </div>
+    </div>
+
     <!-- AREA 2: GRAFIK VITAL SIGNS (SAMA DENGAN LOWER CHART ANDA) -->
     <q-card flat bordered class="anesthesia-chart-container q-mb-md">
       <q-card-section class="q-pa-sm bg-secondary text-white">
@@ -325,6 +354,7 @@
 
 <script setup>
 import { useMonitoringSaatStore } from 'src/stores/simrs/kamaroperasi/assasement/monitoringSaat'
+import { useLaporanOperasiStore } from 'src/stores/simrs/kamaroperasi/laporanOperasi'
 import { ref, computed, onMounted, nextTick, watch } from 'vue'
 import { useQuasar } from 'quasar'
 
@@ -333,7 +363,11 @@ const props = defineProps({
 })
 
 const store = useMonitoringSaatStore()
+const laporanOp = useLaporanOperasiStore()
 const $q = useQuasar()
+const optionsPetugas = computed(() =>
+  laporanOp.nakes?.filter(nakes => nakes?.kdgroupnakes !== '1' && nakes?.kdgroupnakes !== 1) ?? []
+)
 
 function openInputLogDialog () {
   if (!store.inputFormPasca?.monitor_setiap) {
@@ -843,7 +877,10 @@ watch([() => store.inputFormPasca?.jam_masuk, maxLogMinute], ([masuk, mins]) => 
 }, { immediate: true })
 
 onMounted(async () => {
-  await store.getMonitoringPasca(props.pasien)
+  await Promise.all([
+    store.getMonitoringPasca(props.pasien),
+    laporanOp.nakes?.length ? Promise.resolve() : laporanOp.getNakes()
+  ])
   if (lapOpSelesai.value && !store.inputFormPasca.monitor_mulai) {
     store.inputFormPasca.monitor_mulai = lapOpSelesai.value
   }

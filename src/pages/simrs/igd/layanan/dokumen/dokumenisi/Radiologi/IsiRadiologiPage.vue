@@ -13,29 +13,27 @@
       </div>
     </div>
     <div class="row justify-end q-mt-xl">
-      <div class="col-6 text-center">
-        <div>Dokter Radiologi</div>
-        <div class="column items-center q-mt-sm">
+      <div v-for="(dokter, index) in dokterRadiologis" :key="`${dokter.nota}-${dokter.nama}-${index}`" class="col-6 text-center">
+        <div class="q-mb-sm">Dokter Radiologi</div>
+        <div class="column items-center">
           <div class="radiologi-doctor-qr">
-            <vue-qrcode :value="qrDokter" tag="svg" :options="{
+            <vue-qrcode :value="qrUrl(dokter)" tag="svg" :options="{
               errorCorrectionLevel: 'Q',
-              color: {
-                dark: '#000000',
-                light: '#ffffff'
-              },
+              color: { dark: '#000000', light: '#ffffff' },
               margin: 0
             }" />
           </div>
-          <div class="q-mt-sm text-weight-bold">
-            {{ dokterRadiologi?.nama ?? props.pasien?.dokter ?? '-' }}
-          </div>
+        </div>
+        <div class="q-mt-sm text-weight-bold">
+          {{ dokter.nama }}
         </div>
       </div>
     </div>
   </div>
 </template>
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import { api } from 'src/boot/axios'
 
 const props = defineProps({
   pasien: {
@@ -44,18 +42,70 @@ const props = defineProps({
   }
 })
 
-const dokterRadiologi = computed(() =>
-  props.pasien?.radiologi?.find(item => item?.dokter?.kdpegsimrs)?.dokter ?? null
-)
+const doctors = ref([])
 
-const qrDokter = computed(() => {
-  const noreg = props.pasien?.noreg
-  const petugas = dokterRadiologi.value?.kdpegsimrs ?? props.pasien?.kodedokter ?? null
-  if (!noreg || !petugas) return ''
+const dokterRadiologis = computed(() => {
+  const hasilByPemeriksaan = (props.pasien?.radiologi ?? []).flatMap(permintaan =>
+    (permintaan?.rincians ?? [])
+      .filter(rincian => rincian?.pelaksana)
+      .map(rincian => ({
+        nama: rincian.pelaksana,
+        nota: rincian.rs2 || permintaan.rs2
+      }))
+  )
+  const hasil = hasilByPemeriksaan.length
+    ? hasilByPemeriksaan
+    : (props.pasien?.hasilradiologi ?? [])
+      .filter(item => item?.rs4)
+      .map(item => ({ nama: item.rs4, nota: item.rs5 }))
 
-  const enc = btoa(`${noreg}|RADIOLOGI.png|PENUNJANG|${petugas}`)
-  return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+  const uniqueResults = new Map()
+  hasil.forEach(item => {
+    const nama = String(item.nama).trim()
+    const normalizedName = normalizeName(nama)
+    const matchingNakes = doctors.value.filter(nakes => normalizeName(nakes?.nama) === normalizedName)
+    const dokter = matchingNakes.find(nakes => String(nakes?.kdgroupnakes).trim() === '1') ??
+      matchingNakes.find(nakes => nakes?.kdpegsimrs)
+    const key = normalizedName
+    if (!uniqueResults.has(key)) {
+      uniqueResults.set(key, {
+        nama: dokter?.nama ?? nama,
+        nota: item.nota || props.pasien?.noreg,
+        kdpegsimrs: dokter?.kdpegsimrs ?? null
+      })
+    }
+  })
+
+  return [...uniqueResults.values()]
 })
+
+onMounted(async () => {
+  try {
+    const { data } = await api.get('/v1/simrs/master/pegawai/listnakes')
+    const nakes = Array.isArray(data) ? data : data?.data
+    if (!Array.isArray(nakes)) {
+      throw new TypeError('Respons daftar petugas bukan array')
+    }
+    doctors.value = nakes
+  } catch (error) {
+    console.error('Gagal memuat daftar dokter radiologi', error)
+  }
+})
+
+function normalizeName (name) {
+  return String(name ?? '')
+    .toLocaleLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\bdr\.?\s*/g, '')
+    .replace(/sp\.?\s*rad\.?/g, '')
+    .replace(/[^a-z0-9]/g, '')
+}
+
+function qrUrl (dokter) {
+  const encoded = btoa(`${dokter?.nota || props.pasien?.noreg}|RADIOLOGI.png|RADIOLOGI|${dokter?.kdpegsimrs ?? null}`)
+  return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${encoded}`
+}
 </script>
 <style scoped>
 .b {
