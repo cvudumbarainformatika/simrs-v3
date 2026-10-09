@@ -39,6 +39,11 @@ const kasir = {
       name: 'kasir.pasienluar',
       component: () => import('pages/simrs/kasir/rajal/pasienluar/IndexPage.vue')
     },
+    {
+      path: '/kasir/uangjaminan',
+      name: 'kasir.uangjaminan',
+      component: () => import('pages/simrs/kasir/uangjaminan/IndexPage.vue')
+    },
 
     // {
     //   path: '/kasir/rawatjalan',
