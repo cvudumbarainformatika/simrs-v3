@@ -7,14 +7,14 @@
       <q-separator class="q-my-md" />
       <div class="row full-width">
         <div class="row q-col-gutter-sm full-width">
-          
+
           <!-- Tanggal & Pelaksana -->
           <app-input-date :model="store.form.tanggal" label="Tanggal" icon="icon-mat-event" outlined
             @set-model="val => store.form.tanggal = val" :autofocus="true" class="col-md-4 col-sm-12" />
-          
-          <app-autocomplete-new ref="refDokter" :model="store.form.kdDokter" label="Pelaksana Tindakan (Dokter)"
-            autocomplete="nama" option-value="kdpegsimrs" option-label="nama" outlined :source="store.dokters"
-            class="col-md-8 col-sm-12" @on-select="(val) => {
+
+          <app-autocomplete-new ref="refDokter" :model="store.form.kdDokter"
+            label="Pelaksana Tindakan & Pemberi Informasi" autocomplete="nama" option-value="kdpegsimrs"
+            option-label="nama" outlined :source="store.dokters" class="col-md-8 col-sm-12" @on-select="(val) => {
               store.form.kdDokter = val
               store.form.pelaksana = store.dokters?.find(item => item.kdpegsimrs === val)?.nama
             }" @clear="() => {
@@ -23,9 +23,9 @@
             }" />
 
           <!-- Pemberi Informasi / Pengedukasi -->
-          <app-autocomplete-new ref="refPerawat" :model="store.form.kdPetugas" label="Pemberi Informasi (Petugas/Nakes)"
-            autocomplete="nama" option-value="kdpegsimrs" option-label="nama" outlined :source="store.perawats"
-            class="col-md-6 col-sm-12" @on-select="(val) => {
+          <app-autocomplete-new ref="refPerawat" :model="store.form.kdPetugas" label="Saksi RS" autocomplete="nama"
+            option-value="kdpegsimrs" option-label="nama" outlined :source="store.perawats" class="col-md-6 col-sm-12"
+            @on-select="(val) => {
               store.form.kdPetugas = val
               store.form.pengedukasi = store.perawats?.find(item => item?.kdpegsimrs === val)?.nama
             }" @clear="() => {
@@ -44,22 +44,22 @@
           <!-- Identitas Pemberi Pernyataan / Penolak -->
           <app-input-simrs v-model="store.form.nama" label="Nama Penerima Informasi / Penolak Resusitasi"
             class="col-md-8 col-sm-12" />
-          
+
           <div class="col-md-4 col-sm-12 flex items-center">
             <span class="q-mr-sm">Jenis Kelamin:</span>
-            <q-radio size="md" v-model="store.form.lp" v-for="aa in store.jekels" :key="aa"
-              :label="aa?.label" :val="aa?.value" />
+            <q-radio size="md" v-model="store.form.lp" v-for="aa in store.jekels" :key="aa" :label="aa?.label"
+              :val="aa?.value" />
           </div>
 
           <app-input-simrs v-model="store.form.noKtp" label="No. KTP / SIM / PASPOR" class="col-md-4 col-sm-12" />
-          
+
           <app-input-date :model="store.form.tglLahir" label="Tanggal Lahir" icon="icon-mat-event" outlined
             @set-model="val => store.form.tglLahir = val" :autofocus="false" class="col-md-4 col-sm-12" />
-          
+
           <app-input-simrs v-model="store.form.telepon" label="No Telp / HP" class="col-md-4 col-sm-12" />
-          
-          <q-input v-model="store.form.alamat" label="Alamat Lengkap" outlined standout="bg-yellow-3" rows="2" type="textarea"
-            class="col-12" />
+
+          <q-input v-model="store.form.alamat" label="Alamat Lengkap" outlined standout="bg-yellow-3" rows="2"
+            type="textarea" class="col-12" />
 
           <q-separator class="col-12 q-my-md" />
 
@@ -72,7 +72,8 @@
             <q-list separator bordered class="q-mt-xs">
               <q-item v-for="item in pasien?.diagnosamedis" :key="item" tag="label" v-ripple dense>
                 <q-item-section avatar>
-                  <q-checkbox dense v-model="store.form.diagnosis" :val="item?.masterdiagnosa?.rs4 || item?.rs3" color="teal" />
+                  <q-checkbox dense v-model="store.form.diagnosis" :val="item?.masterdiagnosa?.rs4 || item?.rs3"
+                    color="teal" />
                 </q-item-section>
                 <q-item-section>
                   <q-item-label>{{ item?.masterdiagnosa?.rs4 }} ({{ item?.rs3 }})</q-item-label>
@@ -84,30 +85,39 @@
             </q-list>
           </div>
 
-          <app-input-simrs v-model="store.form.dasarDiagnosis" label="Dasar Diagnosis (misal: Klinis, EKG, dll.)" class="col-12" />
-          
-          <q-input v-model="store.form.tindakanMedis" label="Tindakan Kedokteran" outlined standout="bg-yellow-3" rows="2" type="textarea" class="col-12" />
-          
-          <q-input v-model="store.form.indikasi" label="Indikasi Tindakan" outlined standout="bg-yellow-3" rows="2" type="textarea" class="col-12" />
-          
-          <q-input v-model="store.form.tujuanLain" label="Tujuan Penolakan" outlined standout="bg-yellow-3" rows="2" type="textarea" class="col-12" />
-          
-          <q-input v-model="store.form.tatacara" label="Tata Cara Resusitasi" outlined standout="bg-yellow-3" rows="2" type="textarea" class="col-12" />
-          
-          <q-input v-model="store.form.resikoLain" label="Resiko Tindakan" outlined standout="bg-yellow-3" rows="2" type="textarea" class="col-12" />
-          
-          <q-input v-model="store.form.komplikasi" label="Komplikasi Tindakan" outlined standout="bg-yellow-3" rows="2" type="textarea" class="col-12" />
-          
+          <app-input-simrs v-model="store.form.dasarDiagnosis" label="Dasar Diagnosis (misal: Klinis, EKG, dll.)"
+            class="col-12" />
+
+          <q-input v-model="store.form.tindakanMedis" label="Tindakan Kedokteran" outlined standout="bg-yellow-3"
+            rows="2" type="textarea" class="col-12" />
+
+          <q-input v-model="store.form.indikasi" label="Indikasi Tindakan" outlined standout="bg-yellow-3" rows="2"
+            type="textarea" class="col-12" />
+
+          <q-input v-model="store.form.tujuanLain" label="Tujuan Penolakan" outlined standout="bg-yellow-3" rows="2"
+            type="textarea" class="col-12" />
+
+          <q-input v-model="store.form.tatacara" label="Tata Cara Resusitasi" outlined standout="bg-yellow-3" rows="2"
+            type="textarea" class="col-12" />
+
+          <q-input v-model="store.form.resikoLain" label="Resiko Tindakan" outlined standout="bg-yellow-3" rows="2"
+            type="textarea" class="col-12" />
+
+          <q-input v-model="store.form.komplikasi" label="Komplikasi Tindakan" outlined standout="bg-yellow-3" rows="2"
+            type="textarea" class="col-12" />
+
           <div class="col-12 flex items-center q-my-xs">
             <span class="q-mr-md text-bold">Prognosis:</span>
             <q-checkbox class="q-ml-sm" size="md" v-model="store.form.prognosis" v-for="aa in store.prognosis" :key="aa"
               :label="aa" :val="aa" />
           </div>
 
-          <q-input v-model="store.form.alternatif" label="Alternatif Tindakan" outlined standout="bg-yellow-3" rows="2" type="textarea" class="col-12" />
+          <q-input v-model="store.form.alternatif" label="Alternatif Tindakan" outlined standout="bg-yellow-3" rows="2"
+            type="textarea" class="col-12" />
 
           <!-- Lain-lain (bisa disimpan di field keluarga/lainnya, tapi di Pinia tidak ada kolom khusus, kita bisa pakai field "penerimaEdukasi" jika ingin menampung teks lain-lain) -->
-          <q-input v-model="store.form.penerimaEdukasi" label="Lain - Lain" outlined standout="bg-yellow-3" rows="2" type="textarea" class="col-12" />
+          <q-input v-model="store.form.penerimaEdukasi" label="Lain - Lain" outlined standout="bg-yellow-3" rows="2"
+            type="textarea" class="col-12" />
 
           <q-separator class="col-12 q-my-md" />
 
@@ -131,7 +141,7 @@
                     }" />
                 </q-card>
               </div>
-              
+
               <!-- TTD Saksi Pasien -->
               <div class="col-md-6 col-sm-12" style="min-height: 180px;">
                 <q-card flat bordered class="column full-height flex-center q-pa-sm bg-grey-1">
@@ -151,8 +161,8 @@
 
     <!-- Simpan Button -->
     <q-card-actions align="right" class="q-pa-md">
-      <q-btn :loading="store.loadingSave" :disable="store.loadingSave" label="Simpan Penolakan Resusitasi (DNR)" type="button"
-        color="primary" class="q-mb-xl" @click="onSubmit" />
+      <q-btn :loading="store.loadingSave" :disable="store.loadingSave" label="Simpan Penolakan Resusitasi (DNR)"
+        type="button" color="primary" class="q-mb-xl" @click="onSubmit" />
     </q-card-actions>
   </q-form>
 </template>
