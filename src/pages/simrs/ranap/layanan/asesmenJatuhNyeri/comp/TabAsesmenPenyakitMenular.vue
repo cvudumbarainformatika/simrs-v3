@@ -114,14 +114,19 @@
                           <q-icon name="icon-mat-shield" size="18px" />
                           <span>B. IMUNOSUPRESED (DAYA TAHAN TUBUH)</span>
                         </div>
+                        <q-badge :color="hasPointB(item) ? 'teal-9' : 'grey-6'" text-color="white" :label="hasPointB(item) ? 'Ada Data' : 'Tidak Diisi'" />
                       </div>
                       <q-card-section class="q-pa-md text-caption text-grey-9">
-                        <div class="grid-details q-gutter-y-xs">
-                          <div class="row"><span class="col-5 text-grey-7 font-medium">Pasien Mengetahui:</span> <span class="col-7 text-weight-bold">{{ item.b_tahu_penyakit === 'tahu' ? 'Ya (Mengetahui)' : 'Tidak' }}</span></div>
-                          <div class="row"><span class="col-5 text-grey-7 font-medium">Sumber Informasi:</span> <span class="col-7 text-weight-bold text-capitalize">{{ item.b_sumber_info }}</span></div>
-                          <div class="row"><span class="col-5 text-grey-7 font-medium">Info Jangka Waktu:</span> <span class="col-7 text-weight-bold">{{ item.b_info_jangka === 'ya' ? 'Ya (' + item.b_durasi_pengobatan + ')' : 'Tidak' }}</span></div>
-                          <div class="row"><span class="col-5 text-grey-7 font-medium">Pemeriksaan Rutin:</span> <span class="col-7 text-weight-bold">{{ item.b_pemeriksaan_rutin === 'ya' ? 'Ya (di ' + item.b_tempat_rutin + ')' : 'Tidak' }}</span></div>
-                          <div class="row"><span class="col-5 text-grey-7 font-medium">Dirawat Terpisah:</span> <span class="col-7 text-weight-bold text-teal-9">{{ item.b_dirawat_terpisah === 'ya' ? 'Ya (di ' + item.b_tempat_terpisah + ')' : 'Tidak' }}</span></div>
+                        <div v-if="hasPointB(item)" class="grid-details q-gutter-y-xs">
+                          <div class="row"><span class="col-5 text-grey-7 font-medium">Pasien Mengetahui:</span> <span class="col-7 text-weight-bold">{{ item.b_tahu_penyakit === 'tahu' ? 'Ya (Mengetahui)' : (item.b_tahu_penyakit === 'tidak' ? 'Tidak Mengetahui' : '-') }}</span></div>
+                          <div class="row"><span class="col-5 text-grey-7 font-medium">Sumber Informasi:</span> <span class="col-7 text-weight-bold text-capitalize">{{ item.b_sumber_info || '-' }}</span></div>
+                          <div class="row"><span class="col-5 text-grey-7 font-medium">Info Jangka Waktu:</span> <span class="col-7 text-weight-bold">{{ item.b_info_jangka === 'ya' ? 'Ya (' + (item.b_durasi_pengobatan || '-') + ')' : (item.b_info_jangka === 'tidak' ? 'Tidak' : '-') }}</span></div>
+                          <div class="row"><span class="col-5 text-grey-7 font-medium">Pemeriksaan Rutin:</span> <span class="col-7 text-weight-bold">{{ item.b_pemeriksaan_rutin === 'ya' ? 'Ya (di ' + (item.b_tempat_rutin || '-') + ')' : (item.b_pemeriksaan_rutin === 'tidak' ? 'Tidak' : '-') }}</span></div>
+                          <div class="row"><span class="col-5 text-grey-7 font-medium">Dirawat Terpisah:</span> <span class="col-7 text-weight-bold text-teal-9">{{ item.b_dirawat_terpisah === 'ya' ? 'Ya (di ' + (item.b_tempat_terpisah || '-') + ')' : (item.b_dirawat_terpisah === 'tidak' ? 'Tidak' : '-') }}</span></div>
+                        </div>
+                        <div v-else class="text-italic text-grey-6 flex items-center q-pa-sm">
+                          <q-icon name="icon-mat-info" size="18px" class="q-mr-xs text-grey-5" />
+                          <span>Tidak ada pengkajian penurunan daya tahan tubuh (Poin B tidak diisi).</span>
                         </div>
                       </q-card-section>
                     </q-card>
@@ -387,7 +392,10 @@
                     <q-icon name="icon-mat-shield" size="20px" />
                     <span class="text-subtitle1 text-weight-bold">B. Penyakit Penurunan Daya Tahan Tubuh (Imunosupresed)</span>
                   </div>
-                  <span class="text-caption text-teal-1 font-medium">Evaluasi Imunitas Pasien</span>
+                  <div class="row items-center q-gutter-x-sm">
+                    <span class="text-caption text-teal-1 font-medium">Evaluasi Imunitas Pasien</span>
+                    <q-btn v-if="formHasPointB" flat dense size="sm" color="amber-3" label="Kosongkan Poin B" icon="icon-mat-clear" @click="resetPointB" />
+                  </div>
                 </div>
 
                 <q-card-section class="q-pa-lg">
@@ -662,6 +670,25 @@ async function hapusItem(item) {
   if (confirm('Apakah Anda yakin ingin menghapus data asesmen penyakit menular ini?')) {
     await store.hapusPenyakitMenular(props.pasien, item.id)
   }
+}
+
+const formHasPointB = computed(() => {
+  return !!(form.b_tahu_penyakit || form.b_sumber_info || form.b_info_jangka || form.b_pemeriksaan_rutin || form.b_dirawat_terpisah)
+})
+
+function resetPointB() {
+  form.b_tahu_penyakit = ''
+  form.b_sumber_info = ''
+  form.b_info_jangka = ''
+  form.b_durasi_pengobatan = ''
+  form.b_pemeriksaan_rutin = ''
+  form.b_tempat_rutin = ''
+  form.b_dirawat_terpisah = ''
+  form.b_tempat_terpisah = ''
+}
+
+function hasPointB(item) {
+  return !!(item && (item.b_tahu_penyakit || item.b_sumber_info || item.b_info_jangka || item.b_pemeriksaan_rutin || item.b_dirawat_terpisah))
 }
 </script>
 
