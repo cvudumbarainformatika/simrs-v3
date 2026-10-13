@@ -57,7 +57,9 @@ export const useRekonsiliasiObatStore = defineStore('rekonsiliasi-obat-store', {
       { value: 'persetujuan', label: 'Persetujuan Sentralisasi' },
       { value: 'pindah', label: 'Rekonsiliasi Saat Pindah Ruangan' },
       { value: 'krs', label: 'Rekonsiliasi Saat Pulang (Discharge)' }
-    ]
+    ],
+    riwayatAnamnesis: [],
+    loadingRiwayatAnamnesis: false
   }),
   actions: {
     initReset() {
@@ -179,6 +181,40 @@ export const useRekonsiliasiObatStore = defineStore('rekonsiliasi-obat-store', {
         this.loadingPersetujuan = false
       } catch (error) {
         this.loadingPersetujuan = false
+      }
+    },
+
+    async getRiwayatAnamnesis(pasien) {
+      if (!pasien?.norm && !pasien?.noreg) return []
+      this.loadingRiwayatAnamnesis = true
+      try {
+        const resp = await api.get('v1/simrs/ranap/layanan/rekonsiliasiobat/riwayat-anamnesis', {
+          params: {
+            norm: pasien?.norm,
+            noreg: pasien?.noreg
+          }
+        })
+        this.loadingRiwayatAnamnesis = false
+        if (resp.status === 200 && Array.isArray(resp.data)) {
+          this.riwayatAnamnesis = resp.data
+          return resp.data
+        }
+        return []
+      } catch (error) {
+        this.loadingRiwayatAnamnesis = false
+        return []
+      }
+    },
+
+    isiFormDariObat(itemObat) {
+      if (!itemObat) return
+      this.form.nama_obat = itemObat.nama_obat || itemObat.raw || ''
+      if (itemObat.dosis) {
+        this.form.dosis = itemObat.dosis
+      }
+      if (itemObat.frekuensi) {
+        this.form.frekuensi = itemObat.frekuensi
+        this.form.aturan_pakai = itemObat.frekuensi
       }
     }
   }
