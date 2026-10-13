@@ -55,8 +55,8 @@
 
       </div>
       <div class="column">
-        <div class="col-auto">Tanggal : {{ dateFullFormat(pasien?.tglmasuk) }}</div>
-        <div class="col-auto">Jam : {{ jamTnpDetik(pasien?.tglmasuk) }}</div>
+        <div class="col-auto">Tanggal : {{ tglDokumenMedis ? dateFullFormat(tglDokumenMedis) : "-" }}</div>
+        <div class="col-auto">Jam : {{ tglDokumenMedis ? jamTnpDetik(tglDokumenMedis) : "-" }}</div>
       </div>
     </div>
 
@@ -1462,11 +1462,11 @@
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width: 17%">
-              <div class="text-weight-bold">PENGOBATAN</div>
-              <div class="text-italic">THERAPY</div>
+              <div class="text-weight-bold">RENCANA</div>
+              <div class="text-italic">PLANNING</div>
             </td>
             <td valign="top" style="border: none !important; padding: 0px !important;"> : {{
-              pasien?.planningdokter?.terapi }}</td>
+              pasien?.planningdokter?.target || "-" }}</td>
           </tr>
         </tbody>
       </table>
@@ -1477,18 +1477,26 @@
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width: 17%">
-              <div class="text-weight-bold">RENCANA</div>
-              <div class="text-italic">PLANNING</div>
+              <div class="text-weight-bold">INSTRUKSI</div>
+              <div class="text-italic">INSTRUCTION</div>
             </td>
-            <td valign="top" style="border: none !important; padding: 0px !important;">
-              <div class="flex">
-                <div class="q-mr-sm">: </div>
-                <div>
-                  <div>Monitoring : {{ pasien?.planningdokter?.monitor || '-' }}</div>
-                  <div>Target : {{ pasien?.planningdokter?.target || '-' }}</div>
-                </div>
-              </div>
+            <td valign="top" style="border: none !important; padding: 0px !important;"> : {{
+              pasien?.planningdokter?.monitor || "-" }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <table>
+        <tbody>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width: 17%">
+              <div class="text-weight-bold">PENGOBATAN</div>
+              <div class="text-italic">THERAPY</div>
             </td>
+            <td valign="top" style="border: none !important; padding: 0px !important;"> : {{
+              pasien?.planningdokter?.terapi || "-" }}</td>
           </tr>
         </tbody>
       </table>
@@ -1502,7 +1510,8 @@
               <div class="text-weight-bold">CATATAN KIE</div>
               <div class="text-italic">EDUCATION NOTE</div>
             </td>
-            <td valign="top" style="border: none !important; padding: 0px !important;"> : - </td>
+            <td valign="top" style="border: none !important; padding: 0px !important;"> : {{
+              pasien?.planningdokter?.kie || "-" }}</td>
           </tr>
         </tbody>
       </table>
@@ -1517,7 +1526,7 @@
               <div class="text-italic">JAM / TIME</div>
             </td>
             <td valign="top" style="border: none !important; padding: 0px !important;"> : <b>Tanggal</b> {{
-              dateFullFormat(pasien?.tglmasuk) }} / <b>Jam</b> {{ jamTnpDetik(pasien?.tglmasuk) }}</td>
+              tglDokumenMedis ? dateFullFormat(tglDokumenMedis) : "-" }} / <b>Jam</b> {{ tglDokumenMedis ? jamTnpDetik(tglDokumenMedis) : "-" }}</td>
           </tr>
         </tbody>
       </table>
@@ -1621,6 +1630,10 @@ const props = defineProps({
   }
 })
 
+
+const tglDokumenMedis = computed(() => {
+  return props.pasien?.planningdokter?.created_at || props.pasien?.planningdokter?.updated_at || null
+})
 const dpjp = ref(null)
 
 onMounted(async () => {
