@@ -183,6 +183,13 @@ const documents = ref([
     label: 'Edukasi',
     value: 'Edukasi'
   },
+  {
+    icon: 'icon-my-file_sign',
+    color: 'primary',
+    jenis: 'IC',
+    label: 'Informed Consent',
+    value: 'InformConsent'
+  },
   // {
   //   icon: 'icon-mat-email',
   //   color: 'primary',
@@ -253,6 +260,7 @@ const comp = [
   { nama: 'SuratKonsul', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/SuratKonsul/SuratKonsulPage.vue')) },
   { nama: 'Edukasi', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/edukasi/EdukasiPage.vue')) },
   { nama: 'LaporanEswl', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/eswl/LaporanEswlPage.vue')) },
+  { nama: 'InformConsent', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/informconsent/IndexPage.vue')) },
 
 ]
 // eslint-disable-next-line no-unused-vars
