@@ -77,22 +77,12 @@ const formRef = ref(null)
 const refDokter = ref(null)
 const refUntuk = ref(null)
 
-const dokterPengaju = computed(() => {
-  const loginDokter = auth.user?.pegawai?.kdpegsimrs
-  const dpjp = props.pasien?.kodedokter || props.pasien?.kddokter
-  return {
-    loginDokter,
-    dpjp
-  }
-})
-
 function checkDokterSama(kdDokter) {
   if (!kdDokter) return false
-  const { loginDokter, dpjp } = dokterPengaju.value
-  if (loginDokter && kdDokter === loginDokter) {
-    return true
-  }
-  if (dpjp && kdDokter === dpjp) {
+  const userKdPeg = auth.user?.pegawai?.kdpegsimrs
+
+  // Intinya: user login tidak bisa konsul ke dirinya sendiri
+  if (userKdPeg && kdDokter === userKdPeg) {
     return true
   }
   return false
