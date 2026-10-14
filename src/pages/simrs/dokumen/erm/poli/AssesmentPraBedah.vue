@@ -1,6 +1,21 @@
 <template>
   <div class="fit bg-grey-4 q-pa-lg q-pb-xl scroll">
-    <div id="pdfDoc" ref="rePdfDoc" class="page-legal f-12 bg-white">
+    <!-- State Loading -->
+    <div v-if="loading" class="fit flex flex-center column q-pa-xl text-grey-7" style="min-height: 400px;">
+      <q-spinner-cube color="primary" size="48px" />
+      <div class="q-mt-md text-weight-bold">Memuat Dokumen Asesmen Pra Bedah...</div>
+    </div>
+
+    <!-- State Jika Tidak Ada Data / Inputan -->
+    <div v-else-if="!hasData" class="fit flex flex-center column text-grey-6 q-pa-xl" style="min-height: 400px;">
+      <q-icon name="icon-my-file_sign" size="64px" class="q-mb-sm text-grey-5" />
+      <div class="text-h6 text-weight-bold">TIDAK ADA DOKUMEN ASESMEN PRA BEDAH</div>
+      <div class="text-caption text-grey-7 q-mt-xs">Belum ada inputan data asesmen pra bedah untuk pasien ini.</div>
+    </div>
+
+    <!-- Dokumen Asesmen Pra Bedah (Hanya Tampil Jika Ada Inputan) -->
+    <template v-else>
+      <div id="pdfDoc" ref="rePdfDoc" class="page-legal f-12 bg-white">
       <div class="contentx">
         <my-kop-surat v-if="!history" title1="ASSESMEN" title2="PRA - BEDAH" />
 
@@ -244,11 +259,12 @@
       </div>
     </div>
 
-    <!-- Floating Print Button -->
-    <q-btn v-if="!history" ref="refPrint" v-print="printObj" fab icon="icon-mat-print" color="primary"
-      class="fixed-bottom-right" style="margin: 16px;">
-      <q-tooltip>Print</q-tooltip>
-    </q-btn>
+      <!-- Floating Print Button -->
+      <q-btn v-if="!history" ref="refPrint" v-print="printObj" fab icon="icon-mat-print" color="primary"
+        class="fixed-bottom-right" style="margin: 16px;">
+        <q-tooltip>Print</q-tooltip>
+      </q-btn>
+    </template>
   </div>
 </template>
 
@@ -273,6 +289,10 @@ const loading = ref(false)
 const assessments = ref([])
 const selectedNota = ref(null)
 const form = ref({})
+
+const hasData = computed(() => {
+  return assessments.value && assessments.value.length > 0 && !!form.value?.id
+})
 
 function petugas () {
   if (form.value?.user?.nama) return form.value.user.nama
