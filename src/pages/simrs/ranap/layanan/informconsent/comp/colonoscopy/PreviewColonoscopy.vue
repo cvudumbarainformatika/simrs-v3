@@ -157,7 +157,7 @@
                           size="sm" />
                       </div>
                       <div class="q-ml-sm">
-                        {{ n }} <span v-if="n === 'Keluarga'">..................................</span>
+                        {{ n }}<span v-if="n === 'Keluarga' && item?.keluarga && item?.keluarga.trim().toLowerCase() !== 'keluarga'">&nbsp;({{ item?.keluarga }})</span>
                       </div>
                     </div>
                   </div>

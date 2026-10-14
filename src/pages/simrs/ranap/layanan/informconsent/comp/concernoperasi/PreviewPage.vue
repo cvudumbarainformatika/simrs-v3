@@ -44,7 +44,7 @@
               Penerima informasi /pemberi persetujuan*
             </div>
             <div style="width: 60%;">
-              : {{ item?.nama }}
+              : {{ item?.nama }} <span v-if="item?.hubunganDgPasien && item?.hubunganDgPasien !== 'Diri Sendiri'">({{ item?.hubunganDgPasien === 'Keluarga' ? (item?.keluarga && item?.keluarga.trim().toLowerCase() !== 'keluarga' ? `Keluarga: ${item?.keluarga}` : 'Keluarga') : item?.hubunganDgPasien }})</span>
             </div>
           </div>
         </div>
@@ -334,8 +334,7 @@
             </div>
             <div class="col-8">
               <div class="flex">
-                : {{ item?.hubunganDgPasien }} <span v-if="item?.hubunganDgPasien === 'Keluarga'"> {{ item?.keluarga
-                }}</span>
+                : {{ item?.hubunganDgPasien }}<span v-if="item?.hubunganDgPasien === 'Keluarga' && item?.keluarga && item?.keluarga.trim().toLowerCase() !== 'keluarga'">&nbsp;({{ item?.keluarga }})</span>
               </div>
             </div>
           </div>

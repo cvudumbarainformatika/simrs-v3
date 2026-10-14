@@ -80,7 +80,7 @@
           <div class="row q-mt-2">
             <div class="col-3">Hubungan dengan pasien</div>
             <div class="col-9">:
-              {{ item?.hubunganDgPasien === 'Keluarga' ? `Keluarga (${item?.keluarga || '...........'})` :
+              {{ item?.hubunganDgPasien === 'Keluarga' ? (item?.keluarga && item?.keluarga.trim().toLowerCase() !== 'keluarga' ? `Keluarga (${item?.keluarga})` : 'Keluarga') :
                 item?.hubunganDgPasien }}
             </div>
           </div>

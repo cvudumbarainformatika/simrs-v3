@@ -51,7 +51,13 @@
                     wew
                   </div> -->
                 </div>
-                <div v-if="item?.rs4 === 'Rujuk Ke Rumah Sakit'">
+                <div v-if="item?.rs4 === 'Rujuk Ke Rumah Sakit' || item?.rs4 === 'Rujuk Ke Rumah Sakit Lain'">
+                  <q-item-label v-if="item?.planrujukan?.alasan_pindah_rs">Alasan Pindah RS : <span
+                      class="text-weight-bold">{{ item?.planrujukan?.alasan_pindah_rs }}</span></q-item-label>
+                  <q-item-label v-if="item?.planrujukan?.terapi_tindakan">Terapi / Tindakan : <span
+                      class="text-weight-bold">{{ item?.planrujukan?.terapi_tindakan }}</span></q-item-label>
+                  <q-item-label v-if="item?.planrujukan?.diet">Diet : <span class="text-weight-bold">{{
+                    item?.planrujukan?.diet }}</span></q-item-label>
                   <q-item-label>Alasan Dirujuk : <span class="text-weight-bold">{{ item?.planrujukan?.atas_dasar
                   }}</span></q-item-label>
                   <q-item-label>Jenis Pelayanan : <span class="text-weight-bold">{{ item?.planrujukan?.jenis_pelayanan
@@ -68,6 +74,41 @@
                     item?.planrujukan?.kodepoli }})</span></q-item-label>
                   <q-item-label>Keterangan : <span class="text-weight-bold">{{ item?.planrujukan?.keterangan ?? '-'
                   }}</span></q-item-label>
+                  <div class="q-mt-md">
+                    <div class="text-weight-bold text-primary q-mb-xs">Obat yang Diberikan</div>
+                    <q-markup-table dense flat bordered class="obat-rujukan-table">
+                      <thead>
+                        <tr>
+                          <th class="text-left">Nama Obat</th>
+                          <th class="text-left">Jumlah</th>
+                          <th class="text-left">Dosis</th>
+                          <th class="text-left">Frekwensi</th>
+                          <th class="text-left">Cara Pemberian</th>
+                          <th class="text-center" style="width: 76px">Aksi</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="obat in item?.planrujukan?.obatrujukan || []" :key="obat.id">
+                          <td>{{ obat.nama_obat }}</td>
+                          <td>{{ obat.jumlah }}</td>
+                          <td>{{ obat.dosis }}</td>
+                          <td>{{ obat.frekwensi }}</td>
+                          <td>{{ obat.cara_pemberian }}</td>
+                          <td class="text-center no-wrap">
+                            <q-btn flat round dense size="sm" color="primary" icon="edit" @click="store.editObatRujukan(obat)">
+                              <q-tooltip>Edit obat</q-tooltip>
+                            </q-btn>
+                            <q-btn flat round dense size="sm" color="negative" icon="delete" @click="hapusObat(obat)">
+                              <q-tooltip>Hapus obat</q-tooltip>
+                            </q-btn>
+                          </td>
+                        </tr>
+                        <tr v-if="!(item?.planrujukan?.obatrujukan?.length)">
+                          <td colspan="6" class="text-center text-grey">Belum ada obat</td>
+                        </tr>
+                      </tbody>
+                    </q-markup-table>
+                  </div>
                 </div>
                 <div v-if="item?.rs4 === 'Pulang'">
                   <q-item-label>Alasan Pulang : <span class="text-weight-bold">{{ item?.planpulang?.atas_dasar
@@ -109,6 +150,7 @@
 
 <script setup>
 import { useQuasar } from 'quasar'
+import { api } from 'src/boot/axios'
 import { usePlannStore } from 'src/stores/simrs/igd/plann'
 import { computed } from 'vue'
 
@@ -147,4 +189,31 @@ function hapusItem(id, jenis) {
   })
 }
 
+function hapusObat(obat) {
+  $q.dialog({ title: 'Hapus Obat', message: `Hapus ${obat.nama_obat}?`, cancel: true, persistent: true })
+    .onOk(async () => {
+      try {
+        const resp = await api.post('v1/simrs/planing/igd/hapusobatrujukan', { id: obat.id })
+        if (resp.status === 200) {
+          lists.value?.forEach(item => {
+            const data = item?.planrujukan?.obatrujukan
+            const index = data?.findIndex(row => row.id === obat.id)
+            if (index >= 0) data.splice(index, 1)
+          })
+          $q.notify({ type: 'positive', message: resp.data.message })
+        }
+      } catch (error) {
+        // Pesan kesalahan dari interceptor axios sudah ditampilkan.
+      }
+    })
+}
+
 </script>
+
+<style scoped>
+.obat-rujukan-table :deep(th) {
+  background: #e8f5f2;
+  color: #00695c;
+  font-weight: 700;
+}
+</style>
