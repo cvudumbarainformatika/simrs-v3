@@ -8,6 +8,7 @@ import { notifErr, notifSuccess } from 'src/modules/utils'
 import { usePengunjungRanapStore } from '../../ranap/pengunjung'
 import { useListPasienHemodialisaStore } from '../../hemodialisa/hemodialisa'
 import { usePengunjungHomeCareStore } from '../../homeCare/pengunjung'
+import { usePermintaanOperasistore } from '../../kamaroperasi/permintaanoperasi'
 
 export const useUploadDokStore = defineStore('upload-dok-poli', {
   state: () => ({
@@ -77,12 +78,23 @@ export const useUploadDokStore = defineStore('upload-dok-poli', {
               const storeRananp = usePengunjungRanapStore()
               const storeHD = useListPasienHemodialisaStore()
               const storeHC = usePengunjungHomeCareStore()
+              const storeOK = usePermintaanOperasistore()
               for (let i = 0; i < resp?.data?.result?.length; i++) {
                 const isi = resp.data.result[i]
                 storePasien.injectDataPasien(pasien, isi, 'dokumenluar')
                 storeRananp.injectDataPasien(pasien?.noreg, isi, 'dokumenluar')
                 storeHD.injectDataPasien(pasien?.noreg, isi, 'dokumenluar')
                 storeHC.injectDataPasien(pasien?.noreg, isi, 'dokumenluar')
+                storeOK.injectDataPasien(pasien, isi, 'dokumenluar')
+                if (pasien) {
+                  if (!Array.isArray(pasien.dokumenluar)) {
+                    pasien.dokumenluar = []
+                  }
+                  const exist = pasien.dokumenluar.find(x => x.id === isi.id)
+                  if (!exist) {
+                    pasien.dokumenluar.unshift(isi)
+                  }
+                }
               }
               notifSuccess(resp)
               this.initForm()
@@ -110,10 +122,18 @@ export const useUploadDokStore = defineStore('upload-dok-poli', {
               const storeRananp = usePengunjungRanapStore()
               const storeHD = useListPasienHemodialisaStore()
               const storeHC = usePengunjungHomeCareStore()
+              const storeOK = usePermintaanOperasistore()
               storePasien.hapusDataInjectan(pasien, id, 'dokumenluar')
               storeRananp.hapusDataInjectan(pasien, id, 'dokumenluar')
               storeHD.hapusDataInjectan(pasien, id, 'dokumenluar')
               storeHC.hapusDataInjectan(pasien, id, 'dokumenluar')
+              storeOK.hapusDataInjectan(pasien, id, 'dokumenluar')
+              if (pasien && Array.isArray(pasien.dokumenluar)) {
+                const pos = pasien.dokumenluar.findIndex(el => el.id === id)
+                if (pos >= 0) {
+                  pasien.dokumenluar.splice(pos, 1)
+                }
+              }
 
               notifSuccess(resp)
             }

@@ -178,10 +178,13 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
           .then(resp => {
             // console.log(resp)
             if (resp.status === 200) {
-              const findPasien = this.items.filter(x => x === pasien)
+              const findPasien = this.items.filter(x => x === pasien || x?.rs1 === pasien?.noreg || x?.noreg === pasien?.noreg)
               if (findPasien?.length) {
                 const data = findPasien[0]
                 data.memodiagnosa = resp?.data?.result?.diagnosa
+              }
+              if (pasien) {
+                pasien.memodiagnosa = resp?.data?.result?.diagnosa
               }
 
               const pengunjungRehab = useKunjunganRehabmediStore()
@@ -204,6 +207,10 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
       if (!pasien?.anamnesis?.length) {
         this.loadingTerima = false
         return this.notifikasiError('Maaf, Anamnesis Harap Diisi Dahulu...')
+      }
+      if (!pasien?.memodiagnosa || !pasien?.memodiagnosa?.toString().trim()) {
+        this.loadingTerima = false
+        return this.notifikasiError('Maaf, Memo Diagnosa Harap Diisi Dahulu...')
       }
       // if (!pasien?.diagnosa?.length) {
       //   this.loadingTerima = false
