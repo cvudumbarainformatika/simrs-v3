@@ -32,18 +32,15 @@ export const useKonsulRanapStore = defineStore('konsul-ranap-store', {
   actions: {
 
     async saveData(pasien) {
-      if (!pasien?.kodedokter) {
-        return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
-      }
       if (!this.form.kddokterkonsul) {
         return notifErrVue('Pilih dokter tujuan konsul terlebih dahulu')
       }
 
       const auth = useAplikasiStore()
-      const dokterLogin = auth.user?.pegawai?.kdpegsimrs
-      const dpjpPasien = pasien?.kodedokter || pasien?.kddokter
+      const userKdPeg = auth.user?.pegawai?.kdpegsimrs
 
-      if ((dokterLogin && this.form.kddokterkonsul === dokterLogin) || (dpjpPasien && this.form.kddokterkonsul === dpjpPasien)) {
+      // Intinya: user login tidak bisa konsul ke dirinya sendiri
+      if (userKdPeg && this.form.kddokterkonsul === userKdPeg) {
         return notifErrVue('Mohon Maaf, dipastikan Dokter tujuan Konsul Berbeda dengan yg Mengajukan Konsulan ...')
       }
 
