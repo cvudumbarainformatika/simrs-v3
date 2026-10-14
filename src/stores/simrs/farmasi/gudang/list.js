@@ -16,6 +16,7 @@ export const useListReturPenyediaStore = defineStore('list_retur_penyedia', {
     columns: [
       'penyedia',
       'nomor',
+      'opsi',
       'tanggal',
       'gud'
     ],

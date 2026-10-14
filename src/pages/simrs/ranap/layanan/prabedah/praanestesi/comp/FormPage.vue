@@ -266,9 +266,9 @@
 
       <q-card square class="absolute-bottom full-width shadow-1" dark>
         <div class="flex justify-between items-center q-pa-md">
-          <q-btn v-if="dataLaluRajal" color="orange-10" :loading="store.waiting" :disable="store.waiting"
-            @click="openRajal = true">
+          <q-btn v-if="dataLaluRajal" color="orange-10" :loading="store.waiting" :disable="store.waiting" icon="icon-mat-history_edu" @click="handleAnastesiRajal">
             Anastesi Rajal
+            <q-tooltip>Buka dokumen pra anestesi rajal dan muat ke formulir input</q-tooltip>
           </q-btn>
           <div v-else>
             .
@@ -288,6 +288,7 @@
 <script setup>
 import { api } from 'src/boot/axios'
 import { usePraAnastesiStore } from 'src/stores/simrs/pelayanan/poli/praanastesi'
+import { notifSuccessVue } from 'src/modules/utils'
 // eslint-disable-next-line no-unused-vars
 import { ref, onMounted, watchEffect, defineAsyncComponent } from 'vue'
 
@@ -319,6 +320,19 @@ onMounted(() => {
     getKunjunganRajalLatest(props.pasien.norm)
   ])
 })
+
+function handleAnastesiRajal() {
+  if (dataLaluRajal.value) {
+    store.initForm(dataLaluRajal.value)
+    // Hapus ID agar tersimpan sebagai Pra Anestesi Ranap baru dan tidak meng-overwrite record di rajal
+    delete store.form.id
+    if (store.form.keteranganLainlainRawatKhusus !== null) {
+      rawatkhususLainlain.value = true
+    }
+    notifSuccessVue("Data Pra Anestesi Rajal berhasil disalin ke formulir input")
+  }
+  openRajal.value = true
+}
 
 async function getKunjunganRajalLatest(norm) {
   const params = {

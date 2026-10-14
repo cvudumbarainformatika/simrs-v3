@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { usePengunjungRanapStore } from './pengunjung'
+import { useAplikasiStore } from 'src/stores/app/aplikasi'
 // eslint-disable-next-line no-unused-vars
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
 
@@ -34,6 +35,18 @@ export const useKonsulRanapStore = defineStore('konsul-ranap-store', {
       if (!pasien?.kodedokter) {
         return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
       }
+      if (!this.form.kddokterkonsul) {
+        return notifErrVue('Pilih dokter tujuan konsul terlebih dahulu')
+      }
+
+      const auth = useAplikasiStore()
+      const dokterLogin = auth.user?.pegawai?.kdpegsimrs
+      const dpjpPasien = pasien?.kodedokter || pasien?.kddokter
+
+      if ((dokterLogin && this.form.kddokterkonsul === dokterLogin) || (dpjpPasien && this.form.kddokterkonsul === dpjpPasien)) {
+        return notifErrVue('Mohon Maaf, dipastikan Dokter tujuan Konsul Berbeda dengan yg Mengajukan Konsulan ...')
+      }
+
       this.loadingOrder = true
 
       this.form.noreg = pasien?.noreg

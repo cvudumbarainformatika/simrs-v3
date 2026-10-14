@@ -56,9 +56,27 @@
 
         <!-- <BottomTtd :pasien="props.pasien" /> -->
 
-        <div class="row q-pa-sm justify-between items-center">
+        <div class="row q-pa-sm justify-between items-end">
           <div class="kiri text-center">
-            .
+            <div v-if="hasPacs && qrPacsUrl" class="column items-center">
+              <div class="f-10 text-weight-bold q-mb-xs">Hasil Citra Radiologi :</div>
+              <div style="width: 100px;">
+                <vue-qrcode :value="qrPacsUrl" tag="svg" :options="{
+                  errorCorrectionLevel: 'M',
+                  color: {
+                    dark: '#000000',
+                    light: '#ffffff',
+                  },
+                  margin: 0
+                }" />
+              </div>
+              <div class="f-10 text-grey-9 q-mt-xs text-weight-medium">
+                Scan untuk melihat citra
+              </div>
+            </div>
+            <div v-else style="visibility: hidden;">
+              .
+            </div>
           </div>
           <div class="kanan text-center">
             <!-- <div><b>Probolinggo, {{ printDate }}</b></div> -->
@@ -128,6 +146,38 @@ const qrUrl = computed(() => {
 
   const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+})
+
+const nota = computed(() => {
+  return (
+    props.item?.notrans ||
+    props.item?.nota ||
+    props.pasien?.nota_permintaan ||
+    props.pasien?.notrans ||
+    props.pasien?.permintaan?.nota_permintaan ||
+    props.pasien?.permintaan?.rs2 ||
+    props.item?.rs2 ||
+    props.pasien?.rs2 ||
+    props.item?.rs1 ||
+    ''
+  )
+})
+
+const hasPacs = computed(() => {
+  const itemHasAlat = !!(props.item?.relmasterpemeriksaan?.alat || props.item?.alat)
+  const itemHasUrl = !!(props.item?.view_url || props.item?.view_url_local || props.item?.pacs?.view_url)
+  if (itemHasAlat || itemHasUrl) return true
+
+  const fromRinciSementara = props.pasien?.rinciansementara?.some(r => !!r?.relmasterpemeriksaan?.alat || !!r?.view_url)
+  const fromPermintaanRinci = props.pasien?.permintaan?.rincians?.some(r => !!r?.alat || !!r?.view_url)
+  const fromPasienUrl = !!(props.pasien?.view_url || props.pasien?.pacs?.view_url)
+
+  return fromRinciSementara || fromPermintaanRinci || fromPasienUrl || false
+})
+
+const qrPacsUrl = computed(() => {
+  if (!nota.value) return ''
+  return `https://orthanc.xenter.my.id/hasil/${nota.value}`
 })
 </script>
 

@@ -362,6 +362,7 @@
                 color="primary"
                 round
                 :loading="store.loading && item.loading"
+                :disable="parseFloat(item?.stok) <= 0"
                 @click="simpan(i, item)"
               >
                 <q-tooltip
@@ -739,7 +740,9 @@ const refCariNoPenerimaan = ref(null)
 
 const opsiRetur = ref([
   { label: 'Retur Barang', value: 'barang' },
-  { label: 'Retur Uang', value: 'uang' }
+  { label: 'Retur Uang', value: 'uang' },
+  { label: 'Recall', value: 'recall' },
+  { label: 'Retur Konsinyasi', value: 'konsinyasi' }
 ])
 
 function getData () {

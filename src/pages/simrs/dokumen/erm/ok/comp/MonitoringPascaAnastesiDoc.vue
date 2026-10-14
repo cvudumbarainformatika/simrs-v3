@@ -77,6 +77,33 @@
             </tbody>
           </table>
 
+          <div class="row q-mb-md justify-around">
+            <div class="col-5 text-center">
+              <div class="text-weight-bold q-mb-sm">Petugas IBS</div>
+              <div v-if="qrPetugasIbs" style="height: 90px; width: 90px; margin: 0 auto;" class="q-mb-sm">
+                <vue-qrcode :value="qrPetugasIbs" tag="svg" :options="{
+                  errorCorrectionLevel: 'Q',
+                  color: { dark: '#000000', light: '#ffffff' },
+                  margin: 0
+                }" />
+              </div>
+              <div class="text-weight-bold">{{ petugasIbs?.nama || '-' }}</div>
+              <div class="f-10">NIP. {{ petugasIbs?.nip || '-' }}</div>
+            </div>
+            <div class="col-5 text-center">
+              <div class="text-weight-bold q-mb-sm">Petugas Ruang RR</div>
+              <div v-if="qrPetugasRr" style="height: 90px; width: 90px; margin: 0 auto;" class="q-mb-sm">
+                <vue-qrcode :value="qrPetugasRr" tag="svg" :options="{
+                  errorCorrectionLevel: 'Q',
+                  color: { dark: '#000000', light: '#ffffff' },
+                  margin: 0
+                }" />
+              </div>
+              <div class="text-weight-bold">{{ petugasRr?.nama || '-' }}</div>
+              <div class="f-10">NIP. {{ petugasRr?.nip || '-' }}</div>
+            </div>
+          </div>
+
           <!-- VISUAL CHART -->
           <div class="anesthesia-chart-container bg-white q-mb-md">
             <div class="vital-signs-container flex no-wrap items-center q-mt-md">
@@ -549,6 +576,18 @@ const dokterAnestesi = computed(() => {
   return laporanOp.nakes?.find(x => x.kdpegsimrs === code) || { nama: code, nip: '-' }
 })
 
+const petugasIbs = computed(() => {
+  const code = store.inputFormPasca?.petugas_ibs
+  if (!code) return null
+  return laporanOp.nakes?.find(nakes => String(nakes.kdpegsimrs) === String(code)) || { nama: code, nip: '-' }
+})
+
+const petugasRr = computed(() => {
+  const code = store.inputFormPasca?.petugas_rr
+  if (!code) return null
+  return laporanOp.nakes?.find(nakes => String(nakes.kdpegsimrs) === String(code)) || { nama: code, nip: '-' }
+})
+
 function generateQRUrl (noreg, dokumen, petugas, asal) {
   if (!petugas) return ''
   try {
@@ -569,6 +608,16 @@ const qrDokter = computed(() => {
   const code = dokterAnestesi.value?.kdpegsimrs || dokterAnestesi.value?.nip || dokterAnestesi.value?.nama || ''
   if (!code) return ''
   return generateQRUrl(props.pasien?.noreg, 'Monitoring Pasca Anestesi - Dokter', code, 'PENUNJANG')
+})
+
+const qrPetugasIbs = computed(() => {
+  const code = petugasIbs.value?.kdpegsimrs || petugasIbs.value?.nip || ''
+  return code ? generateQRUrl(props.pasien?.noreg, 'Monitoring Pasca Anestesi - Petugas IBS', code, 'PENUNJANG') : ''
+})
+
+const qrPetugasRr = computed(() => {
+  const code = petugasRr.value?.kdpegsimrs || petugasRr.value?.nip || ''
+  return code ? generateQRUrl(props.pasien?.noreg, 'Monitoring Pasca Anestesi - Petugas RR', code, 'PENUNJANG') : ''
 })
 
 function formatXAxisTime (val, waktuStr) {

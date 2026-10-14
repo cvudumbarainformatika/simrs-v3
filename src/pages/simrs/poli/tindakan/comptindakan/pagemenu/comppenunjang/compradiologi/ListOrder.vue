@@ -142,8 +142,9 @@
                         </div>
 
                         <!-- Tombol Buka PACS yang Mencolok & Jelas -->
-                        <div v-if="getPacsUrl(item, rinci)" class="q-my-sm">
+                        <div v-if="getPacsUrl(item, rinci) || studyImagesMap[item?.rs2]?.length" class="q-my-sm">
                           <q-btn
+                            v-if="getPacsUrl(item, rinci)"
                             color="indigo-9"
                             unelevated
                             icon="icon-mat-image"
@@ -152,6 +153,52 @@
                             size="sm"
                             @click.stop="openPacs(getPacsUrl(item, rinci))"
                           />
+                        </div>
+
+                        <!-- Tampilan Gambar Basahan Radiologi / Orthanc PACS -->
+                        <div v-if="getStudyImages(item)?.length" class="q-my-sm">
+                          <div class="text-caption text-weight-bold text-grey-8 q-mb-xs flex items-center justify-between">
+                            <div class="flex items-center">
+                              <q-icon name="image" color="primary" class="q-mr-xs" size="xs" />
+                              <span>Citra / Gambar Radiologi ({{ getStudyImages(item).length }}) :</span>
+                            </div>
+                            <div class="text-caption text-grey-6 text-italic" style="font-size: 11px;">
+                              Klik gambar untuk memperbesar
+                            </div>
+                          </div>
+                          <div class="row q-gutter-sm items-center q-py-xs">
+                            <div
+                              v-for="(img, imgIdx) in getStudyImages(item)"
+                              :key="img.instance_id || imgIdx"
+                              class="col-auto"
+                            >
+                              <q-card
+                                bordered
+                                flat
+                                class="cursor-pointer overflow-hidden bg-black text-white hover-scale"
+                                style="width: 120px; border-radius: 6px; box-shadow: 0 1px 4px rgba(0,0,0,0.25);"
+                                @click.stop="previewImage(img)"
+                              >
+                                <q-img
+                                  :src="PACS_IMAGE_BASE_URL + img.url"
+                                  spinner-color="white"
+                                  style="height: 110px; width: 120px"
+                                  fit="cover"
+                                  @error="onImageError(item?.rs2, img.index)"
+                                >
+                                  <div class="absolute-bottom text-caption text-center q-pa-none bg-black" style="opacity: 0.75; font-size: 10px;">
+                                    Gbr {{ img.index + 1 }}
+                                  </div>
+                                </q-img>
+                              </q-card>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Status Loading Gambar -->
+                        <div v-else-if="loadingImagesMap[item?.rs2]" class="text-caption text-grey-6 flex items-center q-my-xs">
+                          <q-spinner size="xs" color="primary" class="q-mr-xs" />
+                          <span>Memuat citra radiologi...</span>
                         </div>
 
                         <!-- Hasil Pemeriksaan: Ukuran font disamakan dengan list (12px) -->
@@ -218,19 +265,48 @@
 
     <!-- dialog PACS Viewer -->
     <DialogView v-model="isViewPacs" :viewerUrl="pacsUrl" />
+
+    <!-- dialog Preview Gambar Basahan -->
+    <q-dialog v-model="dialogPreviewImg">
+      <q-card style="min-width: 600px; max-width: 90vw; background: #121212; color: white;">
+        <q-bar class="bg-grey-9 text-white">
+          <div>Gambar Radiologi {{ (selectedPreviewImg?.index ?? 0) + 1 }}</div>
+          <q-space />
+          <q-btn
+            flat
+            dense
+            icon="open_in_new"
+            title="Buka Resolusi Penuh"
+            :href="PACS_IMAGE_BASE_URL + (selectedPreviewImg?.hd_url || selectedPreviewImg?.url)"
+            target="_blank"
+          />
+          <q-btn dense flat icon="close" v-close-popup />
+        </q-bar>
+        <q-card-section class="flex flex-center q-pa-sm" style="max-height: 80vh; overflow: auto;">
+          <img
+            v-if="selectedPreviewImg"
+            :src="PACS_IMAGE_BASE_URL + (selectedPreviewImg?.hd_url || selectedPreviewImg?.url)"
+            style="max-width: 100%; max-height: 75vh; object-fit: contain; border-radius: 4px;"
+          />
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
 <script setup>
 import { useQuasar } from 'quasar'
+import { useRouter } from 'vue-router'
 import { useRadiologiPoli } from 'src/stores/simrs/pelayanan/poli/radiologi'
-import { computed, ref, defineAsyncComponent } from 'vue'
+import { computed, ref, defineAsyncComponent, watch } from 'vue'
 import { formatRp } from 'src/modules/formatter'
+import { openPacsViewer } from 'src/modules/utils'
 
 const DialogCetakPermintaanRadiologi = defineAsyncComponent(() => import('./DialogCetakPermintaanRadiologi.vue'))
 const DialogView = defineAsyncComponent(() => import('src/pages/simrs/radiologi/tindakan/comptindakan/pagemenu/permintaan/comp/DialogView.vue'))
 
 const $q = useQuasar()
+const router = useRouter()
 const store = useRadiologiPoli()
 const props = defineProps({
   pasien: {
@@ -249,11 +325,106 @@ const isiPrint = ref(null)
 const isViewPacs = ref(false)
 const pacsUrl = ref(null)
 
+const PACS_IMAGE_BASE_URL = 'http://192.168.150.134:8001'
+const studyImagesMap = ref({})
+const loadingImagesMap = ref({})
+const dialogPreviewImg = ref(false)
+const selectedPreviewImg = ref(null)
+
+function previewImage(img) {
+  selectedPreviewImg.value = img
+  dialogPreviewImg.value = true
+}
+
+function onImageError(rawNota, imgIndex) {
+  if (studyImagesMap.value[rawNota]) {
+    studyImagesMap.value[rawNota] = studyImagesMap.value[rawNota].filter(img => img.index !== imgIndex)
+  }
+}
+
+function getStudyImages(item) {
+  const rawNota = item?.rs2
+  if (!rawNota) return []
+  if (studyImagesMap.value[rawNota] === undefined && !loadingImagesMap.value[rawNota]) {
+    fetchStudyImagesByNota(rawNota)
+  }
+  return studyImagesMap.value[rawNota] || []
+}
+
+async function fetchStudyImagesByNota(rawNota) {
+  if (!rawNota) return
+  if (studyImagesMap.value[rawNota] !== undefined) return
+  const notaClean = rawNota.replace(/\//g, '_')
+  loadingImagesMap.value[rawNota] = true
+  try {
+    let res = null
+    // 1. Coba lewat proxy devServer /pacs-proxy terlebih dahulu (agar terhindar dari CORS)
+    try {
+      res = await fetch(`/pacs-proxy/api/v1/study/${notaClean}/images`)
+    } catch (e) {
+      // proxy belum ready / error
+    }
+
+    // 2. Jika proxy tidak berhasil, coba fetch langsung ke server PACS
+    if (!res || !res.ok) {
+      try {
+        res = await fetch(`${PACS_IMAGE_BASE_URL}/api/v1/study/${notaClean}/images`)
+      } catch (e) {
+        // jika terblokir CORS
+      }
+    }
+
+    if (res && res.ok) {
+      const data = await res.json()
+      if (data?.status === 'success' && Array.isArray(data?.images) && data.images.length > 0) {
+        studyImagesMap.value[rawNota] = data.images
+        return
+      }
+    }
+
+    // 3. Fallback jika fetch metadata JSON terblokir CORS:
+    // Buat slot citra default index 0 (karena tag <img> tidak diblokir CORS)
+    studyImagesMap.value[rawNota] = [
+      {
+        index: 0,
+        url: `/api/v1/study/${notaClean}/jpeg?index=0&width=800`,
+        hd_url: `/api/v1/study/${notaClean}/jpeg?index=0`
+      }
+    ]
+  } catch (err) {
+    console.error('Gagal fetch gambar PACS untuk nota:', rawNota, err)
+    studyImagesMap.value[rawNota] = [
+      {
+        index: 0,
+        url: `/api/v1/study/${notaClean}/jpeg?index=0&width=800`,
+        hd_url: `/api/v1/study/${notaClean}/jpeg?index=0`
+      }
+    ]
+  } finally {
+    loadingImagesMap.value[rawNota] = false
+  }
+}
+
 const filterredTable = computed(() => {
   const val = store?.form?.nota
   const arr = props?.pasien?.radiologi
   return (val === 'SEMUA' || val === null || val === '') ? arr : arr?.filter(x => x?.rs2 === val)
 })
+
+watch(
+  () => [props.pasien?.radiologi, store.form.nota, filterredTable.value],
+  () => {
+    const arr = filterredTable.value || props.pasien?.radiologi
+    if (Array.isArray(arr)) {
+      arr.forEach(item => {
+        if (item?.rs2) {
+          fetchStudyImagesByNota(item.rs2)
+        }
+      })
+    }
+  },
+  { immediate: true, deep: true }
+)
 
 function getStatusLabel(status) {
   if (status === '1') return 'Selesai'
@@ -281,13 +452,22 @@ function canDelete(item) {
 
 function getPacsUrl(item, rinci = null) {
   if (rinci) {
+    if (rinci?.view_url || rinci?.view_url_local) {
+      return rinci.view_url || rinci.view_url_local
+    }
+    if (item?.view_url || item?.pacs?.view_url) {
+      return item.view_url || item.pacs.view_url
+    }
+    if (studyImagesMap.value[item?.rs2]?.length > 0) {
+      return item?.view_url || item?.pacs?.view_url || null
+    }
     if (!rinci?.relmasterpemeriksaan?.alat && !rinci?.alat) {
       return null
     }
     return rinci?.view_url || rinci?.view_url_local || null
   }
   const r = item?.rincians?.[0] || item?.rinciansementara?.[0]
-  const hasAlat = !!(r?.relmasterpemeriksaan?.alat || r?.alat)
+  const hasAlat = !!(r?.relmasterpemeriksaan?.alat || r?.alat || studyImagesMap.value[item?.rs2]?.length > 0)
   if (!hasAlat) {
     return null
   }
@@ -300,7 +480,7 @@ function getPacsUrl(item, rinci = null) {
 function openPacs(url) {
   if (!url) return
   pacsUrl.value = url
-  isViewPacs.value = true
+  openPacsViewer(url, router)
 }
 
 function handlePrint(item) {
@@ -341,5 +521,13 @@ function hapusItem(id) {
 .kesimpulan-radiologi-content :deep(*) {
   font-size: 12px !important;
   line-height: 1.45 !important;
+}
+
+.hover-scale {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.hover-scale:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35) !important;
 }
 </style>

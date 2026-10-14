@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { api, pathImg } from 'src/boot/axios'
 import { usePengunjungRanapStore } from './pengunjung'
 import { usePengunjungIgdStore } from '../igd/pengunjung'
+import { usePengunjungPoliStore } from '../pelayanan/poli/pengunjung'
 // eslint-disable-next-line no-unused-vars
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
 import { date } from 'quasar'
@@ -119,7 +120,7 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
       const payload = { ...this.form }
       payload.noreg = pasien?.noreg
       payload.norm = pasien?.norm
-      payload.kdRuang = pasien?.kodepoli
+      payload.kdRuang = pasien?.kodepoli || pasien?.kdruangan || pasien?.kdruang || ''
       payload.jenis = jns
 
       // Sanitize signatures to prevent backend explosion (Undefined array key 1)
@@ -137,11 +138,16 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
         console.log('save inform concern', resp.data)
         if (resp.status === 200) {
           const isi = resp?.data?.result
+          const storePoli = usePengunjungPoliStore()
           const storeIgd = usePengunjungIgdStore()
           const storeRanap = usePengunjungRanapStore()
-          const isIgdPatient = storeIgd.items.some(item => item === pasien)
+          const isPoliPatient = storePoli.items.some(item => item === pasien || item?.rs1 === pasien?.noreg)
+          const isIgdPatient = storeIgd.items.some(item => item === pasien || item?.noreg === pasien?.noreg)
 
-          if (isIgdPatient) {
+          if (isPoliPatient) {
+            storePoli.injectDataPasien(pasien, isi, 'informconcern')
+          }
+          else if (isIgdPatient) {
             storeIgd.deleteInjectanNull2(pasien?.noreg, 'informconcern')
             storeIgd.injectDataPasien(pasien, isi, 'informconcern')
           }
@@ -177,11 +183,16 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
         this.loadingHapus = false
         // console.log(resp)
         if (resp.status === 200) {
+          const storePoli = usePengunjungPoliStore()
           const storeIgd = usePengunjungIgdStore()
           const storeRanap = usePengunjungRanapStore()
-          const isIgdPatient = storeIgd.items.some(item => item === pasien)
+          const isPoliPatient = storePoli.items.some(item => item === pasien || item?.rs1 === pasien?.noreg)
+          const isIgdPatient = storeIgd.items.some(item => item === pasien || item?.noreg === pasien?.noreg)
 
-          if (isIgdPatient) {
+          if (isPoliPatient) {
+            storePoli.hapusDataInjectan(pasien, id, 'informconcern')
+          }
+          else if (isIgdPatient) {
             storeIgd.hapusDataInjectan(pasien, id, 'informconcern')
           }
           else {

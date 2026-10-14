@@ -181,6 +181,57 @@
                 <!-- FORM DAFTAR OBAT (mrs, pindah, krs) -->
                 <template v-else>
                   <q-form @submit="onSubmit" class="q-gutter-y-md">
+                    <!-- Action Area: Riwayat Pengobatan Anamnesa Pasien -->
+                    <div class="q-pa-sm bg-blue-1 rounded-borders border-blue shadow-1">
+                      <div class="row items-center justify-between q-col-gutter-xs">
+                        <div class="text-caption text-bold text-primary row items-center">
+                          <q-icon name="medication" size="18px" class="q-mr-xs text-primary" />
+                          <span>Riwayat Pengobatan di Anamnesa</span>
+                        </div>
+                        <div class="row q-gutter-xs">
+                          <!-- Tombol 1: Ambil Riwayat Terakhir -->
+                          <q-btn
+                            color="primary"
+                            icon="download"
+                            label="Ambil Riwayat Terakhir"
+                            no-caps
+                            dense
+                            size="sm"
+                            class="q-px-sm"
+                            :loading="store.loadingRiwayatAnamnesis"
+                            @click="ambilRiwayatTerakhir"
+                          >
+                            <q-tooltip>Ambil riwayat pengobatan dari anamnesa terakhir pasien</q-tooltip>
+                          </q-btn>
+
+                          <!-- Tombol 2: Lihat List Riwayat Pengobatan -->
+                          <q-btn
+                            color="teal"
+                            icon="format_list_bulleted"
+                            label="Lihat List Riwayat"
+                            no-caps
+                            dense
+                            size="sm"
+                            class="q-px-sm"
+                            :loading="store.loadingRiwayatAnamnesis"
+                            @click="bukaDialogListRiwayat"
+                          >
+                            <q-tooltip>Lihat semua riwayat pengobatan dari anamnesa pasien</q-tooltip>
+                          </q-btn>
+                        </div>
+                      </div>
+
+                      <!-- Preview teks anamnesa terakhir -->
+                      <div v-if="anamnesaTerakhir" class="text-caption text-grey-8 q-mt-xs row items-center no-wrap">
+                        <q-badge color="primary" label="Terakhir" class="q-mr-xs" />
+                        <span class="ellipsis text-weight-medium">"{{ anamnesaTerakhir.riwayatpengobatan }}"</span>
+                        <span class="text-grey-6 q-ml-xs text-caption">({{ formatDateTime(anamnesaTerakhir.tgl) }})</span>
+                      </div>
+                      <div v-else class="text-caption text-grey-6 q-mt-xs text-italic">
+                        Belum ada riwayat pengobatan di anamnesa pasien
+                      </div>
+                    </div>
+
                     <!-- Common: Nama Obat -->
                     <div>
                       <span class="text-subtitle2 text-grey-8">Nama Obat / Alat Kesehatan *</span>
@@ -619,6 +670,162 @@
         </q-splitter>
       </div>
     </div>
+
+    <!-- Dialog List Riwayat Pengobatan Anamnesa -->
+    <q-dialog v-model="dialogListRiwayat">
+      <q-card style="width: 750px; max-width: 95vw; max-height: 85vh;" class="column">
+        <q-card-section class="bg-primary text-white row items-center justify-between q-py-sm">
+          <div class="row items-center q-gutter-x-sm">
+            <q-icon name="history_edu" size="24px" />
+            <div>
+              <div class="text-subtitle1 text-bold">Riwayat Pengobatan di Anamnesa</div>
+              <div class="text-caption text-blue-2">Daftar riwayat pengobatan yang ditulis di anamnesa pasien (terakhir diinput paling atas)</div>
+            </div>
+          </div>
+          <div class="row items-center q-gutter-x-xs">
+            <q-btn
+              flat
+              round
+              dense
+              icon="refresh"
+              :loading="store.loadingRiwayatAnamnesis"
+              @click="store.getRiwayatAnamnesis(props.pasien)"
+            >
+              <q-tooltip>Muat Ulang</q-tooltip>
+            </q-btn>
+            <q-btn flat round dense icon="close" v-close-popup />
+          </div>
+        </q-card-section>
+
+        <q-separator />
+
+        <!-- Card Content List -->
+        <q-card-section class="col scroll q-pa-md bg-grey-2">
+          <div v-if="store.loadingRiwayatAnamnesis" class="column flex-center q-pa-xl">
+            <q-spinner-dots color="primary" size="40px" />
+            <div class="text-grey-7 q-mt-sm">Memuat riwayat pengobatan anamnesa...</div>
+          </div>
+
+          <div v-else-if="!riwayatAnamnesisList.length" class="column flex-center q-pa-xl text-grey-6">
+            <q-icon name="medication" size="56px" class="q-mb-sm" />
+            <div class="text-bold text-subtitle2">Tidak Ada Riwayat Pengobatan</div>
+            <div class="text-caption">Belum ada catatan riwayat pengobatan pada anamnesa pasien ini.</div>
+          </div>
+
+          <div v-else class="q-gutter-y-sm">
+            <q-card
+              v-for="(item, idx) in riwayatAnamnesisList"
+              :key="item.id || idx"
+              class="shadow-1"
+              style="border-radius: 8px;"
+            >
+              <q-card-section class="q-pa-sm">
+                <!-- Header Card -->
+                <div class="row justify-between items-center text-caption q-mb-xs">
+                  <div class="row items-center q-gutter-x-xs">
+                    <q-badge :color="idx === 0 ? 'positive' : 'indigo'" :label="idx === 0 ? 'Paling Baru' : `#${idx + 1}`" />
+                    <span class="text-bold text-grey-8">{{ formatDateTime(item.tgl) }}</span>
+                    <span v-if="item.kdruang" class="text-grey-6">({{ item.kdruang }})</span>
+                  </div>
+                  <div class="text-grey-7">
+                    Oleh: <span class="text-weight-medium text-dark">{{ item.petugas || item.user || '-' }}</span>
+                  </div>
+                </div>
+
+                <!-- Keluhan Utama jika ada -->
+                <div v-if="item.keluhanUtama" class="text-caption text-grey-7 q-mb-xs">
+                  <span class="text-weight-bold">Keluhan Utama:</span> {{ item.keluhanUtama }}
+                </div>
+
+                <!-- Teks Riwayat Pengobatan -->
+                <div class="q-pa-sm bg-blue-1 text-primary rounded-borders border-blue q-my-xs">
+                  <div class="text-caption text-weight-bold q-mb-xs">Isi Riwayat Pengobatan:</div>
+                  <div class="text-body2 text-weight-medium" style="word-break: break-word;">
+                    {{ item.riwayatpengobatan }}
+                  </div>
+                </div>
+
+                <!-- Item Obat Terurai (Chips) -->
+                <div v-if="parseRiwayatPengobatan(item.riwayatpengobatan).length > 0" class="q-mt-sm">
+                  <div class="text-caption text-grey-7 q-mb-xs">Pilih obat spesifik untuk dimasukkan ke form:</div>
+                  <div class="row q-gutter-xs">
+                    <q-chip
+                      v-for="(obat, oIdx) in parseRiwayatPengobatan(item.riwayatpengobatan)"
+                      :key="oIdx"
+                      clickable
+                      color="indigo-1"
+                      text-color="indigo-9"
+                      icon="medication"
+                      class="text-weight-medium"
+                      @click="terapkanObatKeForm(obat)"
+                    >
+                      <span>{{ obat.nama_obat }}</span>
+                      <q-badge v-if="obat.dosis" color="indigo" class="q-ml-xs">{{ obat.dosis }}</q-badge>
+                      <q-badge v-if="obat.frekuensi" color="teal" class="q-ml-xs">{{ obat.frekuensi }}</q-badge>
+                      <q-tooltip>Klik untuk langsung gunakan obat ini di form</q-tooltip>
+                    </q-chip>
+                  </div>
+                </div>
+
+                <!-- Action Button Card -->
+                <div class="row justify-end q-mt-sm">
+                  <q-btn
+                    color="primary"
+                    icon="check_circle"
+                    label="Gunakan Data Ini"
+                    no-caps
+                    dense
+                    size="sm"
+                    class="q-px-sm"
+                    @click="gunakanDataDariAnamnesis(item)"
+                  >
+                    <q-tooltip>Masukkan riwayat pengobatan ini ke form rekonsiliasi</q-tooltip>
+                  </q-btn>
+                </div>
+              </q-card-section>
+            </q-card>
+          </div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
+    <!-- Dialog Pilih Obat Jika 1 Baris Berisi Banyak Obat -->
+    <q-dialog v-model="dialogPilihObat">
+      <q-card style="width: 450px; max-width: 90vw;">
+        <q-card-section class="bg-primary text-white q-py-sm row items-center justify-between">
+          <div class="text-subtitle2 text-bold">Pilih Obat untuk Dimasukkan ke Form</div>
+          <q-btn flat round dense icon="close" v-close-popup />
+        </q-card-section>
+        <q-card-section class="q-pa-md">
+          <div class="text-caption text-grey-7 q-mb-sm">
+            Riwayat pengobatan memuat beberapa obat. Silakan klik obat yang ingin dimasukkan ke form:
+          </div>
+          <q-list bordered separator class="rounded-borders">
+            <q-item
+              v-for="(obat, idx) in listPilihanObat"
+              :key="idx"
+              clickable
+              v-ripple
+              @click="terapkanObatKeForm(obat)"
+            >
+              <q-item-section avatar>
+                <q-avatar icon="medication" color="blue-1" text-color="primary" size="36px" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label class="text-weight-bold">{{ obat.nama_obat }}</q-item-label>
+                <q-item-label caption class="row q-gutter-x-xs">
+                  <span v-if="obat.dosis" class="text-primary">Dosis: {{ obat.dosis }}</span>
+                  <span v-if="obat.frekuensi" class="text-teal">Aturan: {{ obat.frekuensi }}</span>
+                </q-item-label>
+              </q-item-section>
+              <q-item-section side>
+                <q-btn flat dense round color="primary" icon="arrow_forward" />
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -645,14 +852,18 @@ const $q = useQuasar()
 const activeTab = ref('mrs')
 const splitterModel = ref(50)
 
-// Initialize persetujuan form data
+// Initialize persetujuan form data and fetch anamnesis history
 onMounted(() => {
   store.initFormPersetujuan(props?.pasien)
+  store.getRiwayatAnamnesis(props?.pasien)
 })
 
 // Watch patient changes to refresh signature and statement forms
 watch(() => props.pasien, (newPasien) => {
   store.initFormPersetujuan(newPasien)
+  if (newPasien) {
+    store.getRiwayatAnamnesis(newPasien)
+  }
 }, { immediate: true })
 
 // Watch tab change to update store state and reset drug form
@@ -760,12 +971,161 @@ const confirmDeletePersetujuan = (persetujuan) => {
     store.hapuspersetujuan(props?.pasien, persetujuan.id)
   })
 }
+
+// ======================== RIWAYAT PENGOBATAN ANAMNESIS ========================
+const dialogListRiwayat = ref(false)
+const dialogPilihObat = ref(false)
+const listPilihanObat = ref([])
+
+function parseRiwayatPengobatan(text) {
+  if (!text || typeof text !== 'string') return []
+  const rawList = text.split(/[,;\n\r]+/).map(s => s.trim()).filter(s => s.length > 0 && s !== '-' && s.toLowerCase() !== 'tidak ada' && s.toLowerCase() !== 'tidak')
+
+  return rawList.map(item => {
+    let nama = item
+    let dosis = ''
+    let frekuensi = ''
+
+    const freqMatch = item.match(/\b(\d+\s*x\s*[\d/]+(\s*(sehari|hari))?)\b/i)
+    if (freqMatch) {
+      frekuensi = freqMatch[1].trim()
+      nama = nama.replace(freqMatch[0], '').trim()
+    }
+
+    const doseMatch = nama.match(/\b(\d+([.,]\d+)?\s*(mg|g|gr|gram|ml|mcg|iu|tab|tablet|kapsul|amp|vial|puff))\b/i)
+    if (doseMatch) {
+      dosis = doseMatch[1].trim()
+      nama = nama.replace(doseMatch[0], '').trim()
+    }
+
+    nama = nama.replace(/^[-–—•*\s]+|[-–—•*\s]+$/g, '').trim()
+
+    return {
+      raw: item,
+      nama_obat: nama || item,
+      dosis: dosis,
+      frekuensi: frekuensi
+    }
+  })
+}
+
+const riwayatAnamnesisList = computed(() => {
+  if (store.riwayatAnamnesis && store.riwayatAnamnesis.length > 0) {
+    return store.riwayatAnamnesis
+  }
+  const local = props.pasien?.anamnesis || []
+  return local.filter(x => x.riwayatpengobatan && x.riwayatpengobatan !== '-' && x.riwayatpengobatan.trim() !== '')
+})
+
+const anamnesaTerakhir = computed(() => {
+  const list = riwayatAnamnesisList.value
+  return list.length > 0 ? list[0] : null
+})
+
+function isiFormTidakAda(infoPesan = 'Tidak ditemukan data riwayat pengobatan pada anamnesa pasien.') {
+  store.form.nama_obat = 'Tidak Ada'
+  store.form.dosis = '-'
+  store.form.lama_pakai = '-'
+  store.form.dibawa_saat_mrs = 'Tidak'
+  store.form.berlanjut_ke_ranap = 'Tidak'
+  store.form.berlanjut_saat_krs = 'Tidak'
+  store.form.frekuensi = '-'
+  store.form.cara_pemberian = '-'
+  store.form.waktu_pemberian_terakhir = '-'
+  store.form.aturan_pakai = '-'
+  $q.notify({
+    type: 'warning',
+    message: `${infoPesan} Form diisi "Tidak Ada".`,
+    position: 'top'
+  })
+}
+
+async function ambilRiwayatTerakhir() {
+  if (!store.riwayatAnamnesis?.length) {
+    await store.getRiwayatAnamnesis(props.pasien)
+  }
+
+  const last = anamnesaTerakhir.value
+  if (!last || !last.riwayatpengobatan || last.riwayatpengobatan.trim() === '' || last.riwayatpengobatan.trim() === '-') {
+    isiFormTidakAda('Tidak ditemukan data riwayat pengobatan pada anamnesa pasien.')
+    return
+  }
+
+  const textLower = last.riwayatpengobatan.trim().toLowerCase()
+  if (textLower === 'tidak ada' || textLower === 'tidak' || textLower === 'belum ada' || textLower === 'tidak tahu' || textLower === 'nihil' || textLower === 'tdk ada') {
+    isiFormTidakAda(`Riwayat pengobatan di anamnesa: "${last.riwayatpengobatan}".`)
+    return
+  }
+
+  const parsed = parseRiwayatPengobatan(last.riwayatpengobatan)
+  if (parsed.length === 0) {
+    isiFormTidakAda(`Riwayat pengobatan di anamnesa: "${last.riwayatpengobatan}".`)
+    return
+  }
+
+  if (parsed.length === 1) {
+    terapkanObatKeForm(parsed[0])
+  } else {
+    listPilihanObat.value = parsed
+    dialogPilihObat.value = true
+  }
+}
+
+async function bukaDialogListRiwayat() {
+  dialogListRiwayat.value = true
+  await store.getRiwayatAnamnesis(props.pasien)
+}
+
+function terapkanObatKeForm(itemObat) {
+  store.isiFormDariObat(itemObat)
+  dialogPilihObat.value = false
+  dialogListRiwayat.value = false
+  $q.notify({
+    type: 'positive',
+    message: `Data obat "${itemObat.nama_obat}" berhasil dimasukkan ke form!`,
+    position: 'top'
+  })
+}
+
+function gunakanDataDariAnamnesis(itemAnamnesis) {
+  if (!itemAnamnesis || !itemAnamnesis.riwayatpengobatan || itemAnamnesis.riwayatpengobatan.trim() === '' || itemAnamnesis.riwayatpengobatan.trim() === '-') {
+    isiFormTidakAda('Riwayat pengobatan pada catatan ini kosong.')
+    dialogListRiwayat.value = false
+    return
+  }
+
+  const textLower = itemAnamnesis.riwayatpengobatan.trim().toLowerCase()
+  if (textLower === 'tidak ada' || textLower === 'tidak' || textLower === 'belum ada' || textLower === 'tidak tahu' || textLower === 'nihil' || textLower === 'tdk ada') {
+    isiFormTidakAda(`Riwayat pengobatan di anamnesa: "${itemAnamnesis.riwayatpengobatan}".`)
+    dialogListRiwayat.value = false
+    return
+  }
+
+  const parsed = parseRiwayatPengobatan(itemAnamnesis.riwayatpengobatan)
+  if (parsed.length === 1) {
+    terapkanObatKeForm(parsed[0])
+  } else if (parsed.length > 1) {
+    listPilihanObat.value = parsed
+    dialogPilihObat.value = true
+  } else {
+    store.form.nama_obat = itemAnamnesis.riwayatpengobatan
+    dialogListRiwayat.value = false
+    $q.notify({
+      type: 'positive',
+      message: `Data "${itemAnamnesis.riwayatpengobatan}" dimasukkan ke form!`,
+      position: 'top'
+    })
+  }
+}
 </script>
 
 <style lang="scss" scoped>
 .border {
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+.border-blue {
+  border: 1px solid #90caf9;
 }
 .border-right {
   border-right: 1px solid #ddd;

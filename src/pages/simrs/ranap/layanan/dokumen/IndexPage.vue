@@ -44,159 +44,6 @@ import { defineAsyncComponent, onMounted, ref, shallowRef } from 'vue'
 
 const menus = ref([
   {
-    name: 'daftartilik-document',
-    label: 'DAFTAR TILIK OPERASI',
-    title: 'DAFTAR TILIK PRE DAN PASKA OPERASI',
-    desc: 'Lembar Tilik Pre dan Paska Operasi Pasien',
-    icon: 'icon-my-file_sign',
-    nakes: ['1', '2', '3'],
-    comp: shallowRef(defineAsyncComponent(() => import('./daftartilik/IndexPage.vue')))
-  },
-  {
-    name: 'SerahTerimaPasien',
-    label: 'LEMBAR SERAH TERIMA',
-    title: 'LEMBAR SERAH TERIMA',
-    desc: 'PASIEN ANTAR RUANGAN',
-    icon: 'icon-my-file_sign',
-    nakes: ['1', '2', '3'],
-    comp: shallowRef(defineAsyncComponent(() => import('./serahterima/IndexPage.vue')))
-  },
-  {
-    name: 'asessment-awal-medis',
-    label: 'ASESSMENT AWAL MEDIS',
-    title: 'ASESSMENT AWAL MEDIS',
-    desc: 'Asessment Awal Medis Pasien',
-    icon: 'icon-my-file_sign',
-    nakes: ['1', '2', '3'],
-    comp: shallowRef(defineAsyncComponent(() => import('./asessmentawal/medis/IndexPage.vue')))
-  },
-  {
-    name: 'asessment-awal-keperawatan',
-    label: 'ASS KEPERAWATAN/KEBIDANAN',
-    title: 'ASESSMENT AWAL',
-    desc: 'Asessment Awal Keperawatan Pasien',
-    icon: 'icon-my-file_sign',
-    nakes: ['1', '2', '3'],
-    comp: shallowRef(defineAsyncComponent(() => import('./asessmentawal/keperawatan/IndexPage.vue')))
-  },
-  {
-    name: 'asessment-gizi',
-    label: 'ASUHAN GIZI',
-    title: 'FORM PAGT',
-    desc: '(Proses Asuhan Gizi Terstandar)',
-    icon: 'icon-my-file_sign',
-    nakes: ['1', '2', '3', '4', '5', '6', '', null],
-    comp: shallowRef(defineAsyncComponent(() => import('./pagt/IndexPage.vue')))
-  },
-  {
-    name: 'cppt-page',
-    label: 'CPPT & EWS',
-    title: 'CATATAN PERKEMBANGAN PASIEN TERINTEGRASI',
-    desc: 'Catatan Perkembangan Pasien Terintegrasi',
-    icon: 'icon-my-file_sign',
-    nakes: ['1', '2', '3'],
-    comp: shallowRef(defineAsyncComponent(() => import('./cppt/IndexPage.vue')))
-  },
-  {
-    name: 'resume-page',
-    label: 'RESUME MEDIS',
-    title: 'RESUME MEDIS ( MEDICAL DISCHARGE SUMMARY )',
-    desc: 'Resume Medis Pasien',
-    icon: 'icon-my-file_sign',
-    nakes: ['1', '2', '3'],
-    comp: shallowRef(defineAsyncComponent(() => import('./resume/IndexPage.vue')))
-  },
-  {
-    name: 'discharge-page',
-    label: 'DISCHARGE PLANNING',
-    title: 'DISCHARGE PLANNING',
-    desc: 'Discharge Planning',
-    icon: 'icon-my-file_sign',
-    nakes: ['1', '2', '3'],
-    comp: shallowRef(defineAsyncComponent(() => import('./dischargeplanning/dischargeplanning_skrining/IndexPage.vue')))
-  },
-  {
-    name: 'summary-page',
-    label: 'SURAT KONTROL',
-    title: 'RINGKASAN PASIEN PULANG',
-    desc: 'Surat Kontrol',
-    icon: 'icon-my-file_sign',
-    nakes: ['1', '2', '3'],
-    comp: shallowRef(defineAsyncComponent(() => import('./dischargeplanning/IndexPage.vue')))
-  },
-  {
-    name: 'edukasi-page',
-    label: 'EDUKASI PASIEN',
-    title: 'EDUKASI PASIEN',
-    desc: 'Edukasi KIE Pasien',
-    icon: 'icon-my-file_sign',
-    nakes: ['1', '2', '3'],
-    comp: shallowRef(defineAsyncComponent(() => import('./edukasi/IndexPage.vue')))
-  },
-  {
-    name: 'nursenote-page',
-    label: 'NURSE NOTE',
-    title: 'CATATAN KEPERAWATAN',
-    desc: 'Nursenote',
-    icon: 'icon-my-file_sign',
-    nakes: ['1', '2', '3'],
-    comp: shallowRef(defineAsyncComponent(() => import('./nursenote/IndexPage.vue')))
-  },
-  {
-    name: 'pemberianobat-page',
-    label: 'CATATAN PEMBERIAN OBAT',
-    title: 'CATATAN PEMBERIAN OBAT ORAL/INJEKSI',
-    desc: 'Pemberianobat',
-    icon: 'icon-my-file_sign',
-    nakes: ['1', '2', '3'],
-    comp: shallowRef(defineAsyncComponent(() => import('./catatanObat/IndexPage.vue')))
-  },
-  {
-    name: 'pemberianinfus-page',
-    label: 'CATATAN PEMBERIAN INFUS',
-    title: 'CATATAN PEMBERIAN INFUS',
-    desc: 'Pemberianinfus',
-    icon: 'icon-my-file_sign',
-    nakes: ['1', '2', '3'],
-    comp: shallowRef(defineAsyncComponent(() => import('./catatanInfus/IndexPage.vue')))
-  },
-  {
-    name: 'surat-kematian',
-    label: 'SURAT KEMATIAN',
-    title: 'SURAT KETERANGAN KEMATIAN',
-    desc: 'Surat Kematian Pasien',
-    icon: 'icon-my-file_sign',
-    nakes: ['1', '2', '3'],
-    comp: shallowRef(defineAsyncComponent(() => import('./kematian/IndexPage.vue')))
-  },
-  {
-    name: 'informed-consent',
-    label: 'INFORMED CONSENT',
-    title: 'INFORMED CONSENT',
-    desc: 'Daftar Persetujuan / Penolakan Tindakan Medis',
-    icon: 'icon-my-file_sign',
-    nakes: ['1', '2', '3'],
-    comp: shallowRef(defineAsyncComponent(() => import('./informconsent/IndexPage.vue')))
-  },
-  {
-    name: 'rekonsiliasi-obat-document',
-    label: 'REKONSILIASI OBAT',
-    title: 'DOKUMEN REKONSILIASI OBAT PASIEN (RM IRNA 41)',
-    desc: 'Lembar Rekonsiliasi Obat & Persetujuan Sentralisasi',
-    icon: 'icon-my-file_sign',
-    nakes: ['1', '2', '3', '4'],
-    comp: shallowRef(defineAsyncComponent(() => import('./rekonsiliasiobat/IndexPage.vue')))
-  },
-  {
-    name: 'pulang-paksa',
-    label: 'PULANG PAKSA',
-    title: 'SURAT PERNYATAAN PULANG ATAS PERMINTAAN SENDIRI (PULANG PAKSA)',
-    desc: 'Formulir Pulang Paksa',
-    icon: 'icon-my-file_sign',
-    nakes: ['1', '2', '3'],
-    comp: shallowRef(defineAsyncComponent(() => import('./pulangpaksa/IndexPage.vue')))
-  },
-  {
     name: 'AsesmenPraAnestesia',
     label: 'ASESMEN PRA ANESTESIA',
     title: 'ASESMEN PRA ANESTESIA',
@@ -204,24 +51,6 @@ const menus = ref([
     icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3'],
     comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AsesmenPraAnestesia.vue')))
-  },
-  {
-    name: 'AsesmenPraSedasi',
-    label: 'ASESMEN PRA SEDASI',
-    title: 'ASESMEN PRA SEDASI',
-    desc: 'Dokumen Asesmen Pra Sedasi Pasien',
-    icon: 'icon-my-file_sign',
-    nakes: ['1', '2', '3'],
-    comp: shallowRef(defineAsyncComponent(() => import('./prasedasi/IndexPage.vue')))
-  },
-  {
-    name: 'AsesmenPascaSedasi',
-    label: 'STATUS SEDASI',
-    title: 'STATUS SEDASI',
-    desc: 'Dokumen Status Sedasi Pasien',
-    icon: 'icon-my-file_sign',
-    nakes: ['1', '2', '3'],
-    comp: shallowRef(defineAsyncComponent(() => import('./pascasedasi/IndexPage.vue')))
   },
   {
     name: 'AsesmenPraBedah',
@@ -233,12 +62,13 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AssesmentPraBedah.vue')))
   },
   {
-    name: 'mpp-document',
-    label: 'DOKUMEN MPP',
-    title: 'MANAJEMEN PELAYANAN PASIEN (MPP)',
-    desc: 'Formulir A & Formulir B Manajemen Pelayanan Pasien',
+    name: 'AsesmenPraSedasi',
+    label: 'ASESMEN PRA SEDASI',
+    title: 'ASESMEN PRA SEDASI',
+    desc: 'Dokumen Asesmen Pra Sedasi Pasien',
+    icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3'],
-    comp: shallowRef(defineAsyncComponent(() => import('./mpp/IndexPage.vue')))
+    comp: shallowRef(defineAsyncComponent(() => import('./prasedasi/IndexPage.vue')))
   },
   {
     name: 'asesmen-jatuh-document',
@@ -259,13 +89,22 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('./asesmenNyeri/IndexPage.vue')))
   },
   {
-    name: 'asesmen-pasca-jatuh-document',
-    label: 'MONITORING PASIEN SETELAH JATUH',
-    title: 'MONITORING PASIEN SETELAH JATUH',
-    desc: 'Dokumen Pemantauan dan Intervensi Pasien Pasca Jatuh (Setelah Jatuh)',
+    name: 'asessment-awal-medis',
+    label: 'ASESSMENT AWAL MEDIS',
+    title: 'ASESSMENT AWAL MEDIS',
+    desc: 'Asessment Awal Medis Pasien',
     icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3'],
-    comp: shallowRef(defineAsyncComponent(() => import('./asesmenPascaJatuh/IndexPage.vue')))
+    comp: shallowRef(defineAsyncComponent(() => import('./asessmentawal/medis/IndexPage.vue')))
+  },
+  {
+    name: 'asessment-awal-keperawatan',
+    label: 'ASS KEPERAWATAN/KEBIDANAN',
+    title: 'ASESSMENT AWAL',
+    desc: 'Asessment Awal Keperawatan Pasien',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./asessmentawal/keperawatan/IndexPage.vue')))
   },
   {
     name: 'asesmen-penyakit-menular-document',
@@ -277,6 +116,113 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('./asesmenPenyakitMenular/IndexPage.vue')))
   },
   {
+    name: 'asessment-gizi',
+    label: 'ASUHAN GIZI',
+    title: 'FORM PAGT',
+    desc: '(Proses Asuhan Gizi Terstandar)',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3', '4', '5', '6', '', null],
+    comp: shallowRef(defineAsyncComponent(() => import('./pagt/IndexPage.vue')))
+  },
+  {
+    name: 'pemberianinfus-page',
+    label: 'CATATAN PEMBERIAN INFUS',
+    title: 'CATATAN PEMBERIAN INFUS',
+    desc: 'Pemberianinfus',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./catatanInfus/IndexPage.vue')))
+  },
+  {
+    name: 'pemberianobat-page',
+    label: 'CATATAN PEMBERIAN OBAT',
+    title: 'CATATAN PEMBERIAN OBAT ORAL/INJEKSI',
+    desc: 'Pemberianobat',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./catatanObat/IndexPage.vue')))
+  },
+  {
+    name: 'cppt-page',
+    label: 'CPPT & EWS',
+    title: 'CATATAN PERKEMBANGAN PASIEN TERINTEGRASI',
+    desc: 'Catatan Perkembangan Pasien Terintegrasi',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./cppt/IndexPage.vue')))
+  },
+  {
+    name: 'daftartilik-document',
+    label: 'DAFTAR TILIK OPERASI',
+    title: 'DAFTAR TILIK PRE DAN PASKA OPERASI',
+    desc: 'Lembar Tilik Pre dan Paska Operasi Pasien',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./daftartilik/IndexPage.vue')))
+  },
+  {
+    name: 'discharge-page',
+    label: 'DISCHARGE PLANNING',
+    title: 'DISCHARGE PLANNING',
+    desc: 'Discharge Planning',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./dischargeplanning/dischargeplanning_skrining/IndexPage.vue')))
+  },
+  {
+    name: 'mpp-document',
+    label: 'DOKUMEN MPP',
+    title: 'MANAJEMEN PELAYANAN PASIEN (MPP)',
+    desc: 'Formulir A & Formulir B Manajemen Pelayanan Pasien',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./mpp/IndexPage.vue')))
+  },
+  {
+    name: 'edukasi-page',
+    label: 'EDUKASI PASIEN',
+    title: 'EDUKASI PASIEN',
+    desc: 'Edukasi KIE Pasien',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./edukasi/IndexPage.vue')))
+  },
+  {
+    name: 'indikasi-intensif-document',
+    label: 'INDIKASI RUANG INTENSIF',
+    title: 'INDIKASI KELUAR / MASUK RUANG INTENSIF',
+    desc: 'Dokumen Indikasi Pasien Masuk & Keluar Ruang Intensif (ICCU, ICU, NICU, Intermediate)',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./indikasiIntensif/IndexPage.vue')))
+  },
+  {
+    name: 'informed-consent',
+    label: 'INFORMED CONSENT',
+    title: 'INFORMED CONSENT',
+    desc: 'Daftar Persetujuan / Penolakan Tindakan Medis',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./informconsent/IndexPage.vue')))
+  },
+  {
+    name: 'SerahTerimaPasien',
+    label: 'LEMBAR SERAH TERIMA',
+    title: 'LEMBAR SERAH TERIMA',
+    desc: 'PASIEN ANTAR RUANGAN',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./serahterima/IndexPage.vue')))
+  },
+  {
+    name: 'asesmen-pasca-jatuh-document',
+    label: 'MONITORING PASIEN SETELAH JATUH',
+    title: 'MONITORING PASIEN SETELAH JATUH',
+    desc: 'Dokumen Pemantauan dan Intervensi Pasien Pasca Jatuh (Setelah Jatuh)',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./asesmenPascaJatuh/IndexPage.vue')))
+  },
+  {
     name: 'asesmen-monitoring-restrain-document',
     label: 'MONITORING PENGIKATAN RESTRAIN',
     title: 'LEMBAR OBSERVASI / MONITORING PENGIKATAN (RESTRAIN)',
@@ -284,6 +230,15 @@ const menus = ref([
     icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3'],
     comp: shallowRef(defineAsyncComponent(() => import('./asesmenMonitoringRestrain/IndexPage.vue')))
+  },
+  {
+    name: 'nursenote-page',
+    label: 'NURSE NOTE',
+    title: 'CATATAN KEPERAWATAN',
+    desc: 'Nursenote',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./nursenote/IndexPage.vue')))
   },
   {
     name: 'pemesanan-ambulance-document',
@@ -295,13 +250,58 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('./ambulance/IndexPage.vue')))
   },
   {
-    name: 'indikasi-intensif-document',
-    label: 'INDIKASI RUANG INTENSIF',
-    title: 'INDIKASI KELUAR / MASUK RUANG INTENSIF',
-    desc: 'Dokumen Indikasi Pasien Masuk & Keluar Ruang Intensif (ICCU, ICU, NICU, Intermediate)',
+    name: 'pulang-paksa',
+    label: 'PULANG PAKSA',
+    title: 'SURAT PERNYATAAN PULANG ATAS PERMINTAAN SENDIRI (PULANG PAKSA)',
+    desc: 'Formulir Pulang Paksa',
     icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3'],
-    comp: shallowRef(defineAsyncComponent(() => import('./indikasiIntensif/IndexPage.vue')))
+    comp: shallowRef(defineAsyncComponent(() => import('./pulangpaksa/IndexPage.vue')))
+  },
+  {
+    name: 'rekonsiliasi-obat-document',
+    label: 'REKONSILIASI OBAT',
+    title: 'DOKUMEN REKONSILIASI OBAT PASIEN (RM IRNA 41)',
+    desc: 'Lembar Rekonsiliasi Obat & Persetujuan Sentralisasi',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3', '4'],
+    comp: shallowRef(defineAsyncComponent(() => import('./rekonsiliasiobat/IndexPage.vue')))
+  },
+  {
+    name: 'resume-page',
+    label: 'RESUME MEDIS',
+    title: 'RESUME MEDIS ( MEDICAL DISCHARGE SUMMARY )',
+    desc: 'Resume Medis Pasien',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./resume/IndexPage.vue')))
+  },
+  {
+    name: 'AsesmenPascaSedasi',
+    label: 'STATUS SEDASI',
+    title: 'STATUS SEDASI',
+    desc: 'Dokumen Status Sedasi Pasien',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./pascasedasi/IndexPage.vue')))
+  },
+  {
+    name: 'surat-kematian',
+    label: 'SURAT KEMATIAN',
+    title: 'SURAT KETERANGAN KEMATIAN',
+    desc: 'Surat Kematian Pasien',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./kematian/IndexPage.vue')))
+  },
+  {
+    name: 'summary-page',
+    label: 'SURAT KONTROL',
+    title: 'RINGKASAN PASIEN PULANG',
+    desc: 'Surat Kontrol',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./dischargeplanning/IndexPage.vue')))
   }
 ])
 

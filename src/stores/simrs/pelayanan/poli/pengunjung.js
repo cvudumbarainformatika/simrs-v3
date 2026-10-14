@@ -286,6 +286,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
             findPasien[0].jawabankonsul = responseData?.jawabankonsul
             findPasien[0].jawabankonsulbynoreg = responseData?.jawabankonsulbynoreg
             findPasien[0].suratketerangandokter = responseData?.suratketerangandokter
+            findPasien[0].informconcern = responseData?.informconcern ?? []
 
             findPasien[0].planningdokter = responseData?.planningdokter
             findPasien[0].anamnesis_skrining = responseData?.anamnesis_skrining

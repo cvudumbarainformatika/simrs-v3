@@ -108,10 +108,13 @@
 
           <div v-if="hasAlatPacs && permintaan?.rincians?.length" class="q-my-sm flex justify-end">
             <!-- {{ permintaan?.rincians[0] }} -->
-            <q-btn v-if="permintaan?.rincians[0]?.view_url" label="Lihat View PACS" color="dark" @click="() => {
-              viewUrl = permintaan?.rincians[0]?.view_url
-              isView = true
-            }" />
+            <q-btn
+              v-if="permintaan?.rincians[0]?.view_url"
+              label="Lihat View PACS"
+              icon="open_in_new"
+              color="dark"
+              @click="openViewPacs(permintaan?.rincians[0]?.view_url)"
+            />
           </div>
         </q-banner>
       </q-list>
@@ -209,6 +212,82 @@
                         item.pelaksana = null
                       }" />
 
+                    <!-- Bagian View PACS & Gambar Basahan -->
+                    <div v-if="itemHasPacs(item, index)" class="col-12 q-my-sm">
+                      <div class="q-pa-sm rounded-borders bg-grey-1" style="border: 1px solid #e0e0e0;">
+                        <div class="row items-center justify-between q-mb-xs">
+                          <div class="text-weight-bold text-subtitle2 flex items-center">
+                            <q-icon name="image" class="q-mr-xs text-primary" size="sm" />
+                            <span>Gambar Radiologi & PACS</span>
+                            <q-badge v-if="studyImages?.length" color="primary" class="q-ml-sm">
+                              {{ studyImages.length }} Foto
+                            </q-badge>
+                          </div>
+                          <div class="row items-center q-gutter-xs">
+                            <q-btn
+                              flat
+                              round
+                              dense
+                              icon="refresh"
+                              size="sm"
+                              color="primary"
+                              :loading="loadingImages"
+                              title="Muat Ulang Gambar"
+                              @click="fetchStudyImages(getNotaString())"
+                            />
+                            <q-btn
+                              v-if="getItemViewUrl(item, index)"
+                              label="Lihat View PACS"
+                              icon="open_in_new"
+                              color="dark"
+                              size="sm"
+                              unelevated
+                              @click="openViewPacs(getItemViewUrl(item, index))"
+                            />
+                          </div>
+                        </div>
+
+                        <!-- Status Loading Gambar -->
+                        <div v-if="loadingImages" class="text-caption text-grey-7 q-py-sm flex items-center">
+                          <q-spinner size="sm" color="primary" class="q-mr-xs" />
+                          <span>Memuat gambar basahan...</span>
+                        </div>
+
+                        <!-- Galeri Gambar Basahan (JPEG) -->
+                        <div v-else-if="studyImages?.length" class="row q-gutter-sm items-center q-pt-xs">
+                          <div
+                            v-for="(img, imgIdx) in studyImages"
+                            :key="img.instance_id || imgIdx"
+                            class="col-auto"
+                          >
+                            <q-card
+                              bordered
+                              flat
+                              class="cursor-pointer overflow-hidden bg-black text-white hover-scale"
+                              style="width: 130px; border-radius: 6px; box-shadow: 0 1px 4px rgba(0,0,0,0.2);"
+                              @click="previewImage(img)"
+                            >
+                              <q-img
+                                :src="PACS_IMAGE_BASE_URL + img.url"
+                                spinner-color="white"
+                                style="height: 120px; width: 130px"
+                                fit="cover"
+                                @error="onImageError(img.index)"
+                              >
+                                <div class="absolute-bottom text-caption text-center q-pa-none bg-black" style="opacity: 0.75; font-size: 11px;">
+                                  Gbr {{ img.index + 1 }}
+                                </div>
+                              </q-img>
+                            </q-card>
+                          </div>
+                        </div>
+
+                        <div v-else class="text-caption text-grey-6 q-py-xs">
+                          Belum ada file gambar basahan dari server PACS.
+                        </div>
+                      </div>
+                    </div>
+
                     <div class="col-12 q-mb-sm"> Hasil : <span class="text-red">*</span> </div>
                     <app-input-simrs-mode v-model="item.hasilhtml" :disable="false" class="col-12 q-mb-md"
                       @update:model-value="(val) => {
@@ -276,8 +355,10 @@
 
 
           <div v-else-if="pasien.status === '1'">
-            <q-btn v-if="listPermintaans?.length" icon="icon-mat-print" color="dark" label="Cetak Semua / Pertama"
-              @click="bukaPrint(listPermintaans[0])" />
+            <q-btn v-if="listPermintaans?.length" color="dark" class="q-px-md" @click="bukaPrint(listPermintaans[0])">
+              <q-icon name="icon-mat-print" class="q-mr-sm" />
+              <span>Cetak</span>
+            </q-btn>
           </div>
         </div>
 
@@ -301,16 +382,43 @@
 
   <DialogView v-model="isView" :viewerUrl="viewUrl" />
 
+  <!-- Dialog Preview Gambar Basahan / PACS -->
+  <q-dialog v-model="dialogPreviewImg">
+    <q-card style="min-width: 600px; max-width: 90vw; background: #121212; color: white;">
+      <q-bar class="bg-grey-9 text-white">
+        <div>Gambar Radiologi {{ (selectedPreviewImg?.index ?? 0) + 1 }}</div>
+        <q-space />
+        <q-btn
+          flat
+          dense
+          icon="open_in_new"
+          title="Buka Resolusi Penuh"
+          :href="PACS_IMAGE_BASE_URL + (selectedPreviewImg?.hd_url || selectedPreviewImg?.url)"
+          target="_blank"
+        />
+        <q-btn dense flat icon="close" v-close-popup />
+      </q-bar>
+      <q-card-section class="flex flex-center q-pa-sm" style="max-height: 80vh; overflow: auto;">
+        <img
+          v-if="selectedPreviewImg"
+          :src="PACS_IMAGE_BASE_URL + (selectedPreviewImg?.hd_url || selectedPreviewImg?.url)"
+          style="max-width: 100%; max-height: 75vh; object-fit: contain; border-radius: 4px;"
+        />
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { date, useQuasar } from 'quasar'
 import { useListPasienRadiologiStore } from 'src/stores/simrs/radiologi/radiologi'
 import { usePermintaanRadiologiStore } from 'src/stores/simrs/radiologi/permintaan'
 import { storeToRefs } from 'pinia';
 import { formatRp } from 'src/modules/formatter'
-import { notifErrVue } from 'src/modules/utils'
+import { notifErrVue, openPacsViewer } from 'src/modules/utils'
 
 import PrintModal from './PrintModal.vue'
 import DialogView from './DialogView.vue'
@@ -335,6 +443,7 @@ const props = defineProps({
 })
 
 const $q = useQuasar()
+const router = useRouter()
 
 const store = useListPasienRadiologiStore()
 const storePermintaan = usePermintaanRadiologiStore()
@@ -348,17 +457,130 @@ const selectedItemPrint = ref(null)
 const isView = ref(false)
 const viewUrl = ref(null)
 
+const PACS_IMAGE_BASE_URL = 'http://192.168.150.134:8001'
+const studyImages = ref([])
+const loadingImages = ref(false)
+const dialogPreviewImg = ref(false)
+const selectedPreviewImg = ref(null)
+
+function previewImage(img) {
+  selectedPreviewImg.value = img
+  dialogPreviewImg.value = true
+}
+
+function onImageError(imgIndex) {
+  studyImages.value = studyImages.value.filter(img => img.index !== imgIndex)
+}
+
+function getNotaString() {
+  return (
+    props.pasien?.nota_permintaan ||
+    permintaan.value?.nota_permintaan ||
+    permintaan.value?.rs2 ||
+    props.pasien?.notrans ||
+    props.pasien?.rs2 ||
+    ''
+  )
+}
+
+async function fetchStudyImages(nota) {
+  if (!nota) {
+    studyImages.value = []
+    return
+  }
+  const notaClean = nota.replace(/\//g, '_')
+  loadingImages.value = true
+  try {
+    let res = null
+    // 1. Coba lewat proxy devServer /pacs-proxy (hindari CORS)
+    try {
+      res = await fetch(`/pacs-proxy/api/v1/study/${notaClean}/images`)
+    } catch (e) {
+      // proxy belum aktif / error
+    }
+
+    // 2. Jika proxy tidak berhasil, coba fetch langsung
+    if (!res || !res.ok) {
+      try {
+        res = await fetch(`${PACS_IMAGE_BASE_URL}/api/v1/study/${notaClean}/images`)
+      } catch (e) {
+        // jika CORS error
+      }
+    }
+
+    if (res && res.ok) {
+      const data = await res.json()
+      if (data?.status === 'success' && Array.isArray(data?.images) && data.images.length > 0) {
+        studyImages.value = data.images
+        return
+      }
+    }
+
+    // 3. Fallback jika fetch JSON diblokir CORS:
+    // Buat slot citra default index 0 (tag <img> tidak diblokir CORS)
+    studyImages.value = [
+      {
+        index: 0,
+        url: `/api/v1/study/${notaClean}/jpeg?index=0&width=800`,
+        hd_url: `/api/v1/study/${notaClean}/jpeg?index=0`
+      }
+    ]
+  } catch (err) {
+    console.error('Gagal mengambil gambar study PACS:', err)
+    studyImages.value = [
+      {
+        index: 0,
+        url: `/api/v1/study/${notaClean}/jpeg?index=0&width=800`,
+        hd_url: `/api/v1/study/${notaClean}/jpeg?index=0`
+      }
+    ]
+  } finally {
+    loadingImages.value = false
+  }
+}
+
+watch(
+  () => [props.pasien?.nota_permintaan, permintaan.value?.rs2, permintaan.value?.nota_permintaan],
+  () => {
+    const n = getNotaString()
+    fetchStudyImages(n)
+  },
+  { immediate: true }
+)
+
 const hasAlatPacs = computed(() => {
   const fromPasien = props.pasien?.rinciansementara?.some(r => !!r?.relmasterpemeriksaan?.alat)
   const fromRinci = permintaan.value?.rincians?.some(r => !!r?.alat)
   return fromPasien || fromRinci || false
 })
 
+function getItemViewUrl(item, index) {
+  return (
+    item?.view_url ||
+    permintaan.value?.rincians?.find(r => r.rs1 === item?.rs1 || r.id === item?.id)?.view_url ||
+    permintaan.value?.rincians?.[index]?.view_url ||
+    permintaan.value?.rincians?.[0]?.view_url ||
+    props.pasien?.view_url ||
+    null
+  )
+}
+
+function itemHasPacs(item, index) {
+  const url = getItemViewUrl(item, index)
+  const alat = !!(item?.alat || item?.relmasterpemeriksaan?.alat || hasAlatPacs.value)
+  return !!(url || alat || studyImages.value?.length > 0)
+}
+
 function bukaPrint(item) {
   selectedItemPrint.value = item
   isPrint.value = true
 }
 
+function openViewPacs(url) {
+  if (!url) return
+  viewUrl.value = url
+  openPacsViewer(url, router)
+}
 
 function formatDate(dateStr) {
   if (!dateStr) return '-'
@@ -433,3 +655,13 @@ function batalkanPermintaan() {
 
 
 </script>
+
+<style scoped>
+.hover-scale {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.hover-scale:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35) !important;
+}
+</style>

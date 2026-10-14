@@ -18,7 +18,7 @@ export const useReturPenyediaStore = defineStore('retur_penyedia', {
       tgl_retur: date.formatDate(Date.now(), 'YYYY-MM-DD'),
       tgl_rusak: date.formatDate(Date.now(), 'YYYY-MM-DD')
     },
-    kondisis: ['Rusak', 'Kadalwarsa'],
+    kondisis: ['Baik', 'Rusak', 'Kadalwarsa'],
     perusahaans: [],
     obats: [],
     dataMauReturs: [],
@@ -131,7 +131,9 @@ export const useReturPenyediaStore = defineStore('retur_penyedia', {
           }
           if (this.dataMauReturs?.length > 0) {
             this.dataMauReturs.forEach(da => {
-              da.stok = da.stokterima.map(s => parseFloat(s.jumlah)).reduce((a, b) => a + b, 0)
+              da.stok = da.stokterima
+                .filter(s => s.nopenerimaan === da.nopenerimaan && s.nobatch === da.no_batch)
+                .reduce((total, stok) => total + parseFloat(stok.jumlah || 0), 0)
             })
           }
 

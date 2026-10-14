@@ -10,10 +10,10 @@
           <!-- Tanggal & Pelaksana -->
           <app-input-date :model="store.form.tanggal" label="Tanggal" icon="icon-mat-event" outlined
             @set-model="val => store.form.tanggal = val" :autofocus="true" class="col-md-4 col-sm-12" />
-          
-          <app-autocomplete-new ref="refDokter" :model="store.form.kdDokter" label="Pelaksana Tindakan (Dokter)"
-            autocomplete="nama" option-value="kdpegsimrs" option-label="nama" outlined :source="store.dokters"
-            class="col-md-8 col-sm-12" @on-select="(val) => {
+
+          <app-autocomplete-new ref="refDokter" :model="store.form.kdDokter"
+            label="Pelaksana Tindakan & Pemberi Informasi" autocomplete="nama" option-value="kdpegsimrs"
+            option-label="nama" outlined :source="store.dokters" class="col-md-8 col-sm-12" @on-select="(val) => {
               store.form.kdDokter = val
               store.form.pelaksana = store.dokters?.find(item => item.kdpegsimrs === val)?.nama
             }" @clear="() => {
@@ -22,9 +22,9 @@
             }" />
 
           <!-- Pemberi Informasi / Pengedukasi -->
-          <app-autocomplete-new ref="refPerawat" :model="store.form.kdPetugas" label="Pemberi Informasi (Petugas/Nakes)"
-            autocomplete="nama" option-value="kdpegsimrs" option-label="nama" outlined :source="store.perawats"
-            class="col-md-6 col-sm-12" @on-select="(val) => {
+          <app-autocomplete-new ref="refPerawat" :model="store.form.kdPetugas" label="Saksi RS" autocomplete="nama"
+            option-value="kdpegsimrs" option-label="nama" outlined :source="store.perawats" class="col-md-6 col-sm-12"
+            @on-select="(val) => {
               store.form.kdPetugas = val
               store.form.pengedukasi = store.perawats?.find(item => item?.kdpegsimrs === val)?.nama
             }" @clear="() => {
@@ -43,38 +43,40 @@
           <!-- Identitas Pemberi Pernyataan -->
           <app-input-simrs v-model="store.form.nama" label="Nama Penerima Informasi / Pemberi Pernyataan"
             class="col-md-8 col-sm-12" />
-          
+
           <div class="col-md-4 col-sm-12 flex items-center">
             <span class="q-mr-sm">Jenis Kelamin:</span>
-            <q-radio size="md" v-model="store.form.lp" v-for="aa in store.jekels" :key="aa"
-              :label="aa?.label" :val="aa?.value" />
+            <q-radio size="md" v-model="store.form.lp" v-for="aa in store.jekels" :key="aa" :label="aa?.label"
+              :val="aa?.value" />
           </div>
 
           <app-input-simrs v-model="store.form.noKtp" label="No. KTP / SIM / PASPOR" class="col-md-4 col-sm-12" />
-          
+
           <app-input-date :model="store.form.tglLahir" label="Tanggal Lahir" icon="icon-mat-event" outlined
             @set-model="val => store.form.tglLahir = val" :autofocus="false" class="col-md-4 col-sm-12" />
-          
+
           <app-input-simrs v-model="store.form.telepon" label="No Telp / HP" class="col-md-4 col-sm-12" />
-          
-          <q-input v-model="store.form.alamat" label="Alamat Lengkap" outlined standout="bg-yellow-3" rows="2" type="textarea"
-            class="col-12" />
+
+          <q-input v-model="store.form.alamat" label="Alamat Lengkap" outlined standout="bg-yellow-3" rows="2"
+            type="textarea" class="col-12" />
 
           <q-separator class="col-12 q-my-md" />
 
           <!-- Pilihan Persetujuan vs Penolakan -->
           <div class="col-12 flex items-center q-py-sm bg-grey-2 q-px-md rounded-borders">
             <span class="text-bold q-mr-md">Apakah Pasien / Keluarga Setuju diberikan Tindakan Transfusi Darah?</span>
-            <q-radio class="q-ml-sm" size="md" v-model="store.form.setuju" val="Iya" label="SETUJU (Persetujuan / RM IRNA-18)" color="primary" />
-            <q-radio class="q-ml-lg" size="md" v-model="store.form.setuju" val="Tidak" label="MENOLAK (Penolakan / RM IRNA-19)" color="negative" />
+            <q-radio class="q-ml-sm" size="md" v-model="store.form.setuju" val="Iya"
+              label="SETUJU (Persetujuan / RM IRNA-18)" color="primary" />
+            <q-radio class="q-ml-lg" size="md" v-model="store.form.setuju" val="Tidak"
+              label="MENOLAK (Penolakan / RM IRNA-19)" color="negative" />
           </div>
 
           <!-- Golongan Darah - Hanya Tampil jika Setuju -->
           <div v-if="store.form.setuju === 'Iya'" class="col-12 row q-col-gutter-sm items-center q-mt-sm">
             <div class="col-md-4 col-sm-12">
               <q-select v-model="store.form.golonganDarah" label="Golongan Darah Pasien" outlined dense
-                :options="['A', 'B', 'AB', 'O', 'A+', 'B+', 'AB+', 'O+', 'A-', 'B-', 'AB-', 'O-', 'Lainnya']"
-                use-input fill-input hide-selected @new-value="(val, done) => done(val, 'add-unique')" />
+                :options="['A', 'B', 'AB', 'O', 'A+', 'B+', 'AB+', 'O+', 'A-', 'B-', 'AB-', 'O-', 'Lainnya']" use-input
+                fill-input hide-selected @new-value="(val, done) => done(val, 'add-unique')" />
             </div>
             <div class="col-md-8 col-sm-12 text-grey-7 text-caption">
               *Masukkan Golongan Darah pasien sesuai hasil pemeriksaan laboratorium.
@@ -103,7 +105,7 @@
                     }" />
                 </q-card>
               </div>
-              
+
               <!-- TTD Saksi Pasien -->
               <div class="col-md-6 col-sm-12" style="min-height: 180px;">
                 <q-card flat bordered class="column full-height flex-center q-pa-sm bg-grey-1">
@@ -200,7 +202,7 @@ function onSubmit() {
   if (store.form.setuju === 'Iya' && !store.form.golonganDarah) {
     return notifErrVue('Golongan Darah wajib diisi jika menyetujui tindakan!')
   }
-  
+
   store.saveData(props?.pasien, props?.menu?.name)
 }
 </script>

@@ -275,21 +275,34 @@
                 <td class="text-left f-12" style="vertical-align: top;">
                   <span v-if="cppt?.nakes !== '5'" v-html="getNewLine(cppt?.instruksi ?? '-')" />
                 </td>
-                <td v-if="i === 0" :rowspan="cariRowspan(dateCppt(cppt?.tgl))" class="text-center f-12">
-
-                  <div class="q-pb-md">
-                    <div v-if="cariNotasiByTgl(cppt?.notasi)">Review</div>
-                    {{ cariNotasiByTgl(cppt)?.notasi || '' }}
-                  </div>
-                  <vue-qrcode :value="qrUrl" tag="svg" :options="{
-                    errorCorrectionLevel: 'Q',
-                    color: {
-                      dark: '#000000',
-                      light: '#ffffff',
-                    },
-                    margin: 0
-                  }" />
-                  <div class="f-10">{{ pasien?.dokter?.nama ?? pasien?.dokter }}</div>
+                <td v-if="i === 0" :rowspan="cariRowspan(dateCppt(cppt?.tgl))" class="text-center f-12" style="vertical-align: middle;">
+                  <template v-if="cariNotasiByTgl(cppt)">
+                    <div v-if="cariNotasiByTgl(cppt)?.notasi && cariNotasiByTgl(cppt)?.notasi !== 'Terverifikasi oleh DPJP'" class="q-pb-xs">
+                      <div class="text-bold f-10 text-primary">Review / Notasi:</div>
+                      <div class="f-11" style="white-space: pre-line;">{{ cariNotasiByTgl(cppt)?.notasi }}</div>
+                    </div>
+                    <div v-else class="text-bold f-10 text-positive q-pb-xs">
+                      Terverifikasi DPJP
+                    </div>
+                    <div class="f-9 text-grey-8 q-mb-xs">
+                      <div>Tgl: {{ dateFullFormat(cariNotasiByTgl(cppt)?.tanggal || cariNotasiByTgl(cppt)?.created_at) }}</div>
+                      <div>Jam: {{ cariNotasiByTgl(cppt)?.jam || jamTnpDetik(cariNotasiByTgl(cppt)?.created_at) }}</div>
+                    </div>
+                    <vue-qrcode :value="qrUrl" tag="svg" :options="{
+                      errorCorrectionLevel: 'Q',
+                      color: {
+                        dark: '#000000',
+                        light: '#ffffff',
+                      },
+                      margin: 0
+                    }" />
+                    <div class="f-10 text-weight-bold q-mt-xs">{{ pasien?.dokter?.nama ?? pasien?.dokter }}</div>
+                  </template>
+                  <template v-else>
+                    <div class="text-grey-6 text-italic f-10">
+                      Belum Diverifikasi DPJP
+                    </div>
+                  </template>
                 </td>
               </tr>
             </template>
@@ -451,7 +464,7 @@
 
 <script setup>
 // eslint-disable-next-line no-unused-vars
-import { dateCppt, getNewLine, jamTnpDetik } from 'src/modules/formatter'
+import { dateCppt, getNewLine, jamTnpDetik, dateFullFormat } from 'src/modules/formatter'
 import useCppt from './useCppt'
 import { computed } from 'vue'
 import { dateFilter } from 'src/modules/formatter'
@@ -488,9 +501,12 @@ const { data } = useCppt(props?.pasien)
 // console.log('data', data);
 
 const cariNotasiByTgl = (item) => {
-
+  if (item?.notasi_dpjp) return item.notasi_dpjp
+  if (item?.id) {
+    const byId = props?.store?.notasis?.find((x) => x?.cppt_id === item?.id)
+    if (byId) return byId
+  }
   const notasi = props?.store?.notasis?.find((x) => x?.tanggal?.includes(dateFilter(item?.tgl))) || null
-
   return notasi
 }
 

@@ -26,21 +26,49 @@
               <div class="flex q-gutter-lg items-center">
                 <div>
 
+                  <!-- Tombol / Status Notasi & Verifikasi DPJP -->
                   <div v-if="item?.nakes === '1' && item?.kdruang !== 'PEN001'">
-                    <q-btn v-if="(item?.notasi_dpjp) || (!isNotasiTgl(item)?.length && !isTanggalLewat(item))" size="sm"
-                      rounded outline :color="item?.notasi_dpjp ? 'primary' : 'negative'"
-                      :label="item?.notasi_dpjp ? 'Edit Notasi DPJP' : 'Belum Ada Notasi DPJP'"
-                      @click="handleOpenNotasiDPJP(item)">
-                    </q-btn>
-                    <!-- <q-btn v-else outline color="teal" size="sm" @click="handleOpenNotasiDPJP(item)">{{
-                      isNotasiTgl(item) ?
-                        'Lihat Notasi' : 'Notasi Dpjp' }}</q-btn> -->
+                    <!-- JIKA USER YANG SEDANG LOGIN ADALAH DPJP PASIEN -->
+                    <template v-if="isCurrentUserDpjp">
+                      <q-btn
+                        size="sm"
+                        rounded
+                        unelevated
+                        :color="getNotasiItem(item) ? 'positive' : 'deep-orange'"
+                        class="text-weight-bold"
+                        :icon="getNotasiItem(item) ? 'icon-mat-verified' : 'icon-mat-assignment_turned_in'"
+                        :label="getNotasiItem(item) ? (hasCustomNotasi(item) ? 'Edit Notasi DPJP' : 'Terverifikasi DPJP') : 'Verif / Notasi DPJP'"
+                        @click="handleOpenNotasiDPJP(item)"
+                      >
+                        <q-tooltip>{{ getNotasiItem(item) ? 'Klik untuk ubah verifikasi atau catatan notasi DPJP' : 'Klik untuk Verifikasi atau Isi Notasi sebagai DPJP' }}</q-tooltip>
+                      </q-btn>
+                    </template>
+
+                    <!-- JIKA USER YANG SEDANG LOGIN BUKAN DPJP -->
+                    <template v-else>
+                      <q-btn
+                        v-if="getNotasiItem(item)"
+                        size="sm"
+                        rounded
+                        outline
+                        color="positive"
+                        icon="icon-mat-verified"
+                        :label="hasCustomNotasi(item) ? 'Lihat Notasi DPJP' : 'Terverifikasi DPJP'"
+                        @click="handleOpenNotasiDPJP(item)"
+                      >
+                        <q-tooltip>Klik untuk melihat detail verifikasi / notasi dari DPJP</q-tooltip>
+                      </q-btn>
+                      <q-badge
+                        v-else
+                        outline
+                        color="negative"
+                        class="q-px-sm q-py-xs text-caption"
+                      >
+                        <q-icon name="icon-mat-hourglass_empty" size="14px" class="q-mr-xs" />
+                        <span>Belum Verif DPJP</span>
+                      </q-badge>
+                    </template>
                   </div>
-                  <!-- <div v-else-if="item?.nakes !== '1' && isNotasiTgl(item)">
-                    <q-btn outline color="teal" size="sm" @click="handleOpenNotasiDPJP(item)">{{
-                      isNotasiTgl(item) ?
-                        'Lihat Notasi' : '' }}</q-btn>
-                  </div> -->
                 </div>
                 <div v-if="auth?.user?.pegawai?.kdpegsimrs === item?.user && item?.kdruang !== 'PEN001'">
                   <q-btn round flat size="sm" icon="icon-mat-delete" color="negative" @click="deleteItem(item)">
@@ -394,6 +422,85 @@
 
     <DialogNotasiDpjp v-model="openNotasi" :item="itemx" :pasien="props.pasien" @on-hide="itemx = null"
       @exit="openNotasi = false" :store="store" :auth="auth" />
+
+    <!-- Dialog Pilihan Tindakan DPJP -->
+    <q-dialog v-model="dialogPilihanDpjp" persistent>
+      <q-card style="min-width: 460px; max-width: 520px; border-radius: 12px;">
+        <q-bar class="bg-primary text-white q-py-md">
+          <q-icon name="icon-mat-fact_check" size="20px" />
+          <div class="text-subtitle1 text-weight-bold q-ml-xs">Tindakan DPJP untuk CPPT</div>
+          <q-space />
+          <q-btn dense flat icon="icon-mat-close" v-close-popup>
+            <q-tooltip>Tutup</q-tooltip>
+          </q-btn>
+        </q-bar>
+
+        <q-card-section class="q-pt-md">
+          <!-- Info CPPT -->
+          <div class="bg-grey-2 q-pa-sm rounded-borders q-mb-md">
+            <div class="row items-center justify-between text-caption text-grey-8">
+              <span><b>PPA Pembuat:</b> {{ itemx?.petugas?.nama || "-" }}</span>
+              <span><b>Waktu:</b> {{ dateFullFormat(itemx?.tgl) }} {{ jamTnpDetik(itemx?.tgl) }}</span>
+            </div>
+            <div class="text-caption text-grey-8 q-mt-xs">
+              <b>Assessment:</b> {{ itemx?.asessment || "-" }}
+            </div>
+            <div v-if="getNotasiItem(itemx)" class="q-mt-xs text-caption text-positive text-weight-bold flex items-center">
+              <q-icon name="icon-mat-check_circle" size="14px" class="q-mr-xs" />
+              <span>Sudah diverifikasi: {{ dateFullFormat(getNotasiItem(itemx)?.tanggal || getNotasiItem(itemx)?.created_at) }} {{ getNotasiItem(itemx)?.jam || jamTnpDetik(getNotasiItem(itemx)?.created_at) }}</span>
+            </div>
+          </div>
+
+          <div class="text-body2 text-weight-medium q-mb-md">
+            Silakan pilih tindakan yang ingin dilakukan oleh Dokter DPJP:
+          </div>
+
+          <!-- Opsi 1: Verifikasi Langsung -->
+          <q-card
+            flat
+            bordered
+            class="q-pa-md q-mb-sm cursor-pointer"
+            style="border: 2px solid #26A69A; background-color: #E0F2F1;"
+            @click="handleVerifDirect"
+          >
+            <div class="row items-center no-wrap">
+              <q-avatar color="teal" text-color="white" icon="icon-mat-check_circle" size="42px" class="q-mr-md" />
+              <div>
+                <div class="text-subtitle2 text-weight-bold text-teal-9">1. Verifikasi CPPT</div>
+                <div class="text-caption text-grey-8">
+                  Konfirmasi verifikasi CPPT ini sebagai DPJP tanpa perlu mengetik catatan notasi.
+                </div>
+              </div>
+            </div>
+          </q-card>
+
+          <!-- Opsi 2: Isi Catatan Notasi -->
+          <q-card
+            flat
+            bordered
+            class="q-pa-md cursor-pointer"
+            style="border: 2px solid #1976D2; background-color: #E3F2FD;"
+            @click="handleOpenFormNotasi"
+          >
+            <div class="row items-center no-wrap">
+              <q-avatar color="primary" text-color="white" icon="icon-mat-edit_note" size="42px" class="q-mr-md" />
+              <div>
+                <div class="text-subtitle2 text-weight-bold text-primary">2. Isi / Edit Catatan Notasi</div>
+                <div class="text-caption text-grey-8">
+                  Buka formulir input untuk menuliskan instruksi, koreksi, atau review notasi DPJP.
+                </div>
+              </div>
+            </div>
+          </q-card>
+        </q-card-section>
+
+        <q-separator />
+
+        <q-card-actions align="right" class="q-pa-md">
+          <q-btn flat label="Batal" color="grey-7" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -401,7 +508,8 @@
 import { dateFullFormat, jamTnpDetik, dateFilter } from 'src/modules/formatter'
 import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import useForm from './useForm'
-import { notifBottomVue } from 'src/modules/utils'
+import { notifBottomVue, notifSuccessVue } from 'src/modules/utils'
+import { api } from 'src/boot/axios'
 import { useQuasar } from 'quasar'
 
 
@@ -470,14 +578,75 @@ const {
   store, storePenilaian, storeDiagnosaKeperawatan
 } = useForm(props?.pasien)
 
+const dialogPilihanDpjp = ref(false)
+const loadingVerifDirect = ref(false)
+
+const currentUserPegawai = computed(() => {
+  return auth?.user?.pegawai?.kdpegsimrs || auth?.user?.kdpegsimrs || auth?.user?.username || ""
+})
+
+const dpjpKdPeg = computed(() => {
+  return props.pasien?.kodedokter || props.pasien?.kddokter || props.pasien?.kodedokterdpjp || ""
+})
+
+const isCurrentUserDpjp = computed(() => {
+  return !!currentUserPegawai.value && !!dpjpKdPeg.value && (currentUserPegawai.value === dpjpKdPeg.value || currentUserPegawai.value === "sa")
+})
+
+const getNotasiItem = (item) => {
+  if (item?.notasi_dpjp) return item.notasi_dpjp
+  const found = props.store?.notasis?.find(x => x?.cppt_id === item?.id)
+  return found || null
+}
+
+const hasCustomNotasi = (item) => {
+  const notasi = getNotasiItem(item)
+  if (!notasi || !notasi.notasi) return false
+  return notasi.notasi !== "Terverifikasi oleh DPJP"
+}
+
 const handleOpenNotasiDPJP = (item) => {
-  // console.log(item);
-
-
-
-  openNotasi.value = true
   itemx.value = item
+  if (isCurrentUserDpjp.value) {
+    dialogPilihanDpjp.value = true
+  } else {
+    openNotasi.value = true
+  }
+}
 
+const handleOpenFormNotasi = () => {
+  dialogPilihanDpjp.value = false
+  openNotasi.value = true
+}
+
+const handleVerifDirect = async () => {
+  if (!itemx.value) return
+  loadingVerifDirect.value = true
+  try {
+    const resp = await api.post('v1/simrs/ranap/layanan/cppt/simpanNotasi', {
+      cppt_id: itemx.value.id,
+      noreg: props.pasien?.noreg,
+      norm: props.pasien?.norm,
+      notasi: 'Terverifikasi oleh DPJP'
+    })
+    if (resp.status === 200) {
+      const result = resp?.data?.result
+      if (itemx.value) {
+        itemx.value.notasi_dpjp = result
+      }
+      const cppt = props.pasien?.cppt?.find(x => x.id === itemx.value.id)
+      if (cppt) {
+        cppt.notasi_dpjp = result
+      }
+      props.store?.getNotasiDpjp(props.pasien?.noreg)
+      notifSuccessVue('CPPT berhasil diverifikasi oleh DPJP')
+      dialogPilihanDpjp.value = false
+    }
+  } catch (err) {
+    console.error('Error verifikasi DPJP:', err)
+  } finally {
+    loadingVerifDirect.value = false
+  }
 }
 
 const items = ref([])

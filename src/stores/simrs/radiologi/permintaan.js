@@ -3,6 +3,23 @@ import { useListPasienRadiologiStore } from './radiologi'
 import { notifErrVue, notifSuccessVue } from 'src/modules/utils'
 import { api } from 'src/boot/axios'
 
+export function findDokterRadiologi(dokters, namaPelaksana) {
+  const nama = String(namaPelaksana ?? '').trim()
+  const normalizedName = normalizeDokterRadiologiName(nama)
+  return dokters?.find(dokter => String(dokter?.nama ?? '').trim() === nama) ??
+    dokters?.find(dokter => normalizeDokterRadiologiName(dokter?.nama) === normalizedName)
+}
+
+export function normalizeDokterRadiologiName(name) {
+  return String(name ?? '')
+    .toLocaleLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\bdr\.?\s*/g, '')
+    .replace(/sp\.?\s*rad\.?/g, '')
+    .replace(/[^a-z0-9]/g, '')
+}
+
 export const usePermintaanRadiologiStore = defineStore('permintaan-radiologi', {
   state: () => ({
     permintaan: null,
@@ -39,7 +56,7 @@ export const usePermintaanRadiologiStore = defineStore('permintaan-radiologi', {
 
 
       this.listPermintaans = pasien?.permintaan?.rincians?.map(x => {
-        const kdPelaksana = this.dokters?.find(d => d.nama === x.pelaksana)?.kdpegsimrs || null
+        const kdPelaksana = findDokterRadiologi(this.dokters, x.pelaksana)?.kdpegsimrs || null
         // console.log('kdPelaksana', kdPelaksana);
 
         const ukuran = x.ukuran || '43 x 35'
@@ -60,8 +77,8 @@ export const usePermintaanRadiologiStore = defineStore('permintaan-radiologi', {
     },
     initNakes(store) {
 
-      this.dokters = store?.nakes?.filter(x => x?.kdgroupnakes === '1') ?? []
-      this.perawats = store?.nakes?.filter(x => x?.kdgroupnakes === '2' || x?.kdgroupnakes === '3') ?? []
+      this.dokters = store?.nakes?.filter(x => String(x?.kdgroupnakes) === '1') ?? []
+      this.perawats = store?.nakes?.filter(x => ['2', '3'].includes(String(x?.kdgroupnakes))) ?? []
 
       // console.log('initNakes dokters', this.dokters);
 

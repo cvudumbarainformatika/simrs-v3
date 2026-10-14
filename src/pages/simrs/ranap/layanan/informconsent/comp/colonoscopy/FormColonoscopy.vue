@@ -9,18 +9,17 @@
         <div class="row q-col-gutter-sm">
           <app-input-date :model="store.form.tanggal" label="Tanggal" icon="icon-mat-event" outlined
             @set-model="val => store.form.tanggal = val" :autofocus="true" class="col-4" />
-          <app-autocomplete-new ref="refPerawat" :model="store.form.kdDokter" label="Pelaksana Tindakan"
-            autocomplete="nama" option-value="kdpegsimrs" option-label="nama" outlined :source="store.dokters"
-            class="col-8" @on-select="(val) => {
+          <app-autocomplete-new ref="refPerawat" :model="store.form.kdDokter"
+            label="Pelaksana Tindakan & Pemberi Informasi" autocomplete="nama" option-value="kdpegsimrs"
+            option-label="nama" outlined :source="store.dokters" class="col-8" @on-select="(val) => {
               store.form.kdDokter = val
               store.form.pelaksana = store.dokters?.find(item => item.kdpegsimrs === val)?.nama
             }" @clear="() => {
               store.form.kdDokter = null
               store.form.pelaksana = null
             }" />
-          <app-autocomplete-new ref="refPerawat" :model="store.form.kdPetugas" label="Pemberi Informasi"
-            autocomplete="nama" option-value="kdpegsimrs" option-label="nama" outlined :source="store.perawats"
-            class="col-6" @on-select="(val) => {
+          <app-autocomplete-new ref="refPerawat" :model="store.form.kdPetugas" label="Saksi RS" autocomplete="nama"
+            option-value="kdpegsimrs" option-label="nama" outlined :source="store.perawats" class="col-6" @on-select="(val) => {
               store.form.kdPetugas = val
               store.form.pengedukasi = store.perawats?.find(item => item?.kdpegsimrs === val)?.nama
             }" @clear="() => {

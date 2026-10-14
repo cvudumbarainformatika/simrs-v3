@@ -56,8 +56,8 @@ onMounted(() => {
   ]).then(() => {
     storeListPasienRadiologi.namaPemeriksaans = storeRadiologiPoli.namaPemeriksaans
     storeListPasienRadiologi.jenisPemeriksaans = storeRadiologiPoli.jenisPemeriksaans
-    store.initPermintaan(props?.pasien)
     store.initNakes(storeRanap)
+    store.initPermintaan(props?.pasien)
   }).catch((err) => {
     // console.log('error', err)
   })
