@@ -103,7 +103,7 @@
                     style="width: 14px; height: 14px; border: 1px solid #000; font-size: 10px; margin-right: 4px;">
                     <q-icon v-if="hub === item?.hubunganDgPasien" name="icon-mat-check" size="10px" color="black" />
                   </div>
-                  <span>{{ hub === 'Keluarga' ? `Keluarga : ${item?.keluarga || '...........'}` : hub }}</span>
+                  <span>{{ hub === 'Keluarga' ? (item?.keluarga && item?.keluarga.trim().toLowerCase() !== 'keluarga' ? `Keluarga: ${item?.keluarga}` : 'Keluarga') : hub }}</span>
                 </div>
               </div>
             </div>
@@ -198,7 +198,7 @@
                   style="width: 14px; height: 14px; border: 1px solid #000; font-size: 10px; margin-right: 4px;">
                   <q-icon v-if="hub === item?.hubunganDgPasien" name="icon-mat-check" size="10px" color="black" />
                 </div>
-                <span>{{ hub === 'Keluarga' ? 'Keluarga' : hub }}</span>
+                <span>{{ hub === 'Keluarga' ? (item?.keluarga && item?.keluarga.trim().toLowerCase() !== 'keluarga' ? `Keluarga: ${item?.keluarga}` : 'Keluarga') : hub }}</span>
               </div>
             </div>
           </div>

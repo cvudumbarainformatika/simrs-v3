@@ -67,7 +67,7 @@
           </div>
           <div class="row q-mt-2">
             <div class="col-3">Hubungan dg Pasien</div>
-            <div class="col-9">: <span class="text-bold">{{ item?.hubunganDgPasien === 'Keluarga' ? `Keluarga (${item?.keluarga || '...'})` : (item?.hubunganDgPasien || '-') }}</span></div>
+            <div class="col-9">: <span class="text-bold">{{ item?.hubunganDgPasien === 'Keluarga' ? (item?.keluarga && item?.keluarga.trim().toLowerCase() !== 'keluarga' ? `Keluarga (${item?.keluarga})` : 'Keluarga') : (item?.hubunganDgPasien || '-') }}</span></div>
           </div>
 
           <div class="q-my-xs q-py-xs bg-grey-2 text-bold text-center" style="border-top: 1px dashed #000; border-bottom: 1px dashed #000; margin-top: 6px; margin-bottom: 6px;">
