@@ -53,8 +53,8 @@ export default defineConfig((ctx) => {
         API: ctx?.dev
           ? // ? 'http://192.168.150.112:3503'
             // ? 'http://192.168.150.112:3501'
-
-            "https://api.simrs.test"
+            // "https://api.simrs.test"
+            "http://localhost:8080"
           : // "http://localhost:8080"
             // ? 'http://192.168.101.77:8080'
             // : 'http://192.168.150.111:3507',
