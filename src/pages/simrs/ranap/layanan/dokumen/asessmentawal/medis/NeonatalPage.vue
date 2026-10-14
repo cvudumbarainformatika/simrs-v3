@@ -122,7 +122,8 @@
           '-' }}</div>
         <div class="data-item">4. Riwayat Penyakit Keluarga / History Disease in the Family : {{
           anamnesisAwal?.riwayatpenyakitkeluarga || '-' }}</div>
-        <div class="data-item">5. Riwayat Pekerjaan / History of Job : {{
+        <div class="data-item">5. Riwayat Pengobatan / History of Medication : {{ anamnesisAwal?.riwayatpengobatan || '-' }}</div>
+        <div class="data-item">6. Riwayat Pekerjaan / History of Job : {{
           anamnesisAwal?.riwayat_pekerjaan_yang_berhubungan_dengan_zat_berbahaya || '-' }}</div>
         <!-- <div class="data-item">6. Status Sosial / Social Status : {{ pemeriksaanUmum?.sosial || '-' }}</div>
         <div class="data-item">7. Status Ekonomi / Economic Status : {{ pemeriksaanUmum?.ansuransi || '-' }} {{
@@ -137,10 +138,10 @@
             <div>- makanan Pokok : {{ pemeriksaanUmum?.makananPokok }}</div>
           </div>
         </div> -->
-        <div class="data-item">6. Riwayat Alergi : <span v-if="ALERGI" v-html="getNewLine(ALERGI || '-')" /> <span
+        <div class="data-item">7. Riwayat Alergi : <span v-if="ALERGI" v-html="getNewLine(ALERGI || '-')" /> <span
             v-else> - </span> </div>
 
-        <div class="data-item flex">7. Kajian Nyeri NIPS :
+        <div class="data-item flex">8. Kajian Nyeri NIPS :
           <div class="q-ml-sm" v-if="anamnesisAwal?.keluhannyeri?.neonatal">
             <div>- Keluhan : {{ anamnesisAwal?.keluhannyeri?.keluhan ?? '-' }}</div>
             <div>- Ekspresi Wajah : {{ anamnesisAwal?.keluhannyeri?.neonatal?.form?.ekspresiWajah?.text ?? '-' }}</div>
