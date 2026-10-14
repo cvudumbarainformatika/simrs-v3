@@ -159,6 +159,13 @@ export const usePraAnastesiStore = defineStore('pra-anastesi-store', {
     },
     initForm (item) {
       delete this.form.id
+      // Reset master & opsi ke kondisi awal bersih
+      if (this.master?.length) {
+        this.reducerMaster([...this.master])
+      }
+      this.regional = []
+      this.modelRawatKhusus = []
+
       // ===================
       this.form.skorMallampati = item ? item?.skorMallampati : null
       this.form.jantung = item ? item?.jantung : null
@@ -173,81 +180,84 @@ export const usePraAnastesiStore = defineStore('pra-anastesi-store', {
       this.form.perencanaan = item ? item?.perencanaan : null
       this.form.penyulitAnastesi = []
       //  baru
-      this.form.mulaiPuasaTgl = item ? item?.mulaiPuasaTgl : null
-      this.form.mulaiPuasajam = item ? item.mulaiPuasaJam : null
-      this.form.preMedikasiTgl = item ? item.preMedikasiTgl : null
-      this.form.preMedikasiJam = item ? item.preMedikasiJam : null
-      this.form.transKeKamarBedahTgl = item ? item.transKeKamarBedahTgl : null
-      this.form.transKeKamarBedahJam = item ? item.transKeKamarBedahJam : null
-      this.form.rencanaOperasiTgl = item ? item.rencanaOperasiTgl : null
-      this.form.rencanaOperasiJam = item ? item.rencanaOperasiJam : null
-      this.form.catatanPersiapanPraAnastesi = item ? item.catatanPersiapanPraAnastesi : null
-      this.form.kolomTindakLanjut = item ? item.kolomTindakLanjut : null
+      this.form.mulaiPuasaTgl = item ? (item?.mulaiPuasaTgl || item?.puasaMulaiTgl || null) : null
+      this.form.mulaiPuasajam = item ? (item?.mulaiPuasajam || item?.mulaiPuasaJam || item?.puasaMulaiJam || null) : null
+      this.form.preMedikasiTgl = item ? item?.preMedikasiTgl : null
+      this.form.preMedikasiJam = item ? item?.preMedikasiJam : null
+      this.form.transKeKamarBedahTgl = item ? item?.transKeKamarBedahTgl : null
+      this.form.transKeKamarBedahJam = item ? item?.transKeKamarBedahJam : null
+      this.form.rencanaOperasiTgl = item ? item?.rencanaOperasiTgl : null
+      this.form.rencanaOperasiJam = item ? item?.rencanaOperasiJam : null
+      this.form.catatanPersiapanPraAnastesi = item ? item?.catatanPersiapanPraAnastesi : null
+      this.form.kolomTindakLanjut = item ? item?.kolomTindakLanjut : null
 
-      if (!item || item === undefined || item === 'undefined') {
-        const m = [...this.master]
-        this.reducerMaster(m)
-      }
-      else {
-        for (let i = 0; i < item.kajianSistem?.length; i++) {
-          const el = item.kajianSistem[i]
-          this.masterKajian.filter(x => x.kajian === el).map(x => x.check = true)
-          this.masterKajian2.filter(x => x.kajian === el).map(x => x.check = true)
+      if (item && item !== 'undefined') {
+        if (Array.isArray(item.kajianSistem)) {
+          for (let i = 0; i < item.kajianSistem.length; i++) {
+            const el = item.kajianSistem[i]
+            this.masterKajian?.filter(x => x.kajian === el).forEach(x => { x.check = true })
+            this.masterKajian2?.filter(x => x.kajian === el).forEach(x => { x.check = true })
+          }
         }
-        for (let i = 0; i < item.laboratorium?.length; i++) {
-          const el = item.laboratorium[i]
-          this.masterLab.filter(x => x.nama === el.nama).map(x => x.model = el.model)
-          this.masterLab2.filter(x => x.nama === el.nama).map(x => x.model = el.model)
+        if (Array.isArray(item.laboratorium)) {
+          for (let i = 0; i < item.laboratorium.length; i++) {
+            const el = item.laboratorium[i]
+            this.masterLab?.filter(x => x.nama === el.nama).forEach(x => { x.model = el.model })
+            this.masterLab2?.filter(x => x.nama === el.nama).forEach(x => { x.model = el.model })
+          }
         }
-        for (let i = 0; i < item.asaClasification?.length; i++) {
-          const el = item.asaClasification[i]
-          this.asaClass.filter(x => x.nama === el).map(x => x.check = true)
+        if (Array.isArray(item.asaClasification)) {
+          for (let i = 0; i < item.asaClasification.length; i++) {
+            const el = item.asaClasification[i]
+            this.asaClass?.filter(x => x.nama === el).forEach(x => { x.check = true })
+          }
         }
-        this.form.penyulitAnastesi = item.penyulitAnastesi
+        this.form.penyulitAnastesi = Array.isArray(item.penyulitAnastesi) ? [...item.penyulitAnastesi] : []
 
         // baru
-        for (let i = 0; i < item.teknikAnestesia?.length; i++) {
-          const el = item.teknikAnestesia[i]
-          // eslint-disable-next-line array-callback-return
-          this.teknikAnestesia.filter(x => x.nama === el.nama).map(x => {
-            x.nama = el.nama
-            x.check = el.check
-            x.keterangan = el.keterangan
-          })
+        if (Array.isArray(item.teknikAnestesia)) {
+          for (let i = 0; i < item.teknikAnestesia.length; i++) {
+            const el = item.teknikAnestesia[i]
+            this.teknikAnestesia?.filter(x => x.nama === el.nama).forEach(x => {
+              x.nama = el.nama
+              x.check = !!el.check
+              x.keterangan = el.keterangan
+            })
 
-          if (el.nama === 'Regional' && el.keterangan !== null) {
-            const ket = el.keterangan
-            const arr = ket.split('||')
-            this.regional = arr
+            if (el.nama === 'Regional' && el.keterangan !== null) {
+              const ket = el.keterangan
+              const arr = ket.split('||')
+              this.regional = arr
+            }
           }
         }
-        for (let i = 0; i < item.teknikKhusus?.length; i++) {
-          const el = item.teknikKhusus[i]
-          // eslint-disable-next-line array-callback-return
-          this.teknikKhusus.filter(x => x.nama === el.nama).map(x => {
-            x.nama = el.nama
-            x.check = el.check
-            x.keterangan = el.keterangan
-          })
-        }
-        for (let i = 0; i < item.pascaAnastesi?.length; i++) {
-          const el = item.pascaAnastesi[i]
-          // eslint-disable-next-line array-callback-return
-          this.pascaAnastesi.filter(x => x.nama === el.nama).map(x => {
-            x.nama = el.nama
-            x.check = el.check
-            x.keterangan = el.keterangan
-          })
-          if (el.nama === 'Rawat Khusus' && el.keterangan !== null) {
-            const ket = el.keterangan
-            const arr = ket.split('||')
-            this.modelRawatKhusus = arr
+        if (Array.isArray(item.teknikKhusus)) {
+          for (let i = 0; i < item.teknikKhusus.length; i++) {
+            const el = item.teknikKhusus[i]
+            this.teknikKhusus?.filter(x => x.nama === el.nama).forEach(x => {
+              x.nama = el.nama
+              x.check = !!el.check
+              x.keterangan = el.keterangan
+            })
           }
-          this.form.keteranganLainlainRawatKhusus = item.keteranganLainlainRawatKhusus
         }
+        if (Array.isArray(item.pascaAnastesi)) {
+          for (let i = 0; i < item.pascaAnastesi.length; i++) {
+            const el = item.pascaAnastesi[i]
+            this.pascaAnastesi?.filter(x => x.nama === el.nama).forEach(x => {
+              x.nama = el.nama
+              x.check = !!el.check
+              x.keterangan = el.keterangan
+            })
+            if (el.nama === 'Rawat Khusus' && el.keterangan !== null) {
+              const ket = el.keterangan
+              const arr = ket.split('||')
+              this.modelRawatKhusus = arr
+            }
+          }
+        }
+        this.form.keteranganLainlainRawatKhusus = item.keteranganLainlainRawatKhusus || null
         this.form.id = item.id
-
-        // console.log('oooi', this.regional)
       }
     },
     saveData (pasien) {
