@@ -280,10 +280,27 @@
 
               </div>
               <div class="col-1">
-
+                :
               </div>
               <div class="col-6 text-left">
                 {{ props.pasien?.pemeriksaanfisik[0]?.beratbadan ?? 0 }} kg
+              </div>
+            </div>
+            <div class="row q-col-gutter-sm f-16">
+              <div class="col-2">
+                Index Massa Tubuh
+              </div>
+              <div class="col-1">
+
+              </div>
+              <div class="col-2">
+
+              </div>
+              <div class="col-1">
+                :
+              </div>
+              <div class="col-6 text-left">
+                {{ imt }} kg/m<sup>2</sup>
               </div>
             </div>
             <div class="row q-col-gutter-sm f-16">
@@ -388,6 +405,17 @@ const qrUrl = computed(() => {
   const petugas = props?.pasien?.kddpjp ?? null
   const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+})
+
+const imt = computed(() => {
+  const bb = parseFloat(props.pasien?.pemeriksaanfisik?.[0]?.beratbadan)
+  const tb = parseFloat(props.pasien?.pemeriksaanfisik?.[0]?.tinggibadan)
+  if (!bb || !tb || tb <= 0) {
+    return '-'
+  }
+  const tbMeter = tb / 100
+  const nilai = bb / (tbMeter * tbMeter)
+  return Number.isFinite(nilai) ? nilai.toFixed(2) : '-'
 })
 
 const tanggal = new Date().toLocaleDateString('id-ID', {

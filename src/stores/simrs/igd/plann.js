@@ -27,6 +27,7 @@ export const usePlannStore = defineStore('plann-store', {
       dokterpenerima: '',
       isi: ([])
     },
+    formObatRujukan: { id: null, nama_obat: '', jumlah: '', dosis: '', frekwensi: '', cara_pemberian: '' },
     fixednicu: false,
     fixediccu: false,
     fixedicu: false,
@@ -39,6 +40,10 @@ export const usePlannStore = defineStore('plann-store', {
     selectionx: [],
   }),
   actions: {
+    editObatRujukan(obat) {
+      this.formObatRujukan = { ...obat }
+      this.form.panel = 'Rujuk Ke Rumah Sakit Lain'
+    },
     async savePlan(pasien) {
       if (!pasien?.kodedokter) {
         return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
@@ -57,9 +62,11 @@ export const usePlannStore = defineStore('plann-store', {
         if (resp.status === 200) {
           const storePasien = usePengunjungIgdStore()
           const isi = resp.data.result[0]
+          const panelAktif = this.form.panel
           storePasien.injectDataPasien(pasien, isi, 'planheder')
           notifSuccess(resp)
           this.initReset()
+          this.form.panel = panelAktif
           this.resetdialog()
           this.loadingSavePlann = false
         }

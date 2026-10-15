@@ -163,6 +163,12 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compPembatalan/IndexPage.vue')))
   },
   {
+    name: 'upload-dokumen',
+    label: 'Upload Dokumen',
+    icon: 'icon-mat-cloud_upload',
+    comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compUploadDokumen/IndexPage.vue')))
+  },
+  {
     name: 'dokumen',
     label: 'Dokumen',
     icon: 'email',

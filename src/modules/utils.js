@@ -168,7 +168,7 @@ const notifErr = (resp) => {
     })
   }
   else {
-    const msgs = resp.data ? resp.data.message : 'NETWOR ERROR SERVER TIDAK MERESPON'
+    const msgs = (resp?.data && resp?.data?.message) ? resp.data.message : (resp?.data && typeof resp.data === 'string' ? resp.data : 'Terjadi Kesalahan pada Server!')
     Notify.create({
       message: msgs,
       icon: 'icon-eva-message-circle-outline',

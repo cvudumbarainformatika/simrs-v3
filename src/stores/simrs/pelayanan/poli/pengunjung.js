@@ -178,10 +178,13 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
           .then(resp => {
             // console.log(resp)
             if (resp.status === 200) {
-              const findPasien = this.items.filter(x => x === pasien)
+              const findPasien = this.items.filter(x => x === pasien || x?.rs1 === pasien?.noreg || x?.noreg === pasien?.noreg)
               if (findPasien?.length) {
                 const data = findPasien[0]
                 data.memodiagnosa = resp?.data?.result?.diagnosa
+              }
+              if (pasien) {
+                pasien.memodiagnosa = resp?.data?.result?.diagnosa
               }
 
               const pengunjungRehab = useKunjunganRehabmediStore()
@@ -204,6 +207,10 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
       if (!pasien?.anamnesis?.length) {
         this.loadingTerima = false
         return this.notifikasiError('Maaf, Anamnesis Harap Diisi Dahulu...')
+      }
+      if (!pasien?.memodiagnosa || !pasien?.memodiagnosa?.toString().trim()) {
+        this.loadingTerima = false
+        return this.notifikasiError('Maaf, Memo Diagnosa Harap Diisi Dahulu...')
       }
       // if (!pasien?.diagnosa?.length) {
       //   this.loadingTerima = false
@@ -286,6 +293,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
             findPasien[0].jawabankonsul = responseData?.jawabankonsul
             findPasien[0].jawabankonsulbynoreg = responseData?.jawabankonsulbynoreg
             findPasien[0].suratketerangandokter = responseData?.suratketerangandokter
+            findPasien[0].informconcern = responseData?.informconcern ?? []
 
             findPasien[0].planningdokter = responseData?.planningdokter
             findPasien[0].anamnesis_skrining = responseData?.anamnesis_skrining

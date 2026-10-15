@@ -1,13 +1,25 @@
 <template>
-  <div class=" full-height full-width q-pa-xs">
+  <div class="full-height full-width q-pa-xs">
     <div class="col-auto bg-red">
-      <q-tabs v-model="store.tab" inline-label outside-arrows mobile-arrows align="left" active-color="yellow"
-        active-bg-color="primary" class="bg-grey-4 text-grey-8 shadow-2">
-
-        <q-tab v-for="(item, i) in store.tabs" :key="i" :name="item.page" :label="item.name" />
+      <q-tabs
+        v-model="store.tab"
+        inline-label
+        outside-arrows
+        mobile-arrows
+        align="left"
+        active-color="yellow"
+        active-bg-color="primary"
+        class="bg-grey-4 text-grey-8 shadow-2"
+      >
+        <q-tab
+          v-for="(item, i) in store.tabs"
+          :key="i"
+          :name="item.page"
+          :label="item.name"
+        />
       </q-tabs>
     </div>
-    <div class="col full-height q-pa-md" style="overflow: hidden;">
+    <div class="col full-height q-pa-md" style="overflow: hidden">
       <q-tab-panels v-model="store.tab" animated class="full-height">
         <q-tab-panel name="Billing" class="full-height q-pa-none">
           <BillingPage :judul="billing" :pasien="props?.pasien" />
@@ -21,9 +33,17 @@
         <q-tab-panel name="Surat Kematian" class="full-height q-pa-none">
           <SuratKematianPage :judul="suratkematian" :pasien="props?.pasien" />
         </q-tab-panel>
-        <q-tab-panel name="Indikasi Masuk Rawat Inap" class="full-height q-pa-none">
-          <Indikasimasuknicudaninter :judul="indikasinicu" :pasien="props?.pasien" :isi="isi" :kelas="kelas"
-            :keterangan="keterangan" />
+        <q-tab-panel
+          name="Indikasi Masuk Rawat Inap"
+          class="full-height q-pa-none"
+        >
+          <Indikasimasuknicudaninter
+            :judul="indikasinicu"
+            :pasien="props?.pasien"
+            :isi="isi"
+            :kelas="kelas"
+            :keterangan="keterangan"
+          />
         </q-tab-panel>
         <!-- <q-tab-panel name="Indikasi Masuk ICU" class="full-height q-pa-none">
           <KriteriamasukIcu :judul="kriteriamasukicu" :pasien="props?.pasien" :isi="isi" :kelas="kelas"
@@ -48,25 +68,57 @@
           <KonsulDokterPage judul="Konsul Dokter" :pasien="props?.pasien" />
         </q-tab-panel>
         <q-tab-panel name="Pengkajian Awal Medis" class="full-height q-pa-none">
-          <PengkajianAwalMedis judul="Pengkajian Awal Medis" :pasien="props?.pasien" />
+          <PengkajianAwalMedis
+            judul="Pengkajian Awal Medis"
+            :pasien="props?.pasien"
+          />
         </q-tab-panel>
-        <q-tab-panel name="Pengkajian Awal Keperawatan" class="full-height q-pa-none">
-          <PengkajianAwalKeperawatan judul="Pengkajian Awal Keperawatan IGD" :pasien="props?.pasien" />
+        <q-tab-panel
+          name="Pengkajian Awal Keperawatan"
+          class="full-height q-pa-none"
+        >
+          <PengkajianAwalKeperawatan
+            judul="Pengkajian Awal Keperawatan IGD"
+            :pasien="props?.pasien"
+          />
         </q-tab-panel>
         <q-tab-panel name="Observasi Penderita" class="full-height q-pa-none">
-          <ObservasiPenderita judul="Observasi Penderita" :pasien="props?.pasien" />
+          <ObservasiPenderita
+            judul="Observasi Penderita"
+            :pasien="props?.pasien"
+          />
         </q-tab-panel>
-        <q-tab-panel name="Pengkajian Awal Kebidanan" class="full-height q-pa-none">
-          <PengkajianAwalKebidanan judul="Pengkajian Awal Kebidanan" :pasien="props?.pasien" />
+        <q-tab-panel
+          name="Pengkajian Awal Kebidanan"
+          class="full-height q-pa-none"
+        >
+          <PengkajianAwalKebidanan
+            judul="Pengkajian Awal Kebidanan"
+            :pasien="props?.pasien"
+          />
         </q-tab-panel>
         <q-tab-panel name="Serah Terima Ruangan" class="full-height q-pa-none">
-          <SerahTerimaRuangan judul="Serah Terima Ruangan" :pasien="props?.pasien" />
+          <SerahTerimaRuangan
+            judul="Serah Terima Ruangan"
+            :pasien="props?.pasien"
+          />
         </q-tab-panel>
         <q-tab-panel name="Pasien Pulang" class="full-height q-pa-none">
-          <PasienPulang :judul="pasienpulang" :pulang="pulang" :dasarpulang="dasarpulang" :pasien="props?.pasien" />
+          <PasienPulang
+            :judul="pasienpulang"
+            :pulang="pulang"
+            :dasarpulang="dasarpulang"
+            :pasien="props?.pasien"
+          />
         </q-tab-panel>
-        <q-tab-panel name="Surat Rencana Rawat Inap" class="full-height q-pa-none">
-          <SuratRanap judul="Surat Rencana Rawat Inap" :pasien="props?.pasien" />
+        <q-tab-panel
+          name="Surat Rencana Rawat Inap"
+          class="full-height q-pa-none"
+        >
+          <SuratRanap
+            judul="Surat Rencana Rawat Inap"
+            :pasien="props?.pasien"
+          />
         </q-tab-panel>
         <q-tab-panel name="Asesmen Pra Anestesia" class="full-height q-pa-none">
           <AsesmenPraAnestesia :pasien="props?.pasien" />
@@ -77,90 +129,110 @@
         <q-tab-panel name="Edukasi Pasien" class="full-height q-pa-none">
           <EdukasiPage :pasien="props?.pasien" />
         </q-tab-panel>
+        <q-tab-panel
+          name="Rujukan Pasien Antar Rumah Sakit"
+          class="full-height q-pa-none"
+        >
+          <RujukanPasienAntarRsPage
+            judul="Rujukan Pasien Antar Rumah Sakit"
+            :pasien="props?.pasien"
+          />
+        </q-tab-panel>
       </q-tab-panels>
     </div>
   </div>
 </template>
 <script setup>
-import { useDokumenIgdStore } from 'src/stores/simrs/igd/dokumen'
-import { computed, ref, defineAsyncComponent } from 'vue'
+import { useDokumenIgdStore } from "src/stores/simrs/igd/dokumen";
+import { computed, ref, defineAsyncComponent } from "vue";
 
 const props = defineProps({
   pasien: {
     type: Object,
-    default: null
-  }
-})
+    default: null,
+  },
+});
 
-import BillingPage from './dokumenisi/Billing/BillingPage.vue';
-import TriasePage from './dokumenisi/triage/TriasePage.vue';
-import SuratKematianPage from './dokumenisi/suratkematian/SuratKematianPage.vue';
-import Indikasimasuknicudaninter from './dokumenisi/inidakasimasuknicudaninter/indikasimasuknicudaninter.vue';
-import SepPage from './dokumenisi/Sep/SepPage.vue';
-import ResumePage from './dokumenisi/Resume/ResumePage.vue';
-import BillingDetailPage from './dokumenisi/Billdetail/BillingDetailPage.vue';
-import FarmasiPage from './dokumenisi/Farmasi/FarmasiPage.vue';
-import LaboratPage from './dokumenisi/Laborat/LaboratPage.vue';
-import RadiologiPage from './dokumenisi/Radiologi/RadiologiPage.vue';
-import KonsulDokterPage from './dokumenisi/konsulDokter/KonsulDokterPage.vue';
-import { usePlannStore } from 'src/stores/simrs/igd/plann';
-import PengkajianAwalMedis from './dokumenisi/PengkajianAwalMedis/PengkajianAwalMedis.vue';
-import PengkajianAwalKeperawatan from './dokumenisi/PengkajianAwalKeperawatan/PengkajianAwalKeperawatan.vue';
-import ObservasiPenderita from './dokumenisi/ObservasiPenderita/ObservasiPenderita.vue';
-import PengkajianAwalKebidanan from './dokumenisi/PengkajianAwalKebidanan/PengkajianAwalKebidanan.vue';
-import SerahTerimaRuangan from './dokumenisi/SerahTerimaRuangan/SerahTerimaRuangan.vue';
-import PasienPulang from './dokumenisi/PasienPulang/PasienPulang.vue';
-import SuratRanap from './dokumenisi/suratrencanainap/SuratRencanaInap.vue';
-import EdukasiPage from './dokumenisi/Edukasi/EdukasiPage.vue';
+import BillingPage from "./dokumenisi/Billing/BillingPage.vue";
+import TriasePage from "./dokumenisi/triage/TriasePage.vue";
+import SuratKematianPage from "./dokumenisi/suratkematian/SuratKematianPage.vue";
+import Indikasimasuknicudaninter from "./dokumenisi/inidakasimasuknicudaninter/indikasimasuknicudaninter.vue";
+import SepPage from "./dokumenisi/Sep/SepPage.vue";
+import ResumePage from "./dokumenisi/Resume/ResumePage.vue";
+import BillingDetailPage from "./dokumenisi/Billdetail/BillingDetailPage.vue";
+import FarmasiPage from "./dokumenisi/Farmasi/FarmasiPage.vue";
+import LaboratPage from "./dokumenisi/Laborat/LaboratPage.vue";
+import RadiologiPage from "./dokumenisi/Radiologi/RadiologiPage.vue";
+import KonsulDokterPage from "./dokumenisi/konsulDokter/KonsulDokterPage.vue";
+import { usePlannStore } from "src/stores/simrs/igd/plann";
+import PengkajianAwalMedis from "./dokumenisi/PengkajianAwalMedis/PengkajianAwalMedis.vue";
+import PengkajianAwalKeperawatan from "./dokumenisi/PengkajianAwalKeperawatan/PengkajianAwalKeperawatan.vue";
+import ObservasiPenderita from "./dokumenisi/ObservasiPenderita/ObservasiPenderita.vue";
+import PengkajianAwalKebidanan from "./dokumenisi/PengkajianAwalKebidanan/PengkajianAwalKebidanan.vue";
+import SerahTerimaRuangan from "./dokumenisi/SerahTerimaRuangan/SerahTerimaRuangan.vue";
+import PasienPulang from "./dokumenisi/PasienPulang/PasienPulang.vue";
+import SuratRanap from "./dokumenisi/suratrencanainap/SuratRencanaInap.vue";
+import EdukasiPage from "./dokumenisi/Edukasi/EdukasiPage.vue";
+import RujukanPasienAntarRsPage from "./dokumenisi/Rujukanpasienantarrs/RujukanPasienAntarRsPage.vue";
 
 // import KriteriamasukIcu from './dokumenisi/KriteriaMasukIcu/KriteriamasukIcu.vue';
 
-const AsesmenPraAnestesia = defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AsesmenPraAnestesia.vue'))
-const AsesmenPraBedah = defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AssesmentPraBedah.vue'))
+const AsesmenPraAnestesia = defineAsyncComponent(() =>
+  import("src/pages/simrs/dokumen/erm/poli/AsesmenPraAnestesia.vue")
+);
+const AsesmenPraBedah = defineAsyncComponent(() =>
+  import("src/pages/simrs/dokumen/erm/poli/AssesmentPraBedah.vue")
+);
 
-
-const billing = ref('BILLING')
-const triase = ref('TRIASE')
-const suratkematian = ref('Surat Kematian')
-const indikasinicu = ref('Indikasi Pasien Masuk Ruang')
-const pasienpulang = ref('Surat Pernyataan Pulang')
-const kriteriamasukicu = ref('')
-const sep = ref('Sep')
-const store = useDokumenIgdStore()
+const billing = ref("BILLING");
+const triase = ref("TRIASE");
+const suratkematian = ref("Surat Kematian");
+const indikasinicu = ref("Indikasi Pasien Masuk Ruang");
+const pasienpulang = ref("Surat Pernyataan Pulang");
+const kriteriamasukicu = ref("");
+const sep = ref("Sep");
+const store = useDokumenIgdStore();
 // const storex = usePlannStore()
 // const isi = storex?.isiindikasimasuknicu?.planranap?.dokumentransfer?.isi ? JSON.parse(storex?.isiindikasimasuknicu?.planranap?.dokumentransfer?.isi) : '-'
 // const kelas = storex?.isiindikasimasuknicu?.planranap?.dokumentransfer?.kelas
 // const keterangan = storex?.isiindikasimasuknicu?.planranap?.keterangan
 
 const isi = computed(() => {
-  const data = props.pasien?.planheder?.[0]?.planranap?.dokumentransfer?.isi
-  return data ? JSON.parse(data) : []
-})
+  const data = props.pasien?.planheder?.[0]?.planranap?.dokumentransfer?.isi;
+  return data ? JSON.parse(data) : [];
+});
 
 const kelas = computed(() => {
-  if (props.pasien?.planheder?.[0]?.planranap?.dokumentransfer?.kelas === 'IC') {
-    return 'ICU'
-  } else if (props.pasien?.planheder?.[0]?.planranap?.dokumentransfer?.kelas === 'ICC') {
-    return 'ICCU'
-  } else if (props.pasien?.planheder?.[0]?.planranap?.dokumentransfer?.kelas === 'HCU') {
-    return 'HCU'
-  } else if (props.pasien?.planheder?.[0]?.planranap?.dokumentransfer?.kelas === 'NICU') {
-    return 'NICU'
+  if (
+    props.pasien?.planheder?.[0]?.planranap?.dokumentransfer?.kelas === "IC"
+  ) {
+    return "ICU";
+  } else if (
+    props.pasien?.planheder?.[0]?.planranap?.dokumentransfer?.kelas === "ICC"
+  ) {
+    return "ICCU";
+  } else if (
+    props.pasien?.planheder?.[0]?.planranap?.dokumentransfer?.kelas === "HCU"
+  ) {
+    return "HCU";
+  } else if (
+    props.pasien?.planheder?.[0]?.planranap?.dokumentransfer?.kelas === "NICU"
+  ) {
+    return "NICU";
   }
-
-})
+});
 
 const keterangan = computed(() => {
-  return props.pasien?.planheder?.[0]?.planranap?.keterangan
-})
+  return props.pasien?.planheder?.[0]?.planranap?.keterangan;
+});
 
 const pulang = computed(() => {
-  return props.pasien?.planheder?.[0]?.planpulang
-})
+  return props.pasien?.planheder?.[0]?.planpulang;
+});
 
 const dasarpulang = computed(() => {
-  return pulang.value?.atas_dasar === 'Paksa' ? 'Paksa' : ''
-})
+  return pulang.value?.atas_dasar === "Paksa" ? "Paksa" : "";
+});
 
 // storex.indikasimasuknicuinter(props.pasien)
 

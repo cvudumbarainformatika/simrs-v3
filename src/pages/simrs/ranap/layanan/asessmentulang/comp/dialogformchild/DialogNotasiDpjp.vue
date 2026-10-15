@@ -47,7 +47,7 @@
         </div>
 
         <q-separator class="q-my-sm"></q-separator>
-        <div v-if="(item.user === auth.user.pegawai.kdpegsimrs)">
+        <div v-if="isBisaInputNotasi">
           <q-form class="row full-width" @submit.prevent="onSubmit">
             <q-input v-model="form.notasi" outlined stack-label type="textarea" standout="bg-yellow-3"
               class="full-width" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" :lazy-rules="true" rows="10"
@@ -86,7 +86,7 @@
 import { computed, defineAsyncComponent, onMounted, onUnmounted, ref } from 'vue'
 import { api } from 'boot/axios'
 import { notifSuccessVue } from 'src/modules/utils'
-import { dateFullFormat, dateFilter } from 'src/modules/formatter'
+import { dateFullFormat, dateFilter, jamTnpDetik } from 'src/modules/formatter'
 
 const props = defineProps({
   item: {
@@ -117,6 +117,15 @@ const form = ref({
 
 const loading = ref(false)
 const isLewatTgl = ref(false)
+const isBisaInputNotasi = computed(() => {
+  const currentPeg = props.auth?.user?.pegawai?.kdpegsimrs || props.auth?.user?.kdpegsimrs || ""
+  const dpjpPeg = props.pasien?.kodedokter || props.pasien?.kddokter || props.pasien?.kodedokterdpjp || ""
+  const isDpjp = !!currentPeg && !!dpjpPeg && currentPeg === dpjpPeg
+  const isAdmin = currentPeg === "sa"
+  const isOwner = currentPeg === props.item?.user
+  return isDpjp || isAdmin || isOwner
+})
+
 
 
 const onShow = () => {
@@ -184,6 +193,9 @@ const onSubmit = async () => {
 
       const cppt = props.pasien.cppt?.find(x => x.id === props.item.id)
 
+      if (props.item) {
+        props.item.notasi_dpjp = result
+      }
       if (cppt) {
         cppt.notasi_dpjp = result
       }

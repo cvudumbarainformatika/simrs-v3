@@ -7,14 +7,14 @@
       <q-separator class="q-my-md" />
       <div class="row full-width">
         <div class="row q-col-gutter-sm full-width">
-          
+
           <!-- Tanggal & Pelaksana -->
           <app-input-date :model="store.form.tanggal" label="Tanggal" icon="icon-mat-event" outlined
             @set-model="val => store.form.tanggal = val" :autofocus="true" class="col-md-4 col-sm-12" />
-          
-          <app-autocomplete-new ref="refDokter" :model="store.form.kdDokter" label="Pelaksana Tindakan (Dokter)"
-            autocomplete="nama" option-value="kdpegsimrs" option-label="nama" outlined :source="store.dokters"
-            class="col-md-8 col-sm-12" @on-select="(val) => {
+
+          <app-autocomplete-new ref="refDokter" :model="store.form.kdDokter"
+            label="Pelaksana Tindakan & Pemberi Informasi" autocomplete="nama" option-value="kdpegsimrs"
+            option-label="nama" outlined :source="store.dokters" class="col-md-8 col-sm-12" @on-select="(val) => {
               store.form.kdDokter = val
               store.form.pelaksana = store.dokters?.find(item => item.kdpegsimrs === val)?.nama
             }" @clear="() => {
@@ -23,9 +23,9 @@
             }" />
 
           <!-- Pemberi Informasi / Pengedukasi -->
-          <app-autocomplete-new ref="refPerawat" :model="store.form.kdPetugas" label="Pemberi Informasi (Petugas/Nakes)"
-            autocomplete="nama" option-value="kdpegsimrs" option-label="nama" outlined :source="store.perawats"
-            class="col-md-6 col-sm-12" @on-select="(val) => {
+          <app-autocomplete-new ref="refPerawat" :model="store.form.kdPetugas" label="Saksi RS" autocomplete="nama"
+            option-value="kdpegsimrs" option-label="nama" outlined :source="store.perawats" class="col-md-6 col-sm-12"
+            @on-select="(val) => {
               store.form.kdPetugas = val
               store.form.pengedukasi = store.perawats?.find(item => item?.kdpegsimrs === val)?.nama
             }" @clear="() => {
@@ -44,30 +44,31 @@
           <!-- Identitas Pemberi Pernyataan / Penerima Informasi -->
           <app-input-simrs v-model="store.form.nama" label="Nama Penerima Informasi / Pemberi Pernyataan"
             class="col-md-8 col-sm-12" />
-          
+
           <div class="col-md-4 col-sm-12 flex items-center">
             <span class="q-mr-sm">Jenis Kelamin:</span>
-            <q-radio size="md" v-model="store.form.lp" v-for="aa in store.jekels" :key="aa"
-              :label="aa?.label" :val="aa?.value" />
+            <q-radio size="md" v-model="store.form.lp" v-for="aa in store.jekels" :key="aa" :label="aa?.label"
+              :val="aa?.value" />
           </div>
 
           <app-input-simrs v-model="store.form.noKtp" label="No. KTP / SIM / PASPOR" class="col-md-4 col-sm-12" />
-          
+
           <app-input-date :model="store.form.tglLahir" label="Tanggal Lahir" icon="icon-mat-event" outlined
             @set-model="val => store.form.tglLahir = val" :autofocus="false" class="col-md-4 col-sm-12" />
-          
+
           <app-input-simrs v-model="store.form.telepon" label="No Telp / HP" class="col-md-4 col-sm-12" />
-          
-          <q-input v-model="store.form.alamat" label="Alamat Lengkap" outlined standout="bg-yellow-3" rows="2" type="textarea"
-            class="col-12" />
+
+          <q-input v-model="store.form.alamat" label="Alamat Lengkap" outlined standout="bg-yellow-3" rows="2"
+            type="textarea" class="col-12" />
 
           <q-separator class="col-12 q-my-md" />
 
           <!-- Informasi Tindakan Pemasangan Restrain -->
           <div class="col-12 text-bold text-subtitle2 q-mb-xs">Informasi Tindakan Pemasangan Restrain</div>
-          
-          <q-input v-model="store.form.indikasi" label="1. Pengertian Restrain" outlined standout="bg-yellow-3" rows="3" type="textarea" class="col-12" />
-          
+
+          <q-input v-model="store.form.indikasi" label="1. Pengertian Restrain" outlined standout="bg-yellow-3" rows="3"
+            type="textarea" class="col-12" />
+
           <!-- Checklist Tujuan -->
           <div class="col-12 q-mt-sm">
             <div class="text-bold text-caption text-grey-8">2. Pilih Tujuan Pemasangan Restrain:</div>
@@ -99,9 +100,12 @@
           </div>
 
           <!-- Tambahan detail jika diperlukan -->
-          <q-input v-model="store.form.tatacara" label="Tata Cara Tindakan" outlined standout="bg-yellow-3" rows="2" type="textarea" class="col-12 q-mt-md" />
-          <q-input v-model="store.form.resikoLain" label="Risiko Tindakan" outlined standout="bg-yellow-3" rows="2" type="textarea" class="col-12" />
-          <q-input v-model="store.form.alternatif" label="Alternatif Tindakan" outlined standout="bg-yellow-3" rows="2" type="textarea" class="col-12" />
+          <q-input v-model="store.form.tatacara" label="Tata Cara Tindakan" outlined standout="bg-yellow-3" rows="2"
+            type="textarea" class="col-12 q-mt-md" />
+          <q-input v-model="store.form.resikoLain" label="Risiko Tindakan" outlined standout="bg-yellow-3" rows="2"
+            type="textarea" class="col-12" />
+          <q-input v-model="store.form.alternatif" label="Alternatif Tindakan" outlined standout="bg-yellow-3" rows="2"
+            type="textarea" class="col-12" />
 
           <q-separator class="col-12 q-my-md" />
 
@@ -125,7 +129,7 @@
                     }" />
                 </q-card>
               </div>
-              
+
               <!-- TTD Saksi Pasien -->
               <div class="col-md-6 col-sm-12" style="min-height: 180px;">
                 <q-card flat bordered class="column full-height flex-center q-pa-sm bg-grey-1">

@@ -1,7 +1,7 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file
 
-import { defineConfig } from "#q-app/wrappers";
+import { defineConfig } from "#q-app/wrappers"
 
 export default defineConfig((ctx) => {
   // console.log('module', ctx)
@@ -52,21 +52,23 @@ export default defineConfig((ctx) => {
         // NODE_OPTIONS: '--max-old-space-size=20480',
         API: ctx?.dev
           ? // ? 'http://192.168.150.112:3503'
-            // ? 'http://192.168.150.112:3501'
+          // ? 'http://192.168.150.112:3501'
 
-            "http://localhost:8080"
-          : // ? 'http://192.168.101.77:8080'
-            // : 'http://192.168.150.111:3507',
-            "http://192.168.150.112:3501",
+          // "https://api.simrs.test"
+          "http://localhost:8080"
+          : // "http://localhost:8080"
+          // ? 'http://192.168.101.77:8080'
+          // : 'http://192.168.150.111:3507',
+          "http://192.168.150.112:3501",
 
         WSHOST: ctx?.dev
           ? "192.168.150.112"
           : // ? 'localhost'
-            "192.168.150.112",
+          "192.168.150.112",
 
         PATHIMG: ctx?.dev
           ? // ? 'http://localhost:8000/storage/'
-            "http://192.168.150.111:3507"
+          "http://192.168.150.111:3507"
           : "http://192.168.150.111:3507",
 
         SPO_DOCUMENT_HOST:
@@ -95,13 +97,13 @@ export default defineConfig((ctx) => {
         plugins: [
           {
             name: "optimize-images",
-            async generateBundle(options, bundle) {
+            async generateBundle (options, bundle) {
               // Optimize hanya file yang dibutuhkan
-              const imagePattern = /\.(jpg|jpeg|png|gif|webp)$/;
+              const imagePattern = /\.(jpg|jpeg|png|gif|webp)$/
               for (const fileName in bundle) {
                 if (imagePattern.test(fileName)) {
                   // Gunakan sharp yang sudah ada
-                  const file = bundle[fileName];
+                  const file = bundle[fileName]
                   // Proses optimasi
                 }
               }
@@ -122,10 +124,10 @@ export default defineConfig((ctx) => {
         reactivityTransform: true,
       },
 
-      extendViteConf(viteConf) {
-        if (!viteConf.server) viteConf.server = {};
-        viteConf.server.allowedHosts = true;
-        viteConf.build.chunkSizeWarningLimit = 5000;
+      extendViteConf (viteConf) {
+        if (!viteConf.server) viteConf.server = {}
+        viteConf.server.allowedHosts = true
+        viteConf.build.chunkSizeWarningLimit = 5000
         viteConf.build.rollupOptions = {
           output: {
             // Pastikan nama file pakai hash agar cache di browser terhindar
@@ -133,17 +135,17 @@ export default defineConfig((ctx) => {
             chunkFileNames: "assets/[name].[hash].js",
             assetFileNames: "assets/[name].[hash].[ext]",
 
-            manualChunks(id) {
+            manualChunks (id) {
               if (id.includes("node_modules")) {
                 return id
                   .toString()
                   .split("node_modules/")[1]
                   .split("/")[0]
-                  .toString();
+                  .toString()
               }
             },
           },
-        };
+        }
       },
       // viteVuePluginOptions: {},
 
@@ -336,5 +338,5 @@ export default defineConfig((ctx) => {
        */
       extraScripts: [],
     },
-  };
-});
+  }
+})

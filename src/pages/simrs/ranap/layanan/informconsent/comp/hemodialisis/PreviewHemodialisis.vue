@@ -162,7 +162,7 @@
               Hubungan dengan pasien
             </div>
             <div class="col-9">
-              : {{ item?.hubunganDgPasien || '-' }}
+              : {{ item?.hubunganDgPasien === 'Keluarga' ? (item?.keluarga && item?.keluarga.trim().toLowerCase() !== 'keluarga' ? `Keluarga (${item?.keluarga})` : 'Keluarga') : (item?.hubunganDgPasien || '-') }}
             </div>
           </div>
         </div>

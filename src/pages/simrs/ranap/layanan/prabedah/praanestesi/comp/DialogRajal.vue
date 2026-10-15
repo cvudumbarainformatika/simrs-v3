@@ -6,6 +6,18 @@
           ASSESMEN PRA ANESTESI RAJAL TERAKHIR ({{ data?.norm }})
         </div>
         <q-space />
+        <q-btn
+          v-if="data"
+          color="orange-10"
+          dense
+          no-caps
+          class="q-px-sm q-mr-sm text-weight-bold"
+          icon="icon-mat-file_copy"
+          label="Terapkan ke Form Input"
+          @click="terapkanKeForm"
+        >
+          <q-tooltip>Salin data pra anestesi rajal ini ke formulir input ranap</q-tooltip>
+        </q-btn>
         <q-btn v-close-popup icon="icon-mat-close" flat round dense />
       </q-card-section>
       <q-separator />
@@ -469,6 +481,7 @@
 
 <script setup>
 import { getNewLine } from 'src/modules/formatter'
+import { notifSuccessVue } from 'src/modules/utils'
 import { usePraAnastesiStore } from 'src/stores/simrs/pelayanan/poli/praanastesi'
 import { computed, onMounted, ref, watch } from 'vue'
 
@@ -501,6 +514,13 @@ watch(() => props.data, (newVal) => {
     initData(newVal)
   }
 }, { deep: true })
+
+function terapkanKeForm() {
+  if (!props.data) return
+  store.initForm(props.data)
+  delete store.form.id
+  notifSuccessVue("Data Pra Anestesi Rajal berhasil dimuat ke formulir input")
+}
 
 function initData(val) {
   if (!val) return

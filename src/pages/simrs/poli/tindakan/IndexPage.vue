@@ -154,6 +154,13 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/SharingBpjsPage.vue')))
   },
   {
+    name: 'inform-consent-page',
+    label: 'Informed Consent',
+    icon: 'icon-my-file_sign',
+    route: ['poli'],
+    comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/InformConsentPage.vue')))
+  },
+  {
     name: 'upload-dok-page',
     label: 'Upload Dokumen',
     icon: 'icon-mat-cloud_upload',

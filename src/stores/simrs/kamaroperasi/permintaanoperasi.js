@@ -386,6 +386,9 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
       // console.log('inject pasien', findPasien)
       if (findPasien?.length) {
         const data = findPasien[0]
+        if (!data[kode]) {
+          data[kode] = []
+        }
         const target = data[kode]?.find(x => x.id === val.id)
 
         if (target) {
@@ -394,13 +397,6 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
         else {
           if (kode === 'diagnosa') {
             data[kode]?.push(val)
-          }
-          else if (kode === 'dokumenluar') {
-            const trg = data[kode]
-            if (trg) {
-              data[kode] = []
-              data[kode] = val
-            }
           }
           else {
             data[kode]?.splice(0, 0, val)
@@ -431,8 +427,10 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
         const data = findPasien[0][key]
         // console.log('data', data)
 
-        const pos = data.findIndex(el => el.id === id)
-        if (pos >= 0) { data.splice(pos, 1) }
+        if (Array.isArray(data)) {
+          const pos = data.findIndex(el => el.id === id)
+          if (pos >= 0) { data.splice(pos, 1) }
+        }
       }
     },
 

@@ -107,7 +107,7 @@
           : {{ pasien?.dokter }}
         </div>
       </div>
-      <div class="q-px-sm b_double"></div>
+      <div v-if="props.tampilkanGarisGanda" class="q-px-sm b_double"></div>
     </div>
   </div>
 </template>
@@ -127,6 +127,10 @@ const props = defineProps({
     default: null
   },
   jangantampil: {
+    type: Boolean,
+    default: true
+  },
+  tampilkanGarisGanda: {
     type: Boolean,
     default: true
   },

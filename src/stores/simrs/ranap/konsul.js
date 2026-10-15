@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { usePengunjungRanapStore } from './pengunjung'
+import { useAplikasiStore } from 'src/stores/app/aplikasi'
 // eslint-disable-next-line no-unused-vars
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
 
@@ -31,9 +32,18 @@ export const useKonsulRanapStore = defineStore('konsul-ranap-store', {
   actions: {
 
     async saveData(pasien) {
-      if (!pasien?.kodedokter) {
-        return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
+      if (!this.form.kddokterkonsul) {
+        return notifErrVue('Pilih dokter tujuan konsul terlebih dahulu')
       }
+
+      const auth = useAplikasiStore()
+      const userKdPeg = auth.user?.pegawai?.kdpegsimrs
+
+      // Intinya: user login tidak bisa konsul ke dirinya sendiri
+      if (userKdPeg && this.form.kddokterkonsul === userKdPeg) {
+        return notifErrVue('Mohon Maaf, dipastikan Dokter tujuan Konsul Berbeda dengan yg Mengajukan Konsulan ...')
+      }
+
       this.loadingOrder = true
 
       this.form.noreg = pasien?.noreg
