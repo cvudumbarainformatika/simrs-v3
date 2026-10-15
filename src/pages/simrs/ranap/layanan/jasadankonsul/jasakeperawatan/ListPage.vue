@@ -18,7 +18,7 @@
             <q-item-label>Jam : {{ jamTnpDetik(item?.rs2) }}</q-item-label>
             <q-item-label>
               <q-spinner v-if="store.loadingHapus === item?.id" size="sm" color="red"></q-spinner>
-              <q-icon v-else name="icon-mat-delete" size="sm" color="red" class="cursor-pointer"
+              <q-icon v-else-if="!isReadOnly" name="icon-mat-delete" size="sm" color="red" class="cursor-pointer"
                 @click="hapusItem(item?.id)"></q-icon>
 
             </q-item-label>
@@ -32,6 +32,7 @@
 <script setup>
 import { humanDate, jamTnpDetik, formatRp } from 'src/modules/formatter'
 import { useQuasar } from 'quasar'
+import { inject, ref } from 'vue'
 
 const $q = useQuasar()
 
