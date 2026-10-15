@@ -1,5 +1,5 @@
 <template>
-  <div id="pdfDoc" class="bg-white print-page">
+  <div id="resume" class="bg-white print-page">
     <div class="page-1">
       <!-- KOP SURAT -->
       <div class="col-grow">
@@ -151,8 +151,15 @@
               <div class="text-center text-weight-bold q-pt-md">
                 Pasien/Keluarga
               </div>
-              <div class="text-center" style="height: 120px;">
-                <div class="signature-line">(......................................................................)
+              <div class="column flex-center text-center" style="min-height: 120px;">
+                <div v-if="penerimanEdu?.ttd_penerima || penerimanEdu?.ttdPenerima" class="column flex-center q-my-sm">
+                  <img :src="penerimanEdu?.ttd_penerima || (pathImg + penerimanEdu?.ttdPenerima)" alt="ttd penerima" style="max-height: 80px; max-width: 140px;">
+                  <div class="text-wrap text-center q-mt-xs text-weight-bold">
+                    ( {{ penerimanEdu?.namaPenerima || props?.pasien?.nama_panggil || props?.pasien?.nama || '..................................................' }} )
+                  </div>
+                </div>
+                <div v-else class="signature-line">
+                  (......................................................................)
                 </div>
               </div>
             </div>
@@ -186,11 +193,14 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import useResume from './useResume'
 import html2pdf from 'html2pdf.js'
 // eslint-disable-next-line no-unused-vars
 import { dateFullFormat, getNewLine } from 'src/modules/formatter'
+import { pathImg } from 'src/boot/axios'
+import { imageToBase64 } from 'src/modules/imgBase64'
+import { useImplementasiEdukasiRanapStore } from 'src/stores/simrs/ranap/implementasiEdukasi'
 
 const props = defineProps({
   pasien: {
@@ -204,6 +214,46 @@ const props = defineProps({
 })
 
 const { usiaTh, resume } = useResume(props?.pasien)
+
+const impEdukasi = useImplementasiEdukasiRanapStore()
+
+const penerimanEdu = computed(() => {
+  const list = impEdukasi?.items || []
+  const item = list.find(x => x?.ttdPenerima) || list[0] || null
+  return item
+})
+
+function initImage(item) {
+  if (!item?.ttdPenerima) {
+    item.ttd_penerima = null
+    return
+  }
+  const ttdPenerima = pathImg + item?.ttdPenerima
+
+  Promise.all([
+    imageToBase64(ttdPenerima, (base64Image) => {
+      item.ttd_penerima = base64Image ?? ''
+    })
+  ])
+}
+
+const loadEdukasi = async (pasien) => {
+  if (!pasien) return
+  await impEdukasi.getList(pasien)
+  if (penerimanEdu.value) {
+    initImage(penerimanEdu.value)
+  }
+}
+
+onMounted(async () => {
+  await loadEdukasi(props?.pasien)
+})
+
+watch(() => props?.pasien, async (newVal) => {
+  if (newVal) {
+    await loadEdukasi(newVal)
+  }
+})
 // console.log('resume', data)
 
 const qrUrl = computed(() => {
@@ -218,7 +268,7 @@ const qrUrl = computed(() => {
 })
 
 const exportPdf = () => {
-  const concern = document.getElementById('pdfDoc')
+  const concern = document.getElementById('resume') || document.getElementById('pdfDoc')
 
   const pdfConfig = {
     margin: 0,

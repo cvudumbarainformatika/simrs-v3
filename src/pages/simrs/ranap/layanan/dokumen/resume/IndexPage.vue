@@ -3,10 +3,14 @@
     <div class="col-auto ">
       <div class="q-pa-md flex justify-between bg-teal text-white items-center">
         <div>{{ menu?.label }}</div>
-        <!-- <q-btn
+        <q-btn
           icon="icon-mat-print" flat dense size="md"
           v-print="printObj"
-        /> -->
+        >
+          <q-tooltip class="primary" :offset="[10, 10]">
+            Print
+          </q-tooltip>
+        </q-btn>
       </div>
     </div>
     <div class="col full-height q-pa-md scroll">
