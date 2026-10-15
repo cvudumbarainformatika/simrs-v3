@@ -23,8 +23,8 @@ import FormHeader from './comp/FormHeader.vue'
 import ListRincian from './comp/listrincian/ListRincian.vue'
 import { onUnmounted } from 'vue';
 import { date } from 'quasar';
-import { usePergeseranAnggaranStore } from 'src/stores/siasik/anggaran/pergeseran/pergeseranrincian';
-const store = usePergeseranAnggaranStore()
+import { usePergeseran_PerubahanAnggaranStore } from 'src/stores/siasik/anggaran/perubahan_pergeseran/geserperubahan_anggaran';
+const store = usePergeseran_PerubahanAnggaranStore()
 onBeforeMount(() => {
 })
 

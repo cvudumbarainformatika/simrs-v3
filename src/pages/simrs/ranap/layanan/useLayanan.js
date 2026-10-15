@@ -202,36 +202,62 @@ export default function useLayanan(pasien, mpp) {
     return auth?.user?.pegawai?.kdgroupnakes
   })
 
+  const isNakesValid = computed(() => {
+    const kd = String(nakes.value || '').trim()
+    return ['1', '2', '3', '4', '5', '6'].includes(kd)
+  })
+
   // console.log('nakes', nakes.value);
 
 
-  const filterredMenus = computed(() => {
-    const link = route?.path
-    const docOnly = ['mpp', 'rekammedik']
-    const pathSegments = link.split('/').filter(Boolean)
+  const isMppRoute = computed(() => {
+    const pathSegments = (route?.path || '').split('/').filter(Boolean)
+    return pathSegments.includes('mpp')
+  })
 
-    // const mpp = route.matched?.map(a => a.path)?.includes('/mpp') ?? false
-    const mpp = docOnly.some(menu => pathSegments.includes(menu))
-    // console.log('pathSegments', pathSegments, mpp, docOnly.some(menu => pathSegments.includes(menu)))
-    if (!mpp) {
-      const byPass = ['sa']
-      const user = auth?.user?.username
-      if (byPass.includes(user)) {
-        return menus.value.filter(menu => menu?.mpp !== true)
-      }
-      return menus.value.filter(menu => menu.nakes.includes(nakes.value) && menu?.mpp !== true)
+  const isRekamMedikRoute = computed(() => {
+    const pathSegments = (route?.path || '').split('/').filter(Boolean)
+    return pathSegments.includes('rekammedik')
+  })
+
+  const filterredMenus = computed(() => {
+    const byPass = ['sa']
+    const user = auth?.user?.username
+
+    // 1. Rute MPP: Tampilkan SEMUA menu ranap (Read-Only) + menu FORM MPP (untuk entri)
+    if (isMppRoute.value) {
+      return menus.value
     }
-    else {
-      return menus.value.filter(menu => menu.nakes.some(r => pathSegments.includes(r)))
+
+    // 2. Rute Rekam Medik: Tampilkan SELURUH menu ranap reguler (Read-Only)
+    if (isRekamMedikRoute.value) {
+      return menus.value.filter(menu => menu?.mpp !== true)
     }
+
+    // 3. User Programmer (sa): Tampilkan seluruh menu ranap reguler
+    if (byPass.includes(user)) {
+      return menus.value.filter(menu => menu?.mpp !== true)
+    }
+
+    // 4. User non-nakes 1..6 di ranap reguler: Tampilkan seluruh menu (Read-Only)
+    if (!isNakesValid.value) {
+      return menus.value.filter(menu => menu?.mpp !== true)
+    }
+
+    // 5. User nakes ranap reguler (dokter, perawat, dsb): Filter sesuai nakesnya
+    return menus.value.filter(menu => menu.nakes.includes(nakes.value) && menu?.mpp !== true)
   })
 
   const menu = ref(null)
 
   onMounted(() => {
     // console.log('mounted pageLayananRanap', auth?.user?.username)
-
-    menu.value = filterredMenus.value[0]
+    if (isMppRoute.value) {
+      const formMpp = filterredMenus.value.find(m => m.name === 'mpp-page')
+      menu.value = formMpp || filterredMenus.value[0]
+    } else {
+      menu.value = filterredMenus.value[0]
+    }
   })
 
   function menuDiganti(val) {
@@ -251,7 +277,9 @@ export default function useLayanan(pasien, mpp) {
     store,
     filterredMenus,
     nakes,
-
+    isNakesValid,
+    isMppRoute,
+    isRekamMedikRoute,
     menuDiganti
   }
 }

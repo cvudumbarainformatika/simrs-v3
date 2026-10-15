@@ -13,7 +13,7 @@
             <q-form ref="myForm" class="q-pa-md">
               <FormAnamnesis ref="formRef" :pasien="props.pasien" :kasus="props.kasus" :key="pasien" />
               <q-separator class="q-my-md" />
-              <div class="flex justify-end">
+              <div v-if="!isReadOnly" class="flex justify-end">
                 <q-btn :loading="store.loadingSave" :disable="store.loadingSave" type="button" color="primary"
                   label="Simpan" @click="validate" />
               </div>
@@ -46,7 +46,7 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent, ref } from 'vue'
+import { defineAsyncComponent, inject, ref } from 'vue'
 import { scroll } from 'quasar'
 import { useAnamnesisRanapStore } from 'src/stores/simrs/ranap/anamnesis'
 const { getScrollTarget, setVerticalScrollPosition } = scroll
@@ -56,6 +56,7 @@ const FormAnamnesis = defineAsyncComponent(() => import('./FormAnamnesis.vue'))
 const RightPage = defineAsyncComponent(() => import('./RightPage.vue'))
 
 const store = useAnamnesisRanapStore()
+const isReadOnly = inject('isReadOnlyRanap', ref(false))
 
 const props = defineProps({
   pasien: {

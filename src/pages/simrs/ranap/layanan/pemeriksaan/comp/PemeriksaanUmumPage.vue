@@ -12,7 +12,7 @@
               <q-form ref="myForm" class="">
                 <FormPemeriksaanUmum ref="formRef" :pasien="pasien" :kasus="kasus" />
                 <q-separator class="q-my-md" />
-                <div class="flex justify-end">
+                <div v-if="!isReadOnly" class="flex justify-end">
                   <q-btn :loading="store.loadingSave" :disable="store.loadingSave" label="Simpan" type="button"
                     color="primary" @click="validate" />
                 </div>
@@ -38,7 +38,7 @@
 
 <script setup>
 import { usePemeriksaanUmumRanapStore } from 'src/stores/simrs/ranap/pemeriksaanumum'
-import { defineAsyncComponent, ref } from 'vue'
+import { defineAsyncComponent, inject, ref } from 'vue'
 import { scroll } from 'quasar'
 import { notifErrVue } from 'src/modules/utils'
 const { getScrollTarget, setVerticalScrollPosition } = scroll
@@ -49,6 +49,7 @@ const ListPemeriksaanUmum = defineAsyncComponent(() => import('./pemeriksaanUmum
 
 // eslint-disable-next-line no-unused-vars
 const store = usePemeriksaanUmumRanapStore()
+const isReadOnly = inject('isReadOnlyRanap', ref(false))
 
 // eslint-disable-next-line no-unused-vars
 const props = defineProps({

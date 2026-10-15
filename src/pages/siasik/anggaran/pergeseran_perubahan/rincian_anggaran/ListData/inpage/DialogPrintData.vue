@@ -52,7 +52,7 @@
                             RKA - RINCIAN BELANJA SKPD
                           </div>
                           <div>
-                            PERGESERAN-ANGGARAN
+                            PERGESERAN P-APBD
                           </div>
                         </div>
 

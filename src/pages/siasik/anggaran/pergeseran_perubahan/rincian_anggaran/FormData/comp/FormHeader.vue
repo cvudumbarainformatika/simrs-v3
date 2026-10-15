@@ -40,9 +40,10 @@ import { usePengusulanAnggaranStore } from 'src/stores/siasik/anggaran/penyusuna
 import { usePenetapanPaguStore } from 'src/stores/siasik/anggaran/penyusunan/penetapanpagu';
 import { api } from 'src/boot/axios';
 import { usePergeseranAnggaranStore } from 'src/stores/siasik/anggaran/pergeseran/pergeseranrincian';
+import { usePergeseran_PerubahanAnggaranStore } from 'src/stores/siasik/anggaran/perubahan_pergeseran/geserperubahan_anggaran.js';
 
 const form = ref([])
-const store = usePergeseranAnggaranStore()
+const store = usePergeseran_PerubahanAnggaranStore()
 const options = ref([])
 const options_kegiatan = ref([])
 const tahuns = ref([])

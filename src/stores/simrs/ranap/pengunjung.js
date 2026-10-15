@@ -34,6 +34,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
     pasien: null,
     nakes: null,
     nonNakes: null,
+    saEditMode: false,
 
     berhakAkses: true,
 

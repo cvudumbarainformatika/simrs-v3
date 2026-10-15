@@ -14,7 +14,7 @@
               </div>
             </div>
           </div>
-          <q-menu style="max-width: 460px;">
+          <q-menu v-if="canEdit" style="max-width: 460px;">
             <div class="row no-wrap q-pa-md">
               <div class="column items-center">
                 <q-avatar size="72px">
@@ -97,7 +97,7 @@
           <div class="text-white">
             KASUS | {{ pengunjung.jnsKasusPasien?.uraian ?? 'Tidak diketahui' }}
           </div>
-          <q-menu style="max-width: 460px;">
+          <q-menu v-if="canEdit" style="max-width: 460px;">
             <q-card>
               <q-card-section class="bg-teal text-white">
                 <div class="text-bold">
@@ -149,7 +149,27 @@
         outline
         disable
       />
+    </div> -->
     <!-- Icon Notifikasi Pasien Paska Operasi (Pojok Kanan Atas Sebelah Tombol Tutup) -->
+        <!-- TOMBOL SWITCH MODE SIMPAN KHUSUS PROGRAMMER (SA) -->
+    <div v-if="isSa" class="q-mr-sm">
+      <q-btn
+        :color="pengunjung.saEditMode ? 'negative' : 'grey-8'"
+        :icon="pengunjung.saEditMode ? 'lock_open' : 'lock'"
+        :label="pengunjung.saEditMode ? 'Mode Simpan: ON' : 'Mode Simpan: OFF'"
+        dense
+        no-caps
+        unelevated
+        size="sm"
+        class="q-px-sm text-weight-bold"
+        @click="toggleSaEditMode"
+      >
+        <q-tooltip class="bg-dark text-white">
+          {{ pengunjung.saEditMode ? 'Klik untuk Mengunci (Kembali ke Mode Hanya Lihat)' : 'Klik untuk Mengaktifkan Mode Simpan (Testing Simpan Programmer)' }}
+        </q-tooltip>
+      </q-btn>
+    </div>
+
     <q-btn flat round dense :color="hasPendingPaskaNotif ? 'amber-5' : 'white'" icon="icon-eva-bell-outline"
       class="q-mr-xs">
       <!-- Badge Notifikasi jika ada pasien paska operasi yang belum dikonfirmasi -->
@@ -220,6 +240,7 @@
 <script setup>
 import { api } from 'src/boot/axios'
 import { ref, computed, onMounted, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { usePermintaanEResepStore } from 'src/stores/simrs/farmasi/permintaanresep/eresep'
 import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
@@ -230,6 +251,31 @@ const store = usePermintaanEResepStore()
 const pengunjung = usePengunjungRanapStore()
 // eslint-disable-next-line no-unused-vars
 const auth = useAplikasiStore()
+
+const route = useRoute()
+const isSa = computed(() => auth?.user?.username === 'sa')
+const isMppOrRm = computed(() => {
+  const segs = (route?.path || '').split('/').filter(Boolean)
+  return segs.includes('mpp') || segs.includes('rekammedik')
+})
+
+const canEdit = computed(() => {
+  if (isSa.value) {
+    return !!pengunjung.saEditMode
+  }
+  if (isMppOrRm.value) {
+    return false // MPP dan Rekam Medik tidak diizinkan ganti DPJP / Kasus
+  }
+  const kd = String(auth?.user?.pegawai?.kdgroupnakes || '').trim()
+  return ['1', '2', '3', '4', '5', '6'].includes(kd)
+})
+
+function toggleSaEditMode() {
+  pengunjung.saEditMode = !pengunjung.saEditMode
+  if (pengunjung.saEditMode) {
+    notifErrVue('MODE SIMPAN DIAKTIFKAN (Hati-hati saat mencoba entri data)')
+  }
+}
 const daftartilikStore = useDaftarTilikStore()
 
 const lastDaftartilik = computed(() => {

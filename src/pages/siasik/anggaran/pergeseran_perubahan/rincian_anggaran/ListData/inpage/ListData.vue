@@ -217,23 +217,24 @@ async function PrintData(row) {
 }
 
 function editDataPangusulan(row) {
-  // console.log('edit data', row)
+  console.log('edit data', row)
   store.loadingSave = true
   store.form = {
     // ...row,
     notrans: row.notrans,
     uraianblud: row.kegiatan,
-    kodekegiatanblud: row.kodekegiatan,
-    bidang: row.kodebidang,
-    namabidang: row.namabidang,
-    kodebidang: row.kodebidang,
-    pagu: row.pagu,
+    kodekegiatanblud: row.kodeKegiatan,
+    bidang: row.kodebagian,
+    namabidang: row.ruangan,
+    kodebidang: row.kodebagian,
+    pagu: row.paguanggaran,
     tglperubahan: date.formatDate(Date.now(), 'YYYY-MM-DD'),
   }
+  console.log('store.form', store.form)
   store.rincians = row.penetapancopy ? [...row.penetapancopy] : []
 
-  // console.log('store.rincians', store.rincians)
-  router.push({ path: '/anggaran/pergeseran/rinci/form', replace: true, query: { id: row.id } })
+  console.log('store.rincians', store.rincians)
+  router.push({ path: '/anggaran/pergeseranperubahan/belanja/form', replace: true, query: { id: row.id } })
   store.disableSaved = true
   store.loadingSave = false
 }

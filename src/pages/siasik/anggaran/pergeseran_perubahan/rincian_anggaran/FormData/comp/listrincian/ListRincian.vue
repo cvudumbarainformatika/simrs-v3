@@ -97,7 +97,8 @@ import { notifErrVue, notifSuccess } from 'src/modules/utils';
 import { usePergeseranAnggaranStore } from 'src/stores/siasik/anggaran/pergeseran/pergeseranrincian';
 
 import { computed, onMounted, ref } from 'vue';
-const store = usePergeseranAnggaranStore()
+import { usePergeseran_PerubahanAnggaranStore } from 'src/stores/siasik/anggaran/perubahan_pergeseran/geserperubahan_anggaran';
+const store = usePergeseran_PerubahanAnggaranStore()
 const props = defineProps({
   store: {
     type: Array,
@@ -191,7 +192,7 @@ const displayRows = computed(() => {
       )
   )
 })
-// console.log('display rows', displayRows.value)
+console.log('display rows', displayRows.value)
 function isTransaksiall(row) {
   console.log('row transall', row)
   // return store.transallserahterima.some((item) => item.id === row.id);
