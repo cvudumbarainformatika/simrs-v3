@@ -149,10 +149,11 @@ import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue';
 import { formattanpaRp } from 'src/modules/formatter'
 import { api } from 'src/boot/axios';
 import { usePergeseranAnggaranStore } from 'src/stores/siasik/anggaran/pergeseran/pergeseranrincian';
+import { usePergeseran_PerubahanAnggaranStore } from 'src/stores/siasik/anggaran/perubahan_pergeseran/geserperubahan_anggaran';
 // const FormInputPajak = defineAsyncComponent(() => import('./formpajak/FormPajak.vue'))
 
 
-const store = usePergeseranAnggaranStore()
+const store = usePergeseran_PerubahanAnggaranStore()
 const carisrt = dataBastFarmasiStore()
 const satuan = ref(null)
 const options = ref([])
@@ -382,6 +383,8 @@ function saveData() {
   // }
   store.simpanData()
   store.disableSaved = true
+
+  console.log('store.form', store.form)
 }
 
 // watch(
