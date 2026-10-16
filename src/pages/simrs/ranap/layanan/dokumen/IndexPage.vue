@@ -205,6 +205,15 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('./informconsent/IndexPage.vue')))
   },
   {
+    name: 'konsul-spesialis-document',
+    label: 'KONSUL SPESIALIS',
+    title: 'LEMBAR KONSULTASI DOKTER SPESIALIS',
+    desc: 'Dokumen Lembar Permintaan dan Jawaban Konsultasi Dokter Spesialis',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3', '4', '5', '6', '', null],
+    comp: shallowRef(defineAsyncComponent(() => import('./konsul/IndexPage.vue')))
+  },
+  {
     name: 'SerahTerimaPasien',
     label: 'LEMBAR SERAH TERIMA',
     title: 'LEMBAR SERAH TERIMA',

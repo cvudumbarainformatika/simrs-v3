@@ -752,7 +752,7 @@
             </div> -->
           <div style="padding-bottom: 20px" />
           <div>
-            <img v-if="penerimanEdu?.ttd_penerima" :src="penerimanEdu?.ttd_penerima" alt="ttd penerima" width="80">
+            <img v-if="penerimanEdu?.ttd_penerima || penerimanEdu?.ttdPenerima" :src="penerimanEdu?.ttd_penerima || (pathImg + penerimanEdu?.ttdPenerima)" alt="ttd penerima" width="80">
             <div v-else>ttd</div>
           </div>
           <div class="text-wrap text-center">{{ penerimanEdu?.namaPenerima }}</div>
@@ -830,9 +830,16 @@ onMounted(async () => {
 })
 
 const penerimanEdu = computed(() => {
-  const ttd = impEdukasi?.items[0]
-  console.log('ttd', ttd)
-  return ttd
+  const items = impEdukasi?.items || []
+  if (items.length === 0) return null
+  const sorted = [...items].sort((a, b) => {
+    const timeA = new Date(a.tgl || a.created_at || 0).getTime()
+    const timeB = new Date(b.tgl || b.created_at || 0).getTime()
+    if (timeA !== timeB) return timeA - timeB
+    return (a.id || 0) - (b.id || 0)
+  })
+  const itemWithTtd = sorted.find(x => x?.ttdPenerima)
+  return itemWithTtd || sorted[0] || null
 })
 
 function initImage(item) {

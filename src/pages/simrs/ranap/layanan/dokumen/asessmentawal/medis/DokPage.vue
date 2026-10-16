@@ -1567,7 +1567,7 @@
             </div> -->
           <div style="padding-bottom: 20px" />
           <div>
-            <img v-if="penerimanEdu?.ttd_penerima" :src="penerimanEdu?.ttd_penerima" alt="ttd penerima" width="80">
+            <img v-if="penerimanEdu?.ttd_penerima || penerimanEdu?.ttdPenerima" :src="penerimanEdu?.ttd_penerima || (pathImg + penerimanEdu?.ttdPenerima)" alt="ttd penerima" width="80">
             <div v-else>ttd</div>
           </div>
           <div class="text-wrap text-center">{{ penerimanEdu?.namaPenerima }}</div>
@@ -1607,7 +1607,7 @@ import { dateFullFormat, getNewLine, jamTnpDetik } from 'src/modules/formatter'
 import { imageToBase64 } from 'src/modules/imgBase64'
 import { useAnamnesisRanapStore } from 'src/stores/simrs/ranap/anamnesis'
 import { useImplementasiEdukasiRanapStore } from 'src/stores/simrs/ranap/implementasiEdukasi'
-import { computed, onMounted, ref } from 'vue'
+import { computed, watch, onMounted, ref } from 'vue'
 
 
 const impEdukasi = useImplementasiEdukasiRanapStore()
@@ -1642,6 +1642,22 @@ onMounted(async () => {
   await impEdukasi.getList(props.pasien)
   if (penerimanEdu.value) {
     initImage(penerimanEdu.value)
+  }
+})
+
+watch(() => penerimanEdu.value, (newVal) => {
+  if (newVal) {
+    initImage(newVal)
+  }
+}, { immediate: true })
+
+watch(() => props.pasien, async (newVal) => {
+  if (newVal) {
+    await getDpjpData()
+    await impEdukasi.getList(newVal)
+    if (penerimanEdu.value) {
+      initImage(penerimanEdu.value)
+    }
   }
 })
 
@@ -1713,9 +1729,21 @@ const qrDokter = computed(() => {
 })
 
 const penerimanEdu = computed(() => {
-  const ttd = impEdukasi?.items[0]
-  console.log('ttd', ttd)
-  return ttd
+  const items = impEdukasi?.items || []
+  if (items.length === 0) return null
+
+  // Backend mengirim dengan order tgl desc (terbaru di index 0)
+  // Ambil edukasi yang awal / pertama kali (kronologis tgl asc / id asc)
+  const sorted = [...items].sort((a, b) => {
+    const timeA = new Date(a.tgl || a.created_at || 0).getTime()
+    const timeB = new Date(b.tgl || b.created_at || 0).getTime()
+    if (timeA !== timeB) return timeA - timeB
+    return (a.id || 0) - (b.id || 0)
+  })
+
+  // Prioritaskan edukasi terawal yang memiliki ttdPenerima, atau fallback ke edukasi pertama
+  const itemWithTtd = sorted.find(x => x?.ttdPenerima)
+  return itemWithTtd || sorted[0] || null
 })
 
 function initImage(item) {

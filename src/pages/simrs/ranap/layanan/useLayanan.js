@@ -160,7 +160,7 @@ export default function useLayanan(pasien, mpp) {
     },
     {
       name: 'mpp',
-      label: 'MPP',
+      label: 'Skrining MPP',
       icon: 'icon-fa-arrows-down-to-people-solid',
       nakes: ['2', '3'],
       comp: shallowRef(defineAsyncComponent(() => import('./mpp/IndexPage.vue')))
